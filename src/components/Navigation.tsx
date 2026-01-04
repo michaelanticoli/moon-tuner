@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "The Moon", href: "/#moon" },
+  { label: "The Moon", href: "/the-moon" },
   { label: "Method", href: "/method" },
   { label: "Workbooks", href: "/workbooks" },
   { label: "App", href: "/app" },
