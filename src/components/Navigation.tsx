@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "The Moon", href: "#moon" },
-  { label: "Method", href: "#method" },
-  { label: "Workbooks", href: "#workbooks" },
-  { label: "App", href: "#app" },
-  { label: "Journal", href: "#journal" },
+  { label: "The Moon", href: "/#moon" },
+  { label: "Method", href: "/method" },
+  { label: "Workbooks", href: "/workbooks" },
+  { label: "App", href: "/app" },
+  { label: "Journal", href: "/#journal" },
 ];
 
 export function Navigation() {
