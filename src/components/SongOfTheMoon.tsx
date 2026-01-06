@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button";
 import { Play, Pause, Volume2 } from "lucide-react";
 import { useState } from "react";
+import { useMoonPhase } from "@/hooks/useMoonPhase";
 
 export function SongOfTheMoon() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const moonData = useMoonPhase();
 
   return (
     <section id="moon" className="py-16 lg:py-24 bg-primary text-primary-foreground relative overflow-hidden">
@@ -65,16 +66,16 @@ export function SongOfTheMoon() {
             <Volume2 className="w-5 h-5 text-primary-foreground/50" />
           </div>
 
-          {/* Right - Current State */}
+          {/* Right - Current State (Now synced to actual moon phase) */}
           <div className="flex-1 text-center lg:text-right">
             <p className="text-xs uppercase tracking-widest text-primary-foreground/50 mb-2">
               Now Playing
             </p>
             <p className="font-serif text-xl lg:text-2xl text-primary-foreground">
-              Waxing · Emergence
+              {moonData.astrological.energy} · {moonData.astrological.theme}
             </p>
             <p className="text-primary-foreground/50 text-sm mt-1">
-              396 Hz · Grounding Frequency
+              {moonData.astrological.frequencyHz} Hz · {moonData.astrological.frequency}
             </p>
           </div>
         </div>
