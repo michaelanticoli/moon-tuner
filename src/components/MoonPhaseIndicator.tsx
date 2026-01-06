@@ -1,34 +1,5 @@
 import { useEffect, useState } from "react";
-
-interface MoonPhase {
-  name: string;
-  description: string;
-  illumination: number;
-  phaseAngle: number;
-}
-
-const moonPhases: MoonPhase[] = [
-  { name: "New Moon", description: "Stillness · Beginnings", illumination: 0, phaseAngle: 0 },
-  { name: "Waxing Crescent", description: "Intention · Emergence", illumination: 0.15, phaseAngle: 45 },
-  { name: "First Quarter", description: "Action · Decisions", illumination: 0.5, phaseAngle: 90 },
-  { name: "Waxing Gibbous", description: "Refinement · Patience", illumination: 0.85, phaseAngle: 135 },
-  { name: "Full Moon", description: "Illumination · Release", illumination: 1, phaseAngle: 180 },
-  { name: "Waning Gibbous", description: "Gratitude · Integration", illumination: 0.85, phaseAngle: 225 },
-  { name: "Last Quarter", description: "Letting Go · Reflection", illumination: 0.5, phaseAngle: 270 },
-  { name: "Waning Crescent", description: "Rest · Surrender", illumination: 0.15, phaseAngle: 315 },
-];
-
-function calculateMoonPhase(): MoonPhase {
-  const now = new Date();
-  const synodicMonth = 29.53059;
-  const knownNewMoon = new Date("2024-01-11T11:57:00Z");
-  
-  const daysSinceNewMoon = (now.getTime() - knownNewMoon.getTime()) / (1000 * 60 * 60 * 24);
-  const lunarAge = daysSinceNewMoon % synodicMonth;
-  const phaseIndex = Math.floor((lunarAge / synodicMonth) * 8) % 8;
-  
-  return moonPhases[phaseIndex];
-}
+import { useMoonPhase } from "@/hooks/useMoonPhase";
 
 interface MoonSVGProps {
   illumination: number;
@@ -37,7 +8,6 @@ interface MoonSVGProps {
 }
 
 function MoonSVG({ illumination, isWaxing, size = 120 }: MoonSVGProps) {
-  // Calculate the curve of the terminator line
   const curveOffset = (1 - illumination * 2) * (size / 2);
   
   return (
@@ -61,7 +31,6 @@ function MoonSVG({ illumination, isWaxing, size = 120 }: MoonSVGProps) {
         </filter>
       </defs>
       
-      {/* Moon base - illuminated part */}
       <circle
         cx={size / 2}
         cy={size / 2}
@@ -70,7 +39,6 @@ function MoonSVG({ illumination, isWaxing, size = 120 }: MoonSVGProps) {
         filter="url(#moonGlow)"
       />
       
-      {/* Shadow overlay for phase */}
       {illumination < 1 && (
         <path
           d={`
@@ -84,7 +52,6 @@ function MoonSVG({ illumination, isWaxing, size = 120 }: MoonSVGProps) {
         />
       )}
       
-      {/* Subtle crater details */}
       <circle cx={size * 0.35} cy={size * 0.4} r={size * 0.06} fill="hsl(40, 15%, 80%)" opacity="0.5" />
       <circle cx={size * 0.6} cy={size * 0.55} r={size * 0.04} fill="hsl(40, 15%, 80%)" opacity="0.4" />
       <circle cx={size * 0.45} cy={size * 0.7} r={size * 0.05} fill="hsl(40, 15%, 80%)" opacity="0.3" />
@@ -93,15 +60,12 @@ function MoonSVG({ illumination, isWaxing, size = 120 }: MoonSVGProps) {
 }
 
 export function MoonPhaseIndicator() {
-  const [phase, setPhase] = useState<MoonPhase>(moonPhases[4]);
+  const moonData = useMoonPhase();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    setPhase(calculateMoonPhase());
     setIsVisible(true);
   }, []);
-
-  const isWaxing = phase.phaseAngle < 180;
 
   return (
     <div 
@@ -109,31 +73,30 @@ export function MoonPhaseIndicator() {
         isVisible ? "opacity-100" : "opacity-0"
       }`}
     >
-      {/* Moon Visual */}
       <div className="relative">
-        {/* Outer glow ring */}
         <div className="absolute inset-0 -m-4 rounded-full bg-accent/5 blur-xl animate-pulse-soft" />
         
-        {/* Moon SVG */}
         <div className="relative animate-float">
           <MoonSVG 
-            illumination={phase.illumination} 
-            isWaxing={isWaxing}
+            illumination={moonData.astronomical.illumination} 
+            isWaxing={moonData.astronomical.isWaxing}
             size={140}
           />
         </div>
       </div>
 
-      {/* Phase Info */}
       <div className="text-center space-y-2">
         <p className="text-[10px] uppercase tracking-ultra text-muted-foreground font-medium">
           Current Phase
         </p>
         <h3 className="font-serif text-xl lg:text-2xl font-medium text-foreground">
-          {phase.name}
+          {moonData.astronomical.phaseName}
         </h3>
         <p className="text-sm text-muted-foreground">
-          {phase.description}
+          {moonData.astrological.energy} · {moonData.astrological.theme}
+        </p>
+        <p className="text-xs text-muted-foreground/70">
+          {Math.round(moonData.astronomical.illumination * 100)}% illuminated
         </p>
       </div>
     </div>
