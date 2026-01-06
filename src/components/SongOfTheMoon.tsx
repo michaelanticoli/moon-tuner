@@ -1,10 +1,22 @@
-import { Play, Pause, Volume2 } from "lucide-react";
-import { useState } from "react";
+import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { useMoonPhase } from "@/hooks/useMoonPhase";
+import { useLunarTone } from "@/hooks/useLunarTone";
+import { Slider } from "@/components/ui/slider";
 
 export function SongOfTheMoon() {
-  const [isPlaying, setIsPlaying] = useState(false);
   const moonData = useMoonPhase();
+  const { isPlaying, volume, startTone, stopTone, updateVolume } = useLunarTone();
+
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      stopTone();
+    } else {
+      startTone({ 
+        baseFrequency: moonData.astrological.frequencyHz,
+        volume: volume 
+      });
+    }
+  };
 
   return (
     <section id="moon" className="py-16 lg:py-24 bg-primary text-primary-foreground relative overflow-hidden">
@@ -26,7 +38,7 @@ export function SongOfTheMoon() {
               Song of the Moon
             </h2>
             <p className="text-primary-foreground/70 text-sm lg:text-base max-w-md mx-auto lg:mx-0">
-              A 24-hour generative lunar tone stream. 
+              A generative lunar tone stream. 
               The frequency shifts with the phase—waxing, waning, stillness, emergence.
             </p>
           </div>
@@ -39,11 +51,11 @@ export function SongOfTheMoon() {
                 <div
                   key={i}
                   className={`w-1 bg-accent rounded-full transition-all duration-300 ${
-                    isPlaying ? "animate-pulse" : ""
+                    isPlaying ? "animate-waveform" : ""
                   }`}
                   style={{
-                    height: `${Math.random() * 24 + 16}px`,
-                    animationDelay: `${i * 0.1}s`,
+                    height: isPlaying ? `${Math.sin(Date.now() / 200 + i) * 12 + 24}px` : '16px',
+                    animationDelay: `${i * 0.08}s`,
                   }}
                 />
               ))}
@@ -51,8 +63,8 @@ export function SongOfTheMoon() {
 
             {/* Play Button */}
             <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="w-16 h-16 rounded-full bg-accent text-accent-foreground flex items-center justify-center hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl"
+              onClick={handlePlayPause}
+              className="w-16 h-16 rounded-full bg-accent text-accent-foreground flex items-center justify-center hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               aria-label={isPlaying ? "Pause" : "Play"}
             >
               {isPlaying ? (
@@ -62,11 +74,30 @@ export function SongOfTheMoon() {
               )}
             </button>
 
-            {/* Volume */}
-            <Volume2 className="w-5 h-5 text-primary-foreground/50" />
+            {/* Volume Control */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => updateVolume(volume === 0 ? 0.3 : 0)}
+                className="text-primary-foreground/50 hover:text-primary-foreground transition-colors"
+                aria-label={volume === 0 ? "Unmute" : "Mute"}
+              >
+                {volume === 0 ? (
+                  <VolumeX className="w-5 h-5" />
+                ) : (
+                  <Volume2 className="w-5 h-5" />
+                )}
+              </button>
+              <Slider
+                value={[volume * 100]}
+                onValueChange={([val]) => updateVolume(val / 100)}
+                max={100}
+                step={1}
+                className="w-20"
+              />
+            </div>
           </div>
 
-          {/* Right - Current State (Now synced to actual moon phase) */}
+          {/* Right - Current State */}
           <div className="flex-1 text-center lg:text-right">
             <p className="text-xs uppercase tracking-widest text-primary-foreground/50 mb-2">
               Now Playing
