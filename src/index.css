@@ -230,6 +230,15 @@
   }
 }
 
+@keyframes waveform {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.8); }
+}
+
+.animate-waveform {
+  animation: waveform 0.8s ease-in-out infinite;
+}
+
 /* Lunar phase icons styling */
 .moon-phase {
   filter: drop-shadow(0 0 8px hsl(42 50% 58% / 0.3));
