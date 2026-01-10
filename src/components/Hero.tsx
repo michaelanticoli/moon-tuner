@@ -48,15 +48,15 @@ export function Hero() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 opacity-0 animate-fade-in-up delay-400">
           <div className="space-y-2">
             <span className="system-label">Ecosystem</span>
-            <p className="font-sans text-sm text-foreground">4 Pillars</p>
+            <p className="font-sans text-sm text-foreground">26 Workbooks</p>
           </div>
           <div className="space-y-2">
             <span className="system-label">Methodology</span>
             <p className="font-sans text-sm text-foreground">Phasecraft</p>
           </div>
           <div className="space-y-2">
-            <span className="system-label">Data Node</span>
-            <p className="font-sans text-sm text-foreground">Lunar Cipher</p>
+            <span className="system-label">Philosophy</span>
+            <p className="font-sans text-sm text-foreground">Path Walkers</p>
           </div>
           <div className="space-y-2">
             <span className="system-label">Status</span>
