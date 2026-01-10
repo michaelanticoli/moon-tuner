@@ -1,13 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { BookOpen, Smartphone, FileText } from "lucide-react";
 
-const entryPoints = [
+interface EntryPoint {
+  icon: typeof BookOpen;
+  title: string;
+  description: string;
+  cta: string;
+  href: string;
+  featured: boolean;
+  download?: boolean;
+}
+
+const entryPoints: EntryPoint[] = [
   {
     icon: BookOpen,
     title: "Lunar Chaperone Workbook",
     description: "A container to face the resistance directly. Move from theory into lived experience with phase-by-phase guidance.",
     cta: "Explore Workbooks",
-    href: "#workbooks",
+    href: "/workbooks",
     featured: true,
   },
   {
@@ -15,8 +25,9 @@ const entryPoints = [
     title: "Pocket Guide to Lunar Energy",
     description: "Your quick-start reference. Phase meanings, common misuses, and how to begin without 'doing it right.'",
     cta: "Download Guide",
-    href: "#pocket-guide",
+    href: "/downloads/Timing_with_the_Moon_Lunar_Guide_Workbook.epub.zip",
     featured: false,
+    download: true,
   },
   {
     icon: Smartphone,
@@ -93,13 +104,30 @@ export function EntryPoints() {
                 </p>
 
                 {/* CTA */}
-                <Button
-                  variant={item.featured ? "secondary" : "gold-outline"}
-                  size="lg"
-                  className="w-full"
-                >
-                  {item.cta}
-                </Button>
+                {item.download ? (
+                  <a 
+                    href={item.href} 
+                    download
+                    className="block w-full"
+                  >
+                    <Button
+                      variant={item.featured ? "secondary" : "gold-outline"}
+                      size="lg"
+                      className="w-full"
+                    >
+                      {item.cta}
+                    </Button>
+                  </a>
+                ) : (
+                  <Button
+                    variant={item.featured ? "secondary" : "gold-outline"}
+                    size="lg"
+                    className="w-full"
+                    onClick={() => window.location.href = item.href}
+                  >
+                    {item.cta}
+                  </Button>
+                )}
 
                 {/* Featured Badge */}
                 {item.featured && (
