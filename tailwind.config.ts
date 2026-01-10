@@ -64,8 +64,14 @@ export default {
           "night-light": "hsl(var(--night-slate-light))",
           gold: "hsl(var(--soft-gold))",
           "gold-light": "hsl(var(--soft-gold-light))",
+          teal: "hsl(var(--teal))",
+          "teal-light": "hsl(var(--teal-light))",
           clay: "hsl(var(--clay))",
           taupe: "hsl(var(--taupe))",
+        },
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          foreground: "hsl(var(--gold-foreground))",
         },
       },
       fontFamily: {

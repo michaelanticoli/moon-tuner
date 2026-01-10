@@ -2,71 +2,83 @@ import { ArrowRight } from "lucide-react";
 
 const pillars = [
   {
-    number: "01",
-    title: "Align",
-    description: "Attune your inner rhythms to natural cycles. Find your resonance without dogma or prediction.",
+    node: "Node 1",
+    category: "The 26-Workbook Program",
+    title: "Lunar Chaperone",
+    description: "Continuous phase-based guidance from New Moon to Full Moon. A structured path for the silence between the sounds.",
+    href: "/workbooks",
   },
   {
-    number: "02", 
-    title: "Track",
-    description: "Follow intention, energy, and momentum through each phase. Awareness over optimization.",
+    node: "Node 2",
+    category: "Methodology & Magic",
+    title: "Phasecraft",
+    description: "The Moontuner framework for manifestation. Learn the logic of the lunar currents to amplify your output.",
+    href: "/method",
   },
   {
-    number: "03",
-    title: "Cultivate",
-    description: "Practice calibration, not correction. Build habits that move with you, not against you.",
+    node: "Node 3",
+    category: "Personalized Year Ahead",
+    title: "The Moon You Move With",
+    description: "A bespoke lunar report calculated for your specific coordinates and birth data. Your unique annual arc.",
+    href: "/app",
   },
   {
-    number: "04",
-    title: "Integrate",
-    description: "Transform awareness into embodied practice. From passive consumption to active living.",
+    node: "Node 4",
+    category: "Calendar Generator",
+    title: "Lunar Cipher",
+    description: "Generate your personalized astrological-lunar calendar. Embeddable, live-sync data for your digital workspace.",
+    href: "/the-moon",
   },
 ];
 
 export function CorePillars() {
   return (
-    <section id="method" className="py-24 lg:py-32 bg-secondary/30">
+    <section id="method" className="py-24 lg:py-32">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
-        <div className="max-w-2xl mx-auto text-center mb-16 lg:mb-24">
-          <span className="inline-block text-xs uppercase tracking-ultra text-accent font-medium mb-4">
-            The Phasecraft Method
-          </span>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium text-foreground mb-6">
-            Four movements through the cycle
+        <div className="mb-16 lg:mb-24">
+          <span className="system-label block mb-6">The Architecture</span>
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-foreground leading-[1.1]">
+            Four Branches. <br />
+            <span className="italic">One Frequency.</span>
           </h2>
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            A modern, minimalist system for cyclical awareness—where lunar phases 
-            function like tempo markings rather than fate.
-          </p>
         </div>
 
         {/* Pillars Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
           {pillars.map((pillar, index) => (
-            <div
+            <a
               key={pillar.title}
-              className="group relative bg-card border border-border/50 rounded-lg p-8 hover:border-accent/50 transition-all duration-500 hover:shadow-lg"
+              href={pillar.href}
+              className="group node-card relative"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              {/* Number */}
-              <span className="block text-xs text-accent font-medium tracking-widest mb-4">
-                {pillar.number}
+              {/* Node Label */}
+              <div className="flex items-center justify-between mb-6">
+                <span className="system-label text-accent">{pillar.node}</span>
+              </div>
+
+              {/* Category */}
+              <span className="system-label block mb-3">
+                {pillar.category}
               </span>
 
               {/* Title */}
-              <h3 className="font-serif text-2xl font-medium text-foreground mb-3 group-hover:text-accent transition-colors duration-300">
+              <h3 className="font-serif text-2xl lg:text-3xl font-normal text-foreground mb-4 group-hover:text-accent transition-colors duration-300">
                 {pillar.title}
               </h3>
 
               {/* Description */}
-              <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+              <p className="text-muted-foreground text-sm leading-relaxed mb-8">
                 {pillar.description}
               </p>
 
-              {/* Arrow */}
-              <ArrowRight className="w-5 h-5 text-muted-foreground/50 group-hover:text-accent group-hover:translate-x-1 transition-all duration-300" />
-            </div>
+              {/* Link */}
+              <div className="flex items-center gap-2 text-muted-foreground group-hover:text-accent transition-colors duration-300">
+                <span className="text-sm tracking-wide">Explore Branch</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+              </div>
+            </a>
           ))}
         </div>
       </div>

@@ -19,25 +19,25 @@ export function SongOfTheMoon() {
   };
 
   return (
-    <section id="moon" className="py-16 lg:py-24 bg-primary text-primary-foreground relative overflow-hidden">
+    <section id="moon" className="py-16 lg:py-24 bg-card border-y border-border/30 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-primary-foreground/20 rounded-full" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-primary-foreground/20 rounded-full" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] border border-primary-foreground/20 rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-accent/20 rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-accent/20 rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] border border-accent/20 rounded-full" />
       </div>
 
       <div className="container mx-auto px-6 lg:px-12 relative">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
           {/* Left - Info */}
           <div className="flex-1 text-center lg:text-left">
-            <span className="inline-block text-xs uppercase tracking-ultra text-accent font-medium mb-3">
+            <span className="system-label text-accent block mb-3">
               Live Stream
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-medium mb-4">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-foreground mb-4">
               Song of the Moon
             </h2>
-            <p className="text-primary-foreground/70 text-sm lg:text-base max-w-md mx-auto lg:mx-0">
+            <p className="text-muted-foreground text-sm lg:text-base max-w-md mx-auto lg:mx-0">
               A generative lunar tone stream. 
               The frequency shifts with the phase—waxing, waning, stillness, emergence.
             </p>
@@ -66,6 +66,7 @@ export function SongOfTheMoon() {
               onClick={handlePlayPause}
               className="w-16 h-16 rounded-full bg-accent text-accent-foreground flex items-center justify-center hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               aria-label={isPlaying ? "Pause" : "Play"}
+              style={{ boxShadow: '0 0 30px hsl(168 75% 45% / 0.3)' }}
             >
               {isPlaying ? (
                 <Pause className="w-6 h-6" />
@@ -78,7 +79,7 @@ export function SongOfTheMoon() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => updateVolume(volume === 0 ? 0.3 : 0)}
-                className="text-primary-foreground/50 hover:text-primary-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
                 aria-label={volume === 0 ? "Unmute" : "Mute"}
               >
                 {volume === 0 ? (
@@ -99,13 +100,13 @@ export function SongOfTheMoon() {
 
           {/* Right - Current State */}
           <div className="flex-1 text-center lg:text-right">
-            <p className="text-xs uppercase tracking-widest text-primary-foreground/50 mb-2">
+            <p className="system-label mb-2">
               Now Playing
             </p>
-            <p className="font-serif text-xl lg:text-2xl text-primary-foreground">
+            <p className="font-serif text-xl lg:text-2xl text-foreground">
               {moonData.astrological.energy} · {moonData.astrological.theme}
             </p>
-            <p className="text-primary-foreground/50 text-sm mt-1">
+            <p className="text-muted-foreground text-sm mt-1">
               {moonData.astrological.frequencyHz} Hz · {moonData.astrological.frequency}
             </p>
           </div>
