@@ -1,68 +1,66 @@
 import { Button } from "@/components/ui/button";
 import { MoonPhaseIndicator } from "@/components/MoonPhaseIndicator";
-import moonHero from "@/assets/moon-hero.jpg";
+import { useMoonPhase } from "@/hooks/useMoonPhase";
 
 export function Hero() {
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <img
-          src={moonHero}
-          alt="Luminous moon in night sky"
-          className="w-full h-full object-cover opacity-20"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-      </div>
+  const moonPhase = useMoonPhase();
 
+  return (
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-20">
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 lg:px-12 pt-24 pb-16">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left Column - Text */}
-          <div className="space-y-8 text-center lg:text-left">
-            {/* Eyebrow */}
-            <div className="opacity-0 animate-fade-in-up">
-              <span className="inline-block text-xs uppercase tracking-ultra text-accent font-medium border border-accent/30 px-4 py-2 rounded-full">
-                A Lunar Alignment System
+      <div className="relative z-10 container mx-auto px-6 lg:px-12">
+        {/* System Label */}
+        <div className="opacity-0 animate-fade-in-up mb-8">
+          <span className="system-label">
+            Integrated Lunar Operating System
+          </span>
+        </div>
+
+        {/* Headline */}
+        <div className="space-y-4 opacity-0 animate-fade-in-up delay-100 mb-12">
+          <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-normal text-foreground leading-[1.05]">
+            Align with <br />
+            <span className="italic">The Source.</span>
+          </h1>
+        </div>
+
+        {/* CTA + Frequency */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 opacity-0 animate-fade-in-up delay-200 mb-16">
+          <button className="system-button">
+            Initialize System
+          </button>
+          
+          <div className="flex items-center gap-4">
+            <span className="system-label">Current Frequency</span>
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-0.5 bg-accent" />
+              <span className="font-sans text-sm text-foreground tracking-[0.1em]">
+                {moonPhase.astrological.frequencyHz}HZ RESONANCE
               </span>
             </div>
-
-            {/* Headline */}
-            <div className="space-y-4 opacity-0 animate-fade-in-up delay-100">
-              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight text-foreground leading-[0.95]">
-                Live in Phase.
-              </h1>
-              <p className="text-lg lg:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                Moontuner is a lunar alignment system for tracking intention, energy, 
-                and momentum through the Moon's cycles.
-              </p>
-            </div>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start opacity-0 animate-fade-in-up delay-200">
-              <Button variant="hero" size="xl">
-                Begin Lunar Alignment
-              </Button>
-              <Button variant="hero-outline" size="xl">
-                Listen to the Moon
-              </Button>
-            </div>
-
-            {/* Tagline */}
-            <p className="text-sm text-muted-foreground/70 italic opacity-0 animate-fade-in delay-500">
-              "The moon is not telling you what to do. It is helping you hear yourself more clearly."
-            </p>
           </div>
+        </div>
 
-          {/* Right Column - Moon Phase */}
-          <div className="flex justify-center lg:justify-end opacity-0 animate-fade-in delay-300">
-            <div className="relative">
-              {/* Decorative ring */}
-              <div className="absolute inset-0 -m-8 border border-border/30 rounded-full animate-pulse-soft" />
-              <div className="absolute inset-0 -m-16 border border-border/20 rounded-full" />
-              
-              <MoonPhaseIndicator />
-            </div>
+        {/* Divider */}
+        <div className="divider-line opacity-0 animate-fade-in delay-300 mb-12" />
+
+        {/* System Status Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 opacity-0 animate-fade-in-up delay-400">
+          <div className="space-y-2">
+            <span className="system-label">Ecosystem</span>
+            <p className="font-sans text-sm text-foreground">4 Pillars</p>
+          </div>
+          <div className="space-y-2">
+            <span className="system-label">Methodology</span>
+            <p className="font-sans text-sm text-foreground">Phasecraft</p>
+          </div>
+          <div className="space-y-2">
+            <span className="system-label">Data Node</span>
+            <p className="font-sans text-sm text-foreground">Lunar Cipher</p>
+          </div>
+          <div className="space-y-2">
+            <span className="system-label">Status</span>
+            <p className="font-sans text-sm text-accent">Synced</p>
           </div>
         </div>
       </div>
@@ -70,7 +68,7 @@ export function Hero() {
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in delay-600">
         <div className="flex flex-col items-center gap-2 text-muted-foreground">
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
+          <span className="system-label">Scroll</span>
           <div className="w-px h-8 bg-gradient-to-b from-muted-foreground to-transparent" />
         </div>
       </div>
