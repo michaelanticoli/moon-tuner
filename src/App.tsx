@@ -6,12 +6,13 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Index from "./pages/Index";
 import Method from "./pages/Method";
+import Manifesto from "./pages/Manifesto";
+import Philosophy from "./pages/Philosophy";
 import Workbooks from "./pages/Workbooks";
 import LunarChaperone from "./pages/LunarChaperone";
 import MoontunedApp from "./pages/App";
 import Moon from "./pages/Moon";
 import NotFound from "./pages/NotFound";
-
 const queryClient = new QueryClient();
 
 function AnimatedRoutes() {
@@ -23,6 +24,8 @@ function AnimatedRoutes() {
         <Route path="/" element={<Index />} />
         <Route path="/the-moon" element={<Moon />} />
         <Route path="/method" element={<Method />} />
+        <Route path="/manifesto" element={<Manifesto />} />
+        <Route path="/philosophy" element={<Philosophy />} />
         <Route path="/workbooks" element={<Workbooks />} />
         <Route path="/lunar-chaperone" element={<LunarChaperone />} />
         <Route path="/app" element={<MoontunedApp />} />

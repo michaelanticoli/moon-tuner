@@ -255,12 +255,16 @@ const WorkbookCard = ({ workbook, isEclipse = false }: { workbook: typeof fullTo
     </div>
     
     <div className="mt-6 flex gap-2">
-      <Button variant="gold" size="sm" className="flex-1">
-        <Download className="w-3 h-3 mr-1" />
-        Download
+      <Button variant="gold" size="sm" className="flex-1" asChild>
+        <a href="/downloads/Timing_with_the_Moon_Lunar_Guide__Workbook.pdf" download>
+          <Download className="w-3 h-3 mr-1" />
+          PDF
+        </a>
       </Button>
-      <Button variant="outline" size="sm">
-        Preview
+      <Button variant="outline" size="sm" asChild>
+        <a href="/downloads/Timing_with_the_Moon_Lunar_Guide_Workbook.epub.zip" download>
+          EPUB
+        </a>
       </Button>
     </div>
   </div>
