@@ -40,17 +40,17 @@ export function Footer() {
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mb-6">
               Integrated Lunar Operating System. 
-              Align with the source frequency.
+              Navigate the moonlit spectrum.
             </p>
             <p className="text-xs text-muted-foreground/60">
               © {new Date().getFullYear()} Moontuner. All rights reserved.
             </p>
           </div>
 
-          {/* Explore */}
+          {/* Spectral Channels */}
           <div>
             <h4 className="system-label mb-6">
-              Branches
+              Spectral Channels
             </h4>
             <ul className="space-y-4">
               {footerLinks.explore.map((link) => (
@@ -110,7 +110,7 @@ export function Footer() {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
               <span className="status-dot" />
-              <span className="system-label">System Online</span>
+              <span className="system-label">Photon Flux Active</span>
             </div>
             <div className="flex items-center gap-6">
               <a href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">

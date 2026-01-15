@@ -50,11 +50,11 @@ export function Navigation() {
 
           {/* Status Badge & Hamburger */}
           <div className="flex items-center gap-4">
-            {/* Status Badge */}
+            {/* Illumination Status */}
             <div className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/50">
               <span className="status-dot animate-status-pulse" />
               <span className="font-sans text-xs uppercase tracking-[0.15em] text-foreground">
-                System Active
+                Receiving Light
               </span>
             </div>
 
@@ -93,7 +93,7 @@ export function Navigation() {
               <div className="flex items-center gap-2 pt-4">
                 <span className="status-dot animate-status-pulse" />
                 <span className="font-sans text-xs uppercase tracking-[0.15em] text-foreground">
-                  System Active
+                  Receiving Light
                 </span>
               </div>
             </div>
