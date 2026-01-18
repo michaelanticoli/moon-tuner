@@ -9,6 +9,7 @@ import Method from "./pages/Method";
 import Manifesto from "./pages/Manifesto";
 import Philosophy from "./pages/Philosophy";
 import Workbooks from "./pages/Workbooks";
+import WorkbookPreview from "./pages/WorkbookPreview";
 import LunarChaperone from "./pages/LunarChaperone";
 import LunarSystem from "./pages/LunarSystem";
 import MoontunedApp from "./pages/App";
@@ -28,6 +29,7 @@ function AnimatedRoutes() {
         <Route path="/manifesto" element={<Manifesto />} />
         <Route path="/philosophy" element={<Philosophy />} />
         <Route path="/workbooks" element={<Workbooks />} />
+        <Route path="/workbook-preview" element={<WorkbookPreview />} />
         <Route path="/lunar-chaperone" element={<LunarChaperone />} />
         <Route path="/lunar-system" element={<LunarSystem />} />
         <Route path="/app" element={<MoontunedApp />} />
