@@ -3,8 +3,9 @@ import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { JourneyPreview } from "@/components/JourneyPreview";
+import { LeadMagnet } from "@/components/LeadMagnet";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Download, BookOpen, Check, Moon, Star } from "lucide-react";
+import { ArrowRight, Download, BookOpen, Check, Moon, Star, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 
 // Full Moon → New Moon Series (1-12)
@@ -254,17 +255,12 @@ const WorkbookCard = ({ workbook, isEclipse = false }: { workbook: typeof fullTo
       <div className="italic">{workbook.season}</div>
     </div>
     
-    <div className="mt-6 flex gap-2">
-      <Button variant="gold" size="sm" className="flex-1" asChild>
-        <a href="/downloads/Timing_with_the_Moon_Lunar_Guide__Workbook.pdf" download>
-          <Download className="w-3 h-3 mr-1" />
-          PDF
-        </a>
-      </Button>
-      <Button variant="outline" size="sm" asChild>
-        <a href="/downloads/Timing_with_the_Moon_Lunar_Guide_Workbook.epub.zip" download>
-          EPUB
-        </a>
+    <div className="mt-6">
+      <Button variant="gold" size="sm" className="w-full" asChild>
+        <Link to="/workbook-preview">
+          <Eye className="w-3 h-3 mr-2" />
+          Preview Workbook
+        </Link>
       </Button>
     </div>
   </div>
@@ -356,6 +352,9 @@ const Workbooks = () => {
               </div>
             </div>
           </section>
+
+          {/* Lead Magnet Section */}
+          <LeadMagnet />
 
           {/* 14-Day Journey Preview */}
           <JourneyPreview />
