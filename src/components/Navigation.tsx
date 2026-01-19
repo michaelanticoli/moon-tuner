@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import moontunerLogo from "@/assets/moontuner-logo.png";
 
 const navLinks = [
   { label: "LUNAR SYSTEM", href: "/lunar-system" },
@@ -17,19 +18,13 @@ export function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/30">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo with Moon Icon */}
+          {/* Logo with Moontuner Icon */}
           <a href="/" className="flex items-center gap-3">
-            <div className="relative">
-              <svg
-                className="w-6 h-6 text-foreground"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-              </svg>
-            </div>
+            <img 
+              src={moontunerLogo} 
+              alt="Moontuner" 
+              className="w-8 h-8 lg:w-10 lg:h-10 object-contain"
+            />
             <span className="font-sans text-sm lg:text-base font-medium tracking-[0.2em] text-foreground uppercase">
               Moontuner
             </span>
