@@ -1,3 +1,5 @@
+import moontunerLogo from "@/assets/moontuner-logo.png";
+
 const footerLinks = {
   explore: [
     { label: "Chaperone", href: "/workbooks" },
@@ -25,15 +27,11 @@ export function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <svg
-                className="w-6 h-6 text-foreground"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-              </svg>
+              <img 
+                src={moontunerLogo} 
+                alt="Moontuner" 
+                className="w-8 h-8 object-contain"
+              />
               <span className="font-sans text-sm font-medium tracking-[0.2em] text-foreground uppercase">
                 Moontuner
               </span>

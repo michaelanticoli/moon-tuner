@@ -211,7 +211,7 @@ export function PhaseSignMatrix() {
                 onMouseEnter={() => setHoveredSign(zIndex)}
                 onMouseLeave={() => setHoveredSign(null)}
               >
-                <span className={`text-xl ${elementTextColors[zodiac.element]}`}>{zodiac.symbol}</span>
+                <ZodiacGlyph sign={zodiac.signKey} size="lg" className={elementTextColors[zodiac.element]} />
                 <span className="text-sm text-foreground">{zodiac.sign}</span>
               </motion.div>
 
@@ -238,9 +238,7 @@ export function PhaseSignMatrix() {
                     whileTap={{ scale: 0.98 }}
                   >
                     <div className="flex flex-col items-center gap-1">
-                      <span className={`text-xs font-mono ${elementTextColors[zodiac.element]}`}>
-                        {zodiac.symbol}
-                      </span>
+                      <ZodiacGlyph sign={zodiac.signKey} size="sm" className={elementTextColors[zodiac.element]} />
                       <MoonPhaseGlyph phase={phase.phaseKey} size="md" className="text-foreground" />
                     </div>
                   </motion.button>
@@ -290,7 +288,7 @@ export function PhaseSignMatrix() {
                 <span className="system-label block">Zodiac Sign</span>
                 <div className={`rounded-lg border p-4 ${elementColors[selectedCell.zodiac.element]}`}>
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="text-4xl">{selectedCell.zodiac.symbol}</span>
+                    <ZodiacGlyph sign={selectedCell.zodiac.signKey} size="xl" className="text-current" />
                     <div>
                       <h4 className="font-serif text-xl">{selectedCell.zodiac.sign}</h4>
                       <p className="text-sm opacity-80">{selectedCell.zodiac.element} · {selectedCell.zodiac.ruled}</p>
