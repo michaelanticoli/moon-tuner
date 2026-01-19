@@ -2,21 +2,22 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { Activity, MapPin, Zap, Clock, Sparkles, ArrowRight } from "lucide-react";
+import { ZodiacGlyph, signNameToKey } from "./ZodiacGlyph";
 
 // Zodiac sign calculation based on current moon position
 const ZODIAC_SIGNS = [
-  { sign: "Aries", symbol: "♈", element: "Fire", body: "Head & Brain", ruler: "Mars", quality: "Cardinal" },
-  { sign: "Taurus", symbol: "♉", element: "Earth", body: "Throat & Neck", ruler: "Venus", quality: "Fixed" },
-  { sign: "Gemini", symbol: "♊", element: "Air", body: "Arms & Lungs", ruler: "Mercury", quality: "Mutable" },
-  { sign: "Cancer", symbol: "♋", element: "Water", body: "Chest & Stomach", ruler: "Moon", quality: "Cardinal" },
-  { sign: "Leo", symbol: "♌", element: "Fire", body: "Heart & Spine", ruler: "Sun", quality: "Fixed" },
-  { sign: "Virgo", symbol: "♍", element: "Earth", body: "Digestive System", ruler: "Mercury", quality: "Mutable" },
-  { sign: "Libra", symbol: "♎", element: "Air", body: "Kidneys & Lower Back", ruler: "Venus", quality: "Cardinal" },
-  { sign: "Scorpio", symbol: "♏", element: "Water", body: "Reproductive Organs", ruler: "Pluto", quality: "Fixed" },
-  { sign: "Sagittarius", symbol: "♐", element: "Fire", body: "Hips & Thighs", ruler: "Jupiter", quality: "Mutable" },
-  { sign: "Capricorn", symbol: "♑", element: "Earth", body: "Knees & Bones", ruler: "Saturn", quality: "Cardinal" },
-  { sign: "Aquarius", symbol: "♒", element: "Air", body: "Ankles & Circulation", ruler: "Uranus", quality: "Fixed" },
-  { sign: "Pisces", symbol: "♓", element: "Water", body: "Feet & Lymphatic", ruler: "Neptune", quality: "Mutable" },
+  { sign: "Aries", signKey: "aries" as const, element: "Fire", body: "Head & Brain", ruler: "Mars", quality: "Cardinal" },
+  { sign: "Taurus", signKey: "taurus" as const, element: "Earth", body: "Throat & Neck", ruler: "Venus", quality: "Fixed" },
+  { sign: "Gemini", signKey: "gemini" as const, element: "Air", body: "Arms & Lungs", ruler: "Mercury", quality: "Mutable" },
+  { sign: "Cancer", signKey: "cancer" as const, element: "Water", body: "Chest & Stomach", ruler: "Moon", quality: "Cardinal" },
+  { sign: "Leo", signKey: "leo" as const, element: "Fire", body: "Heart & Spine", ruler: "Sun", quality: "Fixed" },
+  { sign: "Virgo", signKey: "virgo" as const, element: "Earth", body: "Digestive System", ruler: "Mercury", quality: "Mutable" },
+  { sign: "Libra", signKey: "libra" as const, element: "Air", body: "Kidneys & Lower Back", ruler: "Venus", quality: "Cardinal" },
+  { sign: "Scorpio", signKey: "scorpio" as const, element: "Water", body: "Reproductive Organs", ruler: "Pluto", quality: "Fixed" },
+  { sign: "Sagittarius", signKey: "sagittarius" as const, element: "Fire", body: "Hips & Thighs", ruler: "Jupiter", quality: "Mutable" },
+  { sign: "Capricorn", signKey: "capricorn" as const, element: "Earth", body: "Knees & Bones", ruler: "Saturn", quality: "Cardinal" },
+  { sign: "Aquarius", signKey: "aquarius" as const, element: "Air", body: "Ankles & Circulation", ruler: "Uranus", quality: "Fixed" },
+  { sign: "Pisces", signKey: "pisces" as const, element: "Water", body: "Feet & Lymphatic", ruler: "Neptune", quality: "Mutable" },
 ];
 
 // Moon transits each sign for ~2.5 days, completing the zodiac in ~27.3 days
@@ -117,8 +118,9 @@ export function LunarLiveStatus() {
               <MapPin className="w-4 h-4" />
               <span className="system-label">Transit</span>
             </div>
-            <p className="font-sans text-lg text-foreground">
-              <span className={elementColor}>{zodiacSign.symbol}</span> {zodiacSign.sign}
+            <p className="font-sans text-lg text-foreground flex items-center gap-2">
+              <ZodiacGlyph sign={zodiacSign.signKey} size="md" className={elementColor} />
+              <span>{zodiacSign.sign}</span>
             </p>
           </div>
           <div className="space-y-1">
@@ -160,7 +162,7 @@ export function LunarLiveStatus() {
             <span className="system-label block">Zodiac Influence</span>
             <div className={`rounded-lg border p-4 ${elementBgClass}`}>
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-3xl">{zodiacSign.symbol}</span>
+                <ZodiacGlyph sign={zodiacSign.signKey} size="xl" className={elementColor} />
                 <div>
                   <p className={`font-medium ${elementColor}`}>{zodiacSign.sign}</p>
                   <p className="text-sm text-muted-foreground">{zodiacSign.element} · {zodiacSign.quality}</p>

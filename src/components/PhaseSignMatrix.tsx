@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, ArrowRight, Moon, Sun, Wind, Droplets, Flame, Mountain } from "lucide-react";
+import { MoonPhaseGlyph } from "./MoonPhaseGlyph";
+import { ZodiacGlyph } from "./ZodiacGlyph";
 
 // Complete 8 phases with rich data
 const PHASES = [
   { 
     name: "New Moon", 
-    symbol: "🌑", 
+    phaseKey: "new" as const,
     element: "Void",
     energy: "Stillness",
     action: "Plant seeds, set intentions, begin",
@@ -15,7 +17,7 @@ const PHASES = [
   },
   { 
     name: "Crescent", 
-    symbol: "🌒", 
+    phaseKey: "waxing-crescent" as const,
     element: "Spark",
     energy: "Emergence",
     action: "Build momentum, overcome doubt",
@@ -24,7 +26,7 @@ const PHASES = [
   },
   { 
     name: "First Quarter", 
-    symbol: "🌓", 
+    phaseKey: "first-quarter" as const,
     element: "Fire",
     energy: "Action",
     action: "Take decisive action, meet challenges",
@@ -33,7 +35,7 @@ const PHASES = [
   },
   { 
     name: "Gibbous", 
-    symbol: "🌔", 
+    phaseKey: "waxing-gibbous" as const,
     element: "Air",
     energy: "Refinement",
     action: "Analyze, adjust, perfect",
@@ -42,7 +44,7 @@ const PHASES = [
   },
   { 
     name: "Full Moon", 
-    symbol: "🌕", 
+    phaseKey: "full" as const,
     element: "Light",
     energy: "Illumination",
     action: "Celebrate, release, express fully",
@@ -51,7 +53,7 @@ const PHASES = [
   },
   { 
     name: "Disseminating", 
-    symbol: "🌖", 
+    phaseKey: "waning-gibbous" as const,
     element: "Water",
     energy: "Gratitude",
     action: "Share wisdom, teach, give back",
@@ -60,7 +62,7 @@ const PHASES = [
   },
   { 
     name: "Last Quarter", 
-    symbol: "🌗", 
+    phaseKey: "last-quarter" as const,
     element: "Earth",
     energy: "Release",
     action: "Let go, reassess, clear",
@@ -69,7 +71,7 @@ const PHASES = [
   },
   { 
     name: "Balsamic", 
-    symbol: "🌘", 
+    phaseKey: "waning-crescent" as const,
     element: "Ether",
     energy: "Surrender",
     action: "Rest, dream, prepare for renewal",
@@ -80,126 +82,18 @@ const PHASES = [
 
 // Complete 12 zodiac signs with rich body mappings
 const ZODIAC = [
-  { 
-    sign: "Aries", 
-    symbol: "♈", 
-    element: "Fire", 
-    body: "Head, Brain, Face",
-    bodyDetail: "Migraines, sinuses, facial skin, mental clarity",
-    flavor: "Initiate bold action, start new projects, assert yourself",
-    ruled: "Mars",
-    season: "Spring Equinox"
-  },
-  { 
-    sign: "Taurus", 
-    symbol: "♉", 
-    element: "Earth", 
-    body: "Throat, Neck, Thyroid",
-    bodyDetail: "Voice, swallowing, neck tension, thyroid function",
-    flavor: "Ground in sensory pleasure, handle finances, slow rituals",
-    ruled: "Venus",
-    season: "Mid-Spring"
-  },
-  { 
-    sign: "Gemini", 
-    symbol: "♊", 
-    element: "Air", 
-    body: "Arms, Hands, Lungs",
-    bodyDetail: "Breathing, dexterity, shoulder mobility, communication",
-    flavor: "Write, network, learn, take short journeys, gather information",
-    ruled: "Mercury",
-    season: "Late Spring"
-  },
-  { 
-    sign: "Cancer", 
-    symbol: "♋", 
-    element: "Water", 
-    body: "Chest, Stomach, Breasts",
-    bodyDetail: "Digestion, emotional eating, nurturing capacity, gut feelings",
-    flavor: "Nest, nurture, cook, honor ancestors, protect what matters",
-    ruled: "Moon",
-    season: "Summer Solstice"
-  },
-  { 
-    sign: "Leo", 
-    symbol: "♌", 
-    element: "Fire", 
-    body: "Heart, Spine, Upper Back",
-    bodyDetail: "Cardiovascular health, posture, courage, vitality",
-    flavor: "Showcase talents, play freely, celebrate, lead with heart",
-    ruled: "Sun",
-    season: "Mid-Summer"
-  },
-  { 
-    sign: "Virgo", 
-    symbol: "♍", 
-    element: "Earth", 
-    body: "Digestive System, Intestines",
-    bodyDetail: "Gut health, nervous digestion, food sensitivities, routine",
-    flavor: "Organize systems, refine health practices, serve with skill",
-    ruled: "Mercury",
-    season: "Late Summer"
-  },
-  { 
-    sign: "Libra", 
-    symbol: "♎", 
-    element: "Air", 
-    body: "Kidneys, Lower Back, Adrenals",
-    bodyDetail: "Balance, toxin filtration, partnership energy, equilibrium",
-    flavor: "Collaborate, beautify spaces, seek harmony, negotiate fairly",
-    ruled: "Venus",
-    season: "Autumn Equinox"
-  },
-  { 
-    sign: "Scorpio", 
-    symbol: "♏", 
-    element: "Water", 
-    body: "Reproductive Organs, Elimination",
-    bodyDetail: "Sexual health, detoxification, regeneration, hidden depths",
-    flavor: "Research truth, purge what's dead, transform from within",
-    ruled: "Pluto/Mars",
-    season: "Mid-Autumn"
-  },
-  { 
-    sign: "Sagittarius", 
-    symbol: "♐", 
-    element: "Fire", 
-    body: "Hips, Thighs, Liver",
-    bodyDetail: "Mobility, expansion, optimism, liver detox, adventure capacity",
-    flavor: "Explore far territories, philosophize, aim for meaning",
-    ruled: "Jupiter",
-    season: "Late Autumn"
-  },
-  { 
-    sign: "Capricorn", 
-    symbol: "♑", 
-    element: "Earth", 
-    body: "Knees, Bones, Skeletal System",
-    bodyDetail: "Joint health, structure, boundaries, long-term stamina",
-    flavor: "Strategize long-term, build foundations, climb steadily",
-    ruled: "Saturn",
-    season: "Winter Solstice"
-  },
-  { 
-    sign: "Aquarius", 
-    symbol: "♒", 
-    element: "Air", 
-    body: "Ankles, Circulation, Nervous System",
-    bodyDetail: "Blood flow, electrical impulses, innovation capacity, community",
-    flavor: "Innovate systems, connect groups, embrace the unconventional",
-    ruled: "Uranus/Saturn",
-    season: "Mid-Winter"
-  },
-  { 
-    sign: "Pisces", 
-    symbol: "♓", 
-    element: "Water", 
-    body: "Feet, Lymphatic System, Pineal Gland",
-    bodyDetail: "Intuition, dreams, immune flow, spiritual sensitivity",
-    flavor: "Create art, meditate deeply, dissolve ego boundaries",
-    ruled: "Neptune/Jupiter",
-    season: "Late Winter"
-  },
+  { sign: "Aries", signKey: "aries" as const, element: "Fire", body: "Head, Brain, Face", bodyDetail: "Migraines, sinuses, facial skin, mental clarity", flavor: "Initiate bold action, start new projects, assert yourself", ruled: "Mars", season: "Spring Equinox" },
+  { sign: "Taurus", signKey: "taurus" as const, element: "Earth", body: "Throat, Neck, Thyroid", bodyDetail: "Voice, swallowing, neck tension, thyroid function", flavor: "Ground in sensory pleasure, handle finances, slow rituals", ruled: "Venus", season: "Mid-Spring" },
+  { sign: "Gemini", signKey: "gemini" as const, element: "Air", body: "Arms, Hands, Lungs", bodyDetail: "Breathing, dexterity, shoulder mobility, communication", flavor: "Write, network, learn, take short journeys, gather information", ruled: "Mercury", season: "Late Spring" },
+  { sign: "Cancer", signKey: "cancer" as const, element: "Water", body: "Chest, Stomach, Breasts", bodyDetail: "Digestion, emotional eating, nurturing capacity, gut feelings", flavor: "Nest, nurture, cook, honor ancestors, protect what matters", ruled: "Moon", season: "Summer Solstice" },
+  { sign: "Leo", signKey: "leo" as const, element: "Fire", body: "Heart, Spine, Upper Back", bodyDetail: "Cardiovascular health, posture, courage, vitality", flavor: "Showcase talents, play freely, celebrate, lead with heart", ruled: "Sun", season: "Mid-Summer" },
+  { sign: "Virgo", signKey: "virgo" as const, element: "Earth", body: "Digestive System, Intestines", bodyDetail: "Gut health, nervous digestion, food sensitivities, routine", flavor: "Organize systems, refine health practices, serve with skill", ruled: "Mercury", season: "Late Summer" },
+  { sign: "Libra", signKey: "libra" as const, element: "Air", body: "Kidneys, Lower Back, Adrenals", bodyDetail: "Balance, toxin filtration, partnership energy, equilibrium", flavor: "Collaborate, beautify spaces, seek harmony, negotiate fairly", ruled: "Venus", season: "Autumn Equinox" },
+  { sign: "Scorpio", signKey: "scorpio" as const, element: "Water", body: "Reproductive Organs, Elimination", bodyDetail: "Sexual health, detoxification, regeneration, hidden depths", flavor: "Research truth, purge what's dead, transform from within", ruled: "Pluto/Mars", season: "Mid-Autumn" },
+  { sign: "Sagittarius", signKey: "sagittarius" as const, element: "Fire", body: "Hips, Thighs, Liver", bodyDetail: "Mobility, expansion, optimism, liver detox, adventure capacity", flavor: "Explore far territories, philosophize, aim for meaning", ruled: "Jupiter", season: "Late Autumn" },
+  { sign: "Capricorn", signKey: "capricorn" as const, element: "Earth", body: "Knees, Bones, Skeletal System", bodyDetail: "Joint health, structure, boundaries, long-term stamina", flavor: "Strategize long-term, build foundations, climb steadily", ruled: "Saturn", season: "Winter Solstice" },
+  { sign: "Aquarius", signKey: "aquarius" as const, element: "Air", body: "Ankles, Circulation, Nervous System", bodyDetail: "Blood flow, electrical impulses, innovation capacity, community", flavor: "Innovate systems, connect groups, embrace the unconventional", ruled: "Uranus/Saturn", season: "Mid-Winter" },
+  { sign: "Pisces", signKey: "pisces" as const, element: "Water", body: "Feet, Lymphatic System, Pineal Gland", bodyDetail: "Intuition, dreams, immune flow, spiritual sensitivity", flavor: "Create art, meditate deeply, dissolve ego boundaries", ruled: "Neptune/Jupiter", season: "Late Winter" },
 ];
 
 const elementColors: Record<string, string> = {
@@ -296,7 +190,9 @@ export function PhaseSignMatrix() {
                 onMouseEnter={() => setHoveredPhase(i)}
                 onMouseLeave={() => setHoveredPhase(null)}
               >
-                <span className="text-2xl block mb-1">{phase.symbol}</span>
+                <div className="flex justify-center mb-1">
+                  <MoonPhaseGlyph phase={phase.phaseKey} size="lg" className="text-foreground" />
+                </div>
                 <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">
                   {phase.name.split(' ')[0]}
                 </span>
@@ -345,7 +241,7 @@ export function PhaseSignMatrix() {
                       <span className={`text-xs font-mono ${elementTextColors[zodiac.element]}`}>
                         {zodiac.symbol}
                       </span>
-                      <span className="text-lg">{phase.symbol}</span>
+                      <MoonPhaseGlyph phase={phase.phaseKey} size="md" className="text-foreground" />
                     </div>
                   </motion.button>
                 );
@@ -376,7 +272,7 @@ export function PhaseSignMatrix() {
               <div className="space-y-4">
                 <span className="system-label block">Phase</span>
                 <div className="flex items-center gap-3">
-                  <span className="text-4xl">{selectedCell.phase.symbol}</span>
+                  <MoonPhaseGlyph phase={selectedCell.phase.phaseKey} size="xl" className="text-foreground" />
                   <div>
                     <h4 className="font-serif text-xl text-foreground">{selectedCell.phase.name}</h4>
                     <p className="text-sm text-muted-foreground">{selectedCell.phase.archetype}</p>

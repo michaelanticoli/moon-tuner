@@ -1,10 +1,12 @@
 import { Moon, Waves, Flame, Wind, Sparkles } from "lucide-react";
+import { MoonPhaseGlyph } from "./MoonPhaseGlyph";
+import { ZodiacGlyph } from "./ZodiacGlyph";
 
 // The 8 Phases with their true meanings
 const lunarPhases = [
   {
     phase: "New Moon",
-    symbol: "🌑",
+    phaseKey: "new" as const,
     keywords: "Initiate, seed, align, create",
     energy: "Pure potential. The slate is clean. Plant seeds in darkness.",
     bestFor: "Setting intentions, new beginnings, starting fresh",
@@ -12,7 +14,7 @@ const lunarPhases = [
   },
   {
     phase: "Crescent",
-    symbol: "🌒",
+    phaseKey: "waxing-crescent" as const,
     keywords: "Learn, prepare, curate, sense",
     energy: "Curiosity builds. Gather resources. Explore before committing.",
     bestFor: "Research, planning, gathering information",
@@ -20,7 +22,7 @@ const lunarPhases = [
   },
   {
     phase: "First Quarter",
-    symbol: "🌓",
+    phaseKey: "first-quarter" as const,
     keywords: "Act, decide, confront, leap",
     energy: "Turning point. Actions now shape outcomes. Push through.",
     bestFor: "Taking action, overcoming obstacles, making decisions",
@@ -28,7 +30,7 @@ const lunarPhases = [
   },
   {
     phase: "Gibbous",
-    symbol: "🌔",
+    phaseKey: "waxing-gibbous" as const,
     keywords: "Perfect, tweak, refine, iterate",
     energy: "Fine-tune. Seek feedback. Trust the process of refinement.",
     bestFor: "Refining, adjusting, editing, perfecting",
@@ -36,7 +38,7 @@ const lunarPhases = [
   },
   {
     phase: "Full Moon",
-    symbol: "🌕",
+    phaseKey: "full" as const,
     keywords: "Harvest, celebrate, reveal, release",
     energy: "Maximum illumination. See clearly. Acknowledge what has blossomed.",
     bestFor: "Celebration, revelation, sharing, releasing",
@@ -44,7 +46,7 @@ const lunarPhases = [
   },
   {
     phase: "Disseminating",
-    symbol: "🌖",
+    phaseKey: "waning-gibbous" as const,
     keywords: "Share, teach, distribute, give",
     energy: "Wisdom flows outward. What you've learned wants to be shared.",
     bestFor: "Teaching, sharing insights, giving back",
@@ -52,7 +54,7 @@ const lunarPhases = [
   },
   {
     phase: "Last Quarter",
-    symbol: "🌗",
+    phaseKey: "last-quarter" as const,
     keywords: "Release, resolve, let go, complete",
     energy: "Clean up. Wrap up old work. Unsubscribe from what's done.",
     bestFor: "Releasing, resolving, decluttering, completing",
@@ -60,7 +62,7 @@ const lunarPhases = [
   },
   {
     phase: "Balsamic",
-    symbol: "🌘",
+    phaseKey: "waning-crescent" as const,
     keywords: "Rest, dream, restore, surrender",
     energy: "Deep rest before renewal. Nap, meditate, float. Trust the dark.",
     bestFor: "Rest, dreaming, restoration, preparation",
@@ -70,18 +72,18 @@ const lunarPhases = [
 
 // The 12 Zodiac Flavors - each Moon sign lasts ~2.5 days
 const zodiacFlavors = [
-  { sign: "Aries", symbol: "♈", flavor: "Take initiative, start sprints, physical action", element: "Fire" },
-  { sign: "Taurus", symbol: "♉", flavor: "Handle finances, indulge senses, slow down", element: "Earth" },
-  { sign: "Gemini", symbol: "♊", flavor: "Write, network, take short trips, communicate", element: "Air" },
-  { sign: "Cancer", symbol: "♋", flavor: "Nest, nurture, cook, connect deeply with home", element: "Water" },
-  { sign: "Leo", symbol: "♌", flavor: "Showcase talents, play, celebrate, be seen", element: "Fire" },
-  { sign: "Virgo", symbol: "♍", flavor: "Organize, establish health routines, edit, serve", element: "Earth" },
-  { sign: "Libra", symbol: "♎", flavor: "Collaborate, beautify, resolve tensions, partner", element: "Air" },
-  { sign: "Scorpio", symbol: "♏", flavor: "Research, purge, engage in deep transformation", element: "Water" },
-  { sign: "Sagittarius", symbol: "♐", flavor: "Explore, learn, develop big-picture philosophy", element: "Fire" },
-  { sign: "Capricorn", symbol: "♑", flavor: "Strategize, build foundations, set long-term goals", element: "Earth" },
-  { sign: "Aquarius", symbol: "♒", flavor: "Innovate, connect groups, work with technology", element: "Air" },
-  { sign: "Pisces", symbol: "♓", flavor: "Create, meditate, daydream, dissolve boundaries", element: "Water" }
+  { sign: "Aries", signKey: "aries" as const, flavor: "Take initiative, start sprints, physical action", element: "Fire" },
+  { sign: "Taurus", signKey: "taurus" as const, flavor: "Handle finances, indulge senses, slow down", element: "Earth" },
+  { sign: "Gemini", signKey: "gemini" as const, flavor: "Write, network, take short trips, communicate", element: "Air" },
+  { sign: "Cancer", signKey: "cancer" as const, flavor: "Nest, nurture, cook, connect deeply with home", element: "Water" },
+  { sign: "Leo", signKey: "leo" as const, flavor: "Showcase talents, play, celebrate, be seen", element: "Fire" },
+  { sign: "Virgo", signKey: "virgo" as const, flavor: "Organize, establish health routines, edit, serve", element: "Earth" },
+  { sign: "Libra", signKey: "libra" as const, flavor: "Collaborate, beautify, resolve tensions, partner", element: "Air" },
+  { sign: "Scorpio", signKey: "scorpio" as const, flavor: "Research, purge, engage in deep transformation", element: "Water" },
+  { sign: "Sagittarius", signKey: "sagittarius" as const, flavor: "Explore, learn, develop big-picture philosophy", element: "Fire" },
+  { sign: "Capricorn", signKey: "capricorn" as const, flavor: "Strategize, build foundations, set long-term goals", element: "Earth" },
+  { sign: "Aquarius", signKey: "aquarius" as const, flavor: "Innovate, connect groups, work with technology", element: "Air" },
+  { sign: "Pisces", signKey: "pisces" as const, flavor: "Create, meditate, daydream, dissolve boundaries", element: "Water" }
 ];
 
 // The Four Elemental Cycles
@@ -147,7 +149,7 @@ export function PhilosophySection() {
                 className="node-card group"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-2xl">{phase.symbol}</span>
+                  <MoonPhaseGlyph phase={phase.phaseKey} size="lg" className="text-foreground" />
                   <div>
                     <h3 className="font-serif text-lg text-foreground">{phase.phase}</h3>
                     <span className="system-label text-accent/60">{phase.element}</span>
@@ -185,7 +187,7 @@ export function PhilosophySection() {
                 className="p-4 rounded-lg border border-border/30 bg-card/30 hover:border-accent/30 transition-all duration-300"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xl">{zodiac.symbol}</span>
+                  <ZodiacGlyph sign={zodiac.signKey} size="lg" className="text-foreground" />
                   <span className="font-serif text-foreground">{zodiac.sign}</span>
                 </div>
                 <p className="text-muted-foreground/70 text-xs leading-relaxed">
