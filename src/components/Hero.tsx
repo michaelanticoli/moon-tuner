@@ -1,6 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { MoonPhaseIndicator } from "@/components/MoonPhaseIndicator";
 import { useMoonPhase } from "@/hooks/useMoonPhase";
+import { Link } from "react-router-dom";
 
 export function Hero() {
   const moonPhase = useMoonPhase();
@@ -12,30 +11,30 @@ export function Hero() {
         {/* System Label */}
         <div className="opacity-0 animate-fade-in-up mb-8">
           <span className="system-label">
-            Integrated Lunar Operating System
+            Phase-Based Living System
           </span>
         </div>
 
         {/* Headline */}
         <div className="space-y-4 opacity-0 animate-fade-in-up delay-100 mb-12">
           <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-normal text-foreground leading-[1.05]">
-            Align with <br />
-            <span className="italic">The Source.</span>
+            The Moon Won't Fall. <br />
+            <span className="italic">It Moves, That's All.</span>
           </h1>
         </div>
 
-        {/* CTA + Frequency */}
+        {/* CTA + Live Phase */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 opacity-0 animate-fade-in-up delay-200 mb-16">
-          <button className="system-button">
-            Initialize System
-          </button>
+          <Link to="/lunar-system" className="system-button">
+            Sync With The Cycle
+          </Link>
           
           <div className="flex items-center gap-4">
-            <span className="system-label">Current Frequency</span>
+            <span className="system-label">Current Phase</span>
             <div className="flex items-center gap-3">
               <span className="w-8 h-0.5 bg-accent" />
               <span className="font-sans text-sm text-foreground tracking-[0.1em]">
-                {moonPhase.astrological.frequencyHz}HZ RESONANCE
+                {moonPhase.astronomical.phaseName.toUpperCase()} · {moonPhase.astrological.frequencyHz}HZ
               </span>
             </div>
           </div>
@@ -47,20 +46,20 @@ export function Hero() {
         {/* System Status Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 opacity-0 animate-fade-in-up delay-400">
           <div className="space-y-2">
-            <span className="system-label">Ecosystem</span>
+            <span className="system-label">The Chaperone</span>
             <p className="font-sans text-sm text-foreground">26 Workbooks</p>
           </div>
           <div className="space-y-2">
-            <span className="system-label">Methodology</span>
+            <span className="system-label">The Method</span>
             <p className="font-sans text-sm text-foreground">Phasecraft</p>
           </div>
           <div className="space-y-2">
-            <span className="system-label">Philosophy</span>
+            <span className="system-label">The Philosophy</span>
             <p className="font-sans text-sm text-foreground">Path Walkers</p>
           </div>
           <div className="space-y-2">
-            <span className="system-label">Status</span>
-            <p className="font-sans text-sm text-accent">Synced</p>
+            <span className="system-label">Cycle Day</span>
+            <p className="font-sans text-sm text-accent">Day {Math.round(moonPhase.astronomical.age)}</p>
           </div>
         </div>
       </div>
