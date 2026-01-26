@@ -4,16 +4,18 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
-import { Download, Activity, Cpu } from "lucide-react";
+import { Download, Activity, Cpu, FileText, Sparkles } from "lucide-react";
 import { getPhase, getPhaseName, generateLunarArc, type ArcMonth } from "@/hooks/useLunarCalculations";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { generateLunarPDF } from "@/lib/generateLunarPDF";
 
 const LunarReports = () => {
   const [step, setStep] = useState<'input' | 'generating' | 'result'>('input');
   const [formData, setFormData] = useState({ date: '1990-01-01', time: '12:00', location: '' });
   const [livePhase, setLivePhase] = useState<number | null>(null);
-  const [report, setReport] = useState<{ natalPhase: string; arc: ArcMonth[] } | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [report, setReport] = useState<{ natalPhase: string; natalPhaseValue: number; arc: ArcMonth[]; birthDate: Date; location: string } | null>(null);
 
   // Real-time engine feedback
   useEffect(() => {
@@ -33,7 +35,7 @@ const LunarReports = () => {
     const generatedReport = generateLunarArc(birthDate);
 
     setTimeout(() => {
-      setReport(generatedReport);
+      setReport({ ...generatedReport, natalPhaseValue: getPhase(birthDate), birthDate, location: formData.location });
       setStep('result');
     }, 2000);
   };
@@ -182,18 +184,47 @@ const LunarReports = () => {
                     {/* Result Header */}
                     <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-border pb-12">
                       <div>
-                        <span className="text-[10px] uppercase font-bold tracking-[0.5em] text-gold mb-4 block">
+                        <span className="text-[10px] uppercase font-bold tracking-[0.5em] text-gold mb-4 block flex items-center gap-2">
+                          <Sparkles className="w-4 h-4" />
                           Analysis Complete
                         </span>
                         <h2 className="text-5xl font-serif text-foreground mb-2">Your Lunar Arc.</h2>
                         <p className="text-muted-foreground">
                           Born under a <span className="text-foreground font-bold">{report.natalPhase}</span> signature.
                         </p>
+                        <p className="text-muted-foreground/70 text-sm mt-1">
+                          {(report.natalPhaseValue * 360).toFixed(2)}° ecliptic longitude
+                        </p>
                       </div>
-                      <button className="flex items-center space-x-3 px-8 py-4 bg-muted border border-border rounded-full hover:bg-muted/80 transition-colors mt-8 md:mt-0">
-                        <Download className="w-4 h-4" />
-                        <span className="text-[9px] uppercase tracking-widest font-bold">Download PDF Report</span>
-                      </button>
+                      <Button
+                        onClick={() => {
+                          setIsDownloading(true);
+                          setTimeout(() => {
+                            generateLunarPDF({
+                              birthDate: report.birthDate,
+                              birthLocation: report.location,
+                              natalPhase: report.natalPhaseValue,
+                              natalPhaseName: report.natalPhase,
+                              arc: report.arc
+                            });
+                            setIsDownloading(false);
+                          }, 100);
+                        }}
+                        disabled={isDownloading}
+                        className="flex items-center space-x-3 px-8 py-6 h-auto bg-accent text-accent-foreground rounded-full hover:bg-accent/90 transition-all mt-8 md:mt-0 shadow-lg hover:shadow-xl"
+                      >
+                        {isDownloading ? (
+                          <>
+                            <Activity className="w-4 h-4 animate-spin" />
+                            <span className="text-[9px] uppercase tracking-widest font-bold">Generating...</span>
+                          </>
+                        ) : (
+                          <>
+                            <FileText className="w-4 h-4" />
+                            <span className="text-[9px] uppercase tracking-widest font-bold">Download Full Report (PDF)</span>
+                          </>
+                        )}
+                      </Button>
                     </div>
 
                     {/* Arc Grid */}
