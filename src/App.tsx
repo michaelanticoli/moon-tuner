@@ -12,6 +12,8 @@ import Workbooks from "./pages/Workbooks";
 import WorkbookPreview from "./pages/WorkbookPreview";
 import LunarChaperone from "./pages/LunarChaperone";
 import LunarSystem from "./pages/LunarSystem";
+import LunarCipher from "./pages/LunarCipher";
+import LunarReports from "./pages/LunarReports";
 import MoontunedApp from "./pages/App";
 import Moon from "./pages/Moon";
 import NotFound from "./pages/NotFound";
@@ -32,6 +34,8 @@ function AnimatedRoutes() {
         <Route path="/workbook-preview" element={<WorkbookPreview />} />
         <Route path="/lunar-chaperone" element={<LunarChaperone />} />
         <Route path="/lunar-system" element={<LunarSystem />} />
+        <Route path="/lunar-cipher" element={<LunarCipher />} />
+        <Route path="/lunar-reports" element={<LunarReports />} />
         <Route path="/app" element={<MoontunedApp />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
