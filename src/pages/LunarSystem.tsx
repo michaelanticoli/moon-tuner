@@ -21,8 +21,8 @@ const LunarSystem = () => {
                 The Complete Lunar Operating System
               </span>
               <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal text-foreground leading-[1.05] opacity-0 animate-fade-in-up delay-100 mb-6">
-                8 Phases. 12 Signs. <br />
-                <span className="italic">Your Body.</span>
+                Predict The Future. <br />
+                <span className="italic">By Creating It.</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed opacity-0 animate-fade-in-up delay-200 mb-8">
                 The Moon visits 96 unique configurations every month—each phase expressing differently 
