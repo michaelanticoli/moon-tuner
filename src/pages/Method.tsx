@@ -65,7 +65,7 @@ const phases = [
   }
 ];
 
-// The Five Tenets of Phasecraft
+// The Four Tenets of Phasecraft - Grounded in lunar truth
 const phasecraftTenets = [
   {
     number: "I",
@@ -83,54 +83,75 @@ const phasecraftTenets = [
   },
   {
     number: "III",
-    title: "The Tenet of Misalignment",
-    declaration: "Suffering often signals phase-mismatch. We are not broken—we are out of sync.",
-    practice: "When struggle intensifies, ask first: Am I aligned with what this phase asks of me?",
-    icon: Compass
+    title: "The Tenet of Return",
+    declaration: "Time spirals. You will pass through each phase again and again, each return at a higher octave.",
+    practice: "Keep records. Notice patterns. Your relationship with each phase evolves over years, not days.",
+    icon: Circle
   },
   {
     number: "IV",
-    title: "The Tenet of the Fourteen Days",
-    declaration: "A complete cycle is fourteen days—not one. Integration takes time; initiation is only the beginning.",
+    title: "The Tenet of Integration",
+    declaration: "A complete arc is fourteen days—not one. Initiation is only the beginning; integration takes time.",
     practice: "Commit to the full arc. Show up not just at New or Full, but every day between.",
     icon: Moon
-  },
-  {
-    number: "V",
-    title: "The Tenet of Return",
-    declaration: "You will pass through each phase again and again. What you learn this cycle prepares you for the next.",
-    practice: "Keep records. Notice patterns. Your relationship with each phase evolves over years.",
-    icon: Circle
   }
 ];
 
-// The Three Windows
-const threeWindows = [
+// The Four Arcs - The complete lunar cycle mapped
+const fourArcs = [
   {
-    name: "The Void Window",
-    phase: "New Moon ± 2 days",
-    description: "Strategic rest when the moon is absent. This is the dark room where new images develop. Pushing through the Void creates burnout; honoring it creates reserves.",
-    do: ["Rest intentionally", "Dream and vision", "Clear mental space", "Set quiet intentions"],
-    dont: ["Launch projects", "Make major decisions", "Overcommit energy", "Force clarity"],
-    icon: Eye
+    name: "The Seed Arc",
+    phase: "New Moon → First Quarter",
+    duration: "~7 days",
+    element: "Earth",
+    theme: "Planting",
+    description: "The dark room where new images develop. Intention solidifies into commitment. Energy moves from stillness toward first action.",
+    guidance: ["Set quiet intentions", "Take the first physical step", "Commit to direction", "Resist premature exposure"],
+    icon: Moon
   },
   {
-    name: "The Waxing Sprint",
+    name: "The Build Arc",
     phase: "First Quarter → Full Moon",
-    description: "High-velocity execution as illumination grows. This is building season. Momentum is available; use it. The light is increasing—so should your output.",
-    do: ["Take bold action", "Build momentum", "Make decisions", "Refine and adjust"],
-    dont: ["Procrastinate", "Over-plan", "Second-guess", "Rest excessively"],
+    duration: "~7 days",
+    element: "Fire",
+    theme: "Action",
+    description: "High-velocity execution as illumination grows. Momentum is available—use it. The light is increasing; so should your output.",
+    guidance: ["Take bold action", "Make decisions without hesitation", "Refine through iteration", "Build visible momentum"],
     icon: Zap
   },
   {
-    name: "The Fullness Audit",
-    phase: "Full Moon ± 2 days",
-    description: "Critical assessment at peak resonance. Everything is visible now. What's working is clear. What's not working is also clear. This is the moment to see.",
-    do: ["Assess honestly", "Celebrate progress", "Acknowledge truth", "Harvest insights"],
-    dont: ["Start new things", "Ignore revelations", "Dismiss emotions", "Push past fullness"],
-    icon: Flame
+    name: "The Harvest Arc",
+    phase: "Full Moon → Last Quarter",
+    duration: "~7 days",
+    element: "Water",
+    theme: "Revelation",
+    description: "Maximum illumination reveals truth. What bloomed is clear; what failed is also clear. Share findings. Begin the release.",
+    guidance: ["Celebrate what worked", "Acknowledge what didn't", "Share wisdom outward", "Begin releasing attachments"],
+    icon: Eye
+  },
+  {
+    name: "The Compost Arc",
+    phase: "Last Quarter → New Moon",
+    duration: "~7 days",
+    element: "Ether",
+    theme: "Dissolution",
+    description: "Deep release and preparation for renewal. Old forms decompose into fertile ground. Rest is not optional—it is essential.",
+    guidance: ["Complete unfinished business", "Release what no longer serves", "Rest deeply and dream", "Prepare the soil for new seeds"],
+    icon: Compass
   }
 ];
+
+// Void of Course Moon Protocol - Accurate astrological definition
+const voidOfCourseProtocol = {
+  title: "The Void of Course Moon",
+  definition: "The Moon goes 'void of course' when it has completed its last major aspect in a sign before moving into the next sign. This is NOT tied to any specific phase—voids occur scattered throughout the lunar month.",
+  duration: "Void periods range from minutes to over 24 hours. They require calculation and cannot be guessed.",
+  guidance: {
+    honor: ["Rest and dream", "Routine tasks only", "Meditation and reflection", "Creative play without stakes"],
+    avoid: ["Signing contracts", "Launching projects", "Making major decisions", "Starting anything you want to succeed"]
+  },
+  note: "We've calculated all Void of Course periods for 2026. The Lunar Cipher includes this data for daily reference."
+};
 
 const Method = () => {
   return (
@@ -314,7 +335,7 @@ const Method = () => {
             </div>
           </section>
 
-          {/* The Five Tenets */}
+          {/* The Four Tenets */}
           <section className="bg-card/20 border-y border-border/30">
             <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
               <div className="max-w-5xl mx-auto">
@@ -322,7 +343,7 @@ const Method = () => {
                   <div className="text-center mb-16">
                     <span className="system-label block mb-6">Core Doctrine</span>
                     <h2 className="font-serif text-3xl lg:text-4xl text-foreground mb-6">
-                      The Five Tenets of Phasecraft
+                      The Four Tenets of Phasecraft
                     </h2>
                     <p className="text-muted-foreground max-w-2xl mx-auto">
                       These are the foundational principles that guide all phase-based practice. Not rules to obey, but truths to internalize.
@@ -362,57 +383,55 @@ const Method = () => {
             </div>
           </section>
 
-          {/* The Three Windows */}
+          {/* The Four Arcs */}
           <section className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
             <div className="max-w-6xl mx-auto">
               <ScrollReveal>
                 <div className="text-center mb-16">
-                  <span className="system-label block mb-6">Strategic Timing</span>
+                  <span className="system-label block mb-6">The Complete Cycle</span>
                   <h2 className="font-serif text-3xl lg:text-4xl text-foreground mb-6">
-                    The Three Windows
+                    The Four Arcs
                   </h2>
                   <p className="text-muted-foreground max-w-2xl mx-auto">
-                    Within each lunar cycle, there are three critical windows that demand special attention. Master these, and you master the rhythm.
+                    The lunar cycle divides naturally into four arcs of approximately seven days each. Each arc has its own rhythm, element, and purpose. Together, they form the complete journey from seed to compost and back again.
                   </p>
                 </div>
               </ScrollReveal>
               
-              <div className="grid lg:grid-cols-3 gap-8">
-                {threeWindows.map((window, index) => (
-                  <ScrollReveal key={window.name} delay={index * 0.1}>
+              <div className="grid md:grid-cols-2 gap-8">
+                {fourArcs.map((arc, index) => (
+                  <ScrollReveal key={arc.name} delay={index * 0.1}>
                     <div className="node-card h-full">
-                      <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center mb-6">
-                        <window.icon className="w-5 h-5 text-accent" />
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center">
+                          <arc.icon className="w-5 h-5 text-accent" />
+                        </div>
+                        <div>
+                          <h3 className="font-serif text-xl text-foreground">{arc.name}</h3>
+                          <span className="system-label text-accent/60">{arc.phase}</span>
+                        </div>
                       </div>
-                      <h3 className="font-serif text-xl text-foreground mb-2">{window.name}</h3>
-                      <span className="system-label text-accent/60 block mb-4">{window.phase}</span>
+                      
+                      <div className="flex items-center gap-4 mb-4">
+                        <span className="text-xs text-muted-foreground/60 uppercase tracking-wide">{arc.duration}</span>
+                        <span className="text-xs text-accent/60 uppercase tracking-wide">{arc.element}</span>
+                        <span className="text-xs text-foreground/80 uppercase tracking-wide font-medium">{arc.theme}</span>
+                      </div>
+                      
                       <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                        {window.description}
+                        {arc.description}
                       </p>
                       
-                      <div className="space-y-4">
-                        <div>
-                          <span className="text-accent text-xs uppercase tracking-wide block mb-2">Do</span>
-                          <ul className="space-y-1">
-                            {window.do.map((item) => (
-                              <li key={item} className="text-muted-foreground text-sm flex items-center gap-2">
-                                <span className="w-1 h-1 rounded-full bg-accent" />
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground/50 text-xs uppercase tracking-wide block mb-2">Avoid</span>
-                          <ul className="space-y-1">
-                            {window.dont.map((item) => (
-                              <li key={item} className="text-muted-foreground/60 text-sm flex items-center gap-2">
-                                <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                      <div>
+                        <span className="text-accent text-xs uppercase tracking-wide block mb-2">Guidance</span>
+                        <ul className="space-y-1">
+                          {arc.guidance.map((item) => (
+                            <li key={item} className="text-muted-foreground text-sm flex items-center gap-2">
+                              <span className="w-1 h-1 rounded-full bg-accent" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
                   </ScrollReveal>
@@ -421,45 +440,68 @@ const Method = () => {
             </div>
           </section>
 
-          {/* Philosophy Section */}
+          {/* Void of Course Protocol */}
           <section className="bg-night-slate border-y border-border/30">
             <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
-              <div className="max-w-3xl mx-auto">
+              <div className="max-w-4xl mx-auto">
                 <ScrollReveal>
-                  <span className="system-label block mb-6 text-center">The Philosophy</span>
-                  <h2 className="font-serif text-3xl lg:text-4xl text-foreground mb-12 text-center">
-                    Core Principles
-                  </h2>
+                  <div className="text-center mb-12">
+                    <span className="system-label block mb-6 text-accent">Astrological Precision</span>
+                    <h2 className="font-serif text-3xl lg:text-4xl text-foreground mb-6">
+                      {voidOfCourseProtocol.title}
+                    </h2>
+                  </div>
                 </ScrollReveal>
                 
-                <div className="space-y-8 text-muted-foreground leading-relaxed">
-                  <ScrollReveal delay={0.1}>
-                    <div className="border-l-2 border-accent/40 pl-6">
-                      <h3 className="font-serif text-xl text-foreground mb-3">Resonance, Not Ritual</h3>
-                      <p>
-                        Phasecraft isn't about following rules. It's about developing sensitivity to natural rhythms and responding authentically. There's no "right way" to work with the Moon—only your way.
-                      </p>
-                    </div>
-                  </ScrollReveal>
-                  
+                <ScrollReveal delay={0.1}>
+                  <div className="node-card mb-8">
+                    <h3 className="font-serif text-xl text-foreground mb-4">What It Actually Is</h3>
+                    <p className="text-muted-foreground leading-relaxed mb-4">
+                      {voidOfCourseProtocol.definition}
+                    </p>
+                    <p className="text-muted-foreground/70 text-sm italic">
+                      {voidOfCourseProtocol.duration}
+                    </p>
+                  </div>
+                </ScrollReveal>
+                
+                <div className="grid md:grid-cols-2 gap-6">
                   <ScrollReveal delay={0.2}>
-                    <div className="border-l-2 border-accent/40 pl-6">
-                      <h3 className="font-serif text-xl text-foreground mb-3">Awareness Over Optimization</h3>
-                      <p>
-                        This isn't productivity hacking dressed in celestial clothing. The goal isn't to squeeze more out of yourself by timing things better. It's to live more consciously, with greater respect for your own cycles of energy and rest.
-                      </p>
+                    <div className="node-card h-full">
+                      <span className="text-accent text-xs uppercase tracking-wide block mb-4">Honor The Void</span>
+                      <ul className="space-y-2">
+                        {voidOfCourseProtocol.guidance.honor.map((item) => (
+                          <li key={item} className="text-muted-foreground text-sm flex items-center gap-2">
+                            <span className="w-1 h-1 rounded-full bg-accent" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </ScrollReveal>
                   
                   <ScrollReveal delay={0.3}>
-                    <div className="border-l-2 border-accent/40 pl-6">
-                      <h3 className="font-serif text-xl text-foreground mb-3">You Move With the Moon</h3>
-                      <p>
-                        The Moon doesn't command you. It doesn't predict your future or determine your fate. It offers a mirror, a rhythm, a companion in the dark. You are not beneath the Moon—you move with it.
-                      </p>
+                    <div className="node-card h-full">
+                      <span className="text-muted-foreground/50 text-xs uppercase tracking-wide block mb-4">Avoid During Void</span>
+                      <ul className="space-y-2">
+                        {voidOfCourseProtocol.guidance.avoid.map((item) => (
+                          <li key={item} className="text-muted-foreground/60 text-sm flex items-center gap-2">
+                            <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </ScrollReveal>
                 </div>
+                
+                <ScrollReveal delay={0.4}>
+                  <div className="mt-8 p-6 bg-accent/5 border border-accent/20 rounded-lg text-center">
+                    <p className="text-foreground text-sm">
+                      {voidOfCourseProtocol.note}
+                    </p>
+                  </div>
+                </ScrollReveal>
               </div>
             </div>
           </section>

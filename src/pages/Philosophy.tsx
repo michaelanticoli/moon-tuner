@@ -90,12 +90,12 @@ const autonomousAreas = {
       description: "A specific technical system with named phases, postures, misalignments, and practices."
     },
     {
-      title: "Phase-Specific Guidance",
-      description: "Concrete recommendations for each of the eight phases—what to do, what to avoid, what to notice."
+      title: "The Four Arcs",
+      description: "Seed, Build, Harvest, Compost—the complete journey mapped in four seven-day cycles."
     },
     {
-      title: "The 14-Day Arc",
-      description: "The structured journey from one lunation point to the next, with daily themes and checkpoints."
+      title: "The Void of Course Protocol",
+      description: "Accurate guidance for when the Moon completes its aspects before ingressing to a new sign."
     }
   ]
 };
