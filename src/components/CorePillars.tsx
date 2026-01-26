@@ -1,37 +1,37 @@
 import { ArrowRight } from "lucide-react";
 
-const pillars = [
+const offerings = [
   {
-    channel: "Channel I",
-    wavelength: "Visible Spectrum",
-    category: "The 26-Workbook Program",
-    title: "Lunar Chaperone",
-    description: "Continuous phase-based guidance from New Moon to Full Moon. A structured path for the silence between the sounds.",
+    number: "01",
+    label: "The Guide",
+    category: "The Lunar Chaperone",
+    title: "26 Workbooks",
+    description: "Your continuous companion from New Moon to Full Moon and back again. Body-based lunar wisdom designed to deepen with every cycle.",
     href: "/workbooks",
   },
   {
-    channel: "Channel II",
-    wavelength: "Prismatic Layer",
-    category: "Methodology & Framework",
-    title: "Phasecraft",
-    description: "The Moontuner framework for phase-based living. The Five Tenets, Three Windows, and 8-Phase system.",
+    number: "02",
+    label: "The Method",
+    category: "Phasecraft Framework",
+    title: "Timing System",
+    description: "The Moontuner methodology for phase-based living. The Five Tenets, Three Windows, and 8-Phase architecture.",
     href: "/method",
   },
   {
-    channel: "Channel III",
-    wavelength: "Deep Radiance",
-    category: "Philosophy & Declaration",
-    title: "The Manifesto",
-    description: "Seven declarations for those who move with the Moon. The why behind everything we practice.",
+    number: "03",
+    label: "The Declaration",
+    category: "Philosophy & Manifesto",
+    title: "Seven Tenets",
+    description: "Declarations for those who move with the Moon. The why behind everything we practice.",
     href: "/manifesto",
   },
   {
-    channel: "Channel IV",
-    wavelength: "Full Spectrum",
-    category: "The Complete System",
-    title: "Philosophy Map",
-    description: "Where Manifesto and Phasecraft merge, differ, and retain autonomy. The interconnection of all paths.",
-    href: "/philosophy",
+    number: "04",
+    label: "The Interface",
+    category: "Personal Lunar Map",
+    title: "Your Reports",
+    description: "Calculate your natal lunar signature and generate your personal 12-month power-day arc.",
+    href: "/lunar-reports",
   },
 ];
 
@@ -41,50 +41,50 @@ export function CorePillars() {
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="mb-16 lg:mb-24">
-          <span className="system-label block mb-6">The Illumination Architecture</span>
+          <span className="system-label block mb-6">The Moontuner Offerings</span>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-foreground leading-[1.1]">
-            Four Spectral Channels. <br />
-            <span className="italic">One Source Radiance.</span>
+            Four Pathways. <br />
+            <span className="italic">One Reflected Light.</span>
           </h2>
           <p className="text-muted-foreground text-sm mt-6 max-w-2xl">
-            The Moon reflects the Sun's nuclear fusion—photons scattered across 93 million miles, 
-            bent through atmosphere, arriving as silver light. Navigate the spectrum.
+            The Moon reflects the Sun across 238,900 miles—a celestial clock cycling every 29.5 days. 
+            These are your systems for reading its rhythm.
           </p>
         </div>
 
-        {/* Pillars Grid */}
+        {/* Offerings Grid */}
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-          {pillars.map((pillar, index) => (
+          {offerings.map((offering, index) => (
             <a
-              key={pillar.title}
-              href={pillar.href}
+              key={offering.title}
+              href={offering.href}
               className="group node-card relative"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              {/* Channel Label */}
+              {/* Number Label */}
               <div className="flex items-center justify-between mb-6">
-                <span className="system-label text-accent">{pillar.channel}</span>
-                <span className="text-xs text-muted-foreground/60 tracking-wider">{pillar.wavelength}</span>
+                <span className="system-label text-accent">{offering.number}</span>
+                <span className="text-xs text-muted-foreground/60 tracking-wider">{offering.label}</span>
               </div>
 
               {/* Category */}
               <span className="system-label block mb-3">
-                {pillar.category}
+                {offering.category}
               </span>
 
               {/* Title */}
               <h3 className="font-serif text-2xl lg:text-3xl font-normal text-foreground mb-4 group-hover:text-accent transition-colors duration-300">
-                {pillar.title}
+                {offering.title}
               </h3>
 
               {/* Description */}
               <p className="text-muted-foreground text-sm leading-relaxed mb-8">
-                {pillar.description}
+                {offering.description}
               </p>
 
               {/* Link */}
               <div className="flex items-center gap-2 text-muted-foreground group-hover:text-accent transition-colors duration-300">
-                <span className="text-sm tracking-wide">Enter Channel</span>
+                <span className="text-sm tracking-wide">Explore</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </div>
             </a>
