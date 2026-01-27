@@ -4,8 +4,12 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
-import { RefreshCw, X, ChevronLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { RefreshCw, X, ChevronLeft, Save, Check, Loader2 } from "lucide-react";
 import { getPhase, getDetailedInsight } from "@/hooks/useLunarCalculations";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { useNavigate } from "react-router-dom";
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -25,14 +29,58 @@ const LunarCipher = () => {
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedDay, setSelectedDay] = useState<SelectedDay | null>(null);
   const [syncing, setSyncing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleMonthSelect = (idx: number) => {
     setSyncing(true);
     setSelectedMonth(idx);
-    setTimeout(() => { 
-      setSyncing(false); 
-      setView('calendar'); 
+    setTimeout(() => {
+      setSyncing(false);
+      setView('calendar');
     }, 1200);
+  };
+
+  const handleSaveChart = async () => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+
+    if (!selectedDay || selectedMonth === null) return;
+
+    setSaving(true);
+    try {
+      const chartName = `${monthNames[selectedMonth]} ${selectedDay.day}, ${currentYear} - ${selectedDay.phaseName}`;
+
+      const { error } = await supabase.from('saved_charts').insert({
+        user_id: user.id,
+        chart_name: chartName,
+        chart_data: {
+          date: `${currentYear}-${String(selectedMonth + 1).padStart(2, '0')}-${String(selectedDay.day).padStart(2, '0')}`,
+          natal_phase: selectedDay.phaseName,
+          phase_value: selectedDay.phase,
+          insight: {
+            title: selectedDay.title,
+            theme: selectedDay.theme,
+            insight: selectedDay.insight,
+            instruction: selectedDay.instruction,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch (error) {
+      console.error('Error saving chart:', error);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const currentYear = new Date().getFullYear();
@@ -231,6 +279,27 @@ const LunarCipher = () => {
                     </p>
                   </div>
                 </div>
+
+                <Button
+                  variant="gold"
+                  className="w-full"
+                  onClick={handleSaveChart}
+                  disabled={saving || saved}
+                >
+                  {saving ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : saved ? (
+                    <>
+                      <Check className="w-4 h-4 mr-2" />
+                      Saved to Dashboard
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      {user ? 'Save This Day' : 'Sign In to Save'}
+                    </>
+                  )}
+                </Button>
               </motion.div>
             </div>
           )}

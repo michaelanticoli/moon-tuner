@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, LogIn } from "lucide-react";
+import { Link } from "react-router-dom";
 import moontunerLogo from "@/assets/moontuner-logo.png";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navLinks = [
   { label: "LUNAR SYSTEM", href: "/lunar-system" },
@@ -14,6 +16,7 @@ const navLinks = [
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, loading } = useAuth();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/30">
@@ -44,10 +47,31 @@ export function Navigation() {
             ))}
           </div>
 
-          {/* Status Badge & Hamburger */}
+          {/* Auth & Status Badge */}
           <div className="flex items-center gap-4">
+            {/* Auth Button - Desktop */}
+            {!loading && (
+              <div className="hidden lg:block">
+                {user ? (
+                  <Link to="/dashboard">
+                    <Button variant="outline" size="sm" className="gap-2">
+                      <User className="w-4 h-4" />
+                      Dashboard
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link to="/auth">
+                    <Button variant="gold" size="sm" className="gap-2">
+                      <LogIn className="w-4 h-4" />
+                      Sign In
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            )}
+
             {/* Illumination Status */}
-            <div className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/50">
+            <div className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/50">
               <span className="status-dot animate-status-pulse" />
               <span className="font-sans text-xs uppercase tracking-[0.15em] text-foreground">
                 Receiving Light
@@ -86,6 +110,32 @@ export function Navigation() {
                   {link.label}
                 </a>
               ))}
+
+              {/* Auth Link - Mobile */}
+              {!loading && (
+                <div className="pt-4 border-t border-border/30">
+                  {user ? (
+                    <Link
+                      to="/dashboard"
+                      className="flex items-center gap-2 font-sans text-sm font-medium text-accent hover:text-foreground transition-colors tracking-[0.15em]"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <User className="w-4 h-4" />
+                      DASHBOARD
+                    </Link>
+                  ) : (
+                    <Link
+                      to="/auth"
+                      className="flex items-center gap-2 font-sans text-sm font-medium text-accent hover:text-foreground transition-colors tracking-[0.15em]"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <LogIn className="w-4 h-4" />
+                      SIGN IN
+                    </Link>
+                  )}
+                </div>
+              )}
+
               <div className="flex items-center gap-2 pt-4">
                 <span className="status-dot animate-status-pulse" />
                 <span className="font-sans text-xs uppercase tracking-[0.15em] text-foreground">
