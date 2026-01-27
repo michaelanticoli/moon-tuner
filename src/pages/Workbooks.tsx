@@ -278,7 +278,7 @@ const Workbooks = () => {
             <ScrollReveal>
               <div className="max-w-4xl mx-auto text-center">
                 <div className="inline-block px-4 py-2 bg-accent/10 border border-accent/30 rounded-full mb-8">
-                  <span className="text-accent text-sm uppercase tracking-wide">Timeless Archetypal Wisdom</span>
+                  <span className="text-accent text-sm uppercase tracking-wide">Evergreen Archetypal Wisdom</span>
                 </div>
                 
                 <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground mb-8 leading-tight">
