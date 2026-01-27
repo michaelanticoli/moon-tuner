@@ -1,11 +1,14 @@
 import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { Link } from "react-router-dom";
+import { LunarBackground } from "./LunarBackground";
 
 export function Hero() {
   const moonPhase = useMoonPhase();
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-20">
+      {/* Animated lunar background */}
+      <LunarBackground />
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 lg:px-12">
         {/* System Label */}
