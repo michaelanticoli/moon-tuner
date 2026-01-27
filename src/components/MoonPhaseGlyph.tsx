@@ -39,10 +39,10 @@ export function MoonPhaseGlyph({ phase, size = "md", className }: MoonPhaseGlyph
         );
       
       case "first-quarter":
-        // First Quarter: Right half filled
+        // First Quarter: Left half filled (illuminated on the right in Northern Hemisphere)
         return (
           <svg viewBox="0 0 24 24" className={cn(sizeClass, className)} style={sizeStyle} fill="currentColor">
-            <path d="M12 3a9 9 0 0 1 0 18V3z" />
+            <path d="M12 3a9 9 0 0 0 0 18V3z" />
             <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1" strokeOpacity="0.3" />
           </svg>
         );
@@ -75,10 +75,10 @@ export function MoonPhaseGlyph({ phase, size = "md", className }: MoonPhaseGlyph
         );
       
       case "last-quarter":
-        // Last Quarter: Left half filled
+        // Last Quarter: Right half filled (illuminated on the left in Northern Hemisphere)
         return (
           <svg viewBox="0 0 24 24" className={cn(sizeClass, className)} style={sizeStyle} fill="currentColor">
-            <path d="M12 3a9 9 0 0 0 0 18V3z" />
+            <path d="M12 3a9 9 0 0 1 0 18V3z" />
             <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1" strokeOpacity="0.3" />
           </svg>
         );
