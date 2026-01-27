@@ -330,10 +330,10 @@ const LunarChaperone = () => {
                 <ScrollReveal>
                   <Shield className="w-16 h-16 text-accent mx-auto mb-8" />
                   <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-foreground mb-6">
-                    Why <span className="italic">Evergreen?</span>
+                    Why <span className="italic">Timeless?</span>
                   </h2>
                   <p className="text-muted-foreground text-lg leading-relaxed mb-12 max-w-2xl mx-auto">
-                    These workbooks transcend specific dates and years. They contain archetypal wisdom that remains true whether you're using them in 2026, 2030, or beyond.
+                    The Lunar Chaperone transcends specific dates and years. These workbooks contain archetypal wisdom that remains true whether you're using them in 2026, 2030, or beyond.
                   </p>
                   
                   <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
