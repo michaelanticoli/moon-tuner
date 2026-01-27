@@ -14,8 +14,8 @@ interface EntryPoint {
 const entryPoints: EntryPoint[] = [
   {
     icon: BookOpen,
-    title: "26-Workbook Evergreen Series",
-    description: "Stop chasing peaks. Start walking the path. Complete lunar chaperone support for every archetypal journey—with you every single day.",
+    title: "The Lunar Chaperone",
+    description: "A timeless guide for a lunar lifetime. 26 workbooks walking beside you through every archetypal journey—with you every single day.",
     cta: "Explore the Series",
     href: "/workbooks",
     featured: true,
