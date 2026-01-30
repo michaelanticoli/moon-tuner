@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
+import { GraduateToChaperone } from "./GraduateToChaperone";
 
 const milestones = [
   {
@@ -20,6 +21,11 @@ const milestones = [
   {
     title: "Practical Integration",
     description: "Complete all workbook exercises",
+    status: "not-started" as const,
+  },
+  {
+    title: "Graduate to Chaperone",
+    description: "Begin your Lunar Chaperone journey",
     status: "not-started" as const,
   },
 ];
@@ -123,6 +129,11 @@ export function SchoolProgress() {
           <RotateCcw className="w-4 h-4 mr-2" />
           Reset All Progress
         </Button>
+      </div>
+
+      {/* Graduate to Chaperone CTA */}
+      <div className="pt-8">
+        <GraduateToChaperone />
       </div>
     </div>
   );
