@@ -97,6 +97,32 @@ export function SchoolIntro({ onStartLearning }: SchoolIntroProps) {
         </ol>
       </div>
 
+      {/* Lunar Chaperone Connection */}
+      <div className="bg-muted/30 border border-border p-8 lg:p-12">
+        <h3 className="font-serif text-xl text-foreground mb-4">From Theory to Practice: The Lunar Chaperone</h3>
+        <p className="text-muted-foreground mb-6">
+          The MOONtuner School teaches the foundational 96-combination system. The <strong className="text-foreground">Lunar Chaperone</strong> is 
+          where this knowledge becomes lived practice—a 26-workbook series designed for continuous lunar companionship.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div className="bg-background/50 p-4 border border-border">
+            <span className="text-2xl font-serif text-foreground">12</span>
+            <p className="text-muted-foreground mt-1">New Moon → Full Moon journeys</p>
+          </div>
+          <div className="bg-background/50 p-4 border border-border">
+            <span className="text-2xl font-serif text-foreground">12</span>
+            <p className="text-muted-foreground mt-1">Full Moon → New Moon journeys</p>
+          </div>
+          <div className="bg-background/50 p-4 border border-border">
+            <span className="text-2xl font-serif text-foreground">2</span>
+            <p className="text-muted-foreground mt-1">Eclipse Portal specials</p>
+          </div>
+        </div>
+        <p className="text-sm text-muted-foreground mt-6 italic">
+          Complete the School to unlock your path to the Lunar Chaperone—where timing becomes practice.
+        </p>
+      </div>
+
       <div className="flex justify-center">
         <Button size="lg" onClick={onStartLearning}>
           Begin Learning
