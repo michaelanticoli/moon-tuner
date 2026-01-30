@@ -16,6 +16,7 @@ import LunarCipher from "./pages/LunarCipher";
 import LunarReports from "./pages/LunarReports";
 import MoontunedApp from "./pages/App";
 import Moon from "./pages/Moon";
+import MoontunerSchool from "./pages/MoontunerSchool";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ function AnimatedRoutes() {
         <Route path="/lunar-system" element={<LunarSystem />} />
         <Route path="/lunar-cipher" element={<LunarCipher />} />
         <Route path="/lunar-reports" element={<LunarReports />} />
+        <Route path="/school" element={<MoontunerSchool />} />
         <Route path="/app" element={<MoontunedApp />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
