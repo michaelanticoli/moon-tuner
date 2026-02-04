@@ -10,6 +10,7 @@ import {
   Circle, Edit3, Heart, Compass, Sun, Waves,
   BookOpen, Calendar, Clock, Feather
 } from "lucide-react";
+import { WorkbookReference } from "@/components/workbook/WorkbookReference";
 
 // Sample workbook: From Bone to Heart (Capricorn → Leo)
 const workbookData = {
@@ -17,6 +18,10 @@ const workbookData = {
   title: "From Bone to Heart",
   subtitle: "A Lunar Chaperone Workbook",
   journey: "Capricorn → Leo",
+  fromSign: "Capricorn",
+  toSign: "Leo",
+  startPhase: "Full Moon",
+  endPhase: "New Moon",
   phaseType: "Full Moon → New Moon",
   bodyArc: "Knees/Bones → Heart/Solar Plexus",
   essence: "Structure shifting into expressive heart-based creativity",
@@ -427,6 +432,31 @@ const WorkbookPreview = () => {
                     </div>
                   ))}
                 </div>
+              </div>
+            </ScrollReveal>
+          </section>
+
+          {/* Esoteric Reference Section */}
+          <section className="container mx-auto px-6 lg:px-12 py-12">
+            <ScrollReveal>
+              <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-10">
+                  <span className="system-label text-accent mb-3 block">Workbook Reference</span>
+                  <h3 className="font-serif text-3xl text-foreground mb-3">
+                    Correspondences, Rituals & Lore
+                  </h3>
+                  <p className="text-muted-foreground max-w-xl mx-auto">
+                    The esoteric toolkit for your {workbookData.fromSign} → {workbookData.toSign} journey. 
+                    Crystals, herbs, mythology, body practices, and lunar experiments.
+                  </p>
+                </div>
+                
+                <WorkbookReference
+                  fromSign={workbookData.fromSign}
+                  toSign={workbookData.toSign}
+                  startPhase={workbookData.startPhase}
+                  endPhase={workbookData.endPhase}
+                />
               </div>
             </ScrollReveal>
           </section>
