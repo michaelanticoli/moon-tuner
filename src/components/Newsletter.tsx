@@ -1,15 +1,36 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
+ import { Button } from "@/components/ui/button";
+ import { Input } from "@/components/ui/input";
+ import { useState } from "react";
+ import { supabase } from "@/integrations/supabase/client";
+ import { toast } from "sonner";
 
 export function Newsletter() {
   const [email, setEmail] = useState("");
+   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle newsletter signup
-    console.log("Newsletter signup:", email);
-    setEmail("");
+     setIsLoading(true);
+     
+     try {
+       const { data, error } = await supabase.functions.invoke("subscribe-email", {
+         body: { email, source: "newsletter" },
+       });
+ 
+       if (error) throw error;
+ 
+       toast.success("Welcome to the lunar dispatch!", {
+         description: "Check your inbox for a confirmation.",
+       });
+       setEmail("");
+     } catch (error) {
+       console.error("Newsletter signup error:", error);
+       toast.error("Couldn't subscribe", {
+         description: "Please try again or check your email address.",
+       });
+     } finally {
+       setIsLoading(false);
+     }
   };
 
   return (
@@ -37,9 +58,10 @@ export function Newsletter() {
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus:border-accent"
               required
+               disabled={isLoading}
             />
-            <Button type="submit" variant="gold" size="lg">
-              Subscribe
+             <Button type="submit" variant="gold" size="lg" disabled={isLoading}>
+               {isLoading ? "Subscribing..." : "Subscribe"}
             </Button>
           </form>
 

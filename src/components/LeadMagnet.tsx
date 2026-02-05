@@ -3,20 +3,34 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Download, Mail, Check, Sparkles, Moon, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+ import { supabase } from "@/integrations/supabase/client";
+ import { toast } from "sonner";
 
 export const LeadMagnet = () => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate submission
-    setTimeout(() => {
+     
+     try {
+       const { data, error } = await supabase.functions.invoke("subscribe-email", {
+         body: { email, source: "lead-magnet" },
+       });
+ 
+       if (error) throw error;
+ 
       setIsSubmitted(true);
+     } catch (error) {
+       console.error("Lead magnet signup error:", error);
+       toast.error("Couldn't process your request", {
+         description: "Please try again.",
+       });
+     } finally {
       setIsLoading(false);
-    }, 1500);
+     }
   };
 
   return (
