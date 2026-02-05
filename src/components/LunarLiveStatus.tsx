@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { Activity, MapPin, Zap, Clock, Sparkles, ArrowRight } from "lucide-react";
 import { ZodiacGlyph, signNameToKey } from "./ZodiacGlyph";
+ import type { ZodiacSign } from "@/data/lunar2026Data";
 
-// Zodiac sign calculation based on current moon position
+ // Zodiac sign metadata (element, body, ruler, quality)
 const ZODIAC_SIGNS = [
   { sign: "Aries", signKey: "aries" as const, element: "Fire", body: "Head & Brain", ruler: "Mars", quality: "Cardinal" },
   { sign: "Taurus", signKey: "taurus" as const, element: "Earth", body: "Throat & Neck", ruler: "Venus", quality: "Fixed" },
@@ -20,26 +21,9 @@ const ZODIAC_SIGNS = [
   { sign: "Pisces", signKey: "pisces" as const, element: "Water", body: "Feet & Lymphatic", ruler: "Neptune", quality: "Mutable" },
 ];
 
-// Moon transits each sign for ~2.5 days, completing the zodiac in ~27.3 days
-function getCurrentZodiacSign(date: Date = new Date()) {
-  // Reference point: Moon was in Aries on Jan 1, 2024 00:00 UTC
-  const referenceDate = new Date("2024-01-01T00:00:00Z");
-  const siderealMonth = 27.321661; // days for moon to complete zodiac
-  const daysSinceReference = (date.getTime() - referenceDate.getTime()) / (1000 * 60 * 60 * 24);
-  const daysPerSign = siderealMonth / 12;
-  const signIndex = Math.floor((daysSinceReference % siderealMonth) / daysPerSign);
-  return ZODIAC_SIGNS[(signIndex + 12) % 12];
-}
-
-function getTimeInSign(date: Date = new Date()) {
-  const siderealMonth = 27.321661;
-  const daysPerSign = siderealMonth / 12;
-  const referenceDate = new Date("2024-01-01T00:00:00Z");
-  const daysSinceReference = (date.getTime() - referenceDate.getTime()) / (1000 * 60 * 60 * 24);
-  const positionInCycle = daysSinceReference % siderealMonth;
-  const positionInSign = positionInCycle % daysPerSign;
-  const hoursRemaining = (daysPerSign - positionInSign) * 24;
-  return Math.floor(hoursRemaining);
+ // Get zodiac metadata by sign name
+ function getZodiacMeta(signName: ZodiacSign) {
+   return ZODIAC_SIGNS.find(z => z.sign === signName) || ZODIAC_SIGNS[0];
 }
 
 const elementColors = {
@@ -58,20 +42,10 @@ const elementBg = {
 
 export function LunarLiveStatus() {
   const moonPhase = useMoonPhase();
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [zodiacSign, setZodiacSign] = useState(getCurrentZodiacSign());
-  const [hoursRemaining, setHoursRemaining] = useState(getTimeInSign());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      setCurrentTime(now);
-      setZodiacSign(getCurrentZodiacSign(now));
-      setHoursRemaining(getTimeInSign(now));
-    }, 60000); // Update every minute
-
-    return () => clearInterval(interval);
-  }, []);
+   
+   // Get zodiac metadata from precise moon sign data
+   const zodiacSign = getZodiacMeta(moonPhase.astronomical.moonSign);
+   const hoursRemaining = moonPhase.astronomical.hoursInSign;
 
   const elementColor = elementColors[zodiacSign.element as keyof typeof elementColors];
   const elementBgClass = elementBg[zodiacSign.element as keyof typeof elementBg];
