@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+ import { getMoonSign2026, getMoonPhase2026, getHoursInSign, type ZodiacSign } from "@/data/lunar2026Data";
 
 export interface MoonPhaseData {
   // Astronomical data
@@ -10,6 +11,8 @@ export interface MoonPhaseData {
     isWaxing: boolean;
     nextNewMoon: Date;
     nextFullMoon: Date;
+     moonSign: ZodiacSign;
+     hoursInSign: number;
   };
   // Astrological interpretation
   astrological: {
@@ -28,39 +31,17 @@ const SYNODIC_MONTH = 29.530588853;
 // Reference new moon: January 11, 2024 at 11:57 UTC (verified astronomical data)
 const REFERENCE_NEW_MOON = new Date("2024-01-11T11:57:00Z");
 
-// Calculate the current lunar age (days since last new moon)
-function getLunarAge(date: Date = new Date()): number {
-  const daysSinceReference = (date.getTime() - REFERENCE_NEW_MOON.getTime()) / (1000 * 60 * 60 * 24);
-  return ((daysSinceReference % SYNODIC_MONTH) + SYNODIC_MONTH) % SYNODIC_MONTH;
-}
-
-// Calculate illumination percentage based on lunar age
-function getIllumination(lunarAge: number): number {
-  // Illumination follows a cosine curve through the cycle
-  const phaseAngle = (lunarAge / SYNODIC_MONTH) * 2 * Math.PI;
-  return (1 - Math.cos(phaseAngle)) / 2;
-}
-
-// Get astronomical phase name based on lunar age
-function getAstronomicalPhase(lunarAge: number): { name: string; index: number } {
-  const phases = [
-    { name: "New Moon", start: 0, end: 1.84566 },
-    { name: "Waxing Crescent", start: 1.84566, end: 7.38264 },
-    { name: "First Quarter", start: 7.38264, end: 11.07396 },
-    { name: "Waxing Gibbous", start: 11.07396, end: 14.76528 },
-    { name: "Full Moon", start: 14.76528, end: 16.61094 },
-    { name: "Waning Gibbous", start: 16.61094, end: 22.14792 },
-    { name: "Last Quarter", start: 22.14792, end: 25.83924 },
-    { name: "Waning Crescent", start: 25.83924, end: SYNODIC_MONTH },
-  ];
-
-  for (let i = 0; i < phases.length; i++) {
-    if (lunarAge >= phases[i].start && lunarAge < phases[i].end) {
-      return { name: phases[i].name, index: i };
-    }
-  }
-  return { name: "New Moon", index: 0 };
-}
+ // Phase name to index mapping for astrological data lookup
+ const PHASE_INDEX_MAP: Record<string, number> = {
+   "New Moon": 0,
+   "Waxing Crescent": 1,
+   "First Quarter": 2,
+   "Waxing Gibbous": 3,
+   "Full Moon": 4,
+   "Waning Gibbous": 5,
+   "Last Quarter": 6,
+   "Waning Crescent": 7,
+ };
 
 // Astrological interpretations for each phase
 const ASTROLOGICAL_DATA = [
@@ -130,46 +111,63 @@ const ASTROLOGICAL_DATA = [
   },
 ];
 
-// Calculate next new moon from current date
-function getNextNewMoon(currentAge: number, now: Date): Date {
-  const daysUntilNew = SYNODIC_MONTH - currentAge;
-  return new Date(now.getTime() + daysUntilNew * 24 * 60 * 60 * 1000);
-}
-
-// Calculate next full moon from current date
-function getNextFullMoon(currentAge: number, now: Date): Date {
-  const fullMoonAge = SYNODIC_MONTH / 2;
-  let daysUntilFull: number;
-  
-  if (currentAge < fullMoonAge) {
-    daysUntilFull = fullMoonAge - currentAge;
-  } else {
-    daysUntilFull = SYNODIC_MONTH - currentAge + fullMoonAge;
-  }
-  
-  return new Date(now.getTime() + daysUntilFull * 24 * 60 * 60 * 1000);
-}
+ import { PRIMARY_PHASES_2026 } from "@/data/lunar2026Data";
+ 
+ // Get next primary phase from 2026 data
+ function getNextPhaseDate(phaseType: "New Moon" | "Full Moon", date: Date): Date {
+   const now = date.getTime();
+   const nextPhase = PRIMARY_PHASES_2026.find(
+     p => p.phase === phaseType && p.date.getTime() > now
+   );
+   
+   // Fallback to algorithmic calculation if outside 2026 data
+   if (!nextPhase) {
+     const daysSinceReference = (now - REFERENCE_NEW_MOON.getTime()) / (1000 * 60 * 60 * 24);
+     const currentAge = ((daysSinceReference % SYNODIC_MONTH) + SYNODIC_MONTH) % SYNODIC_MONTH;
+     
+     if (phaseType === "New Moon") {
+       return new Date(now + (SYNODIC_MONTH - currentAge) * 24 * 60 * 60 * 1000);
+     } else {
+       const fullMoonAge = SYNODIC_MONTH / 2;
+       const daysUntilFull = currentAge < fullMoonAge 
+         ? fullMoonAge - currentAge 
+         : SYNODIC_MONTH - currentAge + fullMoonAge;
+       return new Date(now + daysUntilFull * 24 * 60 * 60 * 1000);
+     }
+   }
+   
+   return nextPhase.date;
+ }
 
 export function useMoonPhase(date?: Date): MoonPhaseData {
   return useMemo(() => {
     const now = date || new Date();
-    const lunarAge = getLunarAge(now);
-    const illumination = getIllumination(lunarAge);
-    const { name: phaseName, index: phaseIndex } = getAstronomicalPhase(lunarAge);
-    const phaseAngle = (lunarAge / SYNODIC_MONTH) * 360;
-    const isWaxing = lunarAge < SYNODIC_MONTH / 2;
     
-    const astroData = ASTROLOGICAL_DATA[phaseIndex];
+     // Use precise 2026 data
+     const phaseData = getMoonPhase2026(now);
+     const signData = getMoonSign2026(now);
+     const hoursRemaining = getHoursInSign(now);
+     
+     // Get phase index for astrological data
+     const phaseIndex = PHASE_INDEX_MAP[phaseData.phaseName] ?? 0;
+     const astroData = ASTROLOGICAL_DATA[phaseIndex];
+     
+     // Calculate phase angle from illumination
+     const phaseAngle = phaseData.isWaxing 
+       ? phaseData.illumination * 180 
+       : 180 + (1 - phaseData.illumination) * 180;
 
     return {
       astronomical: {
-        phaseName,
-        illumination,
-        age: lunarAge,
+         phaseName: phaseData.phaseName,
+         illumination: phaseData.illumination,
+         age: phaseData.dayInPhase,
         phaseAngle,
-        isWaxing,
-        nextNewMoon: getNextNewMoon(lunarAge, now),
-        nextFullMoon: getNextFullMoon(lunarAge, now),
+         isWaxing: phaseData.isWaxing,
+         nextNewMoon: getNextPhaseDate("New Moon", now),
+         nextFullMoon: getNextPhaseDate("Full Moon", now),
+         moonSign: signData.sign,
+         hoursInSign: hoursRemaining,
       },
       astrological: astroData,
     };
@@ -179,23 +177,32 @@ export function useMoonPhase(date?: Date): MoonPhaseData {
 // Utility to get phase data without hook (for non-component use)
 export function getMoonPhaseData(date?: Date): MoonPhaseData {
   const now = date || new Date();
-  const lunarAge = getLunarAge(now);
-  const illumination = getIllumination(lunarAge);
-  const { name: phaseName, index: phaseIndex } = getAstronomicalPhase(lunarAge);
-  const phaseAngle = (lunarAge / SYNODIC_MONTH) * 360;
-  const isWaxing = lunarAge < SYNODIC_MONTH / 2;
   
-  const astroData = ASTROLOGICAL_DATA[phaseIndex];
+   // Use precise 2026 data
+   const phaseData = getMoonPhase2026(now);
+   const signData = getMoonSign2026(now);
+   const hoursRemaining = getHoursInSign(now);
+   
+   // Get phase index for astrological data
+   const phaseIndex = PHASE_INDEX_MAP[phaseData.phaseName] ?? 0;
+   const astroData = ASTROLOGICAL_DATA[phaseIndex];
+   
+   // Calculate phase angle from illumination
+   const phaseAngle = phaseData.isWaxing 
+     ? phaseData.illumination * 180 
+     : 180 + (1 - phaseData.illumination) * 180;
 
   return {
     astronomical: {
-      phaseName,
-      illumination,
-      age: lunarAge,
+       phaseName: phaseData.phaseName,
+       illumination: phaseData.illumination,
+       age: phaseData.dayInPhase,
       phaseAngle,
-      isWaxing,
-      nextNewMoon: getNextNewMoon(lunarAge, now),
-      nextFullMoon: getNextFullMoon(lunarAge, now),
+       isWaxing: phaseData.isWaxing,
+       nextNewMoon: getNextPhaseDate("New Moon", now),
+       nextFullMoon: getNextPhaseDate("Full Moon", now),
+       moonSign: signData.sign,
+       hoursInSign: hoursRemaining,
     },
     astrological: astroData,
   };
