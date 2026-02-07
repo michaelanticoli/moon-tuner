@@ -31,8 +31,8 @@ export function Navigation() {
             </span>
           </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-10">
+          {/* Desktop Navigation - pushed right */}
+          <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
                 key={link.label}
@@ -44,17 +44,8 @@ export function Navigation() {
             ))}
           </div>
 
-          {/* Status Badge & Hamburger */}
-          <div className="flex items-center gap-4">
-            {/* Illumination Status */}
-            <div className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/50">
-              <span className="status-dot animate-status-pulse" />
-              <span className="font-sans text-xs uppercase tracking-[0.15em] text-foreground">
-                Receiving Light
-              </span>
-            </div>
-
-            {/* Hamburger Menu */}
+          {/* Hamburger Menu (mobile only) */}
+          <div className="flex items-center">
             <button
               className="lg:hidden flex items-center justify-center w-10 h-10 text-foreground"
               onClick={() => setIsOpen(!isOpen)}
@@ -86,12 +77,6 @@ export function Navigation() {
                   {link.label}
                 </a>
               ))}
-              <div className="flex items-center gap-2 pt-4">
-                <span className="status-dot animate-status-pulse" />
-                <span className="font-sans text-xs uppercase tracking-[0.15em] text-foreground">
-                  Receiving Light
-                </span>
-              </div>
             </div>
           </div>
         )}
