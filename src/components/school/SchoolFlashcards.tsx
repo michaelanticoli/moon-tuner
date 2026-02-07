@@ -80,18 +80,20 @@ export function SchoolFlashcards() {
 
       {/* Flashcard */}
       <div 
-        className="perspective-1000 mx-auto max-w-2xl cursor-pointer"
+        className="mx-auto max-w-2xl cursor-pointer"
+        style={{ perspective: '1000px' }}
         onClick={() => setIsFlipped(!isFlipped)}
       >
         <div 
-          className={`relative w-full h-[400px] transition-transform duration-500 transform-style-3d ${
-            isFlipped ? 'rotate-y-180' : ''
-          }`}
-          style={{ transformStyle: 'preserve-3d' }}
+          className="relative w-full h-[400px] transition-transform duration-500"
+          style={{ 
+            transformStyle: 'preserve-3d',
+            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+          }}
         >
           {/* Front */}
           <div 
-            className="absolute inset-0 backface-hidden bg-card border border-border flex flex-col items-center justify-center p-12"
+            className="absolute inset-0 bg-card border border-border flex flex-col items-center justify-center p-12 rounded-2xl"
             style={{ backfaceVisibility: 'hidden' }}
           >
             <div className="flex items-center gap-6 mb-8">
@@ -109,7 +111,7 @@ export function SchoolFlashcards() {
 
           {/* Back */}
           <div 
-            className="absolute inset-0 backface-hidden bg-background border border-border flex flex-col items-center justify-center p-12 rotate-y-180"
+            className="absolute inset-0 bg-background border border-border flex flex-col items-center justify-center p-12 rounded-2xl"
             style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
           >
             <h3 className="font-serif text-xl text-center text-foreground mb-6">
