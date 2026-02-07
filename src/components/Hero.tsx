@@ -20,7 +20,7 @@ export function Hero() {
 
         {/* Headline */}
         <div className="space-y-4 opacity-0 animate-fade-in-up delay-100 mb-12">
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground leading-[1.05]">
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extralight text-foreground leading-[1.05]">
             Don't Blame The Moon. <br />
             <span className="font-serif italic font-normal">Change Your Tune.</span>
           </h1>
