@@ -4,11 +4,12 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
-import { Download, Activity, Cpu, FileText, Sparkles, Zap, Heart, Eye } from "lucide-react";
+import { Download, Activity, Cpu, FileText, Sparkles, Zap, Heart, Eye, Globe } from "lucide-react";
 import { getPhase, getPhaseName, getPhaseKey, getDetailedInsight, generateLunarArc, type ArcMonth } from "@/hooks/useLunarCalculations";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { generateLunarPDF } from "@/lib/generateLunarPDF";
+import { openLunarHTMLReport } from "@/lib/generateLunarHTML";
 
 // Archetype data matching the PDF generator
 const PHASE_ARCHETYPES: Record<string, { archetype: string; element: string; modality: string; bodyZone: string; keywords: string[]; frequency: { hz: number; meaning: string } }> = {
@@ -236,13 +237,22 @@ const LunarReports = () => {
                           Born under a <span className="text-foreground font-bold">{report.natalPhase}</span> signature.
                         </p>
                       </div>
-                      <div className="flex gap-4 mt-8 md:mt-0">
+                      <div className="flex flex-wrap gap-4 mt-8 md:mt-0">
                         <Button
                           variant="outline"
                           onClick={() => { setStep('input'); setReport(null); }}
                           className="px-6 py-6 h-auto rounded-full text-[9px] uppercase tracking-widest font-bold"
                         >
                           Recalculate
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            openLunarHTMLReport({ birthDate: report.birthDate, birthLocation: report.location, natalPhase: report.natalPhaseValue, natalPhaseName: report.natalPhase, arc: report.arc });
+                          }}
+                          className="flex items-center space-x-3 px-8 py-6 h-auto bg-foreground text-background rounded-full hover:bg-foreground/90 transition-all shadow-lg hover:shadow-xl"
+                        >
+                          <Globe className="w-4 h-4" />
+                          <span className="text-[9px] uppercase tracking-widest font-bold">View Interactive Report</span>
                         </Button>
                         <Button
                           onClick={() => {
@@ -258,7 +268,7 @@ const LunarReports = () => {
                           {isDownloading ? (
                             <><Activity className="w-4 h-4 animate-spin" /><span className="text-[9px] uppercase tracking-widest font-bold">Generating...</span></>
                           ) : (
-                            <><FileText className="w-4 h-4" /><span className="text-[9px] uppercase tracking-widest font-bold">Download Full Report (PDF)</span></>
+                            <><FileText className="w-4 h-4" /><span className="text-[9px] uppercase tracking-widest font-bold">Download PDF</span></>
                           )}
                         </Button>
                       </div>
