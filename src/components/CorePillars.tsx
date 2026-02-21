@@ -82,8 +82,8 @@ export function CorePillars() {
             <span className="italic">Quantum Momentum.</span>
           </h2>
           <p className="text-muted-foreground text-sm mt-6 max-w-2xl">
-            New Moon asks "What do I want?" First Quarter asks "What must I do?" 
-            Full Moon asks "What do I see?" Last Quarter asks "What do I release?"
+            Each quarter carries its own momentum — seed, act, illuminate, release. 
+            Together they form one continuous arc of intention moving through time.
           </p>
         </div>
 
