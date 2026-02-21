@@ -79,7 +79,7 @@ export function CorePillars() {
           <span className="system-label block mb-6">The Moontuner Offerings</span>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-foreground leading-[1.1]">
             Four Quarters of <br />
-            <span className="italic">Time Slice Pie.</span>
+            <span className="italic">Quantum Momentum.</span>
           </h2>
           <p className="text-muted-foreground text-sm mt-6 max-w-2xl">
             New Moon asks "What do I want?" First Quarter asks "What must I do?" 
