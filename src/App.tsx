@@ -17,6 +17,7 @@ import LunarReports from "./pages/LunarReports";
 import MoontunedApp from "./pages/App";
 import Moon from "./pages/Moon";
 import MoontunerSchool from "./pages/MoontunerSchool";
+import MoonTunerStarter from "./pages/MoonTunerStarter";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ function AnimatedRoutes() {
         <Route path="/lunar-reports" element={<LunarReports />} />
         <Route path="/school" element={<MoontunerSchool />} />
         <Route path="/app" element={<MoontunedApp />} />
+        <Route path="/starter" element={<MoonTunerStarter />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
