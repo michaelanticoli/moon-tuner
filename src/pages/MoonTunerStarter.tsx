@@ -181,6 +181,78 @@ const MoonTunerStarter = () => {
             </div>
           </section>
 
+          {/* ═══════════════ UNDER THE HOOD ═══════════════ */}
+          <section className="border-t border-border/30">
+            <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
+              <div className="max-w-3xl mx-auto">
+                <ScrollReveal>
+                  <p className="text-sm text-gold uppercase tracking-widest font-medium mb-4 text-center">
+                    Under the hood
+                  </p>
+                  <h2 className="font-serif text-3xl lg:text-4xl text-foreground mb-8 text-center">
+                    8 phases, 96 micro-cycles
+                  </h2>
+                </ScrollReveal>
+
+                <ScrollReveal delay={0.1}>
+                  <div className="text-muted-foreground leading-relaxed space-y-5 max-w-2xl mx-auto">
+                    <p>
+                      Most people only think of "new moon" and "full moon."
+                    </p>
+                    <p>
+                      In Moon Tuner Starter, I'll introduce you to an{" "}
+                      <span className="text-foreground font-medium">8-phase lunar framework</span>{" "}
+                      so you can work with the moon in more detail without drowning in complexity.
+                    </p>
+                    <p>
+                      Underneath that 8-phase rhythm is a 96-piece map:
+                    </p>
+                    <ul className="space-y-3 pl-1">
+                      {[
+                        "The moon spends about 2.5 days in each zodiac sign",
+                        "There are 12 signs and 8 lunar phases",
+                        "12 × 8 = 96 distinct energetic micro-cycles",
+                      ].map((item) => (
+                        <li key={item} className="flex gap-3">
+                          <Check className="w-4 h-4 text-gold mt-1 shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <p>
+                      That's the engine I use inside my Quantumelodics system.
+                    </p>
+                    <p>
+                      <span className="text-foreground font-medium">You won't have to memorize all 96 to start.</span>{" "}
+                      In this starter, you'll:
+                    </p>
+                    <ul className="space-y-3 pl-1">
+                      {[
+                        "Work directly with the 8 phases",
+                        "Notice how even that level of precision changes your timing",
+                        "Get a feel for what it's like to live inside a more detailed lunar map",
+                      ].map((item) => (
+                        <li key={item} className="flex gap-3">
+                          <Check className="w-4 h-4 text-gold mt-1 shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="text-foreground/80">
+                      If you want to go deeper into all 96 pieces, I'll share your next-step options at the end of the experiment.
+                    </p>
+                  </div>
+                </ScrollReveal>
+
+                <ScrollReveal delay={0.15}>
+                  <div className="text-center mt-10">
+                    <CTAButton />
+                  </div>
+                </ScrollReveal>
+              </div>
+            </div>
+          </section>
+
           {/* ═══════════════ WHO IT'S FOR ═══════════════ */}
           <section className="bg-card/20 border-y border-border/30">
             <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
