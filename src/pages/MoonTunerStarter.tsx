@@ -3,45 +3,13 @@ import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
-import { Check, X, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { Check, X } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
-const inclusions = [
-  {
-    title: "Lesson 1: The Lunar Operating System",
-    type: "lesson",
-  },
-  {
-    title: "Lesson 2: Design Your 28-Day Experiment",
-    type: "lesson",
-  },
-  {
-    title: "Lesson 3: Check-ins & Course Corrections",
-    type: "lesson",
-  },
-  {
-    title: "Lesson 4: Debrief & Next Steps",
-    type: "lesson",
-  },
-  {
-    title: "28-day Moon Tuner Planner (PDF / Notion / printable)",
-    type: "bonus",
-  },
-  {
-    title: "Lunar timing calendar for the current cycle (phases + key dates)",
-    type: "bonus",
-  },
-  {
-    title: "Reflection prompts at each phase to help you decode what's happening",
-    type: "bonus",
-  },
-];
 
 const forYou = [
   "Some weeks feel magically in flow and other weeks feel like pushing through mud — and you want to know why",
@@ -59,15 +27,15 @@ const notForYou = [
 const faqs = [
   {
     q: "Do I need to already know astrology?",
-    a: "No. I'll give you everything you need for this experiment. If you've never looked at a chart before, you're fine.",
+    a: "No. I'll give you everything you need for this experiment. You don't have to read charts or memorize signs.",
   },
   {
     q: 'Do I have to "believe" in manifestation or magic?',
-    a: "You only need to be open to tracking your own experience. Treat this like a 28-day field study: try the method, write down what happens, keep what works.",
+    a: "You just need to be open to tracking your own experience. Treat it like a 28-day field study: try the method, write down what happens, keep what works.",
   },
   {
-    q: "How much time will this take?",
-    a: "About 1–2 hours at the beginning to set up your experiment, then 5–10 minutes at each key phase to check in and adjust.",
+    q: "How much time does it take?",
+    a: "About 1–2 hours at the beginning to set up your experiment, then 5–10 minutes at each key moon phase to check in and adjust.",
   },
   {
     q: "Will there be live calls?",
@@ -79,7 +47,7 @@ const faqs = [
   },
 ];
 
-function CTAButton({ className = "" }: { className?: string }) {
+function CTAButton({ label, className = "" }: { label?: string; className?: string }) {
   return (
     <Button
       variant="gold"
@@ -90,7 +58,7 @@ function CTAButton({ className = "" }: { className?: string }) {
         window.alert("Checkout coming soon!");
       }}
     >
-      Join Moon Tuner Starter — $27
+      {label || "Join Moon Tuner Starter – $27"}
     </Button>
   );
 }
@@ -107,38 +75,45 @@ const MoonTunerStarter = () => {
             <ScrollReveal>
               <div className="max-w-3xl mx-auto text-center">
                 <span className="inline-block px-4 py-1.5 bg-gold/10 border border-gold/30 rounded-full text-gold text-xs font-medium tracking-widest uppercase mb-8">
-                  28-Day Guided Experiment
+                  28-Day Guided Experiment · $27
                 </span>
 
                 <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 leading-[1.15]">
-                  Plan your next 28 days with the moon
+                  Tune your next 28 days to the moon
                   <span className="italic block mt-1 text-gold">
                     instead of guessing the right time.
                   </span>
                 </h1>
 
                 <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-10">
-                  Moon Tuner Starter is a 28-day guided experiment that teaches
-                  you how to time your actions with the lunar cycle using my
-                  Quantumelodics framework — so you can stop forcing and start
-                  flowing.
-                </p>
-
-                <p className="font-serif text-2xl text-foreground mb-6">
-                  Moon Tuner Starter · <span className="text-gold">$27</span>
+                  Moon Tuner Starter is a 28-day guided experiment using my
+                  Quantumelodics framework to help you time your actions with
+                  the lunar cycle, so life feels more tuned and less forced.
                 </p>
 
                 <CTAButton />
 
                 <p className="text-sm text-muted-foreground mt-5">
-                  Next lunar cycle starts soon. Join before the next new moon to
-                  be part of this round.
+                  Join before the next new moon to be part of this cycle.
                 </p>
               </div>
             </ScrollReveal>
           </section>
 
-          {/* ═══════════════ WHAT YOU GET ═══════════════ */}
+          {/* ═══════════════ BRIDGE ═══════════════ */}
+          <section className="border-t border-border/30">
+            <div className="container mx-auto px-6 lg:px-12 py-12 lg:py-16">
+              <ScrollReveal>
+                <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto text-center">
+                  If you've ever noticed some weeks everything flows and other
+                  weeks everything jams, this is your chance to test what happens
+                  when you plan with the moon instead of pushing randomly.
+                </p>
+              </ScrollReveal>
+            </div>
+          </section>
+
+          {/* ═══════════════ WHAT YOU'LL DO ═══════════════ */}
           <section className="border-t border-border/30">
             <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
               <div className="max-w-4xl mx-auto">
@@ -148,18 +123,20 @@ const MoonTunerStarter = () => {
                   </h2>
                 </ScrollReveal>
 
+                {/* Plain English summary */}
                 <ScrollReveal delay={0.1}>
-                  <div className="text-muted-foreground leading-relaxed space-y-4 mb-14 max-w-2xl mx-auto">
-                    <p>In this 28-day lunar experiment, you will:</p>
+                  <div className="max-w-2xl mx-auto mb-14">
+                    <p className="text-muted-foreground mb-5">
+                      In plain English, here's what happens over 28 days:
+                    </p>
                     <ul className="space-y-3 pl-1">
                       {[
-                        "Learn a simple 4-phase lunar framework using the metaphor of farming: plant, grow, harvest, compost",
-                        "Choose 1–2 areas of your life (money, creativity, relationships, self-care…) to focus on",
-                        "Map those intentions onto one lunar cycle so you know what to do in each phase",
-                        "Check in at key moon moments and adjust your actions instead of forcing everything",
-                        "Track what actually changes in your energy, results, and sense of timing",
+                        "Choose 1–2 areas of your life to focus on (money, creativity, relationships, self-care, etc.)",
+                        "Map them onto the 4 main lunar phases: plant, grow, harvest, compost",
+                        "Use short check-ins at each phase to adjust your actions",
+                        "Track what changes in your energy, results, and sense of timing",
                       ].map((item) => (
-                        <li key={item} className="flex gap-3">
+                        <li key={item} className="flex gap-3 text-muted-foreground">
                           <Check className="w-4 h-4 text-gold mt-1 shrink-0" />
                           <span>{item}</span>
                         </li>
@@ -168,54 +145,33 @@ const MoonTunerStarter = () => {
                   </div>
                 </ScrollReveal>
 
-                {/* Inclusions */}
+                {/* For $27 you get */}
                 <ScrollReveal delay={0.15}>
                   <div className="bg-card/40 border border-border/50 rounded-2xl p-8 lg:p-10 mb-8">
                     <h3 className="font-serif text-xl text-foreground mb-6">
-                      What's included for $27
+                      For $27 you get:
                     </h3>
 
                     <div className="space-y-4">
-                      <p className="text-sm text-gold uppercase tracking-widest font-medium mb-2">
-                        4 Core Lessons (video or audio)
-                      </p>
-                      {inclusions
-                        .filter((i) => i.type === "lesson")
-                        .map((item) => (
-                          <div
-                            key={item.title}
-                            className="flex items-start gap-3 text-muted-foreground"
-                          >
-                            <div className="w-1.5 h-1.5 rounded-full bg-gold mt-2 shrink-0" />
-                            <span>{item.title}</span>
-                          </div>
-                        ))}
-
-                      <div className="border-t border-border/30 my-6" />
-
-                      <p className="text-sm text-gold uppercase tracking-widest font-medium mb-2">
-                        Tools & Resources
-                      </p>
-                      {inclusions
-                        .filter((i) => i.type === "bonus")
-                        .map((item) => (
-                          <div
-                            key={item.title}
-                            className="flex items-start gap-3 text-muted-foreground"
-                          >
-                            <div className="w-1.5 h-1.5 rounded-full bg-gold mt-2 shrink-0" />
-                            <span>{item.title}</span>
-                          </div>
-                        ))}
+                      {[
+                        "4 core lessons (video or audio)",
+                        "A 28-day Moon Tuner Planner",
+                        "A lunar timing calendar for the current cycle",
+                        "Reflection prompts to decode your experiment",
+                      ].map((item) => (
+                        <div key={item} className="flex items-start gap-3 text-muted-foreground">
+                          <Check className="w-4 h-4 text-gold mt-1 shrink-0" />
+                          <span>{item}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </ScrollReveal>
 
                 <ScrollReveal delay={0.2}>
                   <p className="text-sm text-muted-foreground text-center mb-8">
-                    You can go through this at your own pace. Plan on 1–2 hours
-                    to set up your experiment, then 5–10 minutes at each key
-                    phase.
+                    Go at your own pace. Plan on 1–2 hours to set up, then 5–10
+                    minutes at each key phase.
                   </p>
                   <div className="text-center">
                     <CTAButton />
@@ -243,14 +199,9 @@ const MoonTunerStarter = () => {
                       </p>
                       <ul className="space-y-4">
                         {forYou.map((item) => (
-                          <li
-                            key={item}
-                            className="flex gap-3 text-muted-foreground"
-                          >
+                          <li key={item} className="flex gap-3 text-muted-foreground">
                             <Check className="w-4 h-4 text-gold mt-1 shrink-0" />
-                            <span className="text-sm leading-relaxed">
-                              {item}
-                            </span>
+                            <span className="text-sm leading-relaxed">{item}</span>
                           </li>
                         ))}
                       </ul>
@@ -264,14 +215,9 @@ const MoonTunerStarter = () => {
                       </p>
                       <ul className="space-y-4">
                         {notForYou.map((item) => (
-                          <li
-                            key={item}
-                            className="flex gap-3 text-muted-foreground/70"
-                          >
+                          <li key={item} className="flex gap-3 text-muted-foreground/70">
                             <X className="w-4 h-4 text-muted-foreground/50 mt-1 shrink-0" />
-                            <span className="text-sm leading-relaxed">
-                              {item}
-                            </span>
+                            <span className="text-sm leading-relaxed">{item}</span>
                           </li>
                         ))}
                       </ul>
@@ -281,16 +227,7 @@ const MoonTunerStarter = () => {
 
                 <ScrollReveal delay={0.2}>
                   <div className="text-center mt-12">
-                    <Button
-                      variant="gold"
-                      size="lg"
-                      className="text-base px-8 py-6"
-                      onClick={() =>
-                        window.alert("Checkout coming soon!")
-                      }
-                    >
-                      Yes, I'm in for the 28-day lunar experiment
-                    </Button>
+                    <CTAButton label="Yes, I'm in for the 28-day lunar experiment – $27" />
                   </div>
                 </ScrollReveal>
               </div>
@@ -313,24 +250,21 @@ const MoonTunerStarter = () => {
                 <ScrollReveal delay={0.1}>
                   <div className="text-muted-foreground leading-relaxed space-y-5 text-center max-w-2xl mx-auto mb-10">
                     <p>
-                      Under the hood of Moon Tuner Starter is Quantumelodics —
-                      the system I developed that translates the numerical and
-                      symbolic data of astrology and lunar cycles into musical
-                      and energetic patterns.
+                      Under the hood of this starter is Quantumelodics — the
+                      system I created that translates the numerical and symbolic
+                      data of astrology and lunar cycles into musical and
+                      energetic patterns.
                     </p>
-                    <p>You don't need to learn the whole map yet.</p>
                     <p>
-                      In this starter, you'll work with the most accessible
-                      layer:{" "}
+                      You don't have to learn the entire system yet. In this
+                      starter, you'll just work with the most accessible layer:{" "}
                       <span className="text-foreground font-medium">
-                        lunar phases as your timing map
-                      </span>{" "}
-                      — so you can feel what it's like to move with the cycle
-                      instead of against it.
+                        lunar phases as your timing map.
+                      </span>
                     </p>
-                    <p className="text-sm text-muted-foreground/70 italic">
-                      If you love how this feels, I'll show you how to go deeper
-                      into the full Quantumelodics system after this experiment.
+                    <p className="text-foreground/80">
+                      Think of this as your first live test of Quantumelodics,
+                      using your own life as the data.
                     </p>
                   </div>
                 </ScrollReveal>
@@ -372,6 +306,12 @@ const MoonTunerStarter = () => {
                     ))}
                   </Accordion>
                 </ScrollReveal>
+
+                <ScrollReveal delay={0.15}>
+                  <div className="text-center mt-10">
+                    <CTAButton label="Yes, I'm in for the 28-day lunar experiment – $27" />
+                  </div>
+                </ScrollReveal>
               </div>
             </div>
           </section>
@@ -386,10 +326,9 @@ const MoonTunerStarter = () => {
                     <span className="italic block">to the moon?</span>
                   </h2>
                   <p className="text-muted-foreground leading-relaxed mb-10 max-w-xl mx-auto">
-                    Instead of pushing randomly and hoping for the best, give
-                    yourself 28 days to test what happens when you align your
-                    actions with the lunar cycle. No drama. No dogma. Just a
-                    structured experiment with your real life as the proof.
+                    Instead of guessing the right timing and pushing through
+                    resistance, give yourself 28 days to test what happens when
+                    you align your actions with the lunar cycle.
                   </p>
 
                   <CTAButton />
