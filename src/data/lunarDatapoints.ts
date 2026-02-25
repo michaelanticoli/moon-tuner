@@ -29,8 +29,7 @@ export async function fetchDatapoints(options?: {
   limit?: number;
   minRelevance?: number;
 }): Promise<LunarDatapoint[]> {
-  // Cast table name since it's not yet in auto-generated types
-  let query = (supabase as any)
+  let query = supabase
     .from("lunar_datapoints")
     .select("*")
     .order("relevance", { ascending: false })
@@ -52,7 +51,7 @@ export async function fetchDatapoints(options?: {
 }
 
 export async function fetchDatapointsByCategories(): Promise<Record<string, LunarDatapoint[]>> {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from("lunar_datapoints")
     .select("*")
     .order("relevance", { ascending: false })
