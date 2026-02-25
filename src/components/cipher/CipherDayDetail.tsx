@@ -1,14 +1,16 @@
 import { motion } from "framer-motion";
-import { X, Sparkles, Wind, BookOpen, Zap } from "lucide-react";
+import { X, Sparkles, Wind, BookOpen, Zap, Moon, Globe, Star } from "lucide-react";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { getMoonPhase2026, getMoonSign2026, getHoursInSign } from "@/data/lunar2026Data";
 import { DailyReading } from "@/data/parseDailyReadings";
+import { DayEvents } from "@/data/parseICS";
 
 interface CipherDayDetailProps {
   year: number;
   month: number;
   day: number;
   reading: DailyReading | null;
+  dayEvents?: DayEvents | null;
   onClose: () => void;
 }
 
@@ -39,7 +41,11 @@ const SIGN_GLYPHS: Record<string, string> = {
   Sagittarius: "♐", Capricorn: "♑", Aquarius: "♒", Pisces: "♓",
 };
 
-export function CipherDayDetail({ year, month, day, reading, onClose }: CipherDayDetailProps) {
+function formatTime(d: Date): string {
+  return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZoneName: "short" });
+}
+
+export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose }: CipherDayDetailProps) {
   const date = new Date(year, month, day);
   const phaseData = getMoonPhase2026(date);
   const signData = getMoonSign2026(date);
@@ -48,6 +54,10 @@ export function CipherDayDetail({ year, month, day, reading, onClose }: CipherDa
   const illuminationPct = Math.round(phaseData.illumination * 100);
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  // Build title from ICS atmosphere or reading
+  const atmosphereTitle = dayEvents?.dailyAtmosphere?.title || "";
+  const displayTitle = reading?.title || atmosphereTitle || `${phaseData.phaseName} in ${signData.sign}`;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
@@ -82,7 +92,7 @@ export function CipherDayDetail({ year, month, day, reading, onClose }: CipherDa
               {monthNames[month]} {day}, {year}
             </span>
             <h2 className="text-2xl md:text-3xl font-serif text-foreground leading-tight">
-              {reading?.title || `${phaseData.phaseName} in ${signData.sign}`}
+              {displayTitle}
             </h2>
           </div>
         </div>
@@ -191,8 +201,113 @@ export function CipherDayDetail({ year, month, day, reading, onClose }: CipherDa
               </p>
             </div>
           </>
+        ) : dayEvents && dayEvents.events.length > 0 ? (
+          /* ICS-based content when no CSV reading exists */
+          <div className="space-y-6">
+            {/* Daily Atmosphere */}
+            {dayEvents.dailyAtmosphere && (
+              <div className="mb-8">
+                <div className="flex items-center gap-2 mb-3">
+                  <Moon className="w-4 h-4 text-accent" />
+                  <h4 className="text-[9px] uppercase tracking-widest text-accent font-bold">
+                    Daily Atmosphere
+                  </h4>
+                </div>
+                <div className="text-muted-foreground leading-relaxed text-sm md:text-base space-y-3">
+                  {dayEvents.dailyAtmosphere.description.split("\n").filter(Boolean).map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Lunar Phase Event */}
+            {dayEvents.lunarPhase && (
+              <div className="p-6 bg-accent/5 border border-accent/20 rounded-2xl mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <Star className="w-4 h-4 text-accent" />
+                  <h4 className="text-[9px] uppercase tracking-widest text-accent font-bold">
+                    {dayEvents.lunarPhase.summary.replace(/[\p{Emoji}\p{Emoji_Component}♈♉♊♋♌♍♎♏♐♑♒♓]/gu, "").trim()}
+                  </h4>
+                </div>
+                <div className="text-foreground leading-relaxed text-sm md:text-base space-y-3">
+                  {dayEvents.lunarPhase.description.split("\n").filter(Boolean).map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Void of Course */}
+            {dayEvents.voidMoon && (
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <Wind className="w-4 h-4 text-muted-foreground" />
+                  <h4 className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold">
+                    Void of Course
+                  </h4>
+                  <span className="text-[9px] text-muted-foreground/60">
+                    {formatTime(dayEvents.voidMoon.dtstart)}
+                  </span>
+                </div>
+                <div className="text-muted-foreground leading-relaxed text-sm space-y-3">
+                  {dayEvents.voidMoon.description.split("\n").filter(Boolean).map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Planetary Ingresses */}
+            {dayEvents.ingresses.length > 0 && (
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <Globe className="w-4 h-4 text-accent" />
+                  <h4 className="text-[9px] uppercase tracking-widest text-accent font-bold">
+                    Ingresses
+                  </h4>
+                </div>
+                <div className="space-y-4">
+                  {dayEvents.ingresses.map((evt, i) => (
+                    <div key={i}>
+                      <p className="text-sm font-medium text-foreground mb-1">{evt.title}</p>
+                      <div className="text-muted-foreground leading-relaxed text-sm space-y-2">
+                        {evt.description.split("\n").filter(Boolean).slice(0, 3).map((p, j) => (
+                          <p key={j}>{p}</p>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Stations */}
+            {dayEvents.stations.length > 0 && (
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <Sparkles className="w-4 h-4 text-accent" />
+                  <h4 className="text-[9px] uppercase tracking-widest text-accent font-bold">
+                    Planetary Stations
+                  </h4>
+                </div>
+                <div className="space-y-4">
+                  {dayEvents.stations.map((evt, i) => (
+                    <div key={i}>
+                      <p className="text-sm font-medium text-foreground mb-1">{evt.title}</p>
+                      <div className="text-muted-foreground leading-relaxed text-sm space-y-2">
+                        {evt.description.split("\n").filter(Boolean).slice(0, 3).map((p, j) => (
+                          <p key={j}>{p}</p>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         ) : (
-          /* Fallback when no reading data exists */
+          /* Fallback when no data exists at all */
           <div className="text-center py-8">
             <p className="text-muted-foreground text-sm italic">
               Detailed reading data not available for this date.

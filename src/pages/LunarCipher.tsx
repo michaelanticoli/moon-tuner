@@ -7,6 +7,7 @@ import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { CipherCalendar } from "@/components/cipher/CipherCalendar";
 import { CipherDayDetail } from "@/components/cipher/CipherDayDetail";
 import { getDailyReadingsMap, getDailyReading, type DailyReading } from "@/data/parseDailyReadings";
+import { getICSEventIndex, getEventsForDate, type DayEvents } from "@/data/parseICS";
 import { RefreshCw, ChevronLeft } from "lucide-react";
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -17,12 +18,14 @@ const LunarCipher = () => {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [syncing, setSyncing] = useState(false);
   const [readings, setReadings] = useState<Map<string, DailyReading>>(new Map());
+  const [icsIndex, setIcsIndex] = useState<Map<string, DayEvents>>(new Map());
 
-  const currentYear = 2026; // Fixed to 2026 since that's our data year
+  const currentYear = 2026;
 
-  // Load daily readings on mount
+  // Load daily readings + ICS events on mount
   useEffect(() => {
     getDailyReadingsMap().then(setReadings);
+    getICSEventIndex().then(setIcsIndex);
   }, []);
 
   const handleMonthSelect = (idx: number) => {
@@ -40,6 +43,10 @@ const LunarCipher = () => {
 
   const currentReading = selectedDay !== null && selectedMonth !== null
     ? getDailyReading(readings, new Date(currentYear, selectedMonth, selectedDay))
+    : null;
+
+  const currentDayEvents = selectedDay !== null && selectedMonth !== null
+    ? getEventsForDate(icsIndex, new Date(currentYear, selectedMonth, selectedDay))
     : null;
 
   return (
@@ -146,6 +153,7 @@ const LunarCipher = () => {
               month={selectedMonth}
               day={selectedDay}
               reading={currentReading}
+              dayEvents={currentDayEvents}
               onClose={() => setSelectedDay(null)}
             />
           )}
