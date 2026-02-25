@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      lunar_datapoints: {
+        Row: {
+          cardinal_values: string | null
+          category: string
+          created_at: string
+          datapoint: string
+          id: string
+          relevance: number | null
+          source_url: string | null
+          tags: string[] | null
+        }
+        Insert: {
+          cardinal_values?: string | null
+          category?: string
+          created_at?: string
+          datapoint: string
+          id?: string
+          relevance?: number | null
+          source_url?: string | null
+          tags?: string[] | null
+        }
+        Update: {
+          cardinal_values?: string | null
+          category?: string
+          created_at?: string
+          datapoint?: string
+          id?: string
+          relevance?: number | null
+          source_url?: string | null
+          tags?: string[] | null
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           convertkit_subscriber_id: string | null

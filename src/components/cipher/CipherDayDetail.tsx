@@ -1,9 +1,12 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { X, Sparkles, Wind, BookOpen, Zap, Moon, Globe, Star } from "lucide-react";
+import { X, Sparkles, Wind, BookOpen, Zap, Moon, Globe, Star, ChevronDown, Loader2 } from "lucide-react";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { getMoonPhase2026, getMoonSign2026, getHoursInSign } from "@/data/lunar2026Data";
 import { DailyReading } from "@/data/parseDailyReadings";
 import { DayEvents } from "@/data/parseICS";
+import { fetchDatapoints, generateCycleInsight, type LunarDatapoint } from "@/data/lunarDatapoints";
+import { CycleInsightCard } from "@/components/CycleInsightCard";
 
 interface CipherDayDetailProps {
   year: number;
@@ -43,6 +46,71 @@ const SIGN_GLYPHS: Record<string, string> = {
 
 function formatTime(d: Date): string {
   return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZoneName: "short" });
+}
+
+function CycleContextSection({ phaseData, dayEvents }: { phaseData: any; dayEvents?: DayEvents | null }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [datapoints, setDatapoints] = useState<LunarDatapoint[]>([]);
+  const [aiInsight, setAiInsight] = useState<string | null>(null);
+  const [loadingAi, setLoadingAi] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  // Determine relevant category from events
+  const hasEclipse = dayEvents?.events.some(e => 
+    e.summary.toLowerCase().includes("eclipse")
+  );
+  const category = hasEclipse ? "eclipse" : "synodic";
+
+  useEffect(() => {
+    if (isOpen && !loaded) {
+      fetchDatapoints({ category, limit: 3, minRelevance: 0.7 }).then((data) => {
+        setDatapoints(data);
+        setLoaded(true);
+      });
+    }
+  }, [isOpen, loaded, category]);
+
+  const handleGenerateInsight = async () => {
+    setLoadingAi(true);
+    const hint = `Current phase: ${phaseData.phaseName}, illumination: ${Math.round(phaseData.illumination * 100)}%`;
+    const { insight } = await generateCycleInsight(category, hint);
+    setAiInsight(insight);
+    setLoadingAi(false);
+  };
+
+  return (
+    <div className="mt-6 border-t border-border pt-4">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 text-[9px] uppercase tracking-widest text-muted-foreground hover:text-accent transition-colors"
+      >
+        <ChevronDown className={`w-3 h-3 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        Cycle Context
+      </button>
+      {isOpen && (
+        <div className="mt-3 space-y-2">
+          {datapoints.map((dp) => (
+            <CycleInsightCard key={dp.id} datapoint={dp} compact />
+          ))}
+          {datapoints.length > 0 && !aiInsight && (
+            <button
+              onClick={handleGenerateInsight}
+              disabled={loadingAi}
+              className="inline-flex items-center gap-1.5 text-[10px] text-accent hover:text-accent/80 mt-2 disabled:opacity-50"
+            >
+              {loadingAi ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+              {loadingAi ? "Synthesizing..." : "Generate Cycle Intelligence"}
+            </button>
+          )}
+          {aiInsight && (
+            <div className="bg-accent/5 border border-accent/20 rounded-xl p-4 mt-2">
+              <p className="text-xs text-foreground leading-relaxed whitespace-pre-line">{aiInsight}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose }: CipherDayDetailProps) {
@@ -200,6 +268,9 @@ export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose 
                 "{reading.closingWisdom}"
               </p>
             </div>
+
+            {/* Cycle Context */}
+            <CycleContextSection phaseData={phaseData} dayEvents={dayEvents} />
           </>
         ) : dayEvents && dayEvents.events.length > 0 ? (
           /* ICS-based content when no CSV reading exists */
@@ -315,6 +386,7 @@ export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose 
             <p className="text-muted-foreground text-xs mt-2">
               The Moon is in {signData.sign} during the {phaseData.phaseName} phase at {illuminationPct}% illumination.
             </p>
+            <CycleContextSection phaseData={phaseData} dayEvents={dayEvents} />
           </div>
         )}
       </motion.div>
