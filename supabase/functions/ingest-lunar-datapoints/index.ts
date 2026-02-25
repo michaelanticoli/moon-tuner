@@ -81,22 +81,39 @@ Deno.serve(async (req) => {
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
-    // Fetch CSV from public URL
-    const { origin } = new URL(req.url);
-    // The CSV should be accessible. We'll accept it as POST body or fetch from a URL parameter.
-    const body = await req.json().catch(() => ({}));
-    const csvUrl = body.csv_url;
-    
+    // Accept CSV as POST body text, or JSON with csv_url or csv_text
     let csvText: string;
-    if (csvUrl) {
-      const resp = await fetch(csvUrl);
-      csvText = await resp.text();
+    const contentType = req.headers.get("content-type") || "";
+    
+    if (contentType.includes("text/csv") || contentType.includes("text/plain")) {
+      csvText = await req.text();
     } else {
-      return new Response(JSON.stringify({ error: "Provide csv_url in body" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      const body = await req.json().catch(() => ({}));
+      if (body.csv_text) {
+        csvText = body.csv_text;
+      } else if (body.csv_url) {
+        const resp = await fetch(body.csv_url);
+        if (!resp.ok) {
+          return new Response(JSON.stringify({ error: `Failed to fetch CSV: ${resp.status}` }), {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        csvText = await resp.text();
+      } else {
+        return new Response(JSON.stringify({ error: "Provide csv_text, csv_url in body, or POST raw CSV as text/csv" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
     }
+    
+    // Strip BOM if present
+    if (csvText.charCodeAt(0) === 0xFEFF) {
+      csvText = csvText.slice(1);
+    }
+    
+    console.log("CSV length:", csvText.length, "First 200 chars:", csvText.substring(0, 200));
 
     const rows = parseCSV(csvText);
     
