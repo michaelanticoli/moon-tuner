@@ -4,6 +4,15 @@ import {
   type ArcMonth 
 } from '@/hooks/useLunarCalculations';
 
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 interface LunarReportData {
   birthDate: Date;
   birthLocation: string;
@@ -324,7 +333,7 @@ export function openLunarHTMLReport(data: LunarReportData): void {
   <div class="cover-meta">
     <p class="label" style="margin-bottom:1rem">Generated For</p>
     <p style="font-size:1.1rem">${formatDate(data.birthDate)}</p>
-    ${data.birthLocation ? `<p class="muted" style="font-size:0.9rem">${data.birthLocation}</p>` : ''}
+    ${data.birthLocation ? `<p class="muted" style="font-size:0.9rem">${escapeHtml(data.birthLocation)}</p>` : ''}
     <div class="divider" style="width:60px;margin:1.5rem auto"></div>
     <p class="label">Natal Lunar Signature</p>
     <p class="serif" style="font-size:1.6rem;margin-top:0.3rem">${data.natalPhaseName}</p>
