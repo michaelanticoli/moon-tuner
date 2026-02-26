@@ -160,10 +160,7 @@ export function LunarLiveStatus() {
         </div>
 
         {/* Bottom Action */}
-        <div className="mt-8 pt-6 border-t border-border flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
-            Illumination: <span className="text-foreground font-medium">{moonPhase.astronomical.illumination.toFixed(0)}%</span>
-          </p>
+        <div className="mt-8 pt-6 border-t border-border flex items-center justify-end">
           <button className="flex items-center gap-2 text-sm text-accent hover:text-accent/80 transition-colors">
             <span>Explore Phase-Sign Matrix</span>
             <ArrowRight className="w-4 h-4" />
