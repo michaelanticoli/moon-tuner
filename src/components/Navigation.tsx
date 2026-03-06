@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import moontunerLogo from "@/assets/moontuner-logo.png";
+import { TelegramLoginButton } from "@/components/TelegramLoginButton";
 
 const navLinks = [
   { label: "LUNAR SYSTEM", href: "/lunar-system" },
