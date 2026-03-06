@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import moontunerLogo from "@/assets/moontuner-logo.png";
+import { TelegramLoginButton } from "@/components/TelegramLoginButton";
 
 const navLinks = [
   { label: "LUNAR SYSTEM", href: "/lunar-system" },
@@ -43,6 +43,7 @@ export function Navigation() {
                 {link.label}
               </a>
             ))}
+            <TelegramLoginButton />
           </div>
 
           {/* Hamburger Menu (mobile only) */}
@@ -78,6 +79,9 @@ export function Navigation() {
                   {link.label}
                 </a>
               ))}
+              <div className="pt-2 border-t border-border/20">
+                <TelegramLoginButton />
+              </div>
             </div>
           </div>
         )}
