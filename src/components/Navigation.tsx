@@ -43,6 +43,7 @@ export function Navigation() {
                 {link.label}
               </a>
             ))}
+            <TelegramLoginButton />
           </div>
 
           {/* Hamburger Menu (mobile only) */}
