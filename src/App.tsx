@@ -30,24 +30,25 @@ function AnimatedRoutes() {
       <ScrollToTop />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Index />} />
-        <Route path="/the-moon" element={<Moon />} />
-        <Route path="/method" element={<Method />} />
-        <Route path="/manifesto" element={<Manifesto />} />
-        <Route path="/philosophy" element={<Philosophy />} />
-        <Route path="/workbooks" element={<Workbooks />} />
-        <Route path="/workbook-preview" element={<WorkbookPreview />} />
-        <Route path="/lunar-chaperone" element={<LunarChaperone />} />
-        <Route path="/lunar-system" element={<LunarSystem />} />
-        <Route path="/lunar-cipher" element={<LunarCipher />} />
-        <Route path="/lunar-reports" element={<LunarReports />} />
-        <Route path="/school" element={<MoontunerSchool />} />
-        <Route path="/app" element={<MoontunedApp />} />
-        <Route path="/starter" element={<MoonTunerStarter />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AnimatePresence>
+          <Route path="/" element={<Index />} />
+          <Route path="/the-moon" element={<Moon />} />
+          <Route path="/method" element={<Method />} />
+          <Route path="/manifesto" element={<Manifesto />} />
+          <Route path="/philosophy" element={<Philosophy />} />
+          <Route path="/workbooks" element={<Workbooks />} />
+          <Route path="/workbook-preview" element={<WorkbookPreview />} />
+          <Route path="/lunar-chaperone" element={<LunarChaperone />} />
+          <Route path="/lunar-system" element={<LunarSystem />} />
+          <Route path="/lunar-cipher" element={<LunarCipher />} />
+          <Route path="/lunar-reports" element={<LunarReports />} />
+          <Route path="/school" element={<MoontunerSchool />} />
+          <Route path="/app" element={<MoontunedApp />} />
+          <Route path="/starter" element={<MoonTunerStarter />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AnimatePresence>
+    </>
   );
 }
 
