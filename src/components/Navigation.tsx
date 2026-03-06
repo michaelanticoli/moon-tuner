@@ -79,6 +79,9 @@ export function Navigation() {
                   {link.label}
                 </a>
               ))}
+              <div className="pt-2 border-t border-border/20">
+                <TelegramLoginButton />
+              </div>
             </div>
           </div>
         )}
