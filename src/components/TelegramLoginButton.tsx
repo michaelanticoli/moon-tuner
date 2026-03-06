@@ -22,7 +22,7 @@ export function TelegramLoginButton({ onSuccess, onClose }: TelegramLoginButtonP
 
   useEffect(() => {
     // Expose the global callback that the Telegram widget calls
-    (window as Record<string, unknown>).onTelegramAuth = async (user: TelegramUser) => {
+    (window as unknown as Record<string, unknown>).onTelegramAuth = async (user: TelegramUser) => {
       try {
         const { data, error } = await supabase.functions.invoke("telegram-auth", {
           body: user,
