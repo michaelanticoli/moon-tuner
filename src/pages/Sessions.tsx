@@ -99,24 +99,16 @@ const faqs = [
     a: "No. Sessions are designed for anyone — from complete beginners to people who've studied their chart for years. You'll receive clear explanations without assumptions about prior knowledge.",
   },
   {
-    q: "How do I prepare for a session?",
-    a: "For harmonic sessions, knowing your birth date, time, and location helps. If you don't have your exact birth time, we can still work with what's available. For tarot sessions, bring a clear question or situation in mind.",
-  },
-  {
-    q: "Are sessions recorded?",
-    a: "Live sessions are not automatically recorded, but you can request a recording at the start of your session. The Audio Insight Drop is pre-recorded and delivered directly to you.",
+    q: "How do I prepare?",
+    a: "For harmonic sessions, have your birth date, time, and location ready. If you don't have an exact birth time, we can still work with what's available. For tarot, bring a clear question or situation.",
   },
   {
     q: "What platform do sessions run on?",
     a: "Sessions are conducted via video call. You'll receive a link when your booking is confirmed through Square.",
   },
   {
-    q: "What's the difference between a harmonic session and a tarot session?",
-    a: "Harmonic sessions are rooted in your natal chart and current planetary transits — working from fixed astronomical data. Tarot sessions use symbolic card patterns to explore a situation more openly. Both are practical and focused on real decisions.",
-  },
-  {
-    q: "Can I combine both in one session?",
-    a: "Yes — book the Personal Harmonic Profile or Harmonic Blueprint Session and mention at checkout that you'd like to integrate tarot. We'll structure the session accordingly.",
+    q: "Can I combine astrology and tarot in one session?",
+    a: "Yes — book the Personal Harmonic Profile or Harmonic Blueprint Session and mention at checkout that you'd like to integrate tarot. We'll structure it accordingly.",
   },
 ];
 
