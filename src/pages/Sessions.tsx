@@ -51,7 +51,7 @@ const harmonicSessions = [
   {
     name: "Audio Insight Drop",
     duration: "24-hour delivery",
-    price: null,
+    price: "$20",
     description:
       "Submit your question and receive a personal audio reading delivered within 24 hours. No scheduling required — thoughtful, structured, and sent directly to you.",
     tags: ["Async reading", "No scheduling", "Audio delivery"],
