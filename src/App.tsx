@@ -19,6 +19,7 @@ import MoontunedApp from "./pages/App";
 import Moon from "./pages/Moon";
 import MoontunerSchool from "./pages/MoontunerSchool";
 import MoonTunerStarter from "./pages/MoonTunerStarter";
+import Sessions from "./pages/Sessions";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
