@@ -99,24 +99,16 @@ const faqs = [
     a: "No. Sessions are designed for anyone — from complete beginners to people who've studied their chart for years. You'll receive clear explanations without assumptions about prior knowledge.",
   },
   {
-    q: "How do I prepare for a session?",
-    a: "For harmonic sessions, knowing your birth date, time, and location helps. If you don't have your exact birth time, we can still work with what's available. For tarot sessions, bring a clear question or situation in mind.",
-  },
-  {
-    q: "Are sessions recorded?",
-    a: "Live sessions are not automatically recorded, but you can request a recording at the start of your session. The Audio Insight Drop is pre-recorded and delivered directly to you.",
+    q: "How do I prepare?",
+    a: "For harmonic sessions, have your birth date, time, and location ready. If you don't have an exact birth time, we can still work with what's available. For tarot, bring a clear question or situation.",
   },
   {
     q: "What platform do sessions run on?",
     a: "Sessions are conducted via video call. You'll receive a link when your booking is confirmed through Square.",
   },
   {
-    q: "What's the difference between a harmonic session and a tarot session?",
-    a: "Harmonic sessions are rooted in your natal chart and current planetary transits — working from fixed astronomical data. Tarot sessions use symbolic card patterns to explore a situation more openly. Both are practical and focused on real decisions.",
-  },
-  {
-    q: "Can I combine both in one session?",
-    a: "Yes — book the Personal Harmonic Profile or Harmonic Blueprint Session and mention at checkout that you'd like to integrate tarot. We'll structure the session accordingly.",
+    q: "Can I combine astrology and tarot in one session?",
+    a: "Yes — book the Personal Harmonic Profile or Harmonic Blueprint Session and mention at checkout that you'd like to integrate tarot. We'll structure it accordingly.",
   },
 ];
 
@@ -292,67 +284,7 @@ export default function Sessions() {
             </div>
           </section>
 
-          {/* ── 4. WHICH SESSION SHOULD I BOOK? ── */}
-          <section className="py-20 px-6 lg:px-12">
-            <div className="container mx-auto max-w-3xl">
-              <div className="mb-3">
-                <span className="system-label">Session Guide</span>
-              </div>
-              <h2 className="font-display text-2xl sm:text-3xl font-light text-foreground mb-10">
-                Which session should I book?
-              </h2>
-              <div className="space-y-4">
-                {[
-                  {
-                    condition: "New to your chart or astrology in general",
-                    recommendation: "Personal Harmonic Profile (60 min)",
-                  },
-                  {
-                    condition: "Working through a specific life area or decision",
-                    recommendation: "Harmonic Blueprint Session (45 min)",
-                  },
-                  {
-                    condition: "Need a quick read on timing — yes, no, or wait",
-                    recommendation: "Decision Timing Session (15 min)",
-                  },
-                  {
-                    condition: "Feeling scattered and need to recalibrate fast",
-                    recommendation: "Bandwidth Reset Mini (15 min)",
-                  },
-                  {
-                    condition: "No schedule flexibility — need async support",
-                    recommendation: "Audio Insight Drop (24-hr delivery)",
-                  },
-                  {
-                    condition: "Want to explore a situation symbolically",
-                    recommendation: "Tarot for Decision-Making (30 min)",
-                  },
-                  {
-                    condition: "Navigating a career or financial crossroads",
-                    recommendation: "Tarot for Career & Money (45 min)",
-                  },
-                  {
-                    condition: "Relationship dynamics need clarity",
-                    recommendation: "Tarot for Relationships (45 min)",
-                  },
-                ].map(({ condition, recommendation }) => (
-                  <div
-                    key={condition}
-                    className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-4 border border-border/30 rounded-lg bg-card/30 hover:bg-card/60 transition-colors"
-                  >
-                    <span className="font-sans text-sm text-muted-foreground flex-1">
-                      {condition}
-                    </span>
-                    <span className="font-sans text-xs font-medium text-accent shrink-0 sm:text-right">
-                      → {recommendation}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ── 5. PRIMARY BOOKING CTA ── */}
+          {/* ── 4. PRIMARY BOOKING CTA ── */}
           <section className="py-24 px-6 lg:px-12 bg-muted/10">
             <div className="container mx-auto max-w-2xl text-center">
               <div className="mb-6">
