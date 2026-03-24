@@ -45,6 +45,7 @@ function AnimatedRoutes() {
           <Route path="/school" element={<MoontunerSchool />} />
           <Route path="/app" element={<MoontunedApp />} />
           <Route path="/starter" element={<MoonTunerStarter />} />
+          <Route path="/sessions" element={<Sessions />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
