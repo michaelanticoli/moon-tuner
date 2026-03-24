@@ -5,6 +5,7 @@ import moontunerLogo from "@/assets/moontuner-logo.png";
 const navLinks = [
   { label: "LUNAR SYSTEM", href: "/lunar-system" },
   { label: "SCHOOL", href: "/school" },
+  { label: "SESSIONS", href: "/sessions" },
   { label: "CHAPERONE", href: "/workbooks" },
   { label: "PHASECRAFT", href: "/method" },
   { label: "CIPHER", href: "/lunar-cipher" },
