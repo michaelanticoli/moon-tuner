@@ -249,43 +249,16 @@ export default function MoonPhaseToday() {
     day: "numeric",
   });
 
+  // Set page title + meta via effect (no helmet library needed)
+  useEffect(() => {
+    document.title = "Moon Phase Today — Live Lunar Phase Tracker | Moontuner";
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.setAttribute("content", "What is the moon phase today? See the current moon phase live — phase name, illumination percentage, cycle day, and what today's lunar energy means for your focus and practice.");
+    return () => { document.title = "Moontuner"; };
+  }, []);
+
   return (
     <PageTransition>
-      <Helmet>
-        <title>Moon Phase Today — Live Lunar Phase Tracker | Moontuner</title>
-        <meta
-          name="description"
-          content="What is the moon phase today? See the current moon phase live — phase name, illumination percentage, cycle day, and what today's lunar energy means for your focus and practice."
-        />
-        <link rel="canonical" href="https://moontuner.xyz/moon-phase-today" />
-        <meta
-          property="og:title"
-          content="Moon Phase Today | Moontuner"
-        />
-        <meta
-          property="og:description"
-          content="Today's moon phase, live. See the current phase name, illumination percentage, and what it means for your energy and practice right now."
-        />
-        <meta
-          property="og:url"
-          content="https://moontuner.xyz/moon-phase-today"
-        />
-        <meta property="og:type" content="website" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebPage",
-          name: "Moon Phase Today",
-          description:
-            "Live lunar phase tracker showing today's moon phase, illumination percentage, cycle day, and phase-based guidance.",
-          url: "https://moontuner.xyz/moon-phase-today",
-          publisher: {
-            "@type": "Organization",
-            name: "Moontuner",
-            url: "https://moontuner.xyz",
-          },
-        })}</script>
-      </Helmet>
-
       <Navigation />
 
       <main className="min-h-screen bg-background text-foreground">
