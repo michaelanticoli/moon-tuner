@@ -2,105 +2,19 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Clock, ChevronDown, ChevronUp } from "lucide-react";
+import { ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
 const SQUARE_BOOKING_URL = "https://square.site/book/LT09Q7KSGAF98/moontuner";
 
-const harmonicSessions = [
-  {
-    name: "Personal Harmonic Profile",
-    duration: "60 min",
-    price: "$99",
-    description:
-      "A comprehensive reading of your natal chart — your patterns, timing tendencies, and structural strengths. Ideal for those new to working with their chart or ready for a deep-dive overview.",
-    tags: ["Birth chart analysis", "Natal astrology", "Personal timing"],
-  },
-  {
-    name: "Harmonic Blueprint Session",
-    duration: "45 min",
-    price: "$75",
-    description:
-      "Focused on a specific area of life — career, relationships, transitions. We map the relevant planetary patterns and examine where you are in current cycles.",
-    tags: ["Targeted reading", "Life area focus", "Cycle mapping"],
-  },
-  {
-    name: "Resonance Mapping Session",
-    duration: "20 min",
-    price: "$35",
-    description:
-      "A fast, structured look at a single question or decision. Clear data, no filler. Great for when you need a quick read on timing or direction.",
-    tags: ["Quick read", "Single question", "Timing guidance"],
-  },
-  {
-    name: "Decision Timing Session",
-    duration: "15 min",
-    price: "$25",
-    description:
-      "Is now a good time? We look at current transits against your chart and give you a practical yes, no, or wait — with the reasoning behind it.",
-    tags: ["Decision support", "Transit timing", "Practical guidance"],
-  },
-  {
-    name: "Bandwidth Reset Mini",
-    duration: "15 min",
-    price: "$25",
-    description:
-      "A grounding check-in during a high-pressure or chaotic moment. We identify what's pulling on your energy and how to recalibrate.",
-    tags: ["Check-in", "Recalibration", "Clarity session"],
-  },
-  {
-    name: "Audio Insight Drop",
-    duration: "24-hour delivery",
-    price: "$20",
-    description:
-      "Submit your question and receive a personal audio reading delivered within 24 hours. No scheduling required — thoughtful, structured, and sent directly to you.",
-    tags: ["Async reading", "No scheduling", "Audio delivery"],
-  },
-];
-
-const tarotSessions = [
-  {
-    name: "Traditional Tarot Reading",
-    duration: "45 min",
-    price: "$55",
-    description:
-      "A full-spread reading covering your current situation, underlying patterns, and practical paths forward. Structured and clear — not vague.",
-    tags: ["Full spread", "Pattern reading", "General guidance"],
-  },
-  {
-    name: "Tarot for Decision-Making",
-    duration: "30 min",
-    price: "$40",
-    description:
-      "Bring a specific decision to the table. We use the cards to map out the variables, likely outcomes, and factors you may not be weighing clearly.",
-    tags: ["Decision support", "Outcome mapping", "Clarity"],
-  },
-  {
-    name: "Tarot for Career & Money",
-    duration: "45 min",
-    price: "$55",
-    description:
-      "Professional trajectory, financial timing, and structural opportunities. A practical reading focused on your work life and material direction.",
-    tags: ["Career guidance", "Financial timing", "Opportunity mapping"],
-  },
-  {
-    name: "Tarot for Relationships",
-    duration: "45 min",
-    price: "$55",
-    description:
-      "Examining a relationship dynamic — romantic, professional, or familial. Understand the underlying patterns, what's working, and what needs attention.",
-    tags: ["Relationship patterns", "Dynamic mapping", "Interpersonal clarity"],
-  },
-];
-
 const faqs = [
   {
-    q: "Do I need to know anything about astrology before booking?",
-    a: "No. Sessions are designed for anyone — from complete beginners to people who've studied their chart for years. You'll receive clear explanations without assumptions about prior knowledge.",
+    q: "Do I need to know anything about astrology or tarot before booking?",
+    a: "No. Every session is designed for anyone — from complete beginners to people who've studied their chart for years. You'll receive clear explanations without assumptions about prior knowledge.",
   },
   {
     q: "How do I prepare?",
-    a: "For harmonic sessions, have your birth date, time, and location ready. If you don't have an exact birth time, we can still work with what's available. For tarot, bring a clear question or situation.",
+    a: "For tarot, bring a clear question or situation you're sitting with. For astro-harmonic sessions, have your birth date, time, and location ready. If you don't have an exact birth time, we can still work with what's available.",
   },
   {
     q: "What platform do sessions run on?",
@@ -108,63 +22,13 @@ const faqs = [
   },
   {
     q: "Can I combine astrology and tarot in one session?",
-    a: "Yes — book the Personal Harmonic Profile or Harmonic Blueprint Session and mention at checkout that you'd like to integrate tarot. We'll structure it accordingly.",
+    a: "Yes — book a Deep Spread or Chart Overview and mention at checkout that you'd like to integrate both. Michael will structure it accordingly.",
+  },
+  {
+    q: "What is a chart composition?",
+    a: "It's an original solo piano piece composed from your birth chart data — key, tempo, and harmonic structure all derived from your planetary placements. It's professionally produced, mixed, and mastered to release quality. You receive the track, a full compositional report, and a personal walkthrough.",
   },
 ];
-
-function SessionCard({
-  session,
-}: {
-  session: (typeof harmonicSessions)[0];
-}) {
-  return (
-    <div className="group relative flex flex-col bg-card border border-border/40 rounded-xl p-6 hover:border-accent/40 transition-all duration-300 hover:shadow-lg hover:shadow-accent/5">
-      <div className="flex items-start justify-between gap-4 mb-3">
-        <h3 className="font-display text-lg font-light text-foreground leading-snug">
-          {session.name}
-        </h3>
-        {session.price && (
-          <span className="shrink-0 font-sans text-base font-medium text-accent">
-            {session.price}
-          </span>
-        )}
-      </div>
-
-      <div className="flex items-center gap-1.5 mb-4">
-        <Clock className="w-3.5 h-3.5 text-muted-foreground" />
-        <span className="font-sans text-xs text-muted-foreground tracking-wide">
-          {session.duration}
-        </span>
-      </div>
-
-      <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
-        {session.description}
-      </p>
-
-      <div className="flex flex-wrap gap-1.5 mb-5">
-        {session.tags.map((tag) => (
-          <span
-            key={tag}
-            className="font-sans text-xs text-muted-foreground/70 bg-muted/40 border border-border/30 px-2 py-0.5 rounded-full"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      <a href={SQUARE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-        <Button
-          variant="gold-outline"
-          size="sm"
-          className="w-full gap-2 text-xs tracking-wide"
-        >
-          Book Session
-          <ExternalLink className="w-3 h-3" />
-        </Button>
-      </a>
-    </div>
-  );
-}
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
@@ -195,109 +59,249 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export default function Sessions() {
   return (
     <PageTransition>
-      {/* SEO meta — injected inline for this route */}
       <div className="min-h-screen bg-background relative">
         <Navigation />
 
         <main>
-          {/* ── 1. HERO ── */}
+          {/* ── HERO ── */}
           <section className="relative pt-28 pb-20 px-6 lg:px-12 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
             <div className="container mx-auto max-w-4xl relative z-10">
               <div className="mb-6">
-                <span className="system-label">One-on-One Sessions</span>
+                <span className="system-label">Sessions with Michael</span>
               </div>
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extralight text-foreground leading-[1.1] mb-6">
-                Personal Harmonics &amp;{" "}
+                Clarity, timing, and{" "}
                 <span className="font-serif italic font-normal">
-                  Tarot Sessions
+                  pattern recognition.
                 </span>
               </h1>
               <p className="font-sans text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mb-10">
-                Astrology readings, harmonic profile sessions, and tarot
-                guidance for clarity, timing, and real-life decisions.
+                Tarot readings, birth chart analysis, and harmonic composition — 
+                grounded in real data, delivered with honesty.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a
-                  href={SQUARE_BOOKING_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button variant="gold" size="lg" className="gap-2 w-full sm:w-auto">
-                    Book a Session
-                    <ExternalLink className="w-4 h-4" />
-                  </Button>
-                </a>
-                <a href="#services">
-                  <Button
-                    variant="hero-outline"
-                    size="lg"
-                    className="w-full sm:w-auto"
-                  >
-                    View Services
-                  </Button>
-                </a>
-              </div>
+              <a
+                href={SQUARE_BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="gold" size="lg" className="gap-2">
+                  View All &amp; Book
+                  <ExternalLink className="w-4 h-4" />
+                </Button>
+              </a>
             </div>
           </section>
 
-          {/* ── 2. PERSONAL HARMONICS SESSIONS ── */}
-          <section id="services" className="py-20 px-6 lg:px-12">
-            <div className="container mx-auto max-w-6xl">
-              <div className="mb-3">
-                <span className="system-label">Astrology & Natal Chart</span>
-              </div>
-              <h2 className="font-display text-2xl sm:text-3xl font-light text-foreground mb-3">
-                Personal Harmonics Sessions
+          {/* ── TIER 1: TAROT ── */}
+          <section className="py-20 px-6 lg:px-12">
+            <div className="container mx-auto max-w-4xl">
+              <span className="system-label mb-3 block">Tier 1</span>
+              <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
+                Tarot Reading
               </h2>
-              <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-xl mb-12">
-                Natal chart readings and timing sessions rooted in your
-                individual planetary structure. Practical, specific, and
-                grounded in real astronomical data.
+              <p className="font-serif italic text-lg text-muted-foreground mb-8">
+                The cards don't predict your future. They clarify your present.
               </p>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {harmonicSessions.map((s) => (
-                  <SessionCard key={s.name} session={s} />
-                ))}
+              <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-2xl mb-12">
+                Michael brings a holistic, conversation-led approach to every reading. 
+                Tarot is the entry point, but nothing is off limits — astrology, numerology, 
+                life patterns, timing, all of it is fair game if it serves you. You come 
+                with a question or a season of life. You leave with clarity.
+              </p>
+
+              <div className="grid sm:grid-cols-2 gap-5 mb-8">
+                {/* Single Draw */}
+                <div className="flex flex-col bg-card border border-border/40 rounded-xl p-6 hover:border-accent/40 transition-all duration-300">
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <h3 className="font-display text-lg font-light text-foreground">
+                      Single Draw
+                    </h3>
+                    <span className="shrink-0 font-sans text-base font-medium text-accent">
+                      $45
+                    </span>
+                  </div>
+                  <p className="font-sans text-xs text-muted-foreground mb-4">30 minutes</p>
+                  <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+                    One focused area. One spread. Direct, honest, actionable.
+                  </p>
+                  <a href={SQUARE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+                    <Button variant="gold-outline" size="sm" className="w-full gap-2 text-xs tracking-wide">
+                      Book a Reading <ExternalLink className="w-3 h-3" />
+                    </Button>
+                  </a>
+                </div>
+
+                {/* Deep Spread */}
+                <div className="flex flex-col bg-card border border-border/40 rounded-xl p-6 hover:border-accent/40 transition-all duration-300">
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <h3 className="font-display text-lg font-light text-foreground">
+                      Deep Spread
+                    </h3>
+                    <span className="shrink-0 font-sans text-base font-medium text-accent">
+                      $95
+                    </span>
+                  </div>
+                  <p className="font-sans text-xs text-muted-foreground mb-4">60 minutes</p>
+                  <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+                    For the bigger questions. More cards, more conversation, more time 
+                    to sit with what comes up.
+                  </p>
+                  <a href={SQUARE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+                    <Button variant="gold-outline" size="sm" className="w-full gap-2 text-xs tracking-wide">
+                      Book a Reading <ExternalLink className="w-3 h-3" />
+                    </Button>
+                  </a>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* ── 3. TAROT SESSIONS ── */}
-          <section id="tarot" className="py-20 px-6 lg:px-12 bg-muted/10">
-            <div className="container mx-auto max-w-6xl">
-              <div className="mb-3">
-                <span className="system-label">Symbolic Card Readings</span>
-              </div>
-              <h2 className="font-display text-2xl sm:text-3xl font-light text-foreground mb-3">
-                Tarot Sessions
+          {/* ── TIER 2: ASTRO-HARMONIC ── */}
+          <section className="py-20 px-6 lg:px-12 bg-muted/10">
+            <div className="container mx-auto max-w-4xl">
+              <span className="system-label mb-3 block">Tier 2</span>
+              <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
+                Astro-Harmonic Analysis
               </h2>
-              <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-xl mb-12">
-                Structured tarot readings that map out patterns, decisions, and
-                dynamics with clarity. Not prediction — perspective.
+              <p className="font-serif italic text-lg text-muted-foreground mb-8">
+                Your birth chart is a frequency. This session makes it audible.
               </p>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-5 max-w-4xl">
-                {tarotSessions.map((s) => (
-                  <SessionCard key={s.name} session={s} />
-                ))}
+              <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-2xl mb-12">
+                This is not a standard chart reading. Michael analyzes your birth chart through 
+                both classical astrological interpretation and the harmonic, quantumelodic principles 
+                he's spent years developing — the idea that every chart has a tonal signature, 
+                a resonance that can be heard, not just described.
+              </p>
+
+              <div className="grid sm:grid-cols-2 gap-5 mb-8">
+                {/* Chart Overview — accessible entry */}
+                <div className="flex flex-col bg-card border border-border/40 rounded-xl p-6 hover:border-accent/40 transition-all duration-300">
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <h3 className="font-display text-lg font-light text-foreground">
+                      Chart Overview
+                    </h3>
+                    <span className="shrink-0 font-sans text-base font-medium text-accent">
+                      $65
+                    </span>
+                  </div>
+                  <p className="font-sans text-xs text-muted-foreground mb-4">30 minutes</p>
+                  <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+                    A focused read of your natal chart's key patterns — placements, 
+                    timing tendencies, and what's active right now. Clear and practical.
+                  </p>
+                  <a href={SQUARE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+                    <Button variant="gold-outline" size="sm" className="w-full gap-2 text-xs tracking-wide">
+                      Book a Session <ExternalLink className="w-3 h-3" />
+                    </Button>
+                  </a>
+                </div>
+
+                {/* Full Astro-Harmonic */}
+                <div className="flex flex-col bg-card border border-accent/30 rounded-xl p-6 hover:border-accent/50 transition-all duration-300 relative">
+                  <span className="absolute -top-3 left-5 text-[10px] tracking-widest uppercase bg-accent text-background px-2.5 py-0.5 rounded-full font-sans font-medium">
+                    Signature Session
+                  </span>
+                  <div className="flex items-start justify-between gap-4 mb-2 mt-1">
+                    <h3 className="font-display text-lg font-light text-foreground">
+                      Full Astro-Harmonic
+                    </h3>
+                    <span className="shrink-0 font-sans text-base font-medium text-accent">
+                      $195
+                    </span>
+                  </div>
+                  <p className="font-sans text-xs text-muted-foreground mb-4">75–90 minutes</p>
+                  <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-4 flex-1">
+                    Full chart interpretation with harmonic analysis. You'll discuss your 
+                    chart in depth, then listen to the algorithmic composition generated 
+                    directly from your chart's data — your unique harmonic output, rendered as music.
+                  </p>
+                  <ul className="font-sans text-xs text-muted-foreground space-y-1.5 mb-6">
+                    <li className="flex items-start gap-2"><span className="text-accent mt-0.5">·</span> Full chart interpretation with harmonic analysis</li>
+                    <li className="flex items-start gap-2"><span className="text-accent mt-0.5">·</span> Your personalized chart composition (audio file, yours to keep)</li>
+                    <li className="flex items-start gap-2"><span className="text-accent mt-0.5">·</span> Written session report</li>
+                    <li className="flex items-start gap-2"><span className="text-accent mt-0.5">·</span> Recording of the session</li>
+                  </ul>
+                  <a href={SQUARE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+                    <Button variant="gold-outline" size="sm" className="w-full gap-2 text-xs tracking-wide">
+                      Book an Astro-Harmonic Session <ExternalLink className="w-3 h-3" />
+                    </Button>
+                  </a>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* ── 4. PRIMARY BOOKING CTA ── */}
+          {/* ── TIER 3: CUSTOM COMPOSITION ── */}
+          <section className="py-20 px-6 lg:px-12">
+            <div className="container mx-auto max-w-4xl">
+              <span className="system-label mb-3 block">Tier 3</span>
+              <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
+                Custom Chart Composition
+              </h2>
+              <p className="font-serif italic text-lg text-muted-foreground mb-8">
+                A song written from your soul's blueprint.
+              </p>
+
+              <div className="max-w-2xl">
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-6">
+                  This is the most personal thing Michael offers — and one of the most 
+                  personal things anyone can offer.
+                </p>
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-6">
+                  Using your natal chart as the score, Michael composes an original solo piano 
+                  piece built around your chart's specific harmonic data: the key drawn from your 
+                  dominant planetary energies, the tempo mapped to your lunar placements, the 
+                  structure reflecting your elemental balance and aspects. Nothing is arbitrary. 
+                  Everything has a reason, and every reason is documented.
+                </p>
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-10">
+                  The finished piece is produced, mixed, and mastered to professional radio 
+                  standard. You can release it publicly under your name. Michael retains the copyright.
+                </p>
+
+                <div className="bg-card border border-border/40 rounded-xl p-8 mb-8">
+                  <div className="flex items-baseline justify-between mb-6">
+                    <h3 className="font-display text-xl font-light text-foreground">
+                      What's Included
+                    </h3>
+                    <div className="text-right">
+                      <span className="font-sans text-2xl font-medium text-accent">From $800</span>
+                      <p className="font-sans text-[10px] text-muted-foreground tracking-wider mt-1">
+                        LIMITED — 2 TO 3 PER MONTH
+                      </p>
+                    </div>
+                  </div>
+                  <ul className="font-sans text-sm text-muted-foreground space-y-3 mb-8">
+                    <li className="flex items-start gap-3"><span className="text-accent mt-0.5">·</span> Original solo piano composition based on your birth chart</li>
+                    <li className="flex items-start gap-3"><span className="text-accent mt-0.5">·</span> Professional production, mixing, and mastering</li>
+                    <li className="flex items-start gap-3"><span className="text-accent mt-0.5">·</span> Compositional report (key, tempo, structure + astrological reasoning)</li>
+                    <li className="flex items-start gap-3"><span className="text-accent mt-0.5">·</span> Personal walkthrough recording with Michael</li>
+                    <li className="flex items-start gap-3"><span className="text-accent mt-0.5">·</span> Full release rights (copyright retained by composer)</li>
+                    <li className="flex items-start gap-3"><span className="text-accent mt-0.5">·</span> Delivery within 3–4 weeks</li>
+                  </ul>
+                  <a href={`mailto:michael@moontuner.xyz?subject=Custom%20Chart%20Composition%20Inquiry`}>
+                    <Button variant="gold" size="lg" className="w-full gap-2">
+                      Apply for a Custom Composition
+                      <ExternalLink className="w-4 h-4" />
+                    </Button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── BOOKING CTA ── */}
           <section className="py-24 px-6 lg:px-12 bg-muted/10">
             <div className="container mx-auto max-w-2xl text-center">
-              <div className="mb-6">
-                <span className="system-label">Ready to Begin</span>
-              </div>
+              <span className="system-label mb-6 block">Ready to Begin</span>
               <h2 className="font-display text-3xl sm:text-4xl font-extralight text-foreground mb-5">
                 Schedule your session{" "}
                 <span className="font-serif italic font-normal">today</span>
               </h2>
               <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-10 max-w-lg mx-auto">
                 All sessions are booked through Square. Select your session type,
-                choose a time, and receive a confirmation with everything you
-                need.
+                choose a time, and receive a confirmation with everything you need.
               </p>
               <a
                 href={SQUARE_BOOKING_URL}
@@ -309,18 +313,13 @@ export default function Sessions() {
                   <ExternalLink className="w-4 h-4" />
                 </Button>
               </a>
-              <p className="mt-6 font-sans text-xs text-muted-foreground/60">
-                Booking confirmation sent immediately · Secure payment via Square
-              </p>
             </div>
           </section>
 
-          {/* ── 6. FAQ ── */}
+          {/* ── FAQ ── */}
           <section className="py-20 px-6 lg:px-12">
             <div className="container mx-auto max-w-2xl">
-              <div className="mb-3">
-                <span className="system-label">FAQ</span>
-              </div>
+              <span className="system-label mb-3 block">FAQ</span>
               <h2 className="font-display text-2xl sm:text-3xl font-light text-foreground mb-10">
                 Common questions
               </h2>
@@ -332,40 +331,22 @@ export default function Sessions() {
             </div>
           </section>
 
-          {/* ── 7. SEO FOOTER TEXT ── */}
+          {/* ── GO DEEPER ── */}
           <section className="py-16 px-6 lg:px-12 border-t border-border/20">
-            <div className="container mx-auto max-w-3xl">
-              <div className="prose prose-sm prose-invert max-w-none">
-                <h3 className="font-sans text-xs font-medium tracking-[0.15em] text-muted-foreground/50 uppercase mb-4">
-                  About MoonTuner Sessions
-                </h3>
-                <p className="font-sans text-xs text-muted-foreground/40 leading-relaxed">
-                  MoonTuner offers personal astrology readings and tarot sessions
-                  for individuals seeking clarity on timing, decisions, and life
-                  direction. Our{" "}
-                  <strong className="text-muted-foreground/60">
-                    birth chart analysis
-                  </strong>{" "}
-                  and{" "}
-                  <strong className="text-muted-foreground/60">
-                    astrology reading
-                  </strong>{" "}
-                  sessions are structured around your natal chart and current
-                  planetary transits — practical tools for understanding where you
-                  are in your cycles. Our{" "}
-                  <strong className="text-muted-foreground/60">
-                    tarot reading
-                  </strong>{" "}
-                  sessions provide symbolic perspective on relationships, career,
-                  and{" "}
-                  <strong className="text-muted-foreground/60">
-                    decision timing
-                  </strong>
-                  . Sessions are available for individuals at any level of
-                  familiarity with astrology or tarot. Book online through our
-                  Square scheduling page.
-                </p>
-              </div>
+            <div className="container mx-auto max-w-3xl text-center">
+              <h3 className="font-display text-2xl font-light text-foreground mb-4">
+                This is just where it starts.
+              </h3>
+              <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-8 max-w-xl mx-auto">
+                Every session connects to a larger system. The Phasecraft Framework. 
+                The Lunar Chaperone workbooks. If a pattern clicks or a question opens up — 
+                there's a full body of work here to go deeper with. At your pace, on your cycle.
+              </p>
+              <a href="/">
+                <Button variant="hero-outline" size="lg" className="gap-2">
+                  Explore the Full System
+                </Button>
+              </a>
             </div>
           </section>
         </main>

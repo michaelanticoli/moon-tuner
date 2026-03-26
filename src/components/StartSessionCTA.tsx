@@ -1,24 +1,21 @@
 export function StartSessionCTA() {
   const SQUARE_URL = "https://square.site/book/LT09Q7KSGAF98/moontuner";
 
-  const sessions = [
+  const tiers = [
     {
-      title: "Personal Harmonic Profile",
-      price: "$99",
-      duration: "90 min",
-      desc: "A full birth chart reading mapped to lunar cycles and life patterns.",
+      label: "Tarot Reading",
+      from: "$45",
+      desc: "The cards don't predict your future. They clarify your present.",
     },
     {
-      title: "Harmonic Blueprint Session",
-      price: "$75",
-      duration: "60 min",
-      desc: "Focused on one theme: career, relationships, or a current decision.",
+      label: "Astro-Harmonic Analysis",
+      from: "$65",
+      desc: "Your birth chart read, interpreted, and translated into sound.",
     },
     {
-      title: "Decision Timing Session",
-      price: "$25",
-      duration: "20 min",
-      desc: "Is now the right time? A quick read on timing and phase alignment.",
+      label: "Custom Composition",
+      from: "$800",
+      desc: "An original piano piece composed from your natal chart data.",
     },
   ];
 
@@ -34,13 +31,11 @@ export function StartSessionCTA() {
               <span className="italic">who reads the chart.</span>
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mb-8 max-w-md">
-              Personalized sessions that combine birth chart analysis with lunar cycle timing. 
+              Tarot, birth chart analysis, and harmonic composition. 
               Clear, practical, and grounded in your actual situation.
             </p>
             <a
-              href={SQUARE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/sessions"
               className="system-button inline-flex"
             >
               View All Sessions & Book
@@ -48,24 +43,21 @@ export function StartSessionCTA() {
           </div>
 
           <div className="w-full lg:w-80 space-y-3">
-            {sessions.map((s) => (
+            {tiers.map((t) => (
               <a
-                key={s.title}
-                href={SQUARE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                key={t.label}
+                href="/sessions"
                 className="block p-5 bg-card border border-border rounded-xl hover:border-accent/50 transition-all duration-300 group"
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
-                    {s.title}
+                    {t.label}
                   </span>
-                  <div className="flex items-center gap-3">
-                    <span className="text-[10px] text-muted-foreground tracking-wider">{s.duration}</span>
-                    <span className="text-sm font-bold text-accent">{s.price}</span>
-                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    from <span className="text-sm font-bold text-accent">{t.from}</span>
+                  </span>
                 </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">{t.desc}</p>
               </a>
             ))}
           </div>
