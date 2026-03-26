@@ -9,6 +9,7 @@ const navLinks = [
   { label: "CHAPERONE", href: "/workbooks" },
   { label: "PHASECRAFT", href: "/method" },
   { label: "CIPHER", href: "/lunar-cipher" },
+  { label: "MOON PHASE TODAY", href: "/moon-phase-today" },
   { label: "LUNAR REPORTS", href: "/lunar-reports" },
   { label: "MANIFESTO", href: "/manifesto" },
 ];
