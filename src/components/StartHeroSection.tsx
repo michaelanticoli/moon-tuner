@@ -54,6 +54,7 @@ export function StartHeroSection() {
             Book a Session
           </a>
         </div>
+      </div>
     </section>
   );
 }
