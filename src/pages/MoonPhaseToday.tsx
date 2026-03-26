@@ -2,7 +2,7 @@ import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { Navigation } from "@/components/Navigation";
 import { Link } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
-import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 
 const ALL_PHASES = [
   {
