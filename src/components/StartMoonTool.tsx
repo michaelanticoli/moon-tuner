@@ -15,7 +15,7 @@ const PHASE_SUMMARY: Record<string, { tag: string; line: string }> = {
 
 export function StartMoonTool() {
   const moonPhase = useMoonPhase();
-  const key = moonPhase.astronomical.phaseKey;
+  const key = phaseNameToKey[moonPhase.astronomical.phaseName] ?? "new";
   const summary = PHASE_SUMMARY[key] || { tag: "", line: "" };
 
   return (

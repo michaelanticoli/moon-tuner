@@ -4,6 +4,7 @@ import { MoonPhaseGlyph, phaseNameToKey } from "./MoonPhaseGlyph";
 
 export function StartHeroSection() {
   const moonPhase = useMoonPhase();
+  const phaseKey = phaseNameToKey[moonPhase.astronomical.phaseName] ?? "new";
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-20">
@@ -12,7 +13,7 @@ export function StartHeroSection() {
         {/* Live phase badge */}
         <div className="opacity-0 animate-fade-in-up mb-6 flex items-center gap-4">
           <div className="flex items-center gap-3 px-4 py-2 rounded-full border border-border/50 bg-card/50 backdrop-blur-sm">
-            <MoonPhaseGlyph phase={moonPhase.astronomical.phaseKey as any} size="sm" className="text-accent" />
+            <MoonPhaseGlyph phase={phaseKey} size="sm" className="text-accent" />
             <span className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
               {moonPhase.astronomical.phaseName} · {moonPhase.astrological.frequencyHz}Hz
             </span>
