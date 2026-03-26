@@ -31,27 +31,27 @@ export function StartHeroSection() {
         {/* Subhead */}
         <div className="opacity-0 animate-fade-in-up delay-200 mb-12 max-w-xl">
           <p className="text-lg text-muted-foreground leading-relaxed">
-            The Moon doesn't control you — but it does describe you. 
-            Three tools, one clear picture of where you are in the cycle.
+            The Moon doesn't control you — it collaborates with you.
+            When you're centered in the cycle, you're free in every direction.
           </p>
         </div>
 
         {/* Three actions */}
-        <div className="opacity-0 animate-fade-in-up delay-300 flex flex-col sm:flex-row gap-4">
+        <div className="opacity-0 animate-fade-in-up delay-300 flex flex-col sm:flex-row gap-4 items-center">
           <a href="#moon-tool" className="system-button">
             Today's Phase
           </a>
-          <a href="#report" className="inline-flex items-center justify-center h-11 px-8 text-sm font-medium tracking-wider border border-border text-foreground hover:border-accent hover:text-accent transition-all duration-300 rounded-md">
+          <a href="#report" className="inline-flex items-center justify-center h-12 px-8 text-sm font-semibold tracking-wider border-2 border-accent text-accent hover:bg-accent hover:text-background transition-all duration-300 rounded-md">
             Get Your Lunar Map · $17
           </a>
-          <a href="#session" className="inline-flex items-center justify-center h-11 px-8 text-sm font-medium tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300">
+          <a href="#session" className="inline-flex items-center justify-center h-12 px-8 text-sm font-medium tracking-wider border border-border/60 text-foreground hover:border-accent hover:text-accent transition-all duration-300 rounded-md">
             Book a Session →
           </a>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in delay-600">
+      {/* Scroll indicator — far right to avoid overlapping CTAs */}
+      <div className="absolute bottom-8 right-8 opacity-0 animate-fade-in delay-600">
         <div className="flex flex-col items-center gap-2 text-muted-foreground">
           <span className="system-label">Scroll</span>
           <div className="w-px h-8 bg-gradient-to-b from-muted-foreground to-transparent" />
