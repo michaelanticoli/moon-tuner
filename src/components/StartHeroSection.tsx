@@ -1,6 +1,6 @@
 import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { LunarBackground } from "./LunarBackground";
-import { MoonPhaseGlyph } from "./MoonPhaseGlyph";
+import { MoonPhaseGlyph, phaseNameToKey } from "./MoonPhaseGlyph";
 
 export function StartHeroSection() {
   const moonPhase = useMoonPhase();

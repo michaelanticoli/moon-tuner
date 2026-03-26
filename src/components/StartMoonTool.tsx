@@ -1,5 +1,5 @@
 import { useMoonPhase } from "@/hooks/useMoonPhase";
-import { MoonPhaseGlyph } from "./MoonPhaseGlyph";
+import { MoonPhaseGlyph, phaseNameToKey } from "./MoonPhaseGlyph";
 import { Link } from "react-router-dom";
 
 const PHASE_SUMMARY: Record<string, { tag: string; line: string }> = {
