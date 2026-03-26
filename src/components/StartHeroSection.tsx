@@ -36,25 +36,23 @@ export function StartHeroSection() {
           </p>
         </div>
 
-        {/* Three actions */}
-        <div className="opacity-0 animate-fade-in-up delay-300 flex flex-col sm:flex-row gap-4 items-center">
-          <a href="#moon-tool" className="system-button">
+        {/* Primary CTA */}
+        <div className="opacity-0 animate-fade-in-up delay-300 mb-16">
+          <a href="#moon-tool" className="system-button text-base tracking-[0.15em]">
             Today's Phase
           </a>
-          <a href="#report" className="inline-flex items-center justify-center h-12 px-8 text-sm font-semibold tracking-wider border-2 border-accent text-accent hover:bg-accent hover:text-background transition-all duration-300 rounded-md">
+        </div>
+
+        {/* Secondary CTAs */}
+        <div className="opacity-0 animate-fade-in-up delay-400 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+          <a href="#report" className="inline-flex items-center gap-2 text-sm font-medium tracking-wider text-accent hover:text-foreground transition-colors duration-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
             Get Your Lunar Map · $17
           </a>
-          <a href="#session" className="inline-flex items-center justify-center h-12 px-8 text-sm font-medium tracking-wider border border-border/60 text-foreground hover:border-accent hover:text-accent transition-all duration-300 rounded-md">
-            Book a Session →
+          <a href="#session" className="inline-flex items-center gap-2 text-sm font-medium tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground" />
+            Book a Session
           </a>
-        </div>
-      </div>
-
-      {/* Scroll indicator — far right to avoid overlapping CTAs */}
-      <div className="absolute bottom-8 right-8 opacity-0 animate-fade-in delay-600">
-        <div className="flex flex-col items-center gap-2 text-muted-foreground">
-          <span className="system-label">Scroll</span>
-          <div className="w-px h-8 bg-gradient-to-b from-muted-foreground to-transparent" />
         </div>
       </div>
     </section>
