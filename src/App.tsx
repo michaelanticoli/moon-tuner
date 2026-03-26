@@ -20,6 +20,7 @@ import Moon from "./pages/Moon";
 import MoontunerSchool from "./pages/MoontunerSchool";
 import MoonTunerStarter from "./pages/MoonTunerStarter";
 import Sessions from "./pages/Sessions";
+import MoonPhaseToday from "./pages/MoonPhaseToday";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ function AnimatedRoutes() {
           <Route path="/app" element={<MoontunedApp />} />
           <Route path="/starter" element={<MoonTunerStarter />} />
           <Route path="/sessions" element={<Sessions />} />
+          <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
