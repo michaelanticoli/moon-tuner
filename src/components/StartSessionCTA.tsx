@@ -9,7 +9,7 @@ export function StartSessionCTA() {
     },
     {
       label: "Astro-Harmonic Analysis",
-      from: "$65",
+      from: "$195",
       desc: "Your birth chart read, interpreted, and translated into sound.",
     },
     {
@@ -35,7 +35,7 @@ export function StartSessionCTA() {
               Clear, practical, and grounded in your actual situation.
             </p>
             <a
-              href="/sessions"
+              href="/services"
               className="system-button inline-flex"
             >
               View All Sessions & Book
@@ -46,7 +46,7 @@ export function StartSessionCTA() {
             {tiers.map((t) => (
               <a
                 key={t.label}
-                href="/sessions"
+              href="/services"
                 className="block p-5 bg-card border border-border rounded-xl hover:border-accent/50 transition-all duration-300 group"
               >
                 <div className="flex items-center justify-between mb-1">
