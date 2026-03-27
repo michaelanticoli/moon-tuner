@@ -32,8 +32,8 @@ serve(async (req) => {
         },
       ],
       mode: "payment",
-      success_url: `${req.headers.get("origin")}/lunar-reports?session_id={CHECKOUT_SESSION_ID}&birth_date=${encodeURIComponent(birthDate || "")}&birth_time=${encodeURIComponent(birthTime || "")}&birth_location=${encodeURIComponent(birthLocation || "")}`,
-      cancel_url: `${req.headers.get("origin")}/lunar-reports`,
+      success_url: `${req.headers.get("origin")}/lunar-reports?paid=true`,
+      cancel_url: `${req.headers.get("origin")}/#report`,
     });
 
     return new Response(JSON.stringify({ url: session.url }), {
