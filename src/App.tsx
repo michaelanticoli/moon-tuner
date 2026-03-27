@@ -20,6 +20,7 @@ import Moon from "./pages/Moon";
 import MoontunerSchool from "./pages/MoontunerSchool";
 import MoonTunerStarter from "./pages/MoonTunerStarter";
 import Sessions from "./pages/Sessions";
+import Services from "./pages/Services";
 import MoonPhaseToday from "./pages/MoonPhaseToday";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
