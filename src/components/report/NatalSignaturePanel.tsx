@@ -3,8 +3,12 @@ import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { Heart, Zap, Eye } from "lucide-react";
 import type { LunarReport } from "@/lib/lunarReportEngine";
 
-function phaseToGlyphKey(phase: string): string {
-  return phase.toLowerCase().replace(/\s+/g, '-');
+type GlyphPhase = "first-quarter" | "full" | "last-quarter" | "new" | "waning-crescent" | "waning-gibbous" | "waxing-crescent" | "waxing-gibbous";
+
+function phaseToGlyphKey(phase: string): GlyphPhase {
+  const key = phase.toLowerCase().replace(/\s+/g, '-');
+  const valid: GlyphPhase[] = ['new', 'waxing-crescent', 'first-quarter', 'waxing-gibbous', 'full', 'waning-gibbous', 'last-quarter', 'waning-crescent'];
+  return valid.includes(key as GlyphPhase) ? (key as GlyphPhase) : 'new';
 }
 
 export function NatalSignaturePanel({ report }: { report: LunarReport }) {
