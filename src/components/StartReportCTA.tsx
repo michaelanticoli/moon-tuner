@@ -24,6 +24,7 @@ export function StartReportCTA() {
       });
       if (fnError) throw fnError;
       if (data?.url) {
+        sessionStorage.setItem("lunar_report_birth", JSON.stringify({ date, time, location }));
         window.location.href = data.url;
       } else {
         throw new Error("No checkout URL returned");

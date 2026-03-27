@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -15,8 +16,31 @@ import { ArcPracticeSection } from "@/components/report/ArcPracticeSection";
 import { ReportClosing } from "@/components/report/ReportClosing";
 
 const LunarReports = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const isPaid = searchParams.get("paid") === "true";
+
+  // Gate: redirect unpaid visitors to homepage report section
+  useEffect(() => {
+    if (!isPaid) {
+      navigate("/#report", { replace: true });
+    }
+  }, [isPaid, navigate]);
+
+  // Pre-fill from sessionStorage
+  const savedBirth = (() => {
+    try {
+      const raw = sessionStorage.getItem("lunar_report_birth");
+      return raw ? JSON.parse(raw) : null;
+    } catch { return null; }
+  })();
+
   const [step, setStep] = useState<'input' | 'generating' | 'result'>('input');
-  const [formData, setFormData] = useState({ date: '1990-01-01', time: '12:00', location: '' });
+  const [formData, setFormData] = useState({
+    date: savedBirth?.date || '1990-01-01',
+    time: savedBirth?.time || '12:00',
+    location: savedBirth?.location || '',
+  });
   const [report, setReport] = useState<LunarReport | null>(null);
 
   const handleCalculate = () => {
