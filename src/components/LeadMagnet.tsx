@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Download, Check, Sparkles, Moon, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MailerLiteEmbed } from "@/components/MailerLiteEmbed";
+import { EmailSubscribeForm } from "@/components/EmailSubscribeForm";
 
 export const LeadMagnet = () => {
   return (
@@ -67,7 +67,7 @@ export const LeadMagnet = () => {
                 </div>
               </div>
 
-              <MailerLiteEmbed />
+              <EmailSubscribeForm source="lead-magnet" buttonText="Get Free Guide" />
 
               <div className="mt-8 pt-6 border-t border-border/30">
                 <p className="text-xs text-muted-foreground/60 mb-3">

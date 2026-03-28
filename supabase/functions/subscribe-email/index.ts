@@ -11,10 +11,9 @@ const logStep = (step: string, details?: any) => {
   console.log(`[SUBSCRIBE-EMAIL] ${step}${detailsStr}`);
 };
 
-// Simple in-memory rate limiter (resets on cold start, but sufficient for abuse prevention)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT_MAX = 5;
-const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000;
 
 function isRateLimited(key: string): boolean {
   const now = Date.now();
@@ -27,19 +26,12 @@ function isRateLimited(key: string): boolean {
   return entry.count > RATE_LIMIT_MAX;
 }
 
-// Email validation
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 function validateEmail(email: unknown): string {
-  if (!email || typeof email !== "string") {
-    throw new Error("Email is required");
-  }
+  if (!email || typeof email !== "string") throw new Error("Email is required");
   const trimmed = email.trim().toLowerCase();
-  if (trimmed.length > 254 || trimmed.length < 5) {
-    throw new Error("Invalid email format");
-  }
-  if (!EMAIL_REGEX.test(trimmed)) {
-    throw new Error("Invalid email format");
-  }
+  if (trimmed.length > 254 || trimmed.length < 5) throw new Error("Invalid email format");
+  if (!EMAIL_REGEX.test(trimmed)) throw new Error("Invalid email format");
   return trimmed;
 }
 
@@ -49,7 +41,6 @@ serve(async (req) => {
   }
 
   try {
-    // Rate limit by IP
     const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
     if (isRateLimited(clientIP)) {
       logStep("Rate limited", { ip: clientIP });
@@ -65,36 +56,48 @@ serve(async (req) => {
 
     logStep("Processing subscription", { source });
 
-    const mailerliteApiKey = Deno.env.get("MAILERLITE_API_KEY");
-    if (!mailerliteApiKey) {
-      logStep("MAILERLITE_API_KEY is not configured");
+    const mailchimpApiKey = Deno.env.get("MAILCHIMP_API_KEY");
+    const MAILCHIMP_LIST_ID = "c44b7867f8";
+
+    if (!mailchimpApiKey) {
+      logStep("MAILCHIMP_API_KEY is not configured");
       return new Response(
         JSON.stringify({ success: false, error: "Unable to process subscription. Please try again." }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
       );
     }
 
-    // Subscribe to MailerLite
-    const mailerliteResponse = await fetch("https://connect.mailerlite.com/api/subscribers", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Authorization": `Bearer ${mailerliteApiKey}`,
-      },
-      body: JSON.stringify({
-        email,
-        fields: { source },
-        status: "active",
-      }),
-    });
+    const dc = mailchimpApiKey.split("-").pop();
 
-    const mailerliteData = await mailerliteResponse.json();
+    // Subscribe to Mailchimp
+    const mailchimpResponse = await fetch(
+      `https://${dc}.api.mailchimp.com/3.0/lists/${MAILCHIMP_LIST_ID}/members`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Basic ${btoa("anystring:" + mailchimpApiKey)}`,
+        },
+        body: JSON.stringify({
+          email_address: email,
+          status: "subscribed",
+          merge_fields: { SOURCE: source },
+          tags: [source],
+        }),
+      }
+    );
 
-    if (!mailerliteResponse.ok) {
-      logStep("MailerLite API error", mailerliteData);
+    const mailchimpData = await mailchimpResponse.json();
+
+    if (!mailchimpResponse.ok) {
+      // 400 with "Member Exists" is not a real error
+      if (mailchimpData.title === "Member Exists") {
+        logStep("Already subscribed", { email });
+      } else {
+        logStep("Mailchimp API error", mailchimpData);
+      }
     } else {
-      logStep("MailerLite subscription successful", { subscriberId: mailerliteData.data?.id });
+      logStep("Mailchimp subscription successful", { subscriberId: mailchimpData.id });
     }
 
     // Also save to database for backup
@@ -110,7 +113,7 @@ serve(async (req) => {
         {
           email,
           source,
-          convertkit_subscriber_id: mailerliteData.data?.id?.toString() || null,
+          convertkit_subscriber_id: mailchimpData.id?.toString() || null,
         },
         { onConflict: "email" }
       );
@@ -129,7 +132,6 @@ serve(async (req) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     logStep("ERROR", { message: errorMessage });
 
-    // Return generic error to client, keep details server-side only
     const isValidationError = errorMessage === "Invalid email format" || errorMessage === "Email is required";
     return new Response(
       JSON.stringify({
