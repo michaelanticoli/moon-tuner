@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 
 const SQUARE_URL = "https://square.site/book/LT09Q7KSGAF98/moontuner";
-const SQUARE_TAROT = "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/3UJ6VFGAI44JL7CZ2NQUKVTE";
+const SQUARE_TAROT = "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/SWPXX34N2NRJTB6ZGFC7OEKR";
 const SQUARE_HARMONIC = "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/CRXIHEPBY3BUT2IXWYWJLKRW";
 const COMPOSE_EMAIL = "mailto:michaelanticoli@gmail.com?subject=Custom%20Chart%20Composition%20Inquiry";
 
