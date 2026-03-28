@@ -12,6 +12,7 @@ const navLinks = [
   { label: "MOON PHASE TODAY", href: "/moon-phase-today" },
   { label: "LUNAR REPORTS", href: "/lunar-reports" },
   { label: "MANIFESTO", href: "/manifesto" },
+  { label: "BLOG", href: "https://moontuner.ghost.io" },
 ];
 
 export function Navigation() {
@@ -39,6 +40,7 @@ export function Navigation() {
               <a
                 key={link.label}
                 href={link.href}
+                {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className="font-sans text-xs font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 tracking-[0.15em]"
               >
                 {link.label}
@@ -73,6 +75,7 @@ export function Navigation() {
                 <a
                   key={link.label}
                   href={link.href}
+                  {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors tracking-[0.15em]"
                   onClick={() => setIsOpen(false)}
                 >
