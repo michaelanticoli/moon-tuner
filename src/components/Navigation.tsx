@@ -75,6 +75,7 @@ export function Navigation() {
                 <a
                   key={link.label}
                   href={link.href}
+                  {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors tracking-[0.15em]"
                   onClick={() => setIsOpen(false)}
                 >
