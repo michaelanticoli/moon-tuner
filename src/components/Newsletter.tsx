@@ -1,4 +1,4 @@
-import { MailerLiteEmbed } from "@/components/MailerLiteEmbed";
+import { EmailSubscribeForm } from "@/components/EmailSubscribeForm";
 
 export function Newsletter() {
   return (
@@ -16,7 +16,7 @@ export function Newsletter() {
             and early access to new tools. No spam, no noise.
           </p>
           <div className="max-w-md mx-auto">
-            <MailerLiteEmbed />
+            <EmailSubscribeForm source="lunar-dispatch" buttonText="Receive Transmissions" />
           </div>
           <p className="text-primary-foreground/50 text-xs mt-6">
             By subscribing, you agree to receive periodic lunar transmissions. 
