@@ -4,7 +4,7 @@ import { PageTransition } from "@/components/PageTransition";
 
 const SQUARE_URL = "https://square.site/book/LT09Q7KSGAF98/moontuner";
 const SQUARE_TAROT = "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/SWPXX34N2NRJTB6ZGFC7OEKR";
-const SQUARE_HARMONIC = "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/CRXIHEPBY3BUT2IXWYWJLKRW";
+const SQUARE_HARMONIC = "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/EE55PYXPCRZE6GQPDT4Y7IOL";
 const COMPOSE_EMAIL = "mailto:michaelanticoli@gmail.com?subject=Custom%20Chart%20Composition%20Inquiry";
 
 export default function Services() {
