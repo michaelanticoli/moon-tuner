@@ -39,6 +39,78 @@ export default function Services() {
           {/* Service Cards */}
           <div className="pb-24 lg:pb-32 flex flex-col gap-0.5">
 
+            {/* ── Digital Products Divider ── */}
+            <div className="flex items-center gap-4 py-4 mb-0.5">
+              <span className="flex-1 h-px bg-border" />
+              <span className="text-[9px] font-medium tracking-[0.35em] uppercase text-muted-foreground/50 whitespace-nowrap">
+                Digital Reports · Instant Delivery
+              </span>
+              <span className="flex-1 h-px bg-border" />
+            </div>
+
+            {/* ── QuantumMelodic Symphony Report ── */}
+            <article className="bg-card border border-border rounded-sm overflow-hidden group hover:border-[#6B4FBB]/35 transition-colors duration-400 animate-fade-in mb-0.5">
+              <div className="h-0.5 w-full bg-gradient-to-r from-[#6B4FBB] via-accent to-transparent" />
+              <div className="p-8 sm:p-10 lg:px-11 lg:py-10">
+                <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-6 mb-7">
+                  <div>
+                    <p className="text-[9px] font-medium tracking-[0.4em] uppercase text-muted-foreground/50 mb-2">Digital Report · Instant</p>
+                    <h2 className="font-serif text-[22px] sm:text-[28px] font-normal text-foreground leading-[1.2]">
+                      QuantumMelodic<br /><em className="italic">Symphony Report</em>
+                    </h2>
+                  </div>
+                  <div className="sm:text-right flex-shrink-0">
+                    <span className="font-serif text-[28px] font-normal text-accent leading-none block">$47</span>
+                    <span className="text-[10px] text-muted-foreground tracking-[0.1em] block mt-1">Instant delivery</span>
+                  </div>
+                </div>
+
+                <div className="w-full h-px bg-border my-6" />
+
+                <p className="text-[14.5px] text-muted-foreground leading-[1.8] mb-7">
+                  Your natal chart translated into musical structure. Every
+                  planetary position, every angle, every harmonic relationship
+                  mapped to its corresponding frequency and interval. The result
+                  is a complete sonic portrait of the chart you were born into —
+                  generated algorithmically, yours permanently.
+                </p>
+
+                <p className="text-[9px] font-medium tracking-[0.35em] uppercase text-muted-foreground/50 mb-3.5">What's included</p>
+                <ul className="list-none mb-9 flex flex-col gap-2.5">
+                  {[
+                    "Full natal chart-to-frequency translation",
+                    "Planetary harmonic map — every placement sonified",
+                    "Your chart's dominant key, mode, and tonal centre",
+                    "Chord structure derived from your natal aspects",
+                    "Interactive report delivered instantly after payment",
+                  ].map((item) => (
+                    <li key={item} className="text-[13.5px] text-muted-foreground flex items-start gap-3">
+                      <span className="w-1 h-1 rounded-full bg-accent flex-shrink-0 mt-[7px]" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="flex items-center gap-4 flex-wrap">
+                  <a href="https://buy.stripe.com/5kQ00i5QCdHm8qngTfe7m04" target="_blank" rel="noopener noreferrer"
+                    onClick={() => sessionStorage.setItem('qm_source', 'moontuner')}
+                    className="inline-flex items-center gap-2 px-7 py-3 rounded-sm text-[11px] font-medium tracking-[0.25em] uppercase border border-accent text-accent hover:bg-accent hover:text-background transition-all duration-300">
+                    Get Your Symphony · $47
+                  </a>
+                  <span className="text-[11.5px] text-muted-foreground tracking-[0.05em]">The algorithm that powers the $800 composition</span>
+                </div>
+              </div>
+            </article>
+
+            {/* ── Live Sessions Divider ── */}
+            <div className="flex items-center gap-4 py-4 mb-0.5">
+              <span className="flex-1 h-px bg-border" />
+              <span className="text-[9px] font-medium tracking-[0.35em] uppercase text-muted-foreground/50 whitespace-nowrap">
+                Live Sessions · Booked with Michael
+              </span>
+              <span className="flex-1 h-px bg-border" />
+            </div>
+
             {/* ── TIER 1: Tarot ── */}
             <article className="bg-card border border-border rounded-sm overflow-hidden group hover:border-accent/30 transition-colors duration-400 animate-fade-in">
               <div className="h-0.5 w-full bg-gradient-to-r from-accent to-transparent" />
