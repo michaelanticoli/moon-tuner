@@ -12,6 +12,7 @@ const navLinks = [
   { label: "MOON PHASE TODAY", href: "/moon-phase-today" },
   { label: "LUNAR REPORTS", href: "/lunar-reports" },
   { label: "MANIFESTO", href: "/manifesto" },
+  { label: "BLOG", href: "https://moontuner.ghost.io" },
 ];
 
 export function Navigation() {
