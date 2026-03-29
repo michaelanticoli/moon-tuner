@@ -15,6 +15,7 @@ import LunarChaperone from "./pages/LunarChaperone";
 import LunarSystem from "./pages/LunarSystem";
 import LunarCipher from "./pages/LunarCipher";
 import LunarReports from "./pages/LunarReports";
+import QuantumMelodic from "./pages/QuantumMelodic";
 import MoontunedApp from "./pages/App";
 import Moon from "./pages/Moon";
 import MoontunerSchool from "./pages/MoontunerSchool";
@@ -44,6 +45,7 @@ function AnimatedRoutes() {
           <Route path="/lunar-system" element={<LunarSystem />} />
           <Route path="/lunar-cipher" element={<LunarCipher />} />
           <Route path="/lunar-reports" element={<LunarReports />} />
+          <Route path="/quantumelodic" element={<QuantumMelodic />} />
           <Route path="/school" element={<MoontunerSchool />} />
           <Route path="/app" element={<MoontunedApp />} />
           <Route path="/starter" element={<MoonTunerStarter />} />
