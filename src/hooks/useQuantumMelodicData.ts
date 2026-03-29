@@ -8,31 +8,36 @@ export function useQuantumMelodicData() {
   const signsRef   = useRef<QMSign[]>([]);
   const aspectsRef = useRef<QMAspect[]>([]);
   const housesRef  = useRef<QMHouse[]>([]);
+  const fetchedRef = useRef(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState<string | null>(null);
   const [dataReady, setDataReady] = useState(false);
 
   const fetchData = useCallback(async () => {
-    if (dataReady) return; // already loaded
+    if (fetchedRef.current) return; // prevent re-fetch
+    fetchedRef.current = true;
     setLoading(true);
+    setError(null);
     try {
       const { data, error: fnError } = await supabase.functions.invoke('fetch-qm-data');
       if (fnError) throw fnError;
+      if (!data || typeof data !== 'object') throw new Error('Empty response from harmonic data service');
 
-      planetsRef.current = data.planets as QMPlanet[];
-      signsRef.current   = data.signs   as QMSign[];
-      aspectsRef.current = data.aspects as QMAspect[];
-      housesRef.current  = data.houses  as QMHouse[];
+      planetsRef.current = (data.planets as QMPlanet[]) || [];
+      signsRef.current   = (data.signs   as QMSign[])   || [];
+      aspectsRef.current = (data.aspects as QMAspect[]) || [];
+      housesRef.current  = (data.houses  as QMHouse[])  || [];
 
       setDataReady(true);
     } catch (err) {
       console.error('Error fetching QM data:', err);
+      fetchedRef.current = false; // allow retry on error
       setError(err instanceof Error ? err.message : 'Failed to load harmonic data');
     } finally {
       setLoading(false);
     }
-  }, [dataReady]);
+  }, []); // stable reference — no deps
 
   const getHouseNumber = useCallback((degree: number, ascendantDegree: number): number => {
     const adjusted = ((ascendantDegree - degree) % 360 + 360) % 360;
@@ -41,6 +46,7 @@ export function useQuantumMelodicData() {
 
   const calculateAspects = useCallback((chartPlanets: PlanetPosition[]): ComputedAspect[] => {
     const aspects = aspectsRef.current;
+    if (!aspects.length) return [];
     const computed: ComputedAspect[] = [];
     const relevant = chartPlanets.filter(p => p.name !== 'Ascendant');
 
@@ -66,8 +72,7 @@ export function useQuantumMelodicData() {
     const signs   = signsRef.current;
     const houses  = housesRef.current;
 
-    if (!planets.length || !signs.length || !aspectsRef.current.length || !houses.length) return null;
-
+    // Self-healing: if QM data didn't load, still produce a reading with nulls
     const ascendant = chartPlanets.find(p => p.name === 'Ascendant');
     const ascDegree = ascendant?.degree || 0;
 
@@ -101,5 +106,5 @@ export function useQuantumMelodicData() {
     return { planets: enriched, aspects: computedAspects, dominantElement, dominantModality, overallKey, overallTempo: Math.round(avgTempo) };
   }, [calculateAspects, getHouseNumber]);
 
-  return { loading, error, dataReady, fetchData, calculateAspects, getHouseNumber, buildReading };
+  return { loading, error, dataReady, fetchData, calculateAspects, getHouseNumber, buildReading, planetsRef, signsRef, aspectsRef, housesRef };
 }
