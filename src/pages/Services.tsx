@@ -5,7 +5,32 @@ import { PageTransition } from "@/components/PageTransition";
 const SQUARE_URL = "https://square.site/book/LT09Q7KSGAF98/moontuner";
 const SQUARE_TAROT = "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/SWPXX34N2NRJTB6ZGFC7OEKR";
 const SQUARE_HARMONIC = "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/EE55PYXPCRZE6GQPDT4Y7IOL";
-const COMPOSE_EMAIL = "mailto:michaelanticoli@gmail.com?subject=Custom%20Chart%20Composition%20Inquiry";
+const COMPOSE_EMAIL = `mailto:michaelanticoli@gmail.com?subject=${encodeURIComponent("Custom Chart Composition Inquiry — Moontuner")}&body=${encodeURIComponent(`Hi Michael,
+
+I'm interested in commissioning a custom chart composition.
+
+— My Details —
+Full Name: 
+Birth Date (MM/DD/YYYY): 
+Birth Time (exact, if known): 
+Birth Location (City, Country): 
+
+— About the Commission —
+What draws you to this work?
+
+
+Is there a specific intention, milestone, or occasion for this piece?
+
+
+Any musical preferences or references? (optional)
+
+
+How did you find Moontuner?
+
+
+Looking forward to hearing from you.
+`)}`;
+
 
 export default function Services() {
   return (

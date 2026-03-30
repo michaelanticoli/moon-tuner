@@ -23,7 +23,7 @@ const QuantumMelodic = () => {
   const isPaid = searchParams.get("paid") === "true";
 
   useEffect(() => {
-    if (!isPaid) navigate("/#report", { replace: true });
+    if (!isPaid) navigate("/services", { replace: true });
   }, [isPaid, navigate]);
 
   const { loading, error, reading, audioUrl, progress, stage, generateReading, reset } = useCosmicReading();
