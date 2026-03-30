@@ -16,6 +16,9 @@ export function StartReportCTA() {
       setError("Please enter your birth date.");
       return;
     }
+
+    const checkoutWindow = window.open("", "_blank", "noopener,noreferrer");
+
     setError("");
     setLoading(true);
     try {
@@ -25,13 +28,26 @@ export function StartReportCTA() {
       if (fnError) throw fnError;
       if (data?.url) {
         sessionStorage.setItem("lunar_report_birth", JSON.stringify({ date, time, location }));
-        // Use window.open for reliable redirect (works in iframes and all contexts)
-        const w = window.open(data.url, "_blank");
-        if (!w) window.location.href = data.url; // fallback if popup blocked
+
+        if (checkoutWindow && !checkoutWindow.closed) {
+          checkoutWindow.location.replace(data.url);
+          checkoutWindow.focus();
+          return;
+        }
+
+        if (window.top && window.top !== window.self) {
+          window.top.location.href = data.url;
+          return;
+        }
+
+        window.location.href = data.url;
       } else {
         throw new Error("No checkout URL returned");
       }
     } catch (err: any) {
+      if (checkoutWindow && !checkoutWindow.closed) {
+        checkoutWindow.close();
+      }
       setError(err?.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
