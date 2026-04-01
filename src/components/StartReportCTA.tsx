@@ -1,57 +1,24 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
-import { FileText, Loader2 } from "lucide-react";
+import { FileText } from "lucide-react";
 
 export function StartReportCTA() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("12:00");
   const [location, setLocation] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handlePurchase = async () => {
+  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/5kQbJ0en87iYfSPfPbe7m03";
+
+  const handlePurchase = () => {
     if (!date) {
       setError("Please enter your birth date.");
       return;
     }
-
-    const checkoutWindow = window.open("", "_blank", "noopener,noreferrer");
-
     setError("");
-    setLoading(true);
-    try {
-      const { data, error: fnError } = await supabase.functions.invoke("create-report-payment", {
-        body: { birthDate: date, birthTime: time, birthLocation: location },
-      });
-      if (fnError) throw fnError;
-      if (data?.url) {
-        sessionStorage.setItem("lunar_report_birth", JSON.stringify({ date, time, location }));
-
-        if (checkoutWindow && !checkoutWindow.closed) {
-          checkoutWindow.location.replace(data.url);
-          checkoutWindow.focus();
-          return;
-        }
-
-        if (window.top && window.top !== window.self) {
-          window.top.location.href = data.url;
-          return;
-        }
-
-        window.location.href = data.url;
-      } else {
-        throw new Error("No checkout URL returned");
-      }
-    } catch (err: any) {
-      if (checkoutWindow && !checkoutWindow.closed) {
-        checkoutWindow.close();
-      }
-      setError(err?.message || "Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    sessionStorage.setItem("lunar_report_birth", JSON.stringify({ date, time, location }));
+    window.open(STRIPE_PAYMENT_LINK, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -139,14 +106,9 @@ export function StartReportCTA() {
 
               <Button
                 onClick={handlePurchase}
-                disabled={loading}
                 className="w-full h-12 bg-foreground text-background hover:bg-accent hover:text-accent-foreground font-bold text-[11px] uppercase tracking-[0.3em] rounded-full transition-all duration-300"
               >
-                {loading ? (
-                  <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Processing…</>
-                ) : (
-                  "Get My Report · $17"
-                )}
+                Get My Report · $17
               </Button>
               <p className="text-[10px] text-muted-foreground text-center">
                 Secure checkout via Stripe. Report delivered instantly after payment.
