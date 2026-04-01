@@ -9,7 +9,7 @@ export function StartReportCTA() {
   const [location, setLocation] = useState("");
   const [error, setError] = useState("");
 
-  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/5kQbJ0en87iYfSPfPbe7m03";
+  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/00wfZg44ubJ0gPdcYF2Ji00";
 
   const handlePurchase = () => {
     if (!date) {
