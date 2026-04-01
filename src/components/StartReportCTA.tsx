@@ -106,14 +106,9 @@ export function StartReportCTA() {
 
               <Button
                 onClick={handlePurchase}
-                disabled={loading}
                 className="w-full h-12 bg-foreground text-background hover:bg-accent hover:text-accent-foreground font-bold text-[11px] uppercase tracking-[0.3em] rounded-full transition-all duration-300"
               >
-                {loading ? (
-                  <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Processing…</>
-                ) : (
-                  "Get My Report · $17"
-                )}
+                Get My Report · $17
               </Button>
               <p className="text-[10px] text-muted-foreground text-center">
                 Secure checkout via Stripe. Report delivered instantly after payment.
