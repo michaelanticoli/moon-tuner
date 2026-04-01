@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
-import { FileText, Loader2 } from "lucide-react";
+import { FileText } from "lucide-react";
 
 export function StartReportCTA() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("12:00");
   const [location, setLocation] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/5kQbJ0en87iYfSPfPbe7m03";
