@@ -22,14 +22,12 @@ const LunarReports = () => {
   const navigate = useNavigate();
   const isPaid = searchParams.get("paid") === "true";
 
-  // Gate: redirect unpaid visitors to homepage report section
   useEffect(() => {
     if (!isPaid) {
       navigate("/#report", { replace: true });
     }
   }, [isPaid, navigate]);
 
-  // Pre-fill from sessionStorage
   const savedBirth = (() => {
     try {
       const raw = sessionStorage.getItem("lunar_report_birth");
@@ -39,6 +37,7 @@ const LunarReports = () => {
 
   const [step, setStep] = useState<'input' | 'generating' | 'result'>('input');
   const [formData, setFormData] = useState({
+    name: savedBirth?.name || '',
     date: savedBirth?.date || '1990-01-01',
     time: savedBirth?.time || '12:00',
     location: savedBirth?.location || '',
@@ -57,10 +56,25 @@ const LunarReports = () => {
     if (!formData.date) return;
     setStep('generating');
     setTimeout(() => {
-      const r = generateReport(formData.date, formData.time, formData.location);
+      const r = generateReport(formData.date, formData.time, formData.location, formData.name);
       setReport(r);
       setStep('result');
     }, 2000);
+  };
+
+  const handleDownloadPDF = () => {
+    if (!report) return;
+    try {
+      generateLunarPDF(report);
+    } catch (err) {
+      console.error('PDF generation error:', err);
+      alert('PDF download failed. Please try the Interactive Report instead.');
+    }
+  };
+
+  const handleOpenHTML = () => {
+    if (!report) return;
+    openLunarHTMLReport(report);
   };
 
   return (
@@ -100,6 +114,10 @@ const LunarReports = () => {
                         <h4 className="text-foreground font-serif text-2xl mb-8">Enter Birth Data</h4>
                         <div className="space-y-8">
                           <div>
+                            <label className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold block mb-2">Your Name</label>
+                            <Input type="text" placeholder="First name or full name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="bg-transparent border-0 border-b border-border rounded-none py-4 focus-visible:ring-0 focus-visible:border-gold placeholder:text-muted-foreground/50" />
+                          </div>
+                          <div>
                             <label className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold block mb-2">Birth Date</label>
                             <Input type="date" value={formData.date} className="bg-transparent border-0 border-b border-border rounded-none py-4 focus-visible:ring-0 focus-visible:border-gold" onChange={(e) => setFormData({...formData, date: e.target.value})} />
                           </div>
@@ -135,21 +153,22 @@ const LunarReports = () => {
 
                 {step === 'result' && report && (
                   <motion.div key="result" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
-                    {/* Result Header */}
                     <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-border pb-12">
                       <div>
                         <span className="text-[10px] uppercase font-bold tracking-[0.5em] text-gold mb-4 block flex items-center gap-2">
                           <Sparkles className="w-4 h-4" />
                           Analysis Complete
                         </span>
-                        <h2 className="text-5xl font-serif text-foreground mb-2">Your Lunar Arc.</h2>
+                        <h2 className="text-5xl font-serif text-foreground mb-2">
+                          {report.meta.querentName ? `${report.meta.querentName}'s Lunar Arc.` : 'Your Lunar Arc.'}
+                        </h2>
                         <p className="text-muted-foreground">
                           Born under a <span className="text-foreground font-bold">{report.natal.phase}</span> signature — <span className="text-gold">{report.natal.angle}°</span>
                         </p>
                       </div>
                       <div className="flex flex-wrap gap-3 mt-8 md:mt-0">
                         <Button
-                          onClick={() => report && generateLunarPDF(report)}
+                          onClick={handleDownloadPDF}
                           className="px-6 py-6 h-auto rounded-full text-[9px] uppercase tracking-widest font-bold bg-foreground text-background hover:bg-accent hover:text-accent-foreground"
                         >
                           <Download className="w-4 h-4 mr-2" />
@@ -157,7 +176,7 @@ const LunarReports = () => {
                         </Button>
                         <Button
                           variant="outline"
-                          onClick={() => report && openLunarHTMLReport(report)}
+                          onClick={handleOpenHTML}
                           className="px-6 py-6 h-auto rounded-full text-[9px] uppercase tracking-widest font-bold"
                         >
                           <ExternalLink className="w-4 h-4 mr-2" />

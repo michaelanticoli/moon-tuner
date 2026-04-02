@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { FileText } from "lucide-react";
 
 export function StartReportCTA() {
+  const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("12:00");
   const [location, setLocation] = useState("");
@@ -17,7 +18,7 @@ export function StartReportCTA() {
       return;
     }
     setError("");
-    sessionStorage.setItem("lunar_report_birth", JSON.stringify({ date, time, location }));
+    sessionStorage.setItem("lunar_report_birth", JSON.stringify({ name, date, time, location }));
     window.open(STRIPE_PAYMENT_LINK, "_blank", "noopener,noreferrer");
   };
 
@@ -65,6 +66,18 @@ export function StartReportCTA() {
             </div>
 
             <div className="space-y-5">
+              <div>
+                <label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold block mb-2">
+                  Your Name
+                </label>
+                <Input
+                  type="text"
+                  placeholder="First name or full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="bg-background border-border"
+                />
+              </div>
               <div>
                 <label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold block mb-2">
                   Birth Date *
