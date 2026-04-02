@@ -68,6 +68,18 @@ export function StartReportCTA() {
             <div className="space-y-5">
               <div>
                 <label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold block mb-2">
+                  Your Name
+                </label>
+                <Input
+                  type="text"
+                  placeholder="First name or full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="bg-background border-border"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold block mb-2">
                   Birth Date *
                 </label>
                 <Input
