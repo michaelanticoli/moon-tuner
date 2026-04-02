@@ -151,7 +151,40 @@ export function openLunarHTMLReport(report: LunarReport): void {
   @media(max-width:768px){.nav-dots{display:none}}
   .print-btn{position:fixed;bottom:2rem;right:2rem;z-index:100;background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);color:#c9a96e;padding:0.6rem 1.5rem;border-radius:100px;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:all 0.3s;backdrop-filter:blur(10px);font-family:'DM Sans',sans-serif}
   .print-btn:hover{background:rgba(201,169,110,0.25)}
-  @media print{.print-btn,.nav-dots{display:none!important}body{background:#fff;color:#1a1a1a}.cover{min-height:auto;padding:4rem 0}section{padding:3rem 0}.sig-card,.stat-card,.arc-card,.practice,.interpretation,.peak-card{border-color:#ddd;background:#fafafa}.label,.muted,.arc-day,.arc-desc,.cover-scroll{color:#888}.gold,.arc-intensity,.keyword,.arc-focus{color:#8b7340}.keyword{border-color:#ccc}.arc-bar{background:#eee}.arc-bar-fill{background:#8b7340}.interpretation{border-left-color:#8b7340;background:#f5f3ef}}
+  @media print{
+    .print-btn,.nav-dots{display:none!important}
+    body{background:#fff!important;color:#1a1a1a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .cover{min-height:auto;padding:4rem 0;background:#f5f3ef!important}
+    .cover::before{display:none}
+    section{padding:3rem 0}
+    .cover-brand{color:#8b7340!important}
+    .cover h1{color:#1a1a1a!important}
+    .cover h1 em{color:#8b7340!important}
+    .cover-meta p{color:#1a1a1a!important}
+    .section-title{color:#1a1a1a!important}
+    .section-subtitle{color:#555!important}
+    .sig-card,.stat-card,.arc-card,.practice,.interpretation,.peak-card,.sig-moon-card{border-color:#ddd!important;background:#fafafa!important}
+    .sig-card h4,.sig-archetype,.stat-card .value{color:#1a1a1a!important}
+    .label,.muted,.arc-day,.arc-desc,.cover-scroll,.sig-subtitle,.sig-degree,.closing p,.closing-footer,.closing-footer p{color:#555!important}
+    .gold,.arc-intensity,.keyword,.arc-focus,.eclipse-badge{color:#8b7340!important}
+    .keyword{border-color:#ccc!important;background:#f0ede6!important}
+    .arc-bar{background:#eee!important}
+    .arc-bar-fill{background:#8b7340!important}
+    .interpretation{border-left-color:#8b7340!important;background:#f5f3ef!important;color:#333!important}
+    .arc-card{opacity:1!important;transform:none!important}
+    .arc-month{color:#1a1a1a!important}
+    .practice h4{color:#1a1a1a!important}
+    .practice p{color:#444!important}
+    .peak-card{color:#1a1a1a!important}
+    .peak-card span{color:#1a1a1a!important}
+    .closing{background:#f5f3ef!important}
+    .closing::before{display:none}
+    .closing h2{color:#1a1a1a!important}
+    .closing h2 em{color:#8b7340!important}
+    .reveal{opacity:1!important;transform:none!important}
+    .sig-moon-icon svg circle[fill="rgba(255,255,255,0.85)"]{fill:#1a1a1a!important}
+    .cover-moon svg circle[fill="rgba(255,255,255,0.85)"]{fill:#1a1a1a!important}
+  }
   @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
   .reveal{opacity:0;transform:translateY(30px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1)}
   .reveal.visible{opacity:1;transform:none}
