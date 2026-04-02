@@ -18,7 +18,7 @@ export function StartReportCTA() {
       return;
     }
     setError("");
-    sessionStorage.setItem("lunar_report_birth", JSON.stringify({ date, time, location }));
+    sessionStorage.setItem("lunar_report_birth", JSON.stringify({ name, date, time, location }));
     window.open(STRIPE_PAYMENT_LINK, "_blank", "noopener,noreferrer");
   };
 
