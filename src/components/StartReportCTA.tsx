@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { FileText } from "lucide-react";
 
 export function StartReportCTA() {
+  const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("12:00");
   const [location, setLocation] = useState("");
