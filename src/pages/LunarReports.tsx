@@ -45,6 +45,14 @@ const LunarReports = () => {
   });
   const [report, setReport] = useState<LunarReport | null>(null);
 
+  // Auto-generate if we have saved birth data from checkout
+  useEffect(() => {
+    if (isPaid && savedBirth?.date && step === 'input') {
+      handleCalculate();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleCalculate = () => {
     if (!formData.date) return;
     setStep('generating');
