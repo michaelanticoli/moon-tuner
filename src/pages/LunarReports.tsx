@@ -139,7 +139,22 @@ const LunarReports = () => {
                           Born under a <span className="text-foreground font-bold">{report.natal.phase}</span> signature — <span className="text-gold">{report.natal.angle}°</span>
                         </p>
                       </div>
-                      <div className="flex flex-wrap gap-4 mt-8 md:mt-0">
+                      <div className="flex flex-wrap gap-3 mt-8 md:mt-0">
+                        <Button
+                          onClick={() => report && generateLunarPDF(report)}
+                          className="px-6 py-6 h-auto rounded-full text-[9px] uppercase tracking-widest font-bold bg-foreground text-background hover:bg-accent hover:text-accent-foreground"
+                        >
+                          <Download className="w-4 h-4 mr-2" />
+                          Download PDF
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => report && openLunarHTMLReport(report)}
+                          className="px-6 py-6 h-auto rounded-full text-[9px] uppercase tracking-widest font-bold"
+                        >
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Interactive Report
+                        </Button>
                         <Button
                           variant="outline"
                           onClick={() => { setStep('input'); setReport(null); }}
