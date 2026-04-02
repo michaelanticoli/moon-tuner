@@ -5,10 +5,12 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
-import { Activity, FileText, Sparkles, Zap, Heart, Eye, Globe } from "lucide-react";
+import { Activity, FileText, Sparkles, Download, ExternalLink } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { generateReport, type LunarReport } from "@/lib/lunarReportEngine";
+import { generateLunarPDF } from "@/lib/generateLunarPDF";
+import { openLunarHTMLReport } from "@/lib/generateLunarHTML";
 import { NatalSignaturePanel } from "@/components/report/NatalSignaturePanel";
 import { PowerDayGrid } from "@/components/report/PowerDayGrid";
 import { PeakSummaryPanel } from "@/components/report/PeakSummaryPanel";
@@ -42,6 +44,14 @@ const LunarReports = () => {
     location: savedBirth?.location || '',
   });
   const [report, setReport] = useState<LunarReport | null>(null);
+
+  // Auto-generate if we have saved birth data from checkout
+  useEffect(() => {
+    if (isPaid && savedBirth?.date && step === 'input') {
+      handleCalculate();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleCalculate = () => {
     if (!formData.date) return;
@@ -137,7 +147,22 @@ const LunarReports = () => {
                           Born under a <span className="text-foreground font-bold">{report.natal.phase}</span> signature — <span className="text-gold">{report.natal.angle}°</span>
                         </p>
                       </div>
-                      <div className="flex flex-wrap gap-4 mt-8 md:mt-0">
+                      <div className="flex flex-wrap gap-3 mt-8 md:mt-0">
+                        <Button
+                          onClick={() => report && generateLunarPDF(report)}
+                          className="px-6 py-6 h-auto rounded-full text-[9px] uppercase tracking-widest font-bold bg-foreground text-background hover:bg-accent hover:text-accent-foreground"
+                        >
+                          <Download className="w-4 h-4 mr-2" />
+                          Download PDF
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => report && openLunarHTMLReport(report)}
+                          className="px-6 py-6 h-auto rounded-full text-[9px] uppercase tracking-widest font-bold"
+                        >
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Interactive Report
+                        </Button>
                         <Button
                           variant="outline"
                           onClick={() => { setStep('input'); setReport(null); }}
