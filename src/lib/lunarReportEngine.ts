@@ -669,7 +669,7 @@ export interface LunarReport {
   };
 }
 
-export function generateReport(birthDate: string, birthTime: string, location = ''): LunarReport {
+export function generateReport(birthDate: string, birthTime: string, location = '', querentName = ''): LunarReport {
   const birthJD = toJulianDate(birthDate, birthTime);
   const natalAngle = moonPhaseAngle(birthJD);
   const natalPhase = phaseName(natalAngle);
