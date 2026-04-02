@@ -642,6 +642,7 @@ export interface LunarReport {
     birthDate: string;
     birthTime: string;
     location: string;
+    querentName: string;
   };
   natal: {
     phase: string;
