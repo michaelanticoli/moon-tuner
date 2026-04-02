@@ -209,6 +209,7 @@ export function openLunarHTMLReport(report: LunarReport): void {
   <h1>Personal Lunar<br><em>Arc Report</em></h1>
   <div class="cover-meta">
     <p class="label" style="margin-bottom:1rem">Generated For</p>
+    ${meta.querentName ? `<p style="font-size:1.4rem;font-family:'Playfair Display',serif;margin-bottom:0.5rem">${escapeHtml(meta.querentName)}</p>` : ''}
     <p style="font-size:1.1rem">${meta.birthDate} at ${meta.birthTime}</p>
     ${meta.location ? `<p class="muted" style="font-size:0.9rem">${escapeHtml(meta.location)}</p>` : ''}
     <div class="divider" style="width:60px;margin:1.5rem auto"></div>

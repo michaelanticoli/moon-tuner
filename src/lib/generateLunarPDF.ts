@@ -37,6 +37,14 @@ export const generateLunarPDF = (report: LunarReport): void => {
   doc.setFontSize(10);
   doc.text('GENERATED FOR', pageWidth / 2, yPos, { align: 'center' });
   yPos += 12;
+  if (meta.querentName) {
+    doc.setTextColor(235, 230, 220);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text(meta.querentName, pageWidth / 2, yPos, { align: 'center' });
+    yPos += 10;
+    doc.setFont('helvetica', 'normal');
+  }
   doc.setTextColor(235, 230, 220);
   doc.setFontSize(14);
   doc.text(`${meta.birthDate} at ${meta.birthTime}`, pageWidth / 2, yPos, { align: 'center' });
