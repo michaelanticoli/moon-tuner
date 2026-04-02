@@ -700,6 +700,7 @@ export function generateReport(birthDate: string, birthTime: string, location = 
       birthDate,
       birthTime,
       location,
+      querentName,
     },
     natal: {
       phase: natalPhase,
