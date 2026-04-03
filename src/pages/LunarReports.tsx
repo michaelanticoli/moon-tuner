@@ -28,29 +28,14 @@ const LunarReports = () => {
     }
   }, [isPaid, navigate]);
 
-  const savedBirth = (() => {
-    try {
-      const raw = sessionStorage.getItem("lunar_report_birth");
-      return raw ? JSON.parse(raw) : null;
-    } catch { return null; }
-  })();
-
   const [step, setStep] = useState<'input' | 'generating' | 'result'>('input');
   const [formData, setFormData] = useState({
-    name: savedBirth?.name || '',
-    date: savedBirth?.date || '1990-01-01',
-    time: savedBirth?.time || '12:00',
-    location: savedBirth?.location || '',
+    name: '',
+    date: '',
+    time: '12:00',
+    location: '',
   });
   const [report, setReport] = useState<LunarReport | null>(null);
-
-  // Auto-generate if we have saved birth data from checkout
-  useEffect(() => {
-    if (isPaid && savedBirth?.date && step === 'input') {
-      handleCalculate();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleCalculate = () => {
     if (!formData.date) return;
@@ -106,7 +91,7 @@ const LunarReports = () => {
                     <div className="grid lg:grid-cols-2 gap-20 items-center">
                       <div className="space-y-8">
                         <p className="max-w-md text-xl text-muted-foreground font-light leading-relaxed">
-                          Your birth chart has a lunar signature. This report calculates it, finds your 12 monthly power days, and gives you a year of precision timing.
+                          Your birth chart has a lunar signature. Enter your details once here after checkout and this report will calculate it, find your 12 monthly power days, and give you a year of precision timing.
                         </p>
                       </div>
 

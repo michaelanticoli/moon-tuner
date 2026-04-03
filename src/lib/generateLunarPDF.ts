@@ -178,10 +178,13 @@ export const generateLunarPDF = (report: LunarReport): void => {
   yPos += 15;
 
   for (const day of powerDays) {
-    checkPageBreak(40);
+    const descLines = doc.splitTextToSize(day.description, contentWidth - 10);
+    const maxLines = Math.min(descLines.length, 4);
+    const cardHeight = 24 + maxLines * 4;
+    checkPageBreak(cardHeight + 8);
 
     doc.setFillColor(day.isPeak ? 245 : 240, day.isPeak ? 242 : 238, day.isPeak ? 235 : 230);
-    doc.rect(margin, yPos - 4, contentWidth, 32, 'F');
+    doc.rect(margin, yPos - 4, contentWidth, cardHeight, 'F');
 
     doc.setTextColor(30, 30, 30);
     doc.setFontSize(14);
@@ -201,13 +204,11 @@ export const generateLunarPDF = (report: LunarReport): void => {
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(60, 60, 60);
-    const descLines = doc.splitTextToSize(day.description, contentWidth - 10);
-    const maxLines = Math.min(descLines.length, 3);
     for (let i = 0; i < maxLines; i++) {
       doc.text(descLines[i], margin + 5, yPos + 20 + i * 4);
     }
 
-    yPos += 36 + (maxLines > 1 ? (maxLines - 1) * 4 : 0);
+    yPos += cardHeight + 4;
   }
 
   // === ARC PRACTICE ===
@@ -268,5 +269,13 @@ export const generateLunarPDF = (report: LunarReport): void => {
   doc.text('© Moontuner. All rights reserved.', pageWidth / 2, pageHeight - 30, { align: 'center' });
 
   const fileName = `Moontuner_Lunar_Arc_${meta.birthDate}.pdf`;
-  doc.save(fileName);
+  const blob = doc.output('blob');
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
