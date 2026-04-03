@@ -152,8 +152,11 @@ export function openLunarHTMLReport(report: LunarReport): void {
   .print-btn{position:fixed;bottom:2rem;right:2rem;z-index:100;background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);color:#c9a96e;padding:0.6rem 1.5rem;border-radius:100px;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:all 0.3s;backdrop-filter:blur(10px);font-family:'DM Sans',sans-serif}
   .print-btn:hover{background:rgba(201,169,110,0.25)}
   @media print{
+    @page{size:A4;margin:14mm}
     .print-btn,.nav-dots{display:none!important}
+    html,body{overflow:visible!important}
     body{background:#fff!important;color:#1a1a1a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .container{max-width:none!important;padding:0!important}
     .cover{min-height:auto;padding:4rem 0;background:#f5f3ef!important}
     .cover::before{display:none}
     section{padding:3rem 0}
@@ -181,6 +184,13 @@ export function openLunarHTMLReport(report: LunarReport): void {
     .closing::before{display:none}
     .closing h2{color:#1a1a1a!important}
     .closing h2 em{color:#8b7340!important}
+    .peak-summary{display:block!important}
+    .peak-card{margin-bottom:8mm!important;break-inside:avoid-page;page-break-inside:avoid}
+    .arc-grid{display:block!important}
+    .arc-card{display:block!important;opacity:1!important;transform:none!important;margin-bottom:6mm!important;break-inside:avoid-page;page-break-inside:avoid}
+    .practice,.sig-card,.stat-card,.sig-moon-card,.interpretation{break-inside:avoid-page;page-break-inside:avoid}
+    #arc{page-break-before:always}
+    #practices{page-break-before:always}
     .reveal{opacity:1!important;transform:none!important}
     .sig-moon-icon svg circle[fill="rgba(255,255,255,0.85)"]{fill:#1a1a1a!important}
     .cover-moon svg circle[fill="rgba(255,255,255,0.85)"]{fill:#1a1a1a!important}

@@ -1,25 +1,11 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { FileText } from "lucide-react";
 
 export function StartReportCTA() {
-  const [name, setName] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("12:00");
-  const [location, setLocation] = useState("");
-  const [error, setError] = useState("");
-
   const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/4gMcN4asS9AS0Qf0bT2Ji01";
 
   const handlePurchase = () => {
-    if (!date) {
-      setError("Please enter your birth date.");
-      return;
-    }
-    setError("");
-    sessionStorage.setItem("lunar_report_birth", JSON.stringify({ name, date, time, location }));
-    window.open(STRIPE_PAYMENT_LINK, "_blank", "noopener,noreferrer");
+    window.location.href = STRIPE_PAYMENT_LINK;
   };
 
   return (
@@ -34,8 +20,8 @@ export function StartReportCTA() {
               <span className="italic">decoded by the Moon.</span>
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mb-8 max-w-md">
-              Enter your birth date and get a personalized report: your natal lunar archetype, 
-              12-month power arc, somatic body zone, and Solfeggio frequency — delivered instantly 
+              Complete checkout first, then enter your birth data once on the next screen to generate your personalized report: your natal lunar archetype,
+              12-month power arc, somatic body zone, and Solfeggio frequency — delivered instantly
               as an interactive page and downloadable PDF.
             </p>
             <ul className="space-y-3 text-sm text-muted-foreground">
@@ -53,7 +39,7 @@ export function StartReportCTA() {
             </ul>
           </div>
 
-          {/* Right: form */}
+          {/* Right: checkout */}
           <div className="w-full lg:w-80 p-8 bg-card border border-border rounded-2xl">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
@@ -61,61 +47,14 @@ export function StartReportCTA() {
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">Lunar Map Report</p>
-                <p className="text-xs text-muted-foreground">Personalized · Instant delivery</p>
+                <p className="text-xs text-muted-foreground">Secure checkout · Post-payment generator</p>
               </div>
             </div>
 
             <div className="space-y-5">
-              <div>
-                <label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold block mb-2">
-                  Your Name
-                </label>
-                <Input
-                  type="text"
-                  placeholder="First name or full name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="bg-background border-border"
-                />
-              </div>
-              <div>
-                <label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold block mb-2">
-                  Birth Date *
-                </label>
-                <Input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="bg-background border-border"
-                />
-              </div>
-              <div>
-                <label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold block mb-2">
-                  Birth Time (optional)
-                </label>
-                <Input
-                  type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  className="bg-background border-border"
-                />
-              </div>
-              <div>
-                <label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold block mb-2">
-                  Birth Location (optional)
-                </label>
-                <Input
-                  type="text"
-                  placeholder="City, Country"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="bg-background border-border"
-                />
-              </div>
-
-              {error && (
-                <p className="text-xs text-destructive">{error}</p>
-              )}
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                You will enter your name, birth date, birth time, and location after payment — only once.
+              </p>
 
               <Button
                 onClick={handlePurchase}
@@ -124,7 +63,7 @@ export function StartReportCTA() {
                 Get My Report · $17
               </Button>
               <p className="text-[10px] text-muted-foreground text-center">
-                Secure checkout via Stripe. Report delivered instantly after payment.
+                Secure checkout via Stripe. After payment you are routed directly to the generator.
               </p>
             </div>
           </div>
