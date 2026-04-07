@@ -7,7 +7,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { LunarBackground } from "@/components/LunarBackground";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Activity, Sparkles, Music, Waves, Zap } from "lucide-react";
+import { Activity, Sparkles, Music, Waves, Zap, Download, FileText, ExternalLink } from "lucide-react";
 import { useCosmicReading } from "@/hooks/useCosmicReading";
 import { useQuantumMelodicData } from "@/hooks/useQuantumMelodicData";
 import type { BirthData } from "@/types/astrology";
@@ -16,6 +16,7 @@ import {
   elementInfo, aspectMusicalData, houseWisdom,
   calculateHarmonicAnalysis, getResolutionGuidance, getOrbPrecision,
 } from "@/utils/harmonicWisdom";
+import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
 
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
@@ -314,9 +315,40 @@ const QuantumMelodic = () => {
                           <p className="system-label text-muted-foreground/50 mt-4 normal-case italic tracking-normal">Approximate positions — ephemeris service was briefly unavailable</p>
                         )}
                       </div>
-                      <button onClick={() => { reset(); setQmReading(null); setStep("input"); }} className="system-button shrink-0">
-                        New Reading
-                      </button>
+                      <div className="flex flex-wrap gap-3 shrink-0">
+                        {audioUrl && (
+                          <button
+                            onClick={() => {
+                              const a = document.createElement('a');
+                              a.href = audioUrl;
+                              a.download = `${(reading.birthData.name || 'cosmic').replace(/\s+/g, '_')}_symphony.wav`;
+                              document.body.appendChild(a);
+                              a.click();
+                              document.body.removeChild(a);
+                            }}
+                            className="system-button text-xs gap-2"
+                          >
+                            <Download className="w-3.5 h-3.5" /> Download MP3
+                          </button>
+                        )}
+                        <button
+                          onClick={() => {
+                            // Generate and open an interactive HTML report in a new tab
+                            const planets = reading.chartData.planets;
+                            const name = reading.birthData.name || 'Cosmic Traveler';
+                            const html = buildSymphonyHTML(name, reading, qmReading, harmonicAnalysis, guidance);
+                            const blob = new Blob([html], { type: 'text/html' });
+                            const url = URL.createObjectURL(blob);
+                            window.open(url, '_blank');
+                          }}
+                          className="system-button text-xs gap-2"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" /> Interactive Report
+                        </button>
+                        <button onClick={() => { reset(); setQmReading(null); setStep("input"); }} className="system-button text-xs shrink-0">
+                          New Reading
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </section>
