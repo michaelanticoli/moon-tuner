@@ -16,6 +16,7 @@ import {
   elementInfo, aspectMusicalData, houseWisdom,
   calculateHarmonicAnalysis, getResolutionGuidance, getOrbPrecision,
 } from "@/utils/harmonicWisdom";
+import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
 
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
