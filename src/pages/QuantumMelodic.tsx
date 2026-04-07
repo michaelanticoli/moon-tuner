@@ -348,6 +348,7 @@ const QuantumMelodic = () => {
                           New Reading
                         </button>
                       </div>
+                    </div>
                   </div>
                 </section>
 
