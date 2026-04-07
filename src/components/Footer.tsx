@@ -103,8 +103,25 @@ export function Footer() {
           </div>
         </div>
 
+        {/* Partners */}
+        <div className="mt-12 pt-8 border-t border-border/30 flex flex-col items-center gap-6">
+          <a
+            href="https://elevenlabs.io/startup-grants"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="opacity-60 hover:opacity-100 transition-opacity duration-500"
+          >
+            <img
+              src="https://eleven-public-cdn.elevenlabs.io/payloadcms/pwsc4vchsqt-ElevenLabsGrants.webp"
+              alt="ElevenLabs Startup Grant"
+              className="w-40 sm:w-48"
+              loading="lazy"
+            />
+          </a>
+        </div>
+
         {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-border/30">
+        <div className="mt-8 pt-8 border-t border-border/30">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
               <span className="status-dot" />
