@@ -105,16 +105,17 @@ export function Footer() {
 
         {/* Partners */}
         <div className="mt-12 pt-8 border-t border-border/30 flex flex-col items-center gap-6">
+          <p className="text-xs text-muted-foreground/60 uppercase tracking-widest">Powered by</p>
           <a
             href="https://elevenlabs.io/startup-grants"
             target="_blank"
             rel="noopener noreferrer"
-            className="opacity-60 hover:opacity-100 transition-opacity duration-500"
+            className="opacity-80 hover:opacity-100 transition-opacity duration-500"
           >
             <img
               src="https://eleven-public-cdn.elevenlabs.io/payloadcms/pwsc4vchsqt-ElevenLabsGrants.webp"
               alt="ElevenLabs Startup Grant"
-              className="w-40 sm:w-48"
+              className="w-48 sm:w-56"
               loading="lazy"
             />
           </a>
