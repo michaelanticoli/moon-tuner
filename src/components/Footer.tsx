@@ -110,12 +110,12 @@ export function Footer() {
             href="https://elevenlabs.io/startup-grants"
             target="_blank"
             rel="noopener noreferrer"
-            className="opacity-80 hover:opacity-100 transition-opacity duration-500"
+            className="rounded-2xl border border-border/50 bg-card/50 px-6 py-4 transition-opacity duration-500 hover:opacity-100"
           >
             <img
-              src="https://eleven-public-cdn.elevenlabs.io/payloadcms/pwsc4vchsqt-ElevenLabsGrants.webp"
-              alt="ElevenLabs Startup Grant"
-              className="w-48 sm:w-56"
+              src="https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp"
+              alt="ElevenLabs Grants"
+              className="w-[250px] max-w-full"
               loading="lazy"
             />
           </a>
