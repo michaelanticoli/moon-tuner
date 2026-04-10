@@ -202,9 +202,19 @@ const LunarReports = () => {
                           <ExternalLink className="w-4 h-4 mr-2" />
                           Interactive Report
                         </Button>
+                        {chartData && (
+                          <Button
+                            variant="outline"
+                            onClick={handleDownloadCSV}
+                            className="px-6 py-6 h-auto rounded-full text-[9px] uppercase tracking-widest font-bold"
+                          >
+                            <Table className="w-4 h-4 mr-2" />
+                            Natal Chart CSV
+                          </Button>
+                        )}
                         <Button
                           variant="outline"
-                          onClick={() => { setStep('input'); setReport(null); }}
+                          onClick={() => { setStep('input'); setReport(null); setChartData(null); }}
                           className="px-6 py-6 h-auto rounded-full text-[9px] uppercase tracking-widest font-bold"
                         >
                           Recalculate
