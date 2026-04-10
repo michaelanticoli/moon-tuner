@@ -9,6 +9,7 @@ const corsHeaders = {
 const planetSymbols: Record<string, string> = {
   Sun: "☉", Moon: "☽", Mercury: "☿", Venus: "♀", Mars: "♂",
   Jupiter: "♃", Saturn: "♄", Uranus: "♅", Neptune: "♆", Pluto: "♇", Ascendant: "Asc",
+  NorthNode: "☊", Chiron: "⚷",
 };
 
 const signNames = [
@@ -27,6 +28,27 @@ function createPlanet(name: string, degree: number, isRetro = false) {
     signNumber,
     isRetrograde: isRetro,
   };
+}
+
+// Approximate Mean North Node (Rahu) — longitude of the ascending node
+function approximateNorthNode(jd: number): number {
+  const T = (jd - 2451545.0) / 36525;
+  // Mean longitude of the ascending node (Meeus, Ch. 47)
+  let omega = 125.0445479 - 1934.1362891 * T + 0.0020754 * T * T + T * T * T / 467441 - T * T * T * T / 60616000;
+  return ((omega % 360) + 360) % 360;
+}
+
+// Approximate Chiron position — very rough orbital model
+function approximateChiron(jd: number): number {
+  // Chiron orbital period ~50.72 years, epoch position
+  const T = (jd - 2451545.0) / 36525;
+  // Chiron was at ~6° Sagittarius (246°) on J2000.0
+  const meanMotion = 360 / 50.72; // ~7.1°/year
+  let lon = 246.0 + meanMotion * T * 100;
+  // Add a simple eccentricity correction (e≈0.3789)
+  const M = ((lon - 246.0) * Math.PI / 180);
+  lon += 0.3789 * Math.sin(M) * (180 / Math.PI) * 0.1;
+  return ((lon % 360) + 360) % 360;
 }
 
 async function geocodeLocation(location: string) {
@@ -118,6 +140,21 @@ serve(async (req) => {
 
     const asc = calculateAscendant(year, month, day, utcHour, minute, latitude, longitude);
     planets.push(createPlanet("Ascendant", asc));
+
+    // Compute Julian Date for North Node and Chiron
+    const a2 = Math.floor((14 - month) / 12);
+    const y2 = year + 4800 - a2;
+    const m2 = month + 12 * a2 - 3;
+    const jdn = day + Math.floor((153 * m2 + 2) / 5) + 365 * y2 + Math.floor(y2 / 4) - Math.floor(y2 / 100) + Math.floor(y2 / 400) - 32045;
+    const jd = jdn + (utcHour + minute / 60) / 24 - 0.5;
+
+    // North Node (Mean Node) — retrograde by nature
+    const northNodeDeg = approximateNorthNode(jd);
+    planets.push(createPlanet("NorthNode", northNodeDeg, true));
+
+    // Chiron (approximate)
+    const chironDeg = approximateChiron(jd);
+    planets.push(createPlanet("Chiron", chironDeg, false));
 
     return new Response(JSON.stringify({
       planets,

@@ -5,17 +5,21 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
-import { Activity, FileText, Sparkles, Download, ExternalLink } from "lucide-react";
+import { Activity, FileText, Sparkles, Download, ExternalLink, Table } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { generateReport, type LunarReport } from "@/lib/lunarReportEngine";
 import { generateLunarPDF } from "@/lib/generateLunarPDF";
 import { openLunarHTMLReport } from "@/lib/generateLunarHTML";
+import { downloadNatalCSV } from "@/lib/generateNatalCSV";
+import type { ChartData } from "@/types/astrology";
 import { NatalSignaturePanel } from "@/components/report/NatalSignaturePanel";
 import { PowerDayGrid } from "@/components/report/PowerDayGrid";
 import { PeakSummaryPanel } from "@/components/report/PeakSummaryPanel";
 import { ArcPracticeSection } from "@/components/report/ArcPracticeSection";
 import { ReportClosing } from "@/components/report/ReportClosing";
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
 const LunarReports = () => {
   const [searchParams] = useSearchParams();
@@ -36,15 +40,41 @@ const LunarReports = () => {
     location: '',
   });
   const [report, setReport] = useState<LunarReport | null>(null);
+  const [chartData, setChartData] = useState<ChartData | null>(null);
 
-  const handleCalculate = () => {
+  const handleCalculate = async () => {
     if (!formData.date) return;
     setStep('generating');
-    setTimeout(() => {
-      const r = generateReport(formData.date, formData.time, formData.location, formData.name);
-      setReport(r);
-      setStep('result');
-    }, 2000);
+
+    // Run lunar report and chart calculation concurrently
+    const reportPromise = new Promise<LunarReport>((resolve) => {
+      setTimeout(() => {
+        resolve(generateReport(formData.date, formData.time, formData.location, formData.name));
+      }, 100);
+    });
+
+    const chartPromise = fetch(`${SUPABASE_URL}/functions/v1/calculate-chart`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        date: formData.date,
+        time: formData.time,
+        location: formData.location,
+      }),
+    })
+      .then(res => res.ok ? res.json() : Promise.reject('Chart unavailable'))
+      .catch(err => {
+        console.warn('Chart calculation failed, using fallback:', err);
+        return null;
+      });
+
+    const [r, chart] = await Promise.all([reportPromise, chartPromise]);
+    setReport(r);
+    setChartData(chart);
+
+    // Simulate a brief loading feel
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setStep('result');
   };
 
   const handleDownloadPDF = () => {
@@ -60,6 +90,11 @@ const LunarReports = () => {
   const handleOpenHTML = () => {
     if (!report) return;
     openLunarHTMLReport(report);
+  };
+
+  const handleDownloadCSV = () => {
+    if (!report || !chartData) return;
+    downloadNatalCSV({ name: formData.name, chart: chartData, report });
   };
 
   return (
@@ -167,9 +202,19 @@ const LunarReports = () => {
                           <ExternalLink className="w-4 h-4 mr-2" />
                           Interactive Report
                         </Button>
+                        {chartData && (
+                          <Button
+                            variant="outline"
+                            onClick={handleDownloadCSV}
+                            className="px-6 py-6 h-auto rounded-full text-[9px] uppercase tracking-widest font-bold"
+                          >
+                            <Table className="w-4 h-4 mr-2" />
+                            Natal Chart CSV
+                          </Button>
+                        )}
                         <Button
                           variant="outline"
-                          onClick={() => { setStep('input'); setReport(null); }}
+                          onClick={() => { setStep('input'); setReport(null); setChartData(null); }}
                           className="px-6 py-6 h-auto rounded-full text-[9px] uppercase tracking-widest font-bold"
                         >
                           Recalculate
