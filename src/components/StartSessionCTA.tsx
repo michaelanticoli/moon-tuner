@@ -41,21 +41,21 @@ export function StartSessionCTA() {
               Clear, practical, and grounded in your actual situation.
             </p>
 
-            {/* Portrait strip */}
-            <div className="flex gap-4 mb-8">
+            {/* Portrait + logo */}
+            <div className="flex gap-4 mb-8 items-center">
               <div className="w-28 h-36 rounded-xl overflow-hidden border border-border/40">
                 <img
-                  src={michaelPortrait1}
+                  src={michaelPortrait}
                   alt="Michael Moon"
                   className="w-full h-full object-cover object-top"
                   loading="lazy"
                 />
               </div>
-              <div className="w-28 h-36 rounded-xl overflow-hidden border border-border/40">
+              <div className="w-28 h-36 rounded-xl border border-border/40 bg-card/50 flex items-center justify-center p-4">
                 <img
-                  src={michaelPortrait2}
-                  alt="Michael Moon"
-                  className="w-full h-full object-cover object-top"
+                  src={moontunerLogo}
+                  alt="Moontuner"
+                  className="w-16 h-16 object-contain brightness-0 invert opacity-80"
                   loading="lazy"
                 />
               </div>
