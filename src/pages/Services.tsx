@@ -200,7 +200,7 @@ export default function Services() {
               </div>
             </article>
 
-            {/* ── TIER 2: Astro-Harmonic ── */}
+            {/* ── TIER 2: Astro-Harmonic Analysis ── */}
             <article className="bg-card border border-border rounded-sm overflow-hidden group hover:border-gold/35 transition-colors duration-400 animate-fade-in [animation-delay:150ms]">
               <div className="h-0.5 w-full bg-gradient-to-r from-gold to-transparent" />
               <div className="p-8 sm:p-10 lg:px-11 lg:py-10">
@@ -212,7 +212,7 @@ export default function Services() {
                     </h2>
                   </div>
                   <div className="sm:text-right flex-shrink-0">
-                    <span className="font-serif text-[28px] font-normal text-gold leading-none block">$195</span>
+                    <span className="font-serif text-[28px] font-normal text-gold leading-none block">$197</span>
                     <span className="text-[10px] text-muted-foreground tracking-[0.1em] block mt-1">75 – 90 min</span>
                   </div>
                 </div>
@@ -222,8 +222,8 @@ export default function Services() {
                 <p className="text-[14.5px] text-muted-foreground leading-[1.8] mb-7">
                   Michael maps your full natal chart against the harmonic frequency
                   architecture embedded in your birth data — then translates it into
-                  sound. You receive a quantumelodic composition generated from your
-                  chart, a written report, and a full session recording.
+                  sound. You receive an algorithmically generated quantumelodic composition
+                  from your chart, a written report, and a full session recording.
                   The most comprehensive single-session work available.
                 </p>
 
@@ -250,7 +250,7 @@ export default function Services() {
               </div>
             </article>
 
-            {/* ── TIER 3: Custom Composition ── */}
+            {/* ── TIER 3: Hand-Penned Composition Upgrade ── */}
             <article className="rounded-sm overflow-hidden group hover:border-gold/50 transition-colors duration-400 animate-fade-in [animation-delay:300ms] border border-border"
               style={{ background: "linear-gradient(135deg, hsl(0 0% 5.5%) 0%, hsl(30 8% 6%) 100%)" }}>
               <div className="h-0.5 w-full bg-gradient-to-r from-gold via-[#e8c890] to-transparent" />
@@ -268,33 +268,36 @@ export default function Services() {
                   <div>
                     <p className="text-[9px] font-medium tracking-[0.4em] uppercase text-muted-foreground/50 mb-2">Tier III · The Commission</p>
                     <h2 className="font-serif text-[22px] sm:text-[28px] font-normal text-foreground leading-[1.2]">
-                      Custom Chart<br /><em className="italic">Composition</em>
+                      Original Piano<br /><em className="italic">Étude</em>
                     </h2>
                   </div>
                   <div className="sm:text-right flex-shrink-0">
-                    <span className="font-serif text-[28px] font-normal text-gold leading-none block">From $800</span>
-                    <span className="text-[10px] text-muted-foreground tracking-[0.1em] block mt-1">3 – 4 week delivery</span>
+                    <span className="font-serif text-[28px] font-normal text-gold leading-none block">$800</span>
+                    <span className="text-[10px] text-muted-foreground tracking-[0.1em] block mt-1">2-week delivery</span>
                   </div>
                 </div>
 
                 <div className="w-full h-px bg-border my-6" />
 
                 <p className="text-[14.5px] text-muted-foreground leading-[1.8] mb-7">
-                  An original solo piano composition written directly from your
-                  birth chart. Every note has a reason. Every reason is yours.
-                  Professionally mastered. You receive full release rights — Michael
-                  retains copyright. This is not a template or a preset. It is a
-                  singular piece of music that could not exist without your data.
+                  Everything in the Astro-Harmonic Analysis — elevated. Michael
+                  hand-writes an original solo piano étude composed directly from
+                  your natal chart. Every note has a reason. Every reason is yours.
+                  Professionally recorded and mastered, delivered within two weeks
+                  of your session — paired with an MP3 reading that lassoes the
+                  composition's meaning and provides further harmonic insight.
                 </p>
 
                 <p className="text-[9px] font-medium tracking-[0.35em] uppercase text-muted-foreground/50 mb-3.5">What's included</p>
                 <ul className="list-none mb-9 flex flex-col gap-2.5">
                   {[
-                    "Original solo piano composition from your natal chart",
-                    "Professionally mastered audio file (WAV + MP3)",
+                    "Full Astro-Harmonic Analysis session ($197 value included)",
+                    "Original hand-penned solo piano étude from your natal chart",
+                    "Professionally recorded & mastered audio (WAV + MP3)",
+                    "MP3 reading — Michael walks through the composition's meaning",
                     "Full release rights — publish, share, use freely",
                     "Liner notes explaining the compositional logic",
-                    "Michael retains copyright; you own the release",
+                    "Delivered within 2 weeks of your live session",
                   ].map((item) => (
                     <li key={item} className="text-[13.5px] text-muted-foreground flex items-start gap-3">
                       <span className="w-1 h-1 rounded-full bg-gold flex-shrink-0 mt-[7px]" />
@@ -305,7 +308,7 @@ export default function Services() {
 
                 <a href={COMPOSE_EMAIL}
                   className="inline-flex items-center gap-2 px-7 py-3 rounded-sm text-[11px] font-medium tracking-[0.25em] uppercase bg-gold border border-gold text-background hover:bg-[#e8c890] hover:border-[#e8c890] transition-all duration-300">
-                  Apply for a Composition
+                  Apply for a Commission
                 </a>
               </div>
             </article>

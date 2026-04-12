@@ -11,16 +11,15 @@ export function StartSessionCTA() {
     },
     {
       label: "Astro-Harmonic Analysis",
-      from: "$195",
-      desc: "Your birth chart read, interpreted, and translated into sound.",
+      from: "$197",
+      desc: "Your birth chart read, interpreted, and translated into sound — with an algorithmic composition included.",
       href: "/services",
     },
     {
-      label: "Custom Composition",
+      label: "Original Piano Étude",
       from: "$800",
-      desc: "An original piano piece composed from your natal chart data.",
-      href: "https://magical-frangollo-0633f7.netlify.app",
-      external: true,
+      desc: "A hand-penned solo piano piece composed from your chart, recorded and delivered within 2 weeks.",
+      href: "/services",
     },
   ];
 
@@ -75,7 +74,6 @@ export function StartSessionCTA() {
               <a
                 key={t.label}
                 href={t.href}
-                {...(t.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className="block p-5 bg-card border border-border rounded-xl hover:border-accent/50 transition-all duration-300 group"
               >
                 <div className="flex items-center justify-between mb-1">
