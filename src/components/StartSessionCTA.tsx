@@ -74,7 +74,6 @@ export function StartSessionCTA() {
               <a
                 key={t.label}
                 href={t.href}
-                {...(t.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className="block p-5 bg-card border border-border rounded-xl hover:border-accent/50 transition-all duration-300 group"
               >
                 <div className="flex items-center justify-between mb-1">
