@@ -1,5 +1,5 @@
-import michaelPortrait1 from "@/assets/michael-portrait-1.jpeg";
-import michaelPortrait2 from "@/assets/michael-portrait-2.jpeg";
+import michaelPortrait from "@/assets/michael-portrait-2.jpeg";
+import moontunerLogo from "@/assets/moontuner-logo.png";
 
 export function StartSessionCTA() {
   const tiers = [
