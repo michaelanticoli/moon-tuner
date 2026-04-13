@@ -240,9 +240,9 @@ export default function Sessions() {
                   <div className="flex items-baseline justify-between mb-6">
                     <h3 className="font-display text-xl font-light text-foreground">What's Included</h3>
                     <div className="text-right">
-                      <span className="font-sans text-2xl font-medium text-accent">From $800</span>
+                      <span className="font-sans text-2xl font-medium text-accent">From $777</span>
                       <p className="font-sans text-[10px] text-muted-foreground tracking-wider mt-1">
-                        LIMITED — 2 TO 3 PER MONTH
+                        LIMITED AVAILABILITY — 3 TO 4 PER MONTH
                       </p>
                     </div>
                   </div>
