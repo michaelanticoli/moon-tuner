@@ -317,9 +317,9 @@ export default function Services() {
                       Tier III · The Commission
                     </p>
                     <h2 className="font-serif text-[22px] sm:text-[28px] font-normal text-foreground leading-[1.2]">
-                      Your Personal
+                      Symphonic Ephemeris
                       <br />
-                      <em className="italic">Étude</em>
+                      <em className="italic">Your Personal Étude</em>
                     </h2>
                   </div>
                   <div className="sm:text-right flex-shrink-0">
