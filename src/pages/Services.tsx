@@ -139,7 +139,7 @@ export default function Services() {
                     }}
                   />
                   <span className="text-[11.5px] text-muted-foreground tracking-[0.05em]">
-                    The algorithm that powers the $800 composition
+                    Powered by Michael's proprietary Quantumelodic Algorithmic Metasystem
                   </span>
                 </div>
               </div>
