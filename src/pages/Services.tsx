@@ -323,7 +323,7 @@ export default function Services() {
                     </h2>
                   </div>
                   <div className="sm:text-right flex-shrink-0">
-                    <span className="font-serif text-[28px] font-normal text-gold leading-none block">$800</span>
+                    <span className="font-serif text-[28px] font-normal text-gold leading-none block">$777</span>
                     <span className="text-[10px] text-muted-foreground tracking-[0.1em] block mt-1">
                       2-week delivery
                     </span>
