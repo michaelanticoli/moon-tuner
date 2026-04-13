@@ -243,9 +243,9 @@ export default function Services() {
                       Tier II · Deep Work
                     </p>
                     <h2 className="font-serif text-[22px] sm:text-[28px] font-normal text-foreground leading-[1.2]">
-                      Astro-Harmonic
+                      Cosmic
                       <br />
-                      <em className="italic">Analysis</em>
+                      <em className="italic">Calibration</em>
                     </h2>
                   </div>
                   <div className="sm:text-right flex-shrink-0">

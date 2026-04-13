@@ -10,14 +10,14 @@ export function StartSessionCTA() {
       href: "/services",
     },
     {
-      label: "Astro-Harmonic Analysis",
+      label: "Cosmic Calibration",
       from: "$197",
       desc: "Your birth chart read, interpreted, and translated into sound — with an algorithmic composition included.",
       href: "/services",
     },
     {
       label: "Original Piano Étude",
-      from: "$800",
+      from: "$777",
       desc: "A hand-penned solo piano piece composed from your chart, recorded and delivered within 2 weeks.",
       href: "/services",
     },
@@ -32,12 +32,13 @@ export function StartSessionCTA() {
           {/* Left: copy + portraits */}
           <div className="flex-1">
             <h2 className="font-serif text-4xl lg:text-5xl font-light text-foreground mb-6 leading-tight">
-              Work with someone<br />
+              Work with someone
+              <br />
               <span className="italic">who reads the chart.</span>
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mb-8 max-w-md">
-              Tarot, birth chart analysis, and harmonic composition. 
-              Clear, practical, and grounded in your actual situation.
+              Tarot, birth chart analysis, and harmonic composition. Clear, practical, and grounded in your actual
+              situation.
             </p>
 
             {/* Portrait + logo */}
@@ -45,7 +46,7 @@ export function StartSessionCTA() {
               <div className="w-28 h-36 rounded-xl overflow-hidden border border-border/40">
                 <img
                   src={michaelPortrait}
-                  alt="Michael Moon"
+                  alt="Michael Moontuner"
                   className="w-full h-full object-cover object-top"
                   loading="lazy"
                 />
@@ -60,10 +61,7 @@ export function StartSessionCTA() {
               </div>
             </div>
 
-            <a
-              href="/services"
-              className="system-button inline-flex"
-            >
+            <a href="/services" className="system-button inline-flex">
               View All Sessions & Book
             </a>
           </div>
