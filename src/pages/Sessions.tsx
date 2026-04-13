@@ -8,6 +8,15 @@ import { useState } from "react";
 const STRIPE_BOOKING_URL = "https://buy.stripe.com/5kQ00i5QCdHm8qngTfe7m04";
 const SQUARE_BOOKING_URL = "https://square.site/book/LT09Q7KSGAF98/moontuner";
 
+// ─── IMAGE PATHS ─────────────────────────────────────────────────────────────
+// Add these files to your /public/images/ folder:
+//   michael-pool-moon.jpg        ← IMG_9452.JPG
+//   michael-turntable.png        ← IMG_8093.png
+//   michael-studio.png           ← Michael_Moontuner_is_202603301732.png
+//   michael-moon-silhouette.jpg  ← IMG_7978.jpeg
+//   michael-products.jpg         ← IMG_8090.jpeg
+// ─────────────────────────────────────────────────────────────────────────────
+
 const faqs = [
   {
     q: "Do I need to know anything about astrology or tarot before booking?",
@@ -50,6 +59,44 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
+// ─── GRADIENT-MASKED PHOTO COMPONENT ─────────────────────────────────────────
+// fade: "left" | "right" | "both" | "bottom" | "top-bottom"
+function GhostPhoto({
+  src,
+  alt,
+  fade = "both",
+  className = "",
+  style = {},
+}: {
+  src: string;
+  alt: string;
+  fade?: "left" | "right" | "both" | "bottom" | "top-bottom";
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  const masks: Record<string, string> = {
+    left: "linear-gradient(to left, black 45%, transparent 100%)",
+    right: "linear-gradient(to right, black 45%, transparent 100%)",
+    both: "linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%)",
+    bottom: "linear-gradient(to bottom, black 55%, transparent 100%)",
+    "top-bottom": "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
+  };
+  const maskValue = masks[fade];
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      style={{
+        WebkitMaskImage: maskValue,
+        maskImage: maskValue,
+        ...style,
+      }}
+    />
+  );
+}
+
 export default function Sessions() {
   return (
     <PageTransition>
@@ -57,17 +104,42 @@ export default function Sessions() {
         <Navigation />
 
         <main>
-          {/* ── HERO ── */}
-          <section className="relative pt-28 pb-20 px-6 lg:px-12 overflow-hidden">
+          {/* ══════════════════════════════════════════════════════════════════
+              HERO
+              Michael (pool table / moon balloon) floats in from the right.
+              The content lives on the left; the photo dissolves left → right.
+          ══════════════════════════════════════════════════════════════════ */}
+          <section className="relative pt-28 pb-20 px-6 lg:px-12 overflow-hidden min-h-[560px]">
+            {/* Subtle gradient wash */}
             <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
+
+            {/* Michael — hero portrait, right-anchored, fades left */}
+            <div className="absolute right-0 top-0 h-full w-[55%] lg:w-[45%] pointer-events-none select-none hidden sm:block">
+              <GhostPhoto
+                src="/images/michael-pool-moon.jpg"
+                alt="Michael Anticoli"
+                fade="left"
+                className="h-full w-full object-cover object-center"
+                style={{ opacity: 0.72 }}
+              />
+              {/* Second pass: dark vignette at very bottom so text doesn't clash */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: "linear-gradient(to top, var(--background) 0%, transparent 30%)",
+                }}
+              />
+            </div>
+
+            {/* Content */}
             <div className="container mx-auto max-w-4xl relative z-10">
               <div className="mb-6">
                 <span className="system-label">Sessions with Michael</span>
               </div>
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extralight text-foreground leading-[1.1] mb-6">
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extralight text-foreground leading-[1.1] mb-6 max-w-xl">
                 Clarity, timing, and <span className="font-serif italic font-normal">pattern recognition.</span>
               </h1>
-              <p className="font-sans text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mb-10">
+              <p className="font-sans text-base sm:text-lg text-muted-foreground leading-relaxed max-w-md mb-10">
                 Tarot readings, birth chart analysis, and harmonic composition — grounded in real data, delivered with
                 honesty.
               </p>
@@ -80,9 +152,24 @@ export default function Sessions() {
             </div>
           </section>
 
-          {/* ── TIER 1: TAROT ── */}
-          <section className="py-20 px-6 lg:px-12">
-            <div className="container mx-auto max-w-4xl">
+          {/* ══════════════════════════════════════════════════════════════════
+              TIER 1: TAROT
+              Michael's turntable / tarot image floats left, bleed from edge,
+              dissolves into the section background.
+          ══════════════════════════════════════════════════════════════════ */}
+          <section className="py-20 px-6 lg:px-12 relative overflow-hidden">
+            {/* Photo — left anchor, fades right into the section */}
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[110%] w-[38%] pointer-events-none select-none hidden lg:block">
+              <GhostPhoto
+                src="/images/michael-turntable.png"
+                alt="Michael with tarot cards"
+                fade="right"
+                className="h-full w-full object-cover object-center"
+                style={{ opacity: 0.55 }}
+              />
+            </div>
+
+            <div className="container mx-auto max-w-4xl relative z-10">
               <span className="system-label mb-3 block">Tier 1</span>
               <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
                 Tarot Reading
@@ -96,9 +183,9 @@ export default function Sessions() {
                 serves you. You come with a question or a season of life. You leave with clarity.
               </p>
 
-              <div className="grid sm:grid-cols-2 gap-5 mb-8">
+              <div className="grid sm:grid-cols-2 gap-5 mb-8 lg:ml-0">
                 {/* Single Draw */}
-                <div className="flex flex-col bg-card border border-border/40 rounded-xl p-6 hover:border-accent/40 transition-all duration-300">
+                <div className="flex flex-col bg-card border border-border/40 rounded-xl p-6 hover:border-accent/40 transition-all duration-300 backdrop-blur-sm">
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <h3 className="font-display text-lg font-light text-foreground">The Pull</h3>
                     <span className="shrink-0 font-sans text-base font-medium text-accent">$45</span>
@@ -115,7 +202,7 @@ export default function Sessions() {
                 </div>
 
                 {/* Deep Read */}
-                <div className="flex flex-col bg-card border border-border/40 rounded-xl p-6 hover:border-accent/40 transition-all duration-300">
+                <div className="flex flex-col bg-card border border-border/40 rounded-xl p-6 hover:border-accent/40 transition-all duration-300 backdrop-blur-sm">
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <h3 className="font-display text-lg font-light text-foreground">The Deep Read</h3>
                     <span className="shrink-0 font-sans text-base font-medium text-accent">$95</span>
@@ -134,9 +221,30 @@ export default function Sessions() {
             </div>
           </section>
 
-          {/* ── TIER 2: ASTRO-HARMONIC ── */}
-          <section className="py-20 px-6 lg:px-12 bg-muted/10">
-            <div className="container mx-auto max-w-4xl">
+          {/* ══════════════════════════════════════════════════════════════════
+              TIER 2: ASTRO-HARMONIC
+              Michael in the studio floats in from the right.
+          ══════════════════════════════════════════════════════════════════ */}
+          <section className="py-20 px-6 lg:px-12 bg-muted/10 relative overflow-hidden">
+            {/* Studio photo — right anchor, fades left */}
+            <div className="absolute right-0 top-0 h-full w-[44%] pointer-events-none select-none hidden lg:block">
+              <GhostPhoto
+                src="/images/michael-studio.png"
+                alt="Michael at the astro-harmonic studio"
+                fade="left"
+                className="h-full w-full object-cover object-center"
+                style={{ opacity: 0.5 }}
+              />
+              {/* Bottom fade to keep section floor clean */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: "linear-gradient(to top, var(--background) 0%, transparent 25%)",
+                }}
+              />
+            </div>
+
+            <div className="container mx-auto max-w-4xl relative z-10">
               <span className="system-label mb-3 block">Tier 2</span>
               <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
                 Astro-Harmonic Natal Analysis
@@ -151,8 +259,8 @@ export default function Sessions() {
               </p>
 
               <div className="grid sm:grid-cols-2 gap-5 mb-8">
-                {/* Chart Overview — accessible entry */}
-                <div className="flex flex-col bg-card border border-border/40 rounded-xl p-6 hover:border-accent/40 transition-all duration-300">
+                {/* Chart Overview */}
+                <div className="flex flex-col bg-card border border-border/40 rounded-xl p-6 hover:border-accent/40 transition-all duration-300 backdrop-blur-sm">
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <h3 className="font-display text-lg font-light text-foreground">Chart Overview</h3>
                     <span className="shrink-0 font-sans text-base font-medium text-accent">$47</span>
@@ -170,8 +278,8 @@ export default function Sessions() {
                   </a>
                 </div>
 
-                {/* Full Astro-Harmonic */}
-                <div className="flex flex-col bg-card border border-accent/30 rounded-xl p-6 hover:border-accent/50 transition-all duration-300 relative">
+                {/* Cosmic Calibration */}
+                <div className="flex flex-col bg-card border border-accent/30 rounded-xl p-6 hover:border-accent/50 transition-all duration-300 relative backdrop-blur-sm">
                   <span className="absolute -top-3 left-5 text-[10px] tracking-widest uppercase bg-accent text-background px-2.5 py-0.5 rounded-full font-sans font-medium">
                     Signature Session
                   </span>
@@ -202,7 +310,7 @@ export default function Sessions() {
                   </ul>
                   <a href={SQUARE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
                     <Button variant="gold-outline" size="sm" className="w-full gap-2 text-xs tracking-wide">
-                      Book an Cosmic Calibration Session <ExternalLink className="w-3 h-3" />
+                      Book a Cosmic Calibration Session <ExternalLink className="w-3 h-3" />
                     </Button>
                   </a>
                 </div>
@@ -210,8 +318,26 @@ export default function Sessions() {
             </div>
           </section>
 
-          {/* ── TIER 3: CUSTOM COMPOSITION ── */}
-          <section className="py-20 px-6 lg:px-12">
+          {/* ══════════════════════════════════════════════════════════════════
+              TIER 3: CUSTOM COMPOSITION
+              Full-width atmospheric image strip separates this section.
+              Moon silhouette bleeds full-width, fades top and bottom.
+          ══════════════════════════════════════════════════════════════════ */}
+
+          {/* ── Atmospheric divider ── */}
+          <div className="relative w-full h-48 sm:h-64 overflow-hidden pointer-events-none select-none">
+            <GhostPhoto
+              src="/images/michael-moon-silhouette.jpg"
+              alt=""
+              fade="top-bottom"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+              style={{ opacity: 0.65 }}
+            />
+            {/* Subtle overlay to keep tonal consistency */}
+            <div className="absolute inset-0 bg-background/20 mix-blend-multiply" />
+          </div>
+
+          <section className="py-20 px-6 lg:px-12 relative overflow-hidden">
             <div className="container mx-auto max-w-4xl">
               <span className="system-label mb-3 block">Tier 3</span>
               <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
@@ -279,7 +405,9 @@ export default function Sessions() {
             </div>
           </section>
 
-          {/* ── BOOKING CTA ── */}
+          {/* ══════════════════════════════════════════════════════════════════
+              BOOKING CTA
+          ══════════════════════════════════════════════════════════════════ */}
           <section className="py-24 px-6 lg:px-12 bg-muted/10">
             <div className="container mx-auto max-w-2xl text-center">
               <span className="system-label mb-6 block">Ready to Begin</span>
@@ -299,7 +427,9 @@ export default function Sessions() {
             </div>
           </section>
 
-          {/* ── FAQ ── */}
+          {/* ══════════════════════════════════════════════════════════════════
+              FAQ
+          ══════════════════════════════════════════════════════════════════ */}
           <section className="py-20 px-6 lg:px-12">
             <div className="container mx-auto max-w-2xl">
               <span className="system-label mb-3 block">FAQ</span>
@@ -312,9 +442,23 @@ export default function Sessions() {
             </div>
           </section>
 
-          {/* ── GO DEEPER ── */}
-          <section className="py-16 px-6 lg:px-12 border-t border-border/20">
-            <div className="container mx-auto max-w-3xl text-center">
+          {/* ══════════════════════════════════════════════════════════════════
+              GO DEEPER
+              Product spread image as a very low-opacity atmospheric background.
+          ══════════════════════════════════════════════════════════════════ */}
+          <section className="py-16 px-6 lg:px-12 border-t border-border/20 relative overflow-hidden">
+            {/* Background atmospheric: Michael with product spread */}
+            <div className="absolute inset-0 pointer-events-none select-none hidden md:block">
+              <GhostPhoto
+                src="/images/michael-products.jpg"
+                alt=""
+                fade="both"
+                className="absolute right-0 top-1/2 -translate-y-1/2 h-full w-[50%] object-cover object-left"
+                style={{ opacity: 0.28 }}
+              />
+            </div>
+
+            <div className="container mx-auto max-w-3xl text-center relative z-10">
               <h3 className="font-display text-2xl font-light text-foreground mb-4">This is just where it starts.</h3>
               <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-8 max-w-xl mx-auto">
                 Every session connects to a larger system. The Phasecraft Framework. The Lunar Chaperone workbooks. If a
