@@ -194,7 +194,7 @@ export default function Services() {
                     className="block bg-secondary border border-border rounded-sm p-[18px_20px] hover:border-accent/40 hover:bg-accent/[0.08] transition-all duration-300 no-underline"
                   >
                     <span className="text-[9px] font-medium tracking-[0.35em] uppercase text-muted-foreground/50 block mb-1">
-                      Single Draw
+                      Three Card Draw
                     </span>
                     <span className="font-serif text-base text-foreground block mb-2">The Pull</span>
                     <span className="text-[11.5px] text-muted-foreground flex gap-3">
