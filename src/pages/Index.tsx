@@ -1,39 +1,35 @@
 import { Navigation } from "@/components/Navigation";
-import { Hero } from "@/components/Hero";
-import { MoonPhasesStrip } from "@/components/MoonPhasesStrip";
-import { SongOfTheMoon } from "@/components/SongOfTheMoon";
-import { CorePillars } from "@/components/CorePillars";
-import { PhilosophySection } from "@/components/PhilosophySection";
-import { EntryPoints } from "@/components/EntryPoints";
-import { Newsletter } from "@/components/Newsletter";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
+import { StartHeroSection } from "@/components/StartHeroSection";
+import { StartMoonTool } from "@/components/StartMoonTool";
+import { StartReportCTA } from "@/components/StartReportCTA";
+import { StartSessionCTA } from "@/components/StartSessionCTA";
+import { Newsletter } from "@/components/Newsletter";
+import { StartGoDeeper } from "@/components/StartGoDeeper";
 import { ScrollReveal } from "@/components/ScrollReveal";
 
 const Index = () => {
   return (
     <PageTransition>
-      <div className="min-h-screen bg-background relative grain-overlay">
+      <div className="min-h-screen bg-background relative">
         <Navigation />
         <main>
-          <Hero />
+          <StartHeroSection />
           <ScrollReveal>
-            <MoonPhasesStrip />
+            <StartMoonTool />
           </ScrollReveal>
           <ScrollReveal>
-            <SongOfTheMoon />
+            <StartReportCTA />
           </ScrollReveal>
           <ScrollReveal>
-            <CorePillars />
-          </ScrollReveal>
-          <ScrollReveal>
-            <PhilosophySection />
-          </ScrollReveal>
-          <ScrollReveal>
-            <EntryPoints />
+            <StartSessionCTA />
           </ScrollReveal>
           <ScrollReveal>
             <Newsletter />
+          </ScrollReveal>
+          <ScrollReveal>
+            <StartGoDeeper />
           </ScrollReveal>
         </main>
         <Footer />

@@ -113,7 +113,7 @@ const Manifesto = () => {
               <ScrollReveal>
                 <div className="text-center">
                   <p className="font-serif text-2xl lg:text-3xl text-foreground leading-relaxed italic">
-                    "The Moon's enchantment is not distant magic. It is as local as your breath, as regional as the tides that shape your nearest shore. It is always here, always accessible. We do not accept an invitation—we recognize that we are already guests arriving to a celebration that never ends."
+                    "The Moon's pull isn't distant—it's in your lungs and your shoreline. You're not being invited in. You're already here. This isn't a beginning. It's a beat you've always been moving to."
                   </p>
                   <span className="system-label block mt-8 text-accent">— The Moontuner Foundation</span>
                 </div>

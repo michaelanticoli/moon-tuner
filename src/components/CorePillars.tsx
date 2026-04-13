@@ -1,39 +1,74 @@
 import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 const offerings = [
   {
     number: "01",
-    label: "The Guide",
+    label: "New Moon",
     category: "The Lunar Chaperone",
     title: "26 Workbooks",
     description: "Your continuous companion from New Moon to Full Moon and back again. Body-based lunar wisdom designed to deepen with every cycle.",
     href: "/workbooks",
+    quadrant: "top-left",
   },
   {
     number: "02",
-    label: "The Method",
+    label: "First Quarter",
     category: "Phasecraft Framework",
     title: "Four Arcs",
     description: "The Moontuner methodology for phase-based living. Four Tenets, Four Arcs, and the complete 8-Phase architecture.",
     href: "/method",
+    quadrant: "top-right",
   },
   {
     number: "03",
-    label: "The Declaration",
+    label: "Full Moon",
     category: "Philosophy & Manifesto",
     title: "Core Tenets",
     description: "Declarations for those who move with the Moon. The why behind everything we practice.",
     href: "/manifesto",
+    quadrant: "bottom-left",
   },
   {
     number: "04",
-    label: "The Interface",
+    label: "Last Quarter",
     category: "Personal Lunar Map",
     title: "Your Reports",
     description: "Calculate your natal lunar signature and generate your personal 12-month power-day arc.",
     href: "/lunar-reports",
+    quadrant: "bottom-right",
   },
 ];
+
+// Lunar quarter indicators for each card
+function QuarterIndicator({ quadrant }: { quadrant: string }) {
+  const getClipPath = () => {
+    switch (quadrant) {
+      case "top-left": return "polygon(0 0, 100% 0, 0 100%)";
+      case "top-right": return "polygon(0 0, 100% 0, 100% 100%)";
+      case "bottom-left": return "polygon(0 0, 0 100%, 100% 100%)";
+      case "bottom-right": return "polygon(100% 0, 0 100%, 100% 100%)";
+      default: return "none";
+    }
+  };
+
+  return (
+    <div className="absolute top-4 right-4 w-8 h-8">
+      <div className="relative w-full h-full">
+        {/* Outer circle */}
+        <div className="absolute inset-0 rounded-full border border-muted-foreground/20" />
+        {/* Illuminated quarter */}
+        <motion.div
+          className="absolute inset-0 rounded-full bg-accent/30"
+          style={{ clipPath: getClipPath() }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        />
+      </div>
+    </div>
+  );
+}
 
 export function CorePillars() {
   return (
@@ -43,28 +78,57 @@ export function CorePillars() {
         <div className="mb-16 lg:mb-24">
           <span className="system-label block mb-6">The Moontuner Offerings</span>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-foreground leading-[1.1]">
-            Four Pathways. <br />
-            <span className="italic">One Reflected Light.</span>
+            Four Quarters of <br />
+            <span className="italic">Quantum Momentum.</span>
           </h2>
           <p className="text-muted-foreground text-sm mt-6 max-w-2xl">
-            The Moon reflects the Sun across 238,900 miles—a celestial clock cycling every 29.5 days. 
-            These are your systems for reading its rhythm.
+            Each quarter carries its own momentum — seed, act, illuminate, release. 
+            Together they form one continuous arc of intention moving through time.
           </p>
+        </div>
+
+        {/* Central Moon Illustration */}
+        <div className="relative mb-12 lg:mb-16 flex justify-center">
+          <motion.div 
+            className="w-24 h-24 lg:w-32 lg:h-32 relative"
+            initial={{ scale: 0.8, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            {/* Moon circle with quarters */}
+            <div className="absolute inset-0 rounded-full border border-border/50 overflow-hidden">
+              <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
+                <div className="border-r border-b border-border/30 bg-accent/5" />
+                <div className="border-b border-border/30 bg-accent/10" />
+                <div className="border-r border-border/30 bg-accent/15" />
+                <div className="bg-accent/10" />
+              </div>
+            </div>
+            {/* Glow effect */}
+            <div className="absolute inset-0 rounded-full bg-accent/10 blur-xl -z-10" />
+          </motion.div>
         </div>
 
         {/* Offerings Grid */}
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
           {offerings.map((offering, index) => (
-            <a
+            <motion.a
               key={offering.title}
               href={offering.href}
-              className="group node-card relative"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="group node-card relative overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
             >
+              {/* Quarter indicator */}
+              <QuarterIndicator quadrant={offering.quadrant} />
+
               {/* Number Label */}
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-4 mb-6">
                 <span className="system-label text-accent">{offering.number}</span>
-                <span className="text-xs text-muted-foreground/60 tracking-wider">{offering.label}</span>
+                <span className="w-8 h-px bg-border/50" />
+                <span className="text-xs text-muted-foreground/60 tracking-wider uppercase">{offering.label}</span>
               </div>
 
               {/* Category */}
@@ -87,7 +151,7 @@ export function CorePillars() {
                 <span className="text-sm tracking-wide">Explore</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </div>
-            </a>
+            </motion.a>
           ))}
         </div>
       </div>

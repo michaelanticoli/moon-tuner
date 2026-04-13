@@ -6,6 +6,7 @@ import { LunarLiveStatus } from "@/components/LunarLiveStatus";
 import { PhaseSignMatrix } from "@/components/PhaseSignMatrix";
 import { ZodiacBodyMap } from "@/components/ZodiacBodyMap";
 import { ArrowDown } from "lucide-react";
+import { DeepDiveSection } from "@/components/DeepDiveSection";
 
 const LunarSystem = () => {
   return (
@@ -45,12 +46,36 @@ const LunarSystem = () => {
             </ScrollReveal>
           </section>
 
+          {/* Deep Dive: Synodic Month */}
+          <section className="container mx-auto px-6 lg:px-12 mb-16">
+            <ScrollReveal>
+              <DeepDiveSection
+                title="The Science Behind the Synodic Month"
+                subtitle="29.53 days of cosmic mechanics — the foundation of every lunar cycle"
+                category="synodic"
+                contextHint="The synodic month and how it structures the 8-phase system"
+              />
+            </ScrollReveal>
+          </section>
+
           <div className="divider-line container mx-auto mb-24" />
 
           {/* Phase-Sign Matrix Section */}
           <section className="container mx-auto px-6 lg:px-12 mb-32">
             <ScrollReveal>
               <PhaseSignMatrix />
+            </ScrollReveal>
+          </section>
+
+          {/* Deep Dive: Eclipse Cycles */}
+          <section className="container mx-auto px-6 lg:px-12 mb-16">
+            <ScrollReveal>
+              <DeepDiveSection
+                title="Eclipse Cycles & the Saros"
+                subtitle="18-year return patterns — the ancient rhythm of solar and lunar eclipses"
+                category="saros"
+                contextHint="Saros eclipse cycles and their 18.03-year periodicity"
+              />
             </ScrollReveal>
           </section>
 

@@ -20,9 +20,9 @@ export function Hero() {
 
         {/* Headline */}
         <div className="space-y-4 opacity-0 animate-fade-in-up delay-100 mb-12">
-          <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-normal text-foreground leading-[1.05]">
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extralight text-foreground leading-[1.05]">
             Don't Blame The Moon. <br />
-            <span className="italic">Change Your Tune.</span>
+            <span className="font-serif italic font-normal">Change Your Tune.</span>
           </h1>
         </div>
 
@@ -43,28 +43,6 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="divider-line opacity-0 animate-fade-in delay-300 mb-12" />
-
-        {/* System Status Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 opacity-0 animate-fade-in-up delay-400">
-          <div className="space-y-2">
-            <span className="system-label">The Chaperone</span>
-            <p className="font-sans text-sm text-foreground">26 Workbooks</p>
-          </div>
-          <div className="space-y-2">
-            <span className="system-label">The Method</span>
-            <p className="font-sans text-sm text-foreground">Phasecraft</p>
-          </div>
-          <div className="space-y-2">
-            <span className="system-label">The Philosophy</span>
-            <p className="font-sans text-sm text-foreground">Path Walkers</p>
-          </div>
-          <div className="space-y-2">
-            <span className="system-label">Cycle Day</span>
-            <p className="font-sans text-sm text-accent">Day {Math.round(moonPhase.astronomical.age)}</p>
-          </div>
-        </div>
       </div>
 
       {/* Scroll Indicator */}

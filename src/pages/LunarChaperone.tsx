@@ -46,45 +46,45 @@ const chaperonePromises = [
 const workbookSeries = [
   {
     number: 1,
-    title: "From Bone to Heart",
-    journey: "Capricorn → Leo",
-    body: "Knees/Bones → Heart/Solar Plexus",
-    essence: "Structure shifting into expressive heart-based creativity"
+    title: "Grounded Ambition to Illuminated Depth",
+    journey: "Capricorn NM → Cancer FM",
+    body: "Knees/Bones → Stomach/Womb",
+    essence: "Structure seeds intentions that bloom into emotional fullness"
   },
   {
     number: 2,
-    title: "From Heart to Mind",
-    journey: "Leo → Aquarius",
-    body: "Heart/Solar Plexus → Nervous System/Higher Mind",
-    essence: "Creative identity expanding into collective innovation"
+    title: "Emotional Fullness to Innovative Spark",
+    journey: "Cancer FM → Aquarius NM",
+    body: "Stomach/Womb → Ankles/Nervous System",
+    essence: "Nurturing release opens space for revolutionary vision"
   },
   {
     number: 3,
-    title: "From Mind to Gut",
-    journey: "Aquarius → Virgo",
-    body: "Higher Mind → Digestive System",
-    essence: "Visionary concepts grounding through service and analysis"
+    title: "Innovative Spark to Courageous Heart",
+    journey: "Aquarius NM → Leo FM",
+    body: "Ankles/Nervous System → Heart/Spine",
+    essence: "Collective ideas seed intentions that bloom into radiant expression"
   },
   {
     number: 4,
-    title: "From Gut to Soul",
-    journey: "Virgo → Pisces",
-    body: "Gut Instinct → Feet/Etheric Body",
-    essence: "Precision dissolving into universal compassion"
+    title: "Courageous Heart to Sacred Service",
+    journey: "Leo FM → Pisces NM",
+    body: "Heart/Spine → Feet/Etheric Body",
+    essence: "Creative release opens space for spiritual surrender"
   },
   {
     number: 5,
-    title: "From Soul to Balance",
-    journey: "Pisces → Libra",
-    body: "Etheric Body → Balance",
-    essence: "Mystical awareness forming relational harmony"
+    title: "Sacred Service to Precise Harvest",
+    journey: "Pisces NM → Virgo FM",
+    body: "Feet/Etheric Body → Digestive System",
+    essence: "Mystical seeds bloom into discerning integration"
   },
   {
     number: 6,
-    title: "From Balance to Fire",
-    journey: "Libra → Aries",
-    body: "Balance → Head/Initiation",
-    essence: "Harmony igniting bold individual action"
+    title: "Precise Harvest to Bold Beginning",
+    journey: "Virgo FM → Aries NM",
+    body: "Digestive System → Head/Face",
+    essence: "Analytical release ignites courageous new initiation"
   }
 ];
 

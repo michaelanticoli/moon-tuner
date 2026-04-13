@@ -103,8 +103,26 @@ export function Footer() {
           </div>
         </div>
 
+        {/* Partners */}
+        <div className="mt-12 pt-8 border-t border-border/30 flex flex-col items-center gap-6">
+          <p className="text-xs text-muted-foreground/60 uppercase tracking-widest">Powered by</p>
+          <a
+            href="https://elevenlabs.io/startup-grants"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-2xl border border-border/50 bg-card/50 px-6 py-4 transition-opacity duration-500 hover:opacity-100"
+          >
+            <img
+              src="https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp"
+              alt="ElevenLabs Grants"
+              className="w-[250px] max-w-full"
+              loading="lazy"
+            />
+          </a>
+        </div>
+
         {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-border/30">
+        <div className="mt-8 pt-8 border-t border-border/30">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
               <span className="status-dot" />

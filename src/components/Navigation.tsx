@@ -2,16 +2,21 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, User, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
+import { X } from "lucide-react";
 import moontunerLogo from "@/assets/moontuner-logo.png";
 import { useAuth } from "@/contexts/AuthContext";
 
 const navLinks = [
   { label: "LUNAR SYSTEM", href: "/lunar-system" },
+  { label: "SCHOOL", href: "/school" },
+  { label: "SERVICES", href: "/services" },
   { label: "CHAPERONE", href: "/workbooks" },
   { label: "PHASECRAFT", href: "/method" },
   { label: "CIPHER", href: "/lunar-cipher" },
-  { label: "REPORTS", href: "/lunar-reports" },
+  { label: "MOON PHASE TODAY", href: "/moon-phase-today" },
+  { label: "LUNAR REPORTS", href: "/lunar-reports" },
   { label: "MANIFESTO", href: "/manifesto" },
+  { label: "BLOG", href: "https://moontuner.ghost.io" },
 ];
 
 export function Navigation() {
@@ -34,12 +39,13 @@ export function Navigation() {
             </span>
           </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-10">
+          {/* Desktop Navigation - pushed right */}
+          <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
+                {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className="font-sans text-xs font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 tracking-[0.15em]"
               >
                 {link.label}
@@ -79,6 +85,8 @@ export function Navigation() {
             </div>
 
             {/* Hamburger Menu */}
+          {/* Hamburger Menu (mobile only) */}
+          <div className="flex items-center">
             <button
               className="lg:hidden flex items-center justify-center w-10 h-10 text-foreground"
               onClick={() => setIsOpen(!isOpen)}
@@ -104,6 +112,7 @@ export function Navigation() {
                 <a
                   key={link.label}
                   href={link.href}
+                  {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors tracking-[0.15em]"
                   onClick={() => setIsOpen(false)}
                 >
