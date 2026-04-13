@@ -317,7 +317,7 @@ export default function Services() {
                       Tier III · The Commission
                     </p>
                     <h2 className="font-serif text-[22px] sm:text-[28px] font-normal text-foreground leading-[1.2]">
-                      Original Piano
+                      Your Personal
                       <br />
                       <em className="italic">Étude</em>
                     </h2>
@@ -344,7 +344,7 @@ export default function Services() {
                 </p>
                 <ul className="list-none mb-9 flex flex-col gap-2.5">
                   {[
-                    "Full Astro-Harmonic Analysis session ($197 value included)",
+                    "Full Cosmic Calibration session ($197 value included)",
                     "Original hand-penned solo piano étude from your natal chart",
                     "Professionally recorded & mastered audio (WAV + MP3)",
                     "MP3 reading — Michael walks through the composition's meaning",
