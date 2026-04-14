@@ -29,47 +29,13 @@ import Sessions from "./pages/Sessions";
 import Services from "./pages/Services";
 import MoonPhaseToday from "./pages/MoonPhaseToday";
 import NotFound from "./pages/NotFound";
+
 const queryClient = new QueryClient();
 
 function AnimatedRoutes() {
   const location = useLocation();
 
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Index />} />
-        <Route path="/the-moon" element={<Moon />} />
-        <Route path="/method" element={<Method />} />
-        <Route path="/manifesto" element={<Manifesto />} />
-        <Route path="/philosophy" element={<Philosophy />} />
-        <Route path="/workbooks" element={<Workbooks />} />
-        <Route path="/workbook-preview" element={<WorkbookPreview />} />
-        <Route path="/lunar-chaperone" element={<LunarChaperone />} />
-        <Route path="/lunar-system" element={<LunarSystem />} />
-        <Route path="/lunar-cipher" element={<LunarCipher />} />
-        <Route path="/lunar-reports" element={<LunarReports />} />
-        <Route path="/app" element={<MoontunedApp />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AnimatePresence>
     <>
       <ScrollToTop />
       <AnimatePresence mode="wait">
@@ -92,7 +58,23 @@ function AnimatedRoutes() {
           <Route path="/sessions" element={<Sessions />} />
           <Route path="/services" element={<Services />} />
           <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/auth" element={<Auth />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
