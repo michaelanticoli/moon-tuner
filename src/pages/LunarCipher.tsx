@@ -6,7 +6,6 @@ import { PageTransition } from "@/components/PageTransition";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, X, ChevronLeft, Save, Check, Loader2 } from "lucide-react";
-import { getPhase, getDetailedInsight } from "@/hooks/useLunarCalculations";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +13,6 @@ import { CipherCalendar } from "@/components/cipher/CipherCalendar";
 import { CipherDayDetail } from "@/components/cipher/CipherDayDetail";
 import { getDailyReadingsMap, getDailyReading, type DailyReading } from "@/data/parseDailyReadings";
 import { getICSEventIndex, getEventsForDate, type DayEvents } from "@/data/parseICS";
-import { RefreshCw, ChevronLeft } from "lucide-react";
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -23,8 +21,6 @@ const LunarCipher = () => {
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [syncing, setSyncing] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
 
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -33,7 +29,6 @@ const LunarCipher = () => {
 
   const currentYear = 2026;
 
-  // Load daily readings + ICS events on mount
   useEffect(() => {
     getDailyReadingsMap().then(setReadings);
     getICSEventIndex().then(setIcsIndex);
@@ -48,46 +43,6 @@ const LunarCipher = () => {
     }, 1200);
   };
 
-  const handleSaveChart = async () => {
-    if (!user) {
-      navigate('/auth');
-      return;
-    }
-
-    if (!selectedDay || selectedMonth === null) return;
-
-    setSaving(true);
-    try {
-      const chartName = `${monthNames[selectedMonth]} ${selectedDay.day}, ${currentYear} - ${selectedDay.phaseName}`;
-
-      const { error } = await supabase.from('saved_charts').insert({
-        user_id: user.id,
-        chart_name: chartName,
-        chart_data: {
-          date: `${currentYear}-${String(selectedMonth + 1).padStart(2, '0')}-${String(selectedDay.day).padStart(2, '0')}`,
-          natal_phase: selectedDay.phaseName,
-          phase_value: selectedDay.phase,
-          insight: {
-            title: selectedDay.title,
-            theme: selectedDay.theme,
-            insight: selectedDay.insight,
-            instruction: selectedDay.instruction,
-          },
-        },
-      });
-
-      if (error) throw error;
-
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
-    } catch (error) {
-      console.error('Error saving chart:', error);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const currentYear = new Date().getFullYear();
   const handleDaySelect = (day: number) => {
     setSelectedDay(day);
   };
@@ -196,85 +151,17 @@ const LunarCipher = () => {
           </div>
         </main>
 
-        {/* Day Detail Modal */}
-        <AnimatePresence>
-          {selectedDay && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-8">
-              <motion.div 
-                initial={{ opacity: 0 }} 
-                animate={{ opacity: 1 }} 
-                exit={{ opacity: 0 }} 
-                onClick={() => setSelectedDay(null)} 
-                className="absolute inset-0 bg-background/90 backdrop-blur-md" 
-              />
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }} 
-                animate={{ opacity: 1, scale: 1 }} 
-                exit={{ opacity: 0, scale: 0.9 }} 
-                className="relative w-full max-w-2xl bg-card border border-border rounded-[3.5rem] p-16 overflow-hidden"
-              >
-                <button 
-                  onClick={() => setSelectedDay(null)} 
-                  className="absolute top-8 right-8 w-12 h-12 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-                
-                <div className="flex items-center space-x-6 mb-10">
-                  <div className="w-24 h-24 bg-card border border-border rounded-3xl flex items-center justify-center">
-                    <MoonPhaseGlyph phase={selectedDay.phaseKey} size={48} className="text-accent" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-bold tracking-[0.5em] text-accent mb-2 block">
-                      {selectedDay.phaseName} · Day {selectedDay.day}
-                    </span>
-                    <h2 className="text-4xl font-serif text-foreground">{selectedDay.title}</h2>
-                  </div>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-12 mb-12">
-                  <div>
-                    <h4 className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold mb-4">
-                      The Transmutation
-                    </h4>
-                    <p className="text-muted-foreground leading-relaxed text-lg font-light italic">
-                      "{selectedDay.insight}"
-                    </p>
-                  </div>
-                  <div className="p-8 bg-accent/5 border border-accent/20 rounded-3xl">
-                    <h4 className="text-[9px] uppercase tracking-widest text-accent font-bold mb-4">
-                      Direct Instruction
-                    </h4>
-                    <p className="text-foreground text-sm leading-relaxed font-bold">
-                      {selectedDay.instruction}
-                    </p>
-                  </div>
-                </div>
-
-                <Button
-                  variant="gold"
-                  className="w-full"
-                  onClick={handleSaveChart}
-                  disabled={saving || saved}
-                >
-                  {saving ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : saved ? (
-                    <>
-                      <Check className="w-4 h-4 mr-2" />
-                      Saved to Dashboard
-                    </>
-                  ) : (
-                    <>
-                      <Save className="w-4 h-4 mr-2" />
-                      {user ? 'Save This Day' : 'Sign In to Save'}
-                    </>
-                  )}
-                </Button>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
+        {/* Day Detail Panel */}
+        {selectedDay !== null && selectedMonth !== null && (
+          <CipherDayDetail
+            year={currentYear}
+            month={selectedMonth}
+            day={selectedDay}
+            reading={currentReading}
+            dayEvents={currentDayEvents}
+            onClose={() => setSelectedDay(null)}
+          />
+        )}
 
         <Footer />
       </div>
