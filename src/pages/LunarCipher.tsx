@@ -273,15 +273,6 @@ const LunarCipher = () => {
                 </Button>
               </motion.div>
             </div>
-          {selectedDay !== null && selectedMonth !== null && (
-            <CipherDayDetail
-              year={currentYear}
-              month={selectedMonth}
-              day={selectedDay}
-              reading={currentReading}
-              dayEvents={currentDayEvents}
-              onClose={() => setSelectedDay(null)}
-            />
           )}
         </AnimatePresence>
 
