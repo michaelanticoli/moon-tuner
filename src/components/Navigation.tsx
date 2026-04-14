@@ -1,160 +1,307 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Menu, X, User, LogIn } from "lucide-react";
-import { Link } from "react-router-dom";
-import { X } from "lucide-react";
-import moontunerLogo from "@/assets/moontuner-logo.png";
-import { useAuth } from "@/contexts/AuthContext";
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import './Navigation.css';
 
-const navLinks = [
-  { label: "LUNAR SYSTEM", href: "/lunar-system" },
-  { label: "SCHOOL", href: "/school" },
-  { label: "SERVICES", href: "/services" },
-  { label: "CHAPERONE", href: "/workbooks" },
-  { label: "PHASECRAFT", href: "/method" },
-  { label: "CIPHER", href: "/lunar-cipher" },
-  { label: "MOON PHASE TODAY", href: "/moon-phase-today" },
-  { label: "LUNAR REPORTS", href: "/lunar-reports" },
-  { label: "MANIFESTO", href: "/manifesto" },
-  { label: "BLOG", href: "https://moontuner.ghost.io" },
+// ─── Nav data ──────────────────────────────────────────────────────────────
+
+interface NavItem {
+  label: string;
+  href: string;
+  desc: string;
+  external?: boolean;
+}
+
+interface NavGroupData {
+  label: string;
+  items: NavItem[];
+}
+
+const NAV_GROUPS: NavGroupData[] = [
+  {
+    label: 'The Method',
+    items: [
+      { label: 'Lunar System', href: '/lunar-system', desc: 'The full framework' },
+      { label: 'The Method', href: '/method', desc: 'How the system works' },
+      { label: 'Philosophy', href: '/philosophy', desc: 'The thinking behind it' },
+      { label: 'The Moon', href: '/the-moon', desc: 'Lunar fundamentals' },
+    ],
+  },
+  {
+    label: 'Learn',
+    items: [
+      { label: 'School', href: '/school', desc: 'Structured learning' },
+      { label: 'Quantumelodic', href: '/quantumelodic', desc: 'Sound + lunar theory' },
+      { label: 'Blog', href: 'https://moontuner.ghost.io', desc: 'Articles & essays', external: true },
+    ],
+  },
+  {
+    label: 'Tools',
+    items: [
+      { label: 'Moon Phase Today', href: '/moon-phase-today', desc: 'Live lunar tracker' },
+      { label: 'Lunar Cipher', href: '/lunar-cipher', desc: 'Decode your chart' },
+      { label: 'App', href: '/app', desc: 'Full lunar toolkit' },
+    ],
+  },
+  {
+    label: 'Products',
+    items: [
+      { label: 'Workbooks', href: '/workbooks', desc: 'Guided practice' },
+      { label: 'Lunar Reports', href: '/lunar-reports', desc: 'Personal readings' },
+      { label: 'Lunar Chaperone', href: '/lunar-chaperone', desc: 'Monthly guidance' },
+    ],
+  },
+  {
+    label: 'Work with Me',
+    items: [
+      { label: 'Services', href: '/services', desc: 'What I offer' },
+      { label: 'Sessions', href: '/sessions', desc: '1:1 consultations' },
+    ],
+  },
 ];
 
+// ─── Icon sub-components ───────────────────────────────────────────────────
+
+function MoonMark() {
+  return (
+    <svg className="mn-logo-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <defs>
+        <mask id="mn-crescent-mask">
+          <rect width="24" height="24" fill="white" />
+          <circle cx="15.5" cy="10.5" r="7.5" fill="black" />
+        </mask>
+      </defs>
+      <circle cx="11" cy="12" r="8.5" fill="#c9ae72" opacity="0.9" mask="url(#mn-crescent-mask)" />
+    </svg>
+  );
+}
+
+function Chevron({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 10 10" fill="none" aria-hidden="true">
+      <path d="M2 3.5 L5 6.5 L8 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// ─── NavGroup (desktop) ────────────────────────────────────────────────────
+
+function NavGroup({
+  group,
+  isOpen,
+  onEnter,
+  onLeave,
+}: {
+  group: NavGroupData;
+  isOpen: boolean;
+  onEnter: () => void;
+  onLeave: () => void;
+}) {
+  return (
+    <div
+      className={`mn-group${isOpen ? ' is-open' : ''}`}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+    >
+      <button className="mn-trigger" aria-expanded={isOpen} aria-haspopup="menu">
+        {group.label}
+        <Chevron className="mn-chevron" />
+      </button>
+
+      <div className="mn-drop" role="menu">
+        {group.items.map((item) =>
+          item.external ? (
+            <a
+              key={item.href}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mn-drop-link"
+              role="menuitem"
+            >
+              <span className="mn-drop-label">{item.label}</span>
+              <span className="mn-drop-desc">{item.desc}</span>
+            </a>
+          ) : (
+            <Link key={item.href} to={item.href} className="mn-drop-link" role="menuitem">
+              <span className="mn-drop-label">{item.label}</span>
+              <span className="mn-drop-desc">{item.desc}</span>
+            </Link>
+          )
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── MobileGroup (accordion) ──────────────────────────────────────────────
+
+function MobileGroup({
+  group,
+  isOpen,
+  onToggle,
+  onNavigate,
+}: {
+  group: NavGroupData;
+  isOpen: boolean;
+  onToggle: () => void;
+  onNavigate: () => void;
+}) {
+  return (
+    <div className={`mn-mob-group${isOpen ? ' is-open' : ''}`}>
+      <button className="mn-mob-header" onClick={onToggle}>
+        {group.label}
+        <Chevron className="mn-mob-chevron" />
+      </button>
+
+      <div className="mn-mob-items">
+        {group.items.map((item) =>
+          item.external ? (
+            <a
+              key={item.href}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mn-mob-link"
+              onClick={onNavigate}
+            >
+              <span className="mn-mob-link-label">{item.label}</span>
+              <span className="mn-mob-link-desc">{item.desc}</span>
+            </a>
+          ) : (
+            <Link key={item.href} to={item.href} className="mn-mob-link" onClick={onNavigate}>
+              <span className="mn-mob-link-label">{item.label}</span>
+              <span className="mn-mob-link-desc">{item.desc}</span>
+            </Link>
+          )
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Navigation (main export) ──────────────────────────────────────────────
+
 export function Navigation() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openMobGroup, setOpenMobGroup] = useState<string | null>(null);
   const { user, loading } = useAuth();
+  const navRef = useRef<HTMLElement>(null);
+
+  // Scroll listener
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Click-outside to close desktop dropdowns
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenGroup(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  // Escape closes everything
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpenGroup(null);
+        setMobileOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, []);
+
+  const closeMobile = () => {
+    setMobileOpen(false);
+    setOpenMobGroup(null);
+  };
+
+  const ctaLabel = !loading && user ? 'Dashboard' : 'Services';
+  const ctaHref = !loading && user ? '/dashboard' : '/services';
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/30">
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo with Moontuner Icon */}
-          <a href="/" className="flex items-center gap-3">
-            <img 
-              src={moontunerLogo} 
-              alt="Moontuner" 
-              className="w-8 h-8 lg:w-10 lg:h-10 object-contain"
-            />
-            <span className="font-sans text-sm lg:text-base font-medium tracking-[0.2em] text-foreground uppercase">
-              Moontuner
-            </span>
-          </a>
+    <>
+      <header ref={navRef} role="banner">
+        <nav className={`mn-nav${scrolled ? ' is-scrolled' : ''}`} aria-label="Main navigation">
+          {/* Logo */}
+          <Link to="/" className="mn-logo" aria-label="MOONtuner — home">
+            <MoonMark />
+            <span className="mn-logo-word">MOONtuner</span>
+          </Link>
 
-          {/* Desktop Navigation - pushed right */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="font-sans text-xs font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 tracking-[0.15em]"
-              >
-                {link.label}
-              </a>
+          {/* Desktop groups */}
+          <div className="mn-items" role="menubar">
+            {NAV_GROUPS.map((group) => (
+              <NavGroup
+                key={group.label}
+                group={group}
+                isOpen={openGroup === group.label}
+                onEnter={() => setOpenGroup(group.label)}
+                onLeave={() => setOpenGroup(null)}
+              />
             ))}
           </div>
 
-          {/* Auth & Status Badge */}
-          <div className="flex items-center gap-4">
-            {/* Auth Button - Desktop */}
-            {!loading && (
-              <div className="hidden lg:block">
-                {user ? (
-                  <Link to="/dashboard">
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <User className="w-4 h-4" />
-                      Dashboard
-                    </Button>
-                  </Link>
-                ) : (
-                  <Link to="/auth">
-                    <Button variant="gold" size="sm" className="gap-2">
-                      <LogIn className="w-4 h-4" />
-                      Sign In
-                    </Button>
-                  </Link>
-                )}
-              </div>
-            )}
+          {/* Persistent CTA */}
+          <Link to={ctaHref} className="mn-cta">
+            {ctaLabel} ↗
+          </Link>
 
-            {/* Illumination Status */}
-            <div className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/50">
-              <span className="status-dot animate-status-pulse" />
-              <span className="font-sans text-xs uppercase tracking-[0.15em] text-foreground">
-                Receiving Light
-              </span>
-            </div>
+          {/* Hamburger */}
+          <button
+            className={`mn-burger${mobileOpen ? ' is-open' : ''}`}
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-expanded={mobileOpen}
+            aria-controls="mn-mobile-menu"
+            aria-label="Toggle navigation menu"
+          >
+            <span className="mn-burger-line" />
+            <span className="mn-burger-line" />
+            <span className="mn-burger-line" />
+          </button>
+        </nav>
+      </header>
 
-            {/* Hamburger Menu */}
-          {/* Hamburger Menu (mobile only) */}
-          <div className="flex items-center">
-            <button
-              className="lg:hidden flex items-center justify-center w-10 h-10 text-foreground"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
-            >
-              {isOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <div className="flex flex-col gap-1.5">
-                  <span className="w-5 h-px bg-foreground" />
-                  <span className="w-5 h-px bg-foreground" />
-                </div>
-              )}
-            </button>
-          </div>
-        </div>
+      {/* Mobile overlay */}
+      <div
+        id="mn-mobile-menu"
+        className={`mn-mobile${mobileOpen ? ' is-open' : ''}`}
+        aria-hidden={!mobileOpen}
+        role="dialog"
+        aria-label="Mobile navigation"
+      >
+        {NAV_GROUPS.map((group) => (
+          <MobileGroup
+            key={group.label}
+            group={group}
+            isOpen={openMobGroup === group.label}
+            onToggle={() =>
+              setOpenMobGroup((v) => (v === group.label ? null : group.label))
+            }
+            onNavigate={closeMobile}
+          />
+        ))}
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="lg:hidden py-8 border-t border-border/30 animate-fade-in">
-            <div className="flex flex-col gap-6">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors tracking-[0.15em]"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
-
-              {/* Auth Link - Mobile */}
-              {!loading && (
-                <div className="pt-4 border-t border-border/30">
-                  {user ? (
-                    <Link
-                      to="/dashboard"
-                      className="flex items-center gap-2 font-sans text-sm font-medium text-accent hover:text-foreground transition-colors tracking-[0.15em]"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <User className="w-4 h-4" />
-                      DASHBOARD
-                    </Link>
-                  ) : (
-                    <Link
-                      to="/auth"
-                      className="flex items-center gap-2 font-sans text-sm font-medium text-accent hover:text-foreground transition-colors tracking-[0.15em]"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <LogIn className="w-4 h-4" />
-                      SIGN IN
-                    </Link>
-                  )}
-                </div>
-              )}
-
-              <div className="flex items-center gap-2 pt-4">
-                <span className="status-dot animate-status-pulse" />
-                <span className="font-sans text-xs uppercase tracking-[0.15em] text-foreground">
-                  Receiving Light
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
+        <Link to={ctaHref} className="mn-mob-cta" onClick={closeMobile}>
+          {ctaLabel} ↗
+        </Link>
       </div>
-    </nav>
+    </>
   );
 }
