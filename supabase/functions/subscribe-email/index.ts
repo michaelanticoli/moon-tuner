@@ -6,7 +6,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const logStep = (step: string, details?: any) => {
+const logStep = (step: string, details?: unknown) => {
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
   console.log(`[SUBSCRIBE-EMAIL] ${step}${detailsStr}`);
 };
@@ -56,11 +56,19 @@ serve(async (req) => {
 
     logStep("Processing subscription", { source });
 
-    const mailchimpApiKey = Deno.env.get("MAILCHIMP_API_KEY");
-    const MAILCHIMP_LIST_ID = "c44b7867f8";
+    const mailchimpApiKey = Deno.env.get("MAILCHIMP_API_KEY")?.trim();
+    const mailchimpListId = Deno.env.get("MAILCHIMP_LIST_ID")?.trim();
 
     if (!mailchimpApiKey) {
       logStep("MAILCHIMP_API_KEY is not configured");
+      return new Response(
+        JSON.stringify({ success: false, error: "Unable to process subscription. Please try again." }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
+      );
+    }
+
+    if (!mailchimpListId) {
+      logStep("MAILCHIMP_LIST_ID is not configured");
       return new Response(
         JSON.stringify({ success: false, error: "Unable to process subscription. Please try again." }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
@@ -71,7 +79,7 @@ serve(async (req) => {
 
     // Subscribe to Mailchimp
     const mailchimpResponse = await fetch(
-      `https://${dc}.api.mailchimp.com/3.0/lists/${MAILCHIMP_LIST_ID}/members`,
+      `https://${dc}.api.mailchimp.com/3.0/lists/${mailchimpListId}/members`,
       {
         method: "POST",
         headers: {
