@@ -84,6 +84,10 @@
   position: relative;
 }
 
+.mn-group.is-open {
+  z-index: 20;
+}
+
 .mn-trigger {
   display: inline-flex;
   align-items: center;
@@ -126,6 +130,7 @@
   position: absolute;
   top: calc(100% + 10px);
   left: 0;
+  z-index: 30;
   min-width: 210px;
   background: var(--nav-drop-bg);
   border: 1px solid var(--nav-drop-border);
