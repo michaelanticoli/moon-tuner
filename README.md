@@ -58,7 +58,7 @@ The newsletter signup edge function expects these Supabase secrets to be configu
 - `MAILCHIMP_API_KEY`
 - `MAILCHIMP_LIST_ID`
 
-Set them in your Supabase project so `/home/runner/work/moon-tuner/moon-tuner/supabase/functions/subscribe-email/index.ts` can route new subscribers to the correct Mailchimp audience without relying on a hard-coded list ID.
+Set them in your Supabase project so `supabase/functions/subscribe-email/index.ts` can route new subscribers to the correct Mailchimp audience without relying on a hard-coded list ID.
 
 **Edit a file directly in GitHub**
 
