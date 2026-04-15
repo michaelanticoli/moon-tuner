@@ -4,16 +4,16 @@ import { PageTransition } from "@/components/PageTransition";
 import { ScrollReveal } from "@/components/ScrollReveal";
 
 /* ── External links ── */
-const STRIPE_LUNAR_ARC = "https://buy.stripe.com/4gMcN4asS9AS0Qf0bT2Ji01";
-const STRIPE_PHASECRAFT = "https://buy.stripe.com/4gM8wO58yeVccyX6Ah2Ji02";
+const STRIPE_LUNAR_ARC = "https://buy.stripe.com/5kQbJ0en87iYfSPfPbe7m03";
+const STRIPE_PHASECRAFT = "https://buy.stripe.com/eVqbJ03Iu46M6if1Yle7m07";
 const STRIPE_CIPHER = "https://buy.stripe.com/6oU3cugvg9r6bCzauRe7m06";
-const STRIPE_CHAPERONE = "https://buy.stripe.com/7sY4gy8kK5kCfL95wd2Ji04";
+const STRIPE_CHAPERONE = "https://buy.stripe.com/7sY6oG2Eq6eU363eL7e7m08";
 
 const SQUARE_TAROT =
   "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/SWPXX34N2NRJTB6ZGFC7OEKR";
 const SQUARE_HARMONIC =
   "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/EE55PYXPCRZE6GQPDT4Y7IOL";
-const COMPOSE_EMAIL = `mailto:michaelanticoli@gmail.com?subject=${encodeURIComponent("Custom Chart Composition Inquiry — Moontuner")}&body=${encodeURIComponent(`Hi Michael,
+const COMPOSE_EMAIL = `mailto:hello@moontuner.xyz?subject=${encodeURIComponent("Custom Chart Composition Inquiry — Moontuner")}&body=${encodeURIComponent(`Hi Michael,
 
 I'm interested in commissioning a custom chart composition.
 
@@ -280,7 +280,7 @@ export default function Services() {
               </article>
             </ScrollReveal>
 
-            {/* 4 — Lunar Cipher Calendar 2026 ($27) */}
+            {/* 4 — Lunar Cipher Calendar 2026 ($20) */}
             <ScrollReveal delay={0.05}>
               <article className="bg-card border border-border rounded-sm overflow-hidden group hover:border-accent/30 transition-colors duration-400 mb-0.5">
                 <div className="h-0.5 w-full bg-gradient-to-r from-accent to-transparent" />
