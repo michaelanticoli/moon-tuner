@@ -116,7 +116,7 @@ export default function Sessions() {
             {/* Michael — hero portrait, right-anchored, fades left */}
             <div className="absolute right-0 top-0 h-full w-[55%] lg:w-[45%] pointer-events-none select-none hidden sm:block">
               <GhostPhoto
-                src="/images/michael-pool-moon.jpg"
+                src="/images/lunar.jpg"
                 alt="Michael Anticoli"
                 fade="left"
                 className="h-full w-full object-cover object-center"
