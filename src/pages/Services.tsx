@@ -6,7 +6,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 /* ── External links ── */
 const STRIPE_LUNAR_ARC = "https://buy.stripe.com/4gMcN4asS9AS0Qf0bT2Ji01";
 const STRIPE_PHASECRAFT = "https://buy.stripe.com/4gM8wO58yeVccyX6Ah2Ji02";
-const STRIPE_CIPHER = "https://buy.stripe.com/8x2aEW0Si28q0Qff6N2Ji03";
+const STRIPE_CIPHER = "https://buy.stripe.com/6oU3cugvg9r6bCzauRe7m06";
 const STRIPE_CHAPERONE = "https://buy.stripe.com/7sY4gy8kK5kCfL95wd2Ji04";
 
 const SQUARE_TAROT =
@@ -297,7 +297,7 @@ export default function Services() {
                       </h2>
                     </div>
                     <div className="sm:text-right flex-shrink-0">
-                      <span className="font-serif text-[28px] font-normal text-accent leading-none block">$27</span>
+                      <span className="font-serif text-[28px] font-normal text-accent leading-none block">$20 or Pay What You Can</span>
                       <span className="text-[10px] text-muted-foreground tracking-[0.1em] block mt-1">Full year access</span>
                     </div>
                   </div>
