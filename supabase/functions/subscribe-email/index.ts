@@ -56,7 +56,7 @@ serve(async (req) => {
 
     logStep("Processing subscription", { source });
 
-    const mailchimpApiKey = Deno.env.get("MAILCHIMP_API_KEY");
+    const mailchimpApiKey = Deno.env.get("MAILCHIMP_API_KEY")?.trim();
     const mailchimpListId = Deno.env.get("MAILCHIMP_LIST_ID")?.trim();
 
     if (!mailchimpApiKey) {
