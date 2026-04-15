@@ -327,7 +327,7 @@ export default function Sessions() {
           {/* ── Atmospheric divider ── */}
           <div className="relative w-full h-48 sm:h-64 overflow-hidden pointer-events-none select-none">
             <GhostPhoto
-              src="/images/michael-pool-moon.jpg"
+              src="/images/moontunerImage1.png"
               alt=""
               fade="top-bottom"
               className="absolute inset-0 w-full h-full object-cover object-center"
