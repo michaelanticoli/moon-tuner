@@ -161,7 +161,7 @@ export default function Sessions() {
             {/* Photo — left anchor, fades right into the section */}
             <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[110%] w-[38%] pointer-events-none select-none hidden lg:block">
               <GhostPhoto
-                src="/images/tarot.png"
+                src="/images/tarot.jpeg"
                 alt="Michael with tarot cards"
                 fade="right"
                 className="h-full w-full object-cover object-center"
@@ -229,7 +229,7 @@ export default function Sessions() {
             {/* Studio photo — right anchor, fades left */}
             <div className="absolute right-0 top-0 h-full w-[44%] pointer-events-none select-none hidden lg:block">
               <GhostPhoto
-                src="/images/creative alchemy-3.png"
+                src="/images/michael-studio.png"
                 alt="Michael at the astro-harmonic studio"
                 fade="left"
                 className="h-full w-full object-cover object-center"
@@ -327,7 +327,7 @@ export default function Sessions() {
           {/* ── Atmospheric divider ── */}
           <div className="relative w-full h-48 sm:h-64 overflow-hidden pointer-events-none select-none">
             <GhostPhoto
-              src="/images/moontunerImage1.jpg"
+              src="/images/michael-pool-moon.jpg"
               alt=""
               fade="top-bottom"
               className="absolute inset-0 w-full h-full object-cover object-center"
