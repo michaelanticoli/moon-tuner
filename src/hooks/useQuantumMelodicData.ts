@@ -2,6 +2,12 @@ import { useState, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { QMPlanet, QMSign, QMAspect, QMHouse, ComputedAspect, QuantumMelodicReading } from '@/types/quantumMelodic';
 import type { PlanetPosition } from '@/types/astrology';
+import {
+  FALLBACK_QM_ASPECTS,
+  FALLBACK_QM_HOUSES,
+  FALLBACK_QM_PLANETS,
+  FALLBACK_QM_SIGNS,
+} from '@/data/quantumMelodicFallback';
 
 export function useQuantumMelodicData() {
   const planetsRef = useRef<QMPlanet[]>([]);
@@ -14,8 +20,21 @@ export function useQuantumMelodicData() {
   const [error, setError]     = useState<string | null>(null);
   const [dataReady, setDataReady] = useState(false);
 
+  const applyDataset = useCallback((data: {
+    planets?: QMPlanet[];
+    signs?: QMSign[];
+    aspects?: QMAspect[];
+    houses?: QMHouse[];
+  }) => {
+    planetsRef.current = data.planets?.length ? data.planets : FALLBACK_QM_PLANETS;
+    signsRef.current = data.signs?.length ? data.signs : FALLBACK_QM_SIGNS;
+    aspectsRef.current = data.aspects?.length ? data.aspects : FALLBACK_QM_ASPECTS;
+    housesRef.current = data.houses?.length ? data.houses : FALLBACK_QM_HOUSES;
+    setDataReady(true);
+  }, []);
+
   const fetchData = useCallback(async () => {
-    if (fetchedRef.current) return; // prevent re-fetch
+    if (fetchedRef.current && dataReady) return;
     fetchedRef.current = true;
     setLoading(true);
     setError(null);
@@ -23,21 +42,15 @@ export function useQuantumMelodicData() {
       const { data, error: fnError } = await supabase.functions.invoke('fetch-qm-data');
       if (fnError) throw fnError;
       if (!data || typeof data !== 'object') throw new Error('Empty response from harmonic data service');
-
-      planetsRef.current = (data.planets as QMPlanet[]) || [];
-      signsRef.current   = (data.signs   as QMSign[])   || [];
-      aspectsRef.current = (data.aspects as QMAspect[]) || [];
-      housesRef.current  = (data.houses  as QMHouse[])  || [];
-
-      setDataReady(true);
+      applyDataset(data);
     } catch (err) {
       console.error('Error fetching QM data:', err);
-      fetchedRef.current = false; // allow retry on error
-      setError(err instanceof Error ? err.message : 'Failed to load harmonic data');
+      applyDataset({});
+      setError('Remote harmonic data was unavailable, so an embedded fallback library was used.');
     } finally {
       setLoading(false);
     }
-  }, []); // stable reference — no deps
+  }, [applyDataset, dataReady]);
 
   const getHouseNumber = useCallback((degree: number, ascendantDegree: number): number => {
     const adjusted = ((ascendantDegree - degree) % 360 + 360) % 360;
@@ -55,12 +68,19 @@ export function useQuantumMelodicData() {
         let angle = Math.abs(relevant[i].degree - relevant[j].degree);
         if (angle > 180) angle = 360 - angle;
 
-        for (const aspect of aspects) {
-          const orb = Math.abs(angle - aspect.angle);
-          if (orb <= aspect.orb) {
-            computed.push({ planet1: relevant[i].name, planet2: relevant[j].name, aspectType: aspect, exactAngle: angle, orb });
-            break;
-          }
+        const matchedAspect = aspects
+          .map((aspect) => ({ aspect, orb: Math.abs(angle - aspect.angle) }))
+          .filter(({ orb, aspect }) => orb <= aspect.orb)
+          .sort((a, b) => a.orb - b.orb)[0];
+
+        if (matchedAspect) {
+          computed.push({
+            planet1: relevant[i].name,
+            planet2: relevant[j].name,
+            aspectType: matchedAspect.aspect,
+            exactAngle: angle,
+            orb: matchedAspect.orb,
+          });
         }
       }
     }
