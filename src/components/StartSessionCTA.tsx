@@ -54,7 +54,7 @@ export function StartSessionCTA() {
               <div className="w-28 h-36 rounded-xl border border-border/40 bg-card/50 flex items-center justify-center p-4">
                 <img
                     src={moonkeyLogo}
-                  alt="Moontuner"
+                    alt="Moonkey"
                   className="w-16 h-16 object-contain brightness-0 invert opacity-80"
                   loading="lazy"
                 />

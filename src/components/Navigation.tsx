@@ -225,7 +225,7 @@ export function Navigation() {
       <header ref={navRef} role="banner">
         <nav className={`mn-nav${scrolled ? ' is-scrolled' : ''}`} aria-label="Main navigation">
           {/* Logo */}
-          <Link to="/" className="mn-logo" aria-label="MOONtuner home">
+          <Link to="/" className="mn-logo" aria-label="Moontuner home">
             <span className="mn-logo-word">MOON</span>
             <img src={moonkeyLogo} alt="" className="mn-logo-mark" aria-hidden="true" />
             <span className="mn-logo-word">TUNER</span>

@@ -29,7 +29,7 @@ export function Footer() {
             <div className="flex items-center gap-3 mb-6">
               <img 
                 src={moonkeyLogo} 
-                alt="Moontuner" 
+                alt="Moonkey" 
                 className="w-8 h-8 object-contain"
               />
               <span className="font-sans text-sm font-medium tracking-[0.2em] text-foreground uppercase">
