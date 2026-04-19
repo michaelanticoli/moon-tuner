@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import moonkeyLogo from '@/assets/moontuner-logo.png';
 import './Navigation.css';
 
 // ─── Nav data ──────────────────────────────────────────────────────────────
@@ -59,22 +60,6 @@ const NAV_GROUPS: NavGroupData[] = [
     ],
   },
 ];
-
-// ─── Icon sub-components ───────────────────────────────────────────────────
-
-function MoonMark() {
-  return (
-    <svg className="mn-logo-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <defs>
-        <mask id="mn-crescent-mask">
-          <rect width="24" height="24" fill="white" />
-          <circle cx="15.5" cy="10.5" r="7.5" fill="black" />
-        </mask>
-      </defs>
-      <circle cx="11" cy="12" r="8.5" fill="#c9ae72" opacity="0.9" mask="url(#mn-crescent-mask)" />
-    </svg>
-  );
-}
 
 function Chevron({ className }: { className?: string }) {
   return (
@@ -240,9 +225,10 @@ export function Navigation() {
       <header ref={navRef} role="banner">
         <nav className={`mn-nav${scrolled ? ' is-scrolled' : ''}`} aria-label="Main navigation">
           {/* Logo */}
-          <Link to="/" className="mn-logo" aria-label="MOONtuner — home">
-            <MoonMark />
-            <span className="mn-logo-word">MOONtuner</span>
+          <Link to="/" className="mn-logo" aria-label="Moontuner home">
+            <span className="mn-logo-word">MOON</span>
+            <img src={moonkeyLogo} alt="" className="mn-logo-mark" aria-hidden="true" />
+            <span className="mn-logo-word">TUNER</span>
           </Link>
 
           {/* Desktop groups */}
