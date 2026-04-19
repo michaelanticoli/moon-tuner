@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import moonkeyLogo from '@/assets/moontuner-logo.png';
+import moonkeyLogo from '@/assets/moonkey-logo.png';
 import './Navigation.css';
 
 // ─── Nav data ──────────────────────────────────────────────────────────────
@@ -225,7 +225,7 @@ export function Navigation() {
       <header ref={navRef} role="banner">
         <nav className={`mn-nav${scrolled ? ' is-scrolled' : ''}`} aria-label="Main navigation">
           {/* Logo */}
-          <Link to="/" className="mn-logo" aria-label="Moontuner home">
+          <Link to="/" className="mn-logo" aria-label="MOONtuner home">
             <span className="mn-logo-word">MOON</span>
             <img src={moonkeyLogo} alt="" className="mn-logo-mark" aria-hidden="true" />
             <span className="mn-logo-word">TUNER</span>
