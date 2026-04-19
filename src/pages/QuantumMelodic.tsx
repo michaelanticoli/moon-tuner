@@ -59,7 +59,9 @@ const QuantumMelodic = () => {
     try {
       const raw = sessionStorage.getItem("qm_birth_data");
       if (raw) setFormData(prev => ({ ...prev, ...JSON.parse(raw) }));
-    } catch {}
+    } catch {
+      sessionStorage.removeItem("qm_birth_data");
+    }
   }, []);
 
   const handleGenerate = async () => {
