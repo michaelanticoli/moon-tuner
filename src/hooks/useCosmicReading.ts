@@ -3,6 +3,7 @@ import type { BirthData, ChartData, CosmicReading } from '@/types/astrology';
 import { chartToScore } from '@/utils/chartToScore';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const AUDIO_RENDER_TIMEOUT_MS = 15000;
 
 const signModes: Record<string, string> = {
   Aries: 'A Phrygian', Taurus: 'F Ionian', Gemini: 'G Mixolydian', Cancer: 'A Aeolian',
@@ -57,13 +58,55 @@ export function useCosmicReading() {
   const [error, setError] = useState<string | null>(null);
   const [reading, setReading] = useState<CosmicReading | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [audioLoading, setAudioLoading] = useState(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [stage, setStage] = useState<'idle' | 'geocoding' | 'calculating' | 'generating' | 'complete'>('idle');
+
+  const generateAudio = useCallback(async (chart: ChartData) => {
+    if (audioLoading) return null;
+
+    setAudioLoading(true);
+    setAudioError(null);
+    setStage('generating');
+    setProgress(70);
+
+    try {
+      const score = chartToScore(chart);
+      const { renderScoreToAudioUrl } = await import('@/utils/tonePlayer');
+      const url = await Promise.race<string>([
+        renderScoreToAudioUrl(score),
+        new Promise<string>((_, reject) =>
+          window.setTimeout(() => reject(new Error('Audio rendering timed out.')), AUDIO_RENDER_TIMEOUT_MS)
+        ),
+      ]);
+      setAudioUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return url;
+      });
+      setProgress(100);
+      setStage('complete');
+      return url;
+    } catch (audioErr) {
+      console.warn('Audio render failed, continuing without audio:', audioErr);
+      setAudioError('Audio rendering is temporarily unavailable, but your full report is ready now.');
+      setProgress(100);
+      setStage('complete');
+      return null;
+    } finally {
+      setAudioLoading(false);
+    }
+  }, [audioLoading]);
 
   const generateReading = useCallback(async (birthData: BirthData) => {
     setLoading(true);
     setError(null);
+    setAudioError(null);
     setProgress(0);
+    setAudioUrl((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return null;
+    });
 
     try {
       setStage('geocoding');
@@ -103,22 +146,7 @@ export function useCosmicReading() {
       if (!chart.ascendant) chart.ascendant = chart.planets.find(p => p.name === 'Ascendant')?.sign || 'Aries';
 
       setProgress(50);
-      setStage('generating');
-      setProgress(60);
-
-      let url: string | null = null;
-      try {
-        const score = chartToScore(chart);
-        setProgress(70);
-        const { renderScoreToAudioUrl } = await import('@/utils/tonePlayer');
-        url = await renderScoreToAudioUrl(score);
-        setProgress(90);
-      } catch (audioErr) {
-        console.warn('Audio render failed, continuing without audio:', audioErr);
-        setProgress(90);
-      }
-
-      setAudioUrl(url);
+      setStage('complete');
       setProgress(100);
 
       const musicalMode = signModes[chart.sunSign] || 'D Dorian';
@@ -126,7 +154,6 @@ export function useCosmicReading() {
       const cosmicReading: CosmicReading = {
         birthData,
         chartData: chart,
-        audioUrl: url ?? undefined,
         musicalMode,
         audioSource: 'tone',
       };
@@ -145,7 +172,9 @@ export function useCosmicReading() {
 
   const reset = useCallback(() => {
     setLoading(false);
+    setAudioLoading(false);
     setError(null);
+    setAudioError(null);
     setReading(null);
     setProgress(0);
     setStage('idle');
@@ -153,5 +182,18 @@ export function useCosmicReading() {
     setAudioUrl(null);
   }, [audioUrl]);
 
-  return { loading, error, reading, audioUrl, audioSource: 'tone' as const, progress, stage, generateReading, reset };
+  return {
+    loading,
+    error,
+    reading,
+    audioUrl,
+    audioSource: 'tone' as const,
+    audioLoading,
+    audioError,
+    progress,
+    stage,
+    generateReading,
+    generateAudio,
+    reset,
+  };
 }

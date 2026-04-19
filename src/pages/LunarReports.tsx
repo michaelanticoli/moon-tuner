@@ -9,7 +9,6 @@ import { Activity, FileText, Sparkles, Download, ExternalLink, Table } from "luc
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { generateReport, type LunarReport } from "@/lib/lunarReportEngine";
-import { generateLunarPDF } from "@/lib/generateLunarPDF";
 import { openLunarHTMLReport } from "@/lib/generateLunarHTML";
 import { downloadNatalCSV } from "@/lib/generateNatalCSV";
 import type { ChartData } from "@/types/astrology";
@@ -20,6 +19,7 @@ import { ArcPracticeSection } from "@/components/report/ArcPracticeSection";
 import { ReportClosing } from "@/components/report/ReportClosing";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SIMULATED_LOADING_DELAY_MS = 600;
 
 const LunarReports = () => {
   const [searchParams] = useSearchParams();
@@ -46,44 +46,50 @@ const LunarReports = () => {
     if (!formData.date) return;
     setStep('generating');
 
-    // Run lunar report and chart calculation concurrently
-    const reportPromise = new Promise<LunarReport>((resolve) => {
-      setTimeout(() => {
-        resolve(generateReport(formData.date, formData.time, formData.location, formData.name));
-      }, 100);
-    });
-
-    const chartPromise = fetch(`${SUPABASE_URL}/functions/v1/calculate-chart`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        date: formData.date,
-        time: formData.time,
-        location: formData.location,
-      }),
-    })
-      .then(res => res.ok ? res.json() : Promise.reject('Chart unavailable'))
-      .catch(err => {
-        console.warn('Chart calculation failed, using fallback:', err);
-        return null;
+    try {
+      const reportPromise = new Promise<LunarReport>((resolve) => {
+        setTimeout(() => {
+          resolve(generateReport(formData.date, formData.time, formData.location, formData.name));
+        }, 100);
       });
 
-    const [r, chart] = await Promise.all([reportPromise, chartPromise]);
-    setReport(r);
-    setChartData(chart);
+      const chartPromise = fetch(`${SUPABASE_URL}/functions/v1/calculate-chart`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          date: formData.date,
+          time: formData.time,
+          location: formData.location,
+        }),
+      })
+        .then(res => res.ok ? res.json() : Promise.reject('Chart unavailable'))
+        .catch(err => {
+          console.warn('Chart calculation failed, using fallback:', err);
+          return null;
+        });
 
-    // Simulate a brief loading feel
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setStep('result');
+      const [r, chart] = await Promise.all([reportPromise, chartPromise]);
+      setReport(r);
+      setChartData(chart);
+      await new Promise(resolve => setTimeout(resolve, SIMULATED_LOADING_DELAY_MS));
+      setStep('result');
+    } catch (err) {
+      console.error('Lunar report generation failed:', err);
+      alert('We could not generate your lunar report just now. Please try again.');
+      setStep('input');
+    }
   };
 
   const handleDownloadPDF = () => {
     if (!report) return;
     try {
-      generateLunarPDF(report);
+      const opened = openLunarHTMLReport(report, { autoPrint: true });
+      if (!opened) {
+        throw new Error('Print window was blocked');
+      }
     } catch (err) {
       console.error('PDF generation error:', err);
-      alert('PDF download failed. Please try the Interactive Report instead.');
+      alert('PDF export was blocked. Please allow popups and try again, or use the Interactive Report.');
     }
   };
 

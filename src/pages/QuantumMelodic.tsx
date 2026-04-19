@@ -27,8 +27,20 @@ const QuantumMelodic = () => {
     if (!isPaid) navigate("/services", { replace: true });
   }, [isPaid, navigate]);
 
-  const { loading, error, reading, audioUrl, progress, stage, generateReading, reset } = useCosmicReading();
-  const { fetchData, dataReady, buildReading, loading: qmLoading } = useQuantumMelodicData();
+  const {
+    loading,
+    error,
+    reading,
+    audioUrl,
+    audioLoading,
+    audioError,
+    progress,
+    stage,
+    generateReading,
+    generateAudio,
+    reset,
+  } = useCosmicReading();
+  const { fetchData, error: qmError, buildReading } = useQuantumMelodicData();
   const [step, setStep] = useState<"input" | "generating" | "result">("input");
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -47,12 +59,10 @@ const QuantumMelodic = () => {
     try {
       const raw = sessionStorage.getItem("qm_birth_data");
       if (raw) setFormData(prev => ({ ...prev, ...JSON.parse(raw) }));
-    } catch {}
+    } catch {
+      sessionStorage.removeItem("qm_birth_data");
+    }
   }, []);
-
-  useEffect(() => {
-    if (isPaid) fetchData();
-  }, [isPaid, fetchData]);
 
   const handleGenerate = async () => {
     if (!formData.date || !formData.location) return;
@@ -66,6 +76,7 @@ const QuantumMelodic = () => {
         location: formData.location,
       };
 
+      await fetchData();
       const result = await generateReading(birthData);
 
       if (result?.chartData?.planets) {
@@ -261,11 +272,11 @@ const QuantumMelodic = () => {
                   <h3 className="font-serif text-2xl text-foreground mb-3 italic">
                     {stage === "geocoding" && "Locating coordinates\u2026"}
                     {stage === "calculating" && "Computing planetary positions\u2026"}
-                    {stage === "generating" && "Synthesizing your composition\u2026"}
+                    {stage === "generating" && "Rendering audio layer\u2026"}
                     {(stage === "idle" || stage === "complete") && "Preparing\u2026"}
                   </h3>
                   <p className="system-label animate-pulse mb-10">
-                    Moshier DE404 Ephemeris \u00B7 Tone.js Synthesis
+                    Moshier DE404 Ephemeris \u00B7 Harmonic Mapping
                   </p>
                   <div className="w-48 h-px bg-border rounded-full overflow-hidden mx-auto">
                     <motion.div className="h-full bg-accent rounded-full" initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }} />
@@ -315,34 +326,44 @@ const QuantumMelodic = () => {
                           <p className="system-label text-muted-foreground/50 mt-4 normal-case italic tracking-normal">Approximate positions — ephemeris service was briefly unavailable</p>
                         )}
                       </div>
-                      <div className="flex flex-wrap gap-3 shrink-0">
-                        {audioUrl && (
-                          <button
-                            onClick={() => {
-                              const a = document.createElement('a');
-                              a.href = audioUrl;
-                              a.download = `${(reading.birthData.name || 'cosmic').replace(/\s+/g, '_')}_symphony.wav`;
-                              document.body.appendChild(a);
-                              a.click();
-                              document.body.removeChild(a);
-                            }}
-                            className="system-button text-xs gap-2"
-                          >
-                            <Download className="w-3.5 h-3.5" /> Download MP3
-                          </button>
-                        )}
-                        <button
-                          onClick={() => {
-                            // Generate and open an interactive HTML report in a new tab
-                            const planets = reading.chartData.planets;
-                            const name = reading.birthData.name || 'Cosmic Traveler';
-                            const html = buildSymphonyHTML(name, reading, qmReading, harmonicAnalysis, guidance);
-                            const blob = new Blob([html], { type: 'text/html' });
-                            const url = URL.createObjectURL(blob);
-                            window.open(url, '_blank');
-                          }}
-                          className="system-button text-xs gap-2"
-                        >
+                        <div className="flex flex-wrap gap-3 shrink-0">
+                         {audioUrl ? (
+                           <button
+                             onClick={() => {
+                               const a = document.createElement('a');
+                               a.href = audioUrl;
+                               a.download = `${(reading.birthData.name || 'cosmic').replace(/\s+/g, '_')}_symphony.wav`;
+                               document.body.appendChild(a);
+                               a.click();
+                               document.body.removeChild(a);
+                             }}
+                             className="system-button text-xs gap-2"
+                           >
+                             <Download className="w-3.5 h-3.5" /> Download MP3
+                           </button>
+                         ) : (
+                           <button
+                              onClick={() => {
+                                generateAudio(reading.chartData);
+                              }}
+                             disabled={audioLoading}
+                             className="system-button text-xs gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                           >
+                             <Music className="w-3.5 h-3.5" />
+                             {audioLoading ? 'Rendering Audio…' : 'Render Audio'}
+                           </button>
+                         )}
+                         <button
+                           onClick={() => {
+                             const name = reading.birthData.name || 'Cosmic Traveler';
+                             const html = buildSymphonyHTML(name, reading, qmReading, harmonicAnalysis, guidance);
+                             const blob = new Blob([html], { type: 'text/html' });
+                             const url = URL.createObjectURL(blob);
+                             window.open(url, '_blank');
+                             window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+                           }}
+                           className="system-button text-xs gap-2"
+                         >
                           <ExternalLink className="w-3.5 h-3.5" /> Interactive Report
                         </button>
                         <button onClick={() => { reset(); setQmReading(null); setStep("input"); }} className="system-button text-xs shrink-0">
@@ -356,7 +377,7 @@ const QuantumMelodic = () => {
                 <div className="container mx-auto px-6 lg:px-12 max-w-5xl space-y-0">
 
                   {/* Audio Player */}
-                  {audioUrl && (
+                  {(audioUrl || audioLoading || audioError) && (
                     <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="py-16 border-b border-border">
                       <span className="system-label mb-6 block">Audio Synthesis</span>
                       <div className="node-card">
@@ -367,31 +388,55 @@ const QuantumMelodic = () => {
                               {reading.chartData.planets.filter(p => p.name !== 'Ascendant').length} planetary voices \u00B7 Tone.js synthesis
                             </p>
                           </div>
-                          <button
-                            onClick={togglePlay}
-                            className="w-14 h-14 rounded-full border border-border flex items-center justify-center hover:border-accent/50 transition-all duration-500 group"
-                          >
-                            {isPlaying ? (
-                              <svg className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" /></svg>
-                            ) : (
-                              <svg className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                          {audioUrl && (
+                            <button
+                              onClick={togglePlay}
+                              className="w-14 h-14 rounded-full border border-border flex items-center justify-center hover:border-accent/50 transition-all duration-500 group"
+                            >
+                              {isPlaying ? (
+                                <svg className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" /></svg>
+                              ) : (
+                                <svg className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                              )}
+                            </button>
+                          )}
+                        </div>
+                        {audioUrl ? (
+                          <>
+                            <div
+                              className="w-full h-px bg-border overflow-hidden cursor-pointer mb-3"
+                              onClick={(e) => {
+                                if (!audioRef.current || !duration) return;
+                                const rect = (e.target as HTMLElement).getBoundingClientRect();
+                                audioRef.current.currentTime = ((e.clientX - rect.left) / rect.width) * duration;
+                              }}
+                            >
+                              <div className="h-full bg-accent transition-all" style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }} />
+                            </div>
+                            <div className="flex justify-between system-label">
+                              <span>{formatTime(currentTime)}</span>
+                              <span>-{formatTime(Math.max(0, duration - currentTime))}</span>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="rounded-2xl border border-border/60 bg-background/40 p-5">
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              {audioLoading
+                                ? 'Your report is ready. Audio is rendering separately so the harmonic analysis never stalls.'
+                                : audioError || 'Render audio on demand to keep the report fast, stable, and available even when synthesis is under load.'}
+                            </p>
+                            {!audioLoading && (
+                              <button
+                                onClick={() => {
+                                  generateAudio(reading.chartData);
+                                }}
+                                className="system-button text-xs mt-4 gap-2"
+                              >
+                                <Music className="w-3.5 h-3.5" /> Render Audio Now
+                              </button>
                             )}
-                          </button>
-                        </div>
-                        <div
-                          className="w-full h-px bg-border overflow-hidden cursor-pointer mb-3"
-                          onClick={(e) => {
-                            if (!audioRef.current || !duration) return;
-                            const rect = (e.target as HTMLElement).getBoundingClientRect();
-                            audioRef.current.currentTime = ((e.clientX - rect.left) / rect.width) * duration;
-                          }}
-                        >
-                          <div className="h-full bg-accent transition-all" style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }} />
-                        </div>
-                        <div className="flex justify-between system-label">
-                          <span>{formatTime(currentTime)}</span>
-                          <span>-{formatTime(Math.max(0, duration - currentTime))}</span>
-                        </div>
+                          </div>
+                        )}
                       </div>
                     </motion.section>
                   )}
@@ -422,6 +467,11 @@ const QuantumMelodic = () => {
                   {harmonicAnalysis && (
                     <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="py-16 border-b border-border">
                       <span className="system-label mb-8 block">Harmonic Analysis</span>
+                      {qmError && (
+                        <div className="mb-8 rounded-2xl border border-accent/20 bg-accent/5 px-5 py-4">
+                          <p className="text-sm text-foreground/80 leading-relaxed">{qmError}</p>
+                        </div>
+                      )}
                       <div className="grid md:grid-cols-3 gap-8">
                         {[
                           { label: 'Consonance', value: harmonicAnalysis.consonance, desc: 'Harmonic flow and natural ease' },

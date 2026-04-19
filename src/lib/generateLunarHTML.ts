@@ -19,7 +19,15 @@ function getMoonSVG(phase: string): string {
   return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">${svgs[key] || svgs['new-moon']}</svg>`;
 }
 
-export function openLunarHTMLReport(report: LunarReport): void {
+interface LunarHtmlOptions {
+  autoPrint?: boolean;
+}
+
+/**
+ * Opens the branded lunar report in a new tab.
+ * Returns true when the popup was opened successfully and false when the browser blocked it.
+ */
+export function openLunarHTMLReport(report: LunarReport, options: LunarHtmlOptions = {}): boolean {
   const { natal, powerDays, arcPractice, peakSummary, closing, meta } = report;
 
   const arcCardsHTML = powerDays.map((day, i) => `
@@ -344,6 +352,15 @@ const sio = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.3 });
 sections.forEach(id => { const el = document.getElementById(id); if(el) sio.observe(el); });
+
+${options.autoPrint ? `
+window.addEventListener('load', () => {
+  window.setTimeout(() => {
+    window.focus();
+    window.print();
+  }, 400);
+});
+` : ''}
 </script>
 
 </body>
@@ -351,5 +368,7 @@ sections.forEach(id => { const el = document.getElementById(id); if(el) sio.obse
 
   const blob = new Blob([html], { type: 'text/html' });
   const url = URL.createObjectURL(blob);
-  window.open(url, '_blank');
+  const popup = window.open(url, '_blank');
+  window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  return Boolean(popup);
 }

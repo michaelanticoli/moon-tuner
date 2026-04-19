@@ -50,26 +50,29 @@
 .mn-logo {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 12px;
   text-decoration: none;
   flex-shrink: 0;
   margin-right: 8px;
 }
 
 .mn-logo-mark {
-  width: 24px;
-  height: 24px;
+  width: 38px;
+  height: 38px;
   flex-shrink: 0;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 .mn-logo-word {
-  font-family: var(--nav-font-display);
-  font-weight: 300;
-  font-size: 17px;
-  letter-spacing: 0.16em;
+  font-family: var(--nav-font-body);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.55em;
   text-transform: uppercase;
   color: var(--nav-text);
   line-height: 1;
+  white-space: nowrap;
 }
 
 /* ─── Desktop groups ─── */
@@ -387,5 +390,19 @@
 @media (max-width: 400px) {
   .mn-nav {
     padding: 0 16px;
+  }
+
+  .mn-logo {
+    gap: 8px;
+  }
+
+  .mn-logo-mark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mn-logo-word {
+    font-size: 11px;
+    letter-spacing: 0.35em;
   }
 }

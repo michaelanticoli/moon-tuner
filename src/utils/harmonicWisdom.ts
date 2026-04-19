@@ -84,18 +84,31 @@ export const calculateHarmonicAnalysis = (
 
 export const getResolutionGuidance = (analysis: HarmonicAnalysis): string[] => {
   const g: string[] = [];
-  if (analysis.tension > 50) g.push("High tension detected. Embrace this friction—it's evolutionary pressure.");
-  if (analysis.consonance > 60) g.push("Harmonious flow dominates. Don't become complacent—sometimes we need dissonance.");
-  if (analysis.complexity > 70) g.push("Complex symphony. Focus on one chord at a time.");
-  const dom = Object.entries(analysis.elements).sort((a, b) => b[1] - a[1])[0];
+  if (analysis.tension > 50) g.push("Tension is active here, but it is not a flaw. Use friction as a cue to make one brave adjustment instead of forcing the whole arrangement at once.");
+  if (analysis.consonance > 60) g.push("There is real flow in this chart. Trust what is already working and build from that stable note before reaching for more complexity.");
+  if (analysis.complexity > 70) g.push("This is a layered score. The strongest move is sequencing: choose one theme, one relationship, or one decision and let the rest breathe.");
+  if (analysis.consonance < 35 && analysis.tension < 35) g.push("The chart reads quieter than dramatic. Subtle signatures still matter here—listen for consistency, not spectacle.");
+
+  const rankedElements = Object.entries(analysis.elements).sort((a, b) => b[1] - a[1]);
+  const dom = rankedElements[0];
+  const least = rankedElements[rankedElements.length - 1];
   if (dom?.[1] > 0) {
     const m: Record<string, string> = {
-      Fire: 'Fire frequencies sing loudly. Ground with earth practices.',
-      Earth: 'Earth tones resonate. Introduce air and fire to prevent stagnation.',
-      Air: 'Air frequencies vibrate. Balance with water.',
-      Water: 'Water frequencies flow. Ground with earth.',
+      Fire: 'Fire leads the mix. Channel it into deliberate action and pair it with grounding structure so momentum becomes mastery.',
+      Earth: 'Earth is anchoring the score. Let steadiness be your advantage, then invite a little experimentation so stability does not harden into stagnation.',
+      Air: 'Air is carrying this chart. Name what you know, speak clearly, and balance thought with embodied follow-through.',
+      Water: 'Water is guiding the emotional tone. Trust intuition, but give feeling a container so sensitivity becomes wisdom instead of overwhelm.',
     };
     g.push(m[dom[0]] || '');
+  }
+  if (least && least[1] === 0) {
+    const missing: Record<string, string> = {
+      Fire: 'Very little fire is present, so borrowed courage matters: use deadlines, movement, or a public commitment to create ignition.',
+      Earth: 'Very little earth is present, so make the insight tangible: write the plan down, calendar it, or give it a body-level ritual.',
+      Air: 'Very little air is present, so translation helps: talk it out, name the pattern, or ask a sharp question before acting.',
+      Water: 'Very little water is present, so add softness and reflection: pause long enough to notice what the nervous system is saying.',
+    };
+    g.push(missing[least[0]] || '');
   }
   return g.filter(Boolean);
 };
