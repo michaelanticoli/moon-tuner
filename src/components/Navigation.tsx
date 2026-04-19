@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import moonkeyLogo from '@/assets/moonkey-logo.png';
 import './Navigation.css';
 
 // ─── Nav data ──────────────────────────────────────────────────────────────
@@ -227,7 +226,7 @@ export function Navigation() {
           {/* Logo */}
           <Link to="/" className="mn-logo" aria-label="Moontuner home">
             <span className="mn-logo-word">MOON</span>
-            <img src={moonkeyLogo} alt="" className="mn-logo-mark" aria-hidden="true" />
+            <img src="/moontuner-logo.svg" alt="" className="mn-logo-mark" aria-hidden="true" />
             <span className="mn-logo-word">TUNER</span>
           </Link>
 

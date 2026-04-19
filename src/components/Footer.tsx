@@ -1,5 +1,3 @@
-import moonkeyLogo from "@/assets/moonkey-logo.png";
-
 const footerLinks = {
   explore: [
     { label: "Chaperone", href: "/workbooks" },
@@ -28,8 +26,8 @@ export function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
               <img 
-                src={moonkeyLogo} 
-                alt="Moonkey" 
+                src="/moontuner-logo.svg" 
+                alt="Moontuner logo" 
                 className="w-8 h-8 object-contain"
               />
               <span className="font-sans text-sm font-medium tracking-[0.2em] text-foreground uppercase">

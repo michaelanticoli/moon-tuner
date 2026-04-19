@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title">
+  <title>Moontuner logo</title>
+  <g fill="none" stroke="#F7F5EF" stroke-linecap="round" stroke-linejoin="round" stroke-width="72">
+    <path d="M164 172A334 334 0 0 0 164 852" />
+    <path d="M860 172A334 334 0 0 1 860 852" />
+    <path d="M260 278A240 240 0 0 0 260 746" />
+    <path d="M764 278A240 240 0 0 1 764 746" />
+    <path d="M362 398A142 142 0 0 0 362 626" />
+    <path d="M662 398A142 142 0 0 1 662 626" />
+    <path d="M512 324V742" />
+    <circle cx="512" cy="854" r="110" />
+  </g>
+  <path
+    fill="#F7F5EF"
+    d="M512 112c-84.2 0-152.5 68.3-152.5 152.5S427.8 417 512 417c60.6 0 112.9-35.3 137.5-86.5-16.8 59.7-71.6 103.5-141.3 103.5-83.1 0-150.5-67.4-150.5-150.5S425.1 133 508.2 133c69.7 0 124.5 43.8 141.3 103.5C624.9 147.3 572.6 112 512 112Z"
+  />
+</svg>
