@@ -3,6 +3,7 @@ import type { BirthData, ChartData, CosmicReading } from '@/types/astrology';
 import { chartToScore } from '@/utils/chartToScore';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const AUDIO_RENDER_TIMEOUT_MS = 15000;
 
 const signModes: Record<string, string> = {
   Aries: 'A Phrygian', Taurus: 'F Ionian', Gemini: 'G Mixolydian', Cancer: 'A Aeolian',
@@ -75,7 +76,9 @@ export function useCosmicReading() {
       const { renderScoreToAudioUrl } = await import('@/utils/tonePlayer');
       const url = await Promise.race<string>([
         renderScoreToAudioUrl(score),
-        new Promise<string>((_, reject) => window.setTimeout(() => reject(new Error('Audio rendering timed out.')), 15000)),
+        new Promise<string>((_, reject) =>
+          window.setTimeout(() => reject(new Error('Audio rendering timed out.')), AUDIO_RENDER_TIMEOUT_MS)
+        ),
       ]);
       setAudioUrl((prev) => {
         if (prev) URL.revokeObjectURL(prev);

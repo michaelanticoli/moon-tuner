@@ -23,6 +23,10 @@ interface LunarHtmlOptions {
   autoPrint?: boolean;
 }
 
+/**
+ * Opens the branded lunar report in a new tab.
+ * Returns true when the popup was opened successfully and false when the browser blocked it.
+ */
 export function openLunarHTMLReport(report: LunarReport, options: LunarHtmlOptions = {}): boolean {
   const { natal, powerDays, arcPractice, peakSummary, closing, meta } = report;
 

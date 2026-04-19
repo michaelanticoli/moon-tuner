@@ -71,7 +71,8 @@ export function useQuantumMelodicData() {
         const matchedAspect = aspects
           .map((aspect) => ({ aspect, orb: Math.abs(angle - aspect.angle) }))
           .filter(({ orb, aspect }) => orb <= aspect.orb)
-          .sort((a, b) => a.orb - b.orb)[0];
+          .sort((a, b) => a.orb - b.orb)
+          .at(0);
 
         if (matchedAspect) {
           computed.push({

@@ -343,7 +343,9 @@ const QuantumMelodic = () => {
                            </button>
                          ) : (
                            <button
-                             onClick={() => void generateAudio(reading.chartData)}
+                              onClick={() => {
+                                generateAudio(reading.chartData);
+                              }}
                              disabled={audioLoading}
                              className="system-button text-xs gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
                            >
@@ -425,7 +427,9 @@ const QuantumMelodic = () => {
                             </p>
                             {!audioLoading && (
                               <button
-                                onClick={() => void generateAudio(reading.chartData)}
+                                onClick={() => {
+                                  generateAudio(reading.chartData);
+                                }}
                                 className="system-button text-xs mt-4 gap-2"
                               >
                                 <Music className="w-3.5 h-3.5" /> Render Audio Now

@@ -19,6 +19,7 @@ import { ArcPracticeSection } from "@/components/report/ArcPracticeSection";
 import { ReportClosing } from "@/components/report/ReportClosing";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SIMULATED_LOADING_DELAY_MS = 600;
 
 const LunarReports = () => {
   const [searchParams] = useSearchParams();
@@ -70,7 +71,7 @@ const LunarReports = () => {
       const [r, chart] = await Promise.all([reportPromise, chartPromise]);
       setReport(r);
       setChartData(chart);
-      await new Promise(resolve => setTimeout(resolve, 600));
+      await new Promise(resolve => setTimeout(resolve, SIMULATED_LOADING_DELAY_MS));
       setStep('result');
     } catch (err) {
       console.error('Lunar report generation failed:', err);
