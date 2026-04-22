@@ -257,18 +257,15 @@ const QuantumMelodic = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <div ref={buyButtonRef}>
                     {checkoutUnavailable ? (
-                      <Button
-                        onClick={() => {
-                          navigate("/services");
-                        }}
-                      >
-                        Purchase Report
-                      </Button>
+                      <Button onClick={beginCheckout}>Purchase Report</Button>
                     ) : null}
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground mt-4">
                   After payment, return here to enter your birth data and generate your full report instantly.
+                </p>
+                <p className="text-xs text-muted-foreground/70 mt-2">
+                  The generator now stays inside MOONtuner instead of bouncing out to another property.
                 </p>
               </div>
             </section>
