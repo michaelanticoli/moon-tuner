@@ -93,6 +93,49 @@ const QuantumMelodic = () => {
   const [duration, setDuration] = useState(0);
   const [qmReading, setQmReading] = useState<QuantumMelodicReading | null>(null);
 
+  const persistPaidAccess = useCallback(() => {
+    if (typeof window === "undefined") return;
+    sessionStorage.setItem(QM_STORAGE_KEY, "true");
+  }, []);
+
+  const saveBirthDraft = useCallback((birthData: BirthData) => {
+    if (typeof window === "undefined") return;
+    sessionStorage.setItem(QM_BIRTH_DATA_KEY, JSON.stringify(birthData));
+  }, []);
+
+  const beginCheckout = useCallback(async () => {
+    const birthDraft: BirthData = {
+      name: formData.name || "Cosmic Traveler",
+      date: formData.date,
+      time: formData.time,
+      location: formData.location,
+    };
+
+    saveBirthDraft(birthDraft);
+
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke("create-report-payment", {
+        body: {
+          product: "astro-harmonic",
+          birthDate: birthDraft.date,
+          birthTime: birthDraft.time,
+          birthLocation: birthDraft.location,
+          birthName: birthDraft.name,
+          successPath: "/quantumelodic?paid=true",
+          cancelPath: "/quantumelodic",
+        },
+      });
+
+      if (fnError) throw fnError;
+      if (!data?.url) throw new Error("Checkout link unavailable");
+
+      window.location.href = data.url as string;
+    } catch (checkoutError) {
+      console.error("Astro-harmonic checkout failed:", checkoutError);
+      setCheckoutUnavailable(true);
+    }
+  }, [formData.date, formData.location, formData.name, formData.time, saveBirthDraft]);
+
   const [formData, setFormData] = useState({
     name: "",
     date: "1990-01-01",
