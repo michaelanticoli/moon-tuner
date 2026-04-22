@@ -13,6 +13,7 @@
   --nav-drop-bg: #0c0d13;
   --nav-drop-border: rgba(255, 255, 255, 0.09);
   --nav-drop-hover: rgba(255, 255, 255, 0.05);
+  --nav-logo-border: rgba(255, 255, 255, 0.08);
   --nav-font-body: 'DM Sans', sans-serif;
   --nav-font-display: 'Cormorant Garamond', serif;
   --nav-radius: 8px;
@@ -55,12 +56,12 @@
   margin-right: 12px;
 }
 
-.mn-logo-wordmark {
-  height: 38px;
-  width: auto;
-  max-width: min(42vw, 260px);
+.mn-logo-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   object-fit: contain;
-  filter: invert(1) brightness(1.05);
+  box-shadow: 0 0 0 1px var(--nav-logo-border);
 }
 
 /* ─── Desktop groups ─── */
@@ -366,9 +367,9 @@
 
 /* ─── Responsive breakpoint ─── */
 @media (max-width: 860px) {
-  .mn-logo-wordmark {
-    height: 32px;
-    max-width: min(52vw, 210px);
+  .mn-logo-mark {
+    width: 36px;
+    height: 36px;
   }
 
   .mn-items,
@@ -385,8 +386,8 @@
     padding: 0 16px;
   }
 
-  .mn-logo-wordmark {
-    height: 28px;
-    max-width: min(58vw, 180px);
+  .mn-logo-mark {
+    width: 32px;
+    height: 32px;
   }
 }
