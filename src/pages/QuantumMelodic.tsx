@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -18,19 +18,20 @@ import {
 } from "@/utils/harmonicWisdom";
 import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
 
-const QM_STRIPE_BUY_BUTTON_ID = "buy_btn_1TFpydApODHiQWcAQfv4H4OW";
-const QM_STRIPE_PUBLISHABLE_KEY = "pk_live_51SxJqyApODHiQWcAhl9OKfJWuz3LWVFJIl8EIFMNlnMK4nJ3dhAg1j0ddErIcTA7b1LHtR0ROAMgBwzeH6b2Jk2f00kokUjT1U";
+const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
 
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const stripeBuyButtonId = import.meta.env.VITE_STRIPE_QM_BUY_BUTTON_ID;
+  const stripePublishableKey = import.meta.env.VITE_STRIPE_QM_PUBLISHABLE_KEY;
   const returnedFromCheckout = searchParams.get("paid") === "true"
-    || !!searchParams.get("session_id")
-    || searchParams.get("redirect_status") === "succeeded"
-    || !!searchParams.get("payment_intent");
+    || !!searchParams.get("session_id");
   const [hasPaidAccess, setHasPaidAccess] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
-    return sessionStorage.getItem("qm_paid") === "true";
+    return sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
   });
+  const [checkoutUnavailable, setCheckoutUnavailable] = useState(false);
   const buyButtonRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -41,12 +42,32 @@ const QuantumMelodic = () => {
 
   useEffect(() => {
     if (!buyButtonRef.current || hasPaidAccess) return;
-    if (buyButtonRef.current.querySelector("stripe-buy-button")) return;
-    const button = document.createElement("stripe-buy-button");
-    button.setAttribute("buy-button-id", QM_STRIPE_BUY_BUTTON_ID);
-    button.setAttribute("publishable-key", QM_STRIPE_PUBLISHABLE_KEY);
-    buyButtonRef.current.appendChild(button);
-  }, [hasPaidAccess]);
+    if (!stripeBuyButtonId || !stripePublishableKey) {
+      setCheckoutUnavailable(true);
+      return;
+    }
+
+    setCheckoutUnavailable(false);
+
+    const mountBuyButton = () => {
+      if (!buyButtonRef.current) return false;
+      if (buyButtonRef.current.querySelector("stripe-buy-button")) return true;
+      if (!customElements.get("stripe-buy-button")) return false;
+      const button = document.createElement("stripe-buy-button");
+      button.setAttribute("buy-button-id", stripeBuyButtonId);
+      button.setAttribute("publishable-key", stripePublishableKey);
+      buyButtonRef.current.appendChild(button);
+      return true;
+    };
+
+    if (mountBuyButton()) return;
+
+    const timer = window.setTimeout(() => {
+      if (!mountBuyButton()) setCheckoutUnavailable(true);
+    }, STRIPE_BUTTON_LOAD_TIMEOUT_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [hasPaidAccess, stripeBuyButtonId, stripePublishableKey]);
 
   const {
     loading,
@@ -180,16 +201,17 @@ const QuantumMelodic = () => {
                   ))}
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <div ref={buyButtonRef} />
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      sessionStorage.setItem("qm_paid", "true");
-                      setHasPaidAccess(true);
-                    }}
-                  >
-                    I Completed Payment
-                  </Button>
+                  <div ref={buyButtonRef}>
+                    {checkoutUnavailable ? (
+                      <Button
+                        onClick={() => {
+                          navigate("/services");
+                        }}
+                      >
+                        Purchase Report
+                      </Button>
+                    ) : null}
+                  </div>
                 </div>
                 <p className="text-xs text-muted-foreground mt-4">
                   After payment, return here to enter your birth data and generate your full report instantly.
