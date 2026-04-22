@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
@@ -17,8 +17,11 @@ import {
   calculateHarmonicAnalysis, getResolutionGuidance, getOrbPrecision,
 } from "@/utils/harmonicWisdom";
 import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
+import { supabase } from "@/integrations/supabase/client";
 
 const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
+const QM_STORAGE_KEY = "qm_paid";
+const QM_BIRTH_DATA_KEY = "qm_birth_data";
 
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
@@ -33,41 +36,6 @@ const QuantumMelodic = () => {
   });
   const [checkoutUnavailable, setCheckoutUnavailable] = useState(false);
   const buyButtonRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!returnedFromCheckout) return;
-    sessionStorage.setItem("qm_paid", "true");
-    setHasPaidAccess(true);
-  }, [returnedFromCheckout]);
-
-  useEffect(() => {
-    if (!buyButtonRef.current || hasPaidAccess) return;
-    if (!stripeBuyButtonId || !stripePublishableKey) {
-      setCheckoutUnavailable(true);
-      return;
-    }
-
-    setCheckoutUnavailable(false);
-
-    const mountBuyButton = () => {
-      if (!buyButtonRef.current) return false;
-      if (buyButtonRef.current.querySelector("stripe-buy-button")) return true;
-      if (!customElements.get("stripe-buy-button")) return false;
-      const button = document.createElement("stripe-buy-button");
-      button.setAttribute("buy-button-id", stripeBuyButtonId);
-      button.setAttribute("publishable-key", stripePublishableKey);
-      buyButtonRef.current.appendChild(button);
-      return true;
-    };
-
-    if (mountBuyButton()) return;
-
-    const timer = window.setTimeout(() => {
-      if (!mountBuyButton()) setCheckoutUnavailable(true);
-    }, STRIPE_BUTTON_LOAD_TIMEOUT_MS);
-
-    return () => window.clearTimeout(timer);
-  }, [hasPaidAccess, stripeBuyButtonId, stripePublishableKey]);
 
   const {
     loading,
@@ -97,12 +65,96 @@ const QuantumMelodic = () => {
     location: "",
   });
 
+  const persistPaidAccess = useCallback(() => {
+    if (typeof window === "undefined") return;
+    sessionStorage.setItem(QM_STORAGE_KEY, "true");
+  }, []);
+
+  const saveBirthDraft = useCallback((birthData: BirthData) => {
+    if (typeof window === "undefined") return;
+    sessionStorage.setItem(QM_BIRTH_DATA_KEY, JSON.stringify(birthData));
+  }, []);
+
+  const beginCheckout = useCallback(async () => {
+    const birthDraft: BirthData = {
+      name: formData.name || "Cosmic Traveler",
+      date: formData.date,
+      time: formData.time,
+      location: formData.location,
+    };
+
+    saveBirthDraft(birthDraft);
+
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke("create-report-payment", {
+        body: {
+          product: "astro-harmonic",
+          birthDate: birthDraft.date,
+          birthTime: birthDraft.time,
+          birthLocation: birthDraft.location,
+          birthName: birthDraft.name,
+          successPath: "/quantumelodic?paid=true",
+          cancelPath: "/quantumelodic",
+        },
+      });
+
+      if (fnError) throw fnError;
+      if (!data?.url) throw new Error("Checkout link unavailable");
+
+      window.location.href = data.url as string;
+    } catch (checkoutError) {
+      console.error("Astro-harmonic checkout failed:", checkoutError);
+      setCheckoutUnavailable(true);
+    }
+  }, [formData.date, formData.location, formData.name, formData.time, saveBirthDraft]);
+
+  useEffect(() => {
+    if (!returnedFromCheckout) return;
+    persistPaidAccess();
+    setHasPaidAccess(true);
+  }, [persistPaidAccess, returnedFromCheckout]);
+
+  useEffect(() => {
+    if (!buyButtonRef.current || hasPaidAccess) return;
+    if (!stripeBuyButtonId || !stripePublishableKey) {
+      setCheckoutUnavailable(true);
+      return;
+    }
+
+    setCheckoutUnavailable(false);
+
+    const mountBuyButton = () => {
+      if (!buyButtonRef.current) return false;
+      if (buyButtonRef.current.querySelector("stripe-buy-button")) return true;
+      if (!customElements.get("stripe-buy-button")) return false;
+      const button = document.createElement("stripe-buy-button");
+      button.setAttribute("buy-button-id", stripeBuyButtonId);
+      button.setAttribute("publishable-key", stripePublishableKey);
+      button.addEventListener("click", () => saveBirthDraft({
+        name: formData.name || "Cosmic Traveler",
+        date: formData.date,
+        time: formData.time,
+        location: formData.location,
+      }));
+      buyButtonRef.current.appendChild(button);
+      return true;
+    };
+
+    if (mountBuyButton()) return;
+
+    const timer = window.setTimeout(() => {
+      if (!mountBuyButton()) setCheckoutUnavailable(true);
+    }, STRIPE_BUTTON_LOAD_TIMEOUT_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [formData.date, formData.location, formData.name, formData.time, hasPaidAccess, saveBirthDraft, stripeBuyButtonId, stripePublishableKey]);
+
   useEffect(() => {
     try {
-      const raw = sessionStorage.getItem("qm_birth_data");
+      const raw = sessionStorage.getItem(QM_BIRTH_DATA_KEY);
       if (raw) setFormData(prev => ({ ...prev, ...JSON.parse(raw) }));
     } catch {
-      sessionStorage.removeItem("qm_birth_data");
+      sessionStorage.removeItem(QM_BIRTH_DATA_KEY);
     }
   }, []);
 
@@ -117,6 +169,8 @@ const QuantumMelodic = () => {
         time: formData.time,
         location: formData.location,
       };
+
+      saveBirthDraft(birthData);
 
       await fetchData();
       const result = await generateReading(birthData);
@@ -203,18 +257,15 @@ const QuantumMelodic = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <div ref={buyButtonRef}>
                     {checkoutUnavailable ? (
-                      <Button
-                        onClick={() => {
-                          navigate("/services");
-                        }}
-                      >
-                        Purchase Report
-                      </Button>
+                      <Button onClick={beginCheckout}>Purchase Report</Button>
                     ) : null}
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground mt-4">
                   After payment, return here to enter your birth data and generate your full report instantly.
+                </p>
+                <p className="text-xs text-muted-foreground/70 mt-2">
+                  The generator now stays inside MOONtuner instead of bouncing out to another property.
                 </p>
               </div>
             </section>
