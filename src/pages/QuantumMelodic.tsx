@@ -93,6 +93,13 @@ const QuantumMelodic = () => {
   const [duration, setDuration] = useState(0);
   const [qmReading, setQmReading] = useState<QuantumMelodicReading | null>(null);
 
+  const [formData, setFormData] = useState({
+    name: "",
+    date: "1990-01-01",
+    time: "12:00",
+    location: "",
+  });
+
   const persistPaidAccess = useCallback(() => {
     if (typeof window === "undefined") return;
     sessionStorage.setItem(QM_STORAGE_KEY, "true");
@@ -135,13 +142,6 @@ const QuantumMelodic = () => {
       setCheckoutUnavailable(true);
     }
   }, [formData.date, formData.location, formData.name, formData.time, saveBirthDraft]);
-
-  const [formData, setFormData] = useState({
-    name: "",
-    date: "1990-01-01",
-    time: "12:00",
-    location: "",
-  });
 
   useEffect(() => {
     try {
