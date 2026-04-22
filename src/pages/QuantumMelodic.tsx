@@ -37,47 +37,6 @@ const QuantumMelodic = () => {
   const [checkoutUnavailable, setCheckoutUnavailable] = useState(false);
   const buyButtonRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (!returnedFromCheckout) return;
-    persistPaidAccess();
-    setHasPaidAccess(true);
-  }, [persistPaidAccess, returnedFromCheckout]);
-
-  useEffect(() => {
-    if (!buyButtonRef.current || hasPaidAccess) return;
-    if (!stripeBuyButtonId || !stripePublishableKey) {
-      setCheckoutUnavailable(true);
-      return;
-    }
-
-    setCheckoutUnavailable(false);
-
-    const mountBuyButton = () => {
-      if (!buyButtonRef.current) return false;
-      if (buyButtonRef.current.querySelector("stripe-buy-button")) return true;
-      if (!customElements.get("stripe-buy-button")) return false;
-      const button = document.createElement("stripe-buy-button");
-      button.setAttribute("buy-button-id", stripeBuyButtonId);
-      button.setAttribute("publishable-key", stripePublishableKey);
-      button.addEventListener("click", () => saveBirthDraft({
-        name: formData.name || "Cosmic Traveler",
-        date: formData.date,
-        time: formData.time,
-        location: formData.location,
-      }));
-      buyButtonRef.current.appendChild(button);
-      return true;
-    };
-
-    if (mountBuyButton()) return;
-
-    const timer = window.setTimeout(() => {
-      if (!mountBuyButton()) setCheckoutUnavailable(true);
-    }, STRIPE_BUTTON_LOAD_TIMEOUT_MS);
-
-    return () => window.clearTimeout(timer);
-  }, [formData.date, formData.location, formData.name, formData.time, hasPaidAccess, saveBirthDraft, stripeBuyButtonId, stripePublishableKey]);
-
   const {
     loading,
     error,
@@ -148,6 +107,47 @@ const QuantumMelodic = () => {
       setCheckoutUnavailable(true);
     }
   }, [formData.date, formData.location, formData.name, formData.time, saveBirthDraft]);
+
+  useEffect(() => {
+    if (!returnedFromCheckout) return;
+    persistPaidAccess();
+    setHasPaidAccess(true);
+  }, [persistPaidAccess, returnedFromCheckout]);
+
+  useEffect(() => {
+    if (!buyButtonRef.current || hasPaidAccess) return;
+    if (!stripeBuyButtonId || !stripePublishableKey) {
+      setCheckoutUnavailable(true);
+      return;
+    }
+
+    setCheckoutUnavailable(false);
+
+    const mountBuyButton = () => {
+      if (!buyButtonRef.current) return false;
+      if (buyButtonRef.current.querySelector("stripe-buy-button")) return true;
+      if (!customElements.get("stripe-buy-button")) return false;
+      const button = document.createElement("stripe-buy-button");
+      button.setAttribute("buy-button-id", stripeBuyButtonId);
+      button.setAttribute("publishable-key", stripePublishableKey);
+      button.addEventListener("click", () => saveBirthDraft({
+        name: formData.name || "Cosmic Traveler",
+        date: formData.date,
+        time: formData.time,
+        location: formData.location,
+      }));
+      buyButtonRef.current.appendChild(button);
+      return true;
+    };
+
+    if (mountBuyButton()) return;
+
+    const timer = window.setTimeout(() => {
+      if (!mountBuyButton()) setCheckoutUnavailable(true);
+    }, STRIPE_BUTTON_LOAD_TIMEOUT_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [formData.date, formData.location, formData.name, formData.time, hasPaidAccess, saveBirthDraft, stripeBuyButtonId, stripePublishableKey]);
 
   useEffect(() => {
     try {
