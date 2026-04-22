@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
@@ -17,8 +17,11 @@ import {
   calculateHarmonicAnalysis, getResolutionGuidance, getOrbPrecision,
 } from "@/utils/harmonicWisdom";
 import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
+import { supabase } from "@/integrations/supabase/client";
 
 const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
+const QM_STORAGE_KEY = "qm_paid";
+const QM_BIRTH_DATA_KEY = "qm_birth_data";
 
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();

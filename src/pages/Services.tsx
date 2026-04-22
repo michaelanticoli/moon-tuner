@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
@@ -216,20 +217,12 @@ export default function Services() {
                     ]}
                   />
                   <div className="flex flex-col gap-4">
-                    <div
-                      ref={(el) => {
-                        if (el && !el.querySelector("stripe-buy-button")) {
-                          const btn = document.createElement("stripe-buy-button");
-                          btn.setAttribute("buy-button-id", "buy_btn_1TFpydApODHiQWcAQfv4H4OW");
-                          btn.setAttribute(
-                            "publishable-key",
-                            "pk_live_51SxJqyApODHiQWcAhl9OKfJWuz3LWVFJIl8EIFMNlnMK4nJ3dhAg1j0ddErIcTA7b1LHtR0ROAMgBwzeH6b2Jk2f00kokUjT1U",
-                          );
-                          el.appendChild(btn);
-                          sessionStorage.setItem("qm_source", "moontuner");
-                        }
-                      }}
-                    />
+                    <Link
+                      to="/quantumelodic"
+                      className="inline-flex items-center gap-2 px-7 py-3 rounded-sm text-[11px] font-medium tracking-[0.25em] uppercase transition-all duration-300 border border-accent text-accent hover:bg-accent hover:text-background w-fit"
+                    >
+                      Open Report Flow
+                    </Link>
                     <span className="text-[11.5px] text-muted-foreground tracking-[0.05em]">
                       Powered by Michael's proprietary Quantumelodic Algorithmic Metasystem
                     </span>
