@@ -13,6 +13,7 @@
   --nav-drop-bg: #0c0d13;
   --nav-drop-border: rgba(255, 255, 255, 0.09);
   --nav-drop-hover: rgba(255, 255, 255, 0.05);
+  --nav-logo-border: rgba(255, 255, 255, 0.08);
   --nav-font-body: 'DM Sans', sans-serif;
   --nav-font-display: 'Cormorant Garamond', serif;
   --nav-radius: 8px;
@@ -60,7 +61,7 @@
   height: 42px;
   border-radius: 10px;
   object-fit: contain;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 1px var(--nav-logo-border);
 }
 
 /* ─── Desktop groups ─── */
