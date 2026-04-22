@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -18,14 +18,35 @@ import {
 } from "@/utils/harmonicWisdom";
 import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
 
+const QM_STRIPE_BUY_BUTTON_ID = "buy_btn_1TFpydApODHiQWcAQfv4H4OW";
+const QM_STRIPE_PUBLISHABLE_KEY = "pk_live_51SxJqyApODHiQWcAhl9OKfJWuz3LWVFJIl8EIFMNlnMK4nJ3dhAg1j0ddErIcTA7b1LHtR0ROAMgBwzeH6b2Jk2f00kokUjT1U";
+
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const isPaid = searchParams.get("paid") === "true";
+  const returnedFromCheckout = searchParams.get("paid") === "true"
+    || !!searchParams.get("session_id")
+    || searchParams.get("redirect_status") === "succeeded"
+    || !!searchParams.get("payment_intent");
+  const [hasPaidAccess, setHasPaidAccess] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return sessionStorage.getItem("qm_paid") === "true";
+  });
+  const buyButtonRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!isPaid) navigate("/services", { replace: true });
-  }, [isPaid, navigate]);
+    if (!returnedFromCheckout) return;
+    sessionStorage.setItem("qm_paid", "true");
+    setHasPaidAccess(true);
+  }, [returnedFromCheckout]);
+
+  useEffect(() => {
+    if (!buyButtonRef.current || hasPaidAccess) return;
+    if (buyButtonRef.current.querySelector("stripe-buy-button")) return;
+    const button = document.createElement("stripe-buy-button");
+    button.setAttribute("buy-button-id", QM_STRIPE_BUY_BUTTON_ID);
+    button.setAttribute("publishable-key", QM_STRIPE_PUBLISHABLE_KEY);
+    buyButtonRef.current.appendChild(button);
+  }, [hasPaidAccess]);
 
   const {
     loading,
@@ -128,7 +149,59 @@ const QuantumMelodic = () => {
     return `${d}\u00B0${m.toString().padStart(2, '0')}\u2032`;
   };
 
-  if (!isPaid) return null;
+  if (!hasPaidAccess) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen bg-background text-foreground selection:bg-accent/30 selection:text-accent-foreground">
+          <Navigation />
+          <main className="pt-24">
+            <section className="relative min-h-[70vh] flex items-center overflow-hidden border-b border-border">
+              <LunarBackground />
+              <div className="relative z-10 container mx-auto px-6 lg:px-12 max-w-5xl py-16">
+                <span className="system-label mb-6 block">Astro-Harmonic Natal Analysis</span>
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extralight leading-[1.05] mb-6">
+                  Hear a sample of your<br />
+                  <span className="font-serif italic font-normal">chart’s harmonic report.</span>
+                </h1>
+                <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mb-10">
+                  Start with the sample structure below, then unlock the full personalized report after secure checkout.
+                  No account signup is required.
+                </p>
+                <div className="grid md:grid-cols-2 gap-4 mb-10 max-w-3xl">
+                  {[
+                    "Sample harmonic signature preview",
+                    "Sample planetary interval map",
+                    "Sample resonance guidance",
+                    "Full report unlock after payment",
+                  ].map((item) => (
+                    <div key={item} className="node-card text-sm text-muted-foreground">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <div ref={buyButtonRef} />
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      sessionStorage.setItem("qm_paid", "true");
+                      setHasPaidAccess(true);
+                    }}
+                  >
+                    I Completed Payment
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground mt-4">
+                  After payment, return here to enter your birth data and generate your full report instantly.
+                </p>
+              </div>
+            </section>
+          </main>
+          <Footer />
+        </div>
+      </PageTransition>
+    );
+  }
 
   return (
     <PageTransition>
