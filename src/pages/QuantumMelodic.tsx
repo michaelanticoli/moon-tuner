@@ -39,9 +39,9 @@ const QuantumMelodic = () => {
 
   useEffect(() => {
     if (!returnedFromCheckout) return;
-    sessionStorage.setItem("qm_paid", "true");
+    persistPaidAccess();
     setHasPaidAccess(true);
-  }, [returnedFromCheckout]);
+  }, [persistPaidAccess, returnedFromCheckout]);
 
   useEffect(() => {
     if (!buyButtonRef.current || hasPaidAccess) return;
@@ -59,6 +59,12 @@ const QuantumMelodic = () => {
       const button = document.createElement("stripe-buy-button");
       button.setAttribute("buy-button-id", stripeBuyButtonId);
       button.setAttribute("publishable-key", stripePublishableKey);
+      button.addEventListener("click", () => saveBirthDraft({
+        name: formData.name || "Cosmic Traveler",
+        date: formData.date,
+        time: formData.time,
+        location: formData.location,
+      }));
       buyButtonRef.current.appendChild(button);
       return true;
     };
@@ -70,7 +76,7 @@ const QuantumMelodic = () => {
     }, STRIPE_BUTTON_LOAD_TIMEOUT_MS);
 
     return () => window.clearTimeout(timer);
-  }, [hasPaidAccess, stripeBuyButtonId, stripePublishableKey]);
+  }, [formData.date, formData.location, formData.name, formData.time, hasPaidAccess, saveBirthDraft, stripeBuyButtonId, stripePublishableKey]);
 
   const {
     loading,
@@ -145,10 +151,10 @@ const QuantumMelodic = () => {
 
   useEffect(() => {
     try {
-      const raw = sessionStorage.getItem("qm_birth_data");
+      const raw = sessionStorage.getItem(QM_BIRTH_DATA_KEY);
       if (raw) setFormData(prev => ({ ...prev, ...JSON.parse(raw) }));
     } catch {
-      sessionStorage.removeItem("qm_birth_data");
+      sessionStorage.removeItem(QM_BIRTH_DATA_KEY);
     }
   }, []);
 
@@ -163,6 +169,8 @@ const QuantumMelodic = () => {
         time: formData.time,
         location: formData.location,
       };
+
+      saveBirthDraft(birthData);
 
       await fetchData();
       const result = await generateReading(birthData);
