@@ -50,28 +50,17 @@
 .mn-logo {
   display: flex;
   align-items: center;
-  gap: 12px;
   text-decoration: none;
   flex-shrink: 0;
-  margin-right: 8px;
+  margin-right: 12px;
 }
 
-.mn-logo-mark {
-  width: 38px;
+.mn-logo-wordmark {
   height: 38px;
-  flex-shrink: 0;
+  width: auto;
+  max-width: min(42vw, 260px);
   object-fit: contain;
-}
-
-.mn-logo-word {
-  font-family: var(--nav-font-body);
-  font-weight: 500;
-  font-size: 12px;
-  letter-spacing: 0.55em;
-  text-transform: uppercase;
-  color: var(--nav-text);
-  line-height: 1;
-  white-space: nowrap;
+  filter: invert(1) brightness(1.05);
 }
 
 /* ─── Desktop groups ─── */
@@ -377,6 +366,11 @@
 
 /* ─── Responsive breakpoint ─── */
 @media (max-width: 860px) {
+  .mn-logo-wordmark {
+    height: 32px;
+    max-width: min(52vw, 210px);
+  }
+
   .mn-items,
   .mn-cta {
     display: none;
@@ -391,17 +385,8 @@
     padding: 0 16px;
   }
 
-  .mn-logo {
-    gap: 8px;
-  }
-
-  .mn-logo-mark {
-    width: 32px;
-    height: 32px;
-  }
-
-  .mn-logo-word {
-    font-size: 11px;
-    letter-spacing: 0.35em;
+  .mn-logo-wordmark {
+    height: 28px;
+    max-width: min(58vw, 180px);
   }
 }
