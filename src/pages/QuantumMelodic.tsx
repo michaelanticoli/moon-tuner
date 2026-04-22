@@ -18,14 +18,56 @@ import {
 } from "@/utils/harmonicWisdom";
 import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
 
+const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
+
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const isPaid = searchParams.get("paid") === "true";
+  const stripeBuyButtonId = import.meta.env.VITE_STRIPE_QM_BUY_BUTTON_ID;
+  const stripePublishableKey = import.meta.env.VITE_STRIPE_QM_PUBLISHABLE_KEY;
+  const returnedFromCheckout = searchParams.get("paid") === "true"
+    || !!searchParams.get("session_id");
+  const [hasPaidAccess, setHasPaidAccess] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
+  });
+  const [checkoutUnavailable, setCheckoutUnavailable] = useState(false);
+  const buyButtonRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!isPaid) navigate("/services", { replace: true });
-  }, [isPaid, navigate]);
+    if (!returnedFromCheckout) return;
+    sessionStorage.setItem("qm_paid", "true");
+    setHasPaidAccess(true);
+  }, [returnedFromCheckout]);
+
+  useEffect(() => {
+    if (!buyButtonRef.current || hasPaidAccess) return;
+    if (!stripeBuyButtonId || !stripePublishableKey) {
+      setCheckoutUnavailable(true);
+      return;
+    }
+
+    setCheckoutUnavailable(false);
+
+    const mountBuyButton = () => {
+      if (!buyButtonRef.current) return false;
+      if (buyButtonRef.current.querySelector("stripe-buy-button")) return true;
+      if (!customElements.get("stripe-buy-button")) return false;
+      const button = document.createElement("stripe-buy-button");
+      button.setAttribute("buy-button-id", stripeBuyButtonId);
+      button.setAttribute("publishable-key", stripePublishableKey);
+      buyButtonRef.current.appendChild(button);
+      return true;
+    };
+
+    if (mountBuyButton()) return;
+
+    const timer = window.setTimeout(() => {
+      if (!mountBuyButton()) setCheckoutUnavailable(true);
+    }, STRIPE_BUTTON_LOAD_TIMEOUT_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [hasPaidAccess, stripeBuyButtonId, stripePublishableKey]);
 
   const {
     loading,
@@ -128,7 +170,60 @@ const QuantumMelodic = () => {
     return `${d}\u00B0${m.toString().padStart(2, '0')}\u2032`;
   };
 
-  if (!isPaid) return null;
+  if (!hasPaidAccess) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen bg-background text-foreground selection:bg-accent/30 selection:text-accent-foreground">
+          <Navigation />
+          <main className="pt-24">
+            <section className="relative min-h-[70vh] flex items-center overflow-hidden border-b border-border">
+              <LunarBackground />
+              <div className="relative z-10 container mx-auto px-6 lg:px-12 max-w-5xl py-16">
+                <span className="system-label mb-6 block">Astro-Harmonic Natal Analysis</span>
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extralight leading-[1.05] mb-6">
+                  Hear a sample of your<br />
+                  <span className="font-serif italic font-normal">chart’s harmonic report.</span>
+                </h1>
+                <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mb-10">
+                  Start with the sample structure below, then unlock the full personalized report after secure checkout.
+                  No account signup is required.
+                </p>
+                <div className="grid md:grid-cols-2 gap-4 mb-10 max-w-3xl">
+                  {[
+                    "Sample harmonic signature preview",
+                    "Sample planetary interval map",
+                    "Sample resonance guidance",
+                    "Full report unlock after payment",
+                  ].map((item) => (
+                    <div key={item} className="node-card text-sm text-muted-foreground">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <div ref={buyButtonRef}>
+                    {checkoutUnavailable ? (
+                      <Button
+                        onClick={() => {
+                          navigate("/services");
+                        }}
+                      >
+                        Purchase Report
+                      </Button>
+                    ) : null}
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-4">
+                  After payment, return here to enter your birth data and generate your full report instantly.
+                </p>
+              </div>
+            </section>
+          </main>
+          <Footer />
+        </div>
+      </PageTransition>
+    );
+  }
 
   return (
     <PageTransition>
