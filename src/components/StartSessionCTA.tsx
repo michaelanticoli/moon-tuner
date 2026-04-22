@@ -1,4 +1,5 @@
 import michaelPortrait from "@/assets/michael-portrait-2.jpeg";
+import moontunerMark from "@/assets/moontuner-mark.jpeg";
 
 export function StartSessionCTA() {
   const tiers = [
@@ -52,11 +53,11 @@ export function StartSessionCTA() {
               </div>
               <div className="w-28 h-36 rounded-xl border border-border/40 bg-card/50 flex items-center justify-center p-4">
                 <img
-                    src="/moontuner-logo.svg"
-                    alt="Moontuner logo"
-                  className="w-16 h-16 object-contain opacity-80"
-                   loading="lazy"
-                 />
+                  src={moontunerMark}
+                  alt="Moontuner logo"
+                  className="w-16 h-16 object-contain invert"
+                  loading="lazy"
+                />
               </div>
             </div>
 
