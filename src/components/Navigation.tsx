@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import moontunerWordmark from '@/assets/moontuner-wordmark.png';
 import './Navigation.css';
 
 // ─── Nav data ──────────────────────────────────────────────────────────────
@@ -226,7 +225,7 @@ export function Navigation() {
         <nav className={`mn-nav${scrolled ? ' is-scrolled' : ''}`} aria-label="Main navigation">
           {/* Logo */}
           <Link to="/" className="mn-logo" aria-label="Moontuner home">
-            <img src={moontunerWordmark} alt="MOON TUNER" className="mn-logo-wordmark" />
+            <img src="/moontuner-logo.svg" alt="Moontuner logo" className="mn-logo-mark" />
           </Link>
 
           {/* Desktop groups */}

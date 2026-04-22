@@ -1,5 +1,3 @@
-import moontunerMark from "@/assets/moontuner-mark.jpeg";
-
 const footerLinks = {
   explore: [
     { label: "Chaperone", href: "/workbooks" },
@@ -28,9 +26,9 @@ export function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
               <img
-                src={moontunerMark}
+                src="/moontuner-logo.svg"
                 alt="Moontuner logo"
-                className="w-8 h-8 rounded-sm object-contain invert"
+                className="w-8 h-8 rounded-sm object-contain"
               />
               <span className="font-sans text-sm font-medium tracking-[0.2em] text-foreground uppercase">
                 Moontuner
