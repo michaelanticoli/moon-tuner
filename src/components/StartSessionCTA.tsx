@@ -29,7 +29,7 @@ export function StartSessionCTA() {
       <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[115%] w-[34%] pointer-events-none select-none hidden xl:block">
         <ImageInlay
           src="/images/tarot.jpeg"
-          alt="Michael with tarot cards"
+          alt=""
           fade="right"
           className="h-full w-full object-cover object-center"
           style={{ opacity: 0.2 }}
@@ -38,7 +38,7 @@ export function StartSessionCTA() {
       <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[26rem] w-[26rem] pointer-events-none select-none hidden lg:block">
         <ImageInlay
           src="/images/Moontuner%20Dial.png"
-          alt="Moontuner dial"
+          alt=""
           fade="left"
           className="h-full w-full object-contain object-center"
           style={{ opacity: 0.14 }}
