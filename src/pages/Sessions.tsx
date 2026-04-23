@@ -1,6 +1,7 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
+import { ImageInlay } from "@/components/ImageInlay";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
@@ -59,44 +60,6 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-// ─── GRADIENT-MASKED PHOTO COMPONENT ─────────────────────────────────────────
-// fade: "left" | "right" | "both" | "bottom" | "top-bottom"
-function GhostPhoto({
-  src,
-  alt,
-  fade = "both",
-  className = "",
-  style = {},
-}: {
-  src: string;
-  alt: string;
-  fade?: "left" | "right" | "both" | "bottom" | "top-bottom";
-  className?: string;
-  style?: React.CSSProperties;
-}) {
-  const masks: Record<string, string> = {
-    left: "linear-gradient(to left, black 45%, transparent 100%)",
-    right: "linear-gradient(to right, black 45%, transparent 100%)",
-    both: "linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%)",
-    bottom: "linear-gradient(to bottom, black 55%, transparent 100%)",
-    "top-bottom": "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
-  };
-  const maskValue = masks[fade];
-
-  return (
-    <img
-      src={src}
-      alt={alt}
-      className={className}
-      style={{
-        WebkitMaskImage: maskValue,
-        maskImage: maskValue,
-        ...style,
-      }}
-    />
-  );
-}
-
 export default function Sessions() {
   return (
     <PageTransition>
@@ -115,7 +78,7 @@ export default function Sessions() {
 
             {/* Michael — hero portrait, right-anchored, fades left */}
             <div className="absolute right-0 top-0 h-full w-[55%] lg:w-[45%] pointer-events-none select-none hidden sm:block">
-              <GhostPhoto
+              <ImageInlay
                 src="/images/lunar.jpg"
                 alt="Michael Anticoli"
                 fade="left"
@@ -160,7 +123,7 @@ export default function Sessions() {
           <section className="py-20 px-6 lg:px-12 relative overflow-hidden">
             {/* Photo — left anchor, fades right into the section */}
             <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[110%] w-[38%] pointer-events-none select-none hidden lg:block">
-              <GhostPhoto
+              <ImageInlay
                 src="/images/tarot.jpeg"
                 alt="Michael with tarot cards"
                 fade="right"
@@ -326,7 +289,7 @@ export default function Sessions() {
 
           {/* ── Atmospheric divider ── */}
           <div className="relative w-full h-48 sm:h-64 overflow-hidden pointer-events-none select-none">
-            <GhostPhoto
+            <ImageInlay
               src="/images/moontunerImage1.png"
               alt=""
               fade="top-bottom"
@@ -449,7 +412,7 @@ export default function Sessions() {
           <section className="py-16 px-6 lg:px-12 border-t border-border/20 relative overflow-hidden">
             {/* Background atmospheric: Michael with product spread */}
             <div className="absolute inset-0 pointer-events-none select-none hidden md:block">
-              <GhostPhoto
+              <ImageInlay
                 src="/images/moontuner-inlay.jpg"
                 alt=""
                 fade="both"
