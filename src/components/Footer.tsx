@@ -26,7 +26,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
               <img
-                src="/moontuner-logo.svg"
+                src="/moonkey-logo.png"
                 alt="Moontuner logo"
                 className="w-8 h-8 rounded-sm object-contain"
               />

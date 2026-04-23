@@ -225,7 +225,7 @@ export function Navigation() {
         <nav className={`mn-nav${scrolled ? ' is-scrolled' : ''}`} aria-label="Main navigation">
           {/* Logo */}
           <Link to="/" className="mn-logo" aria-label="Moontuner home">
-            <img src="/moontuner-logo.svg" alt="Moontuner logo" className="mn-logo-mark" />
+            <img src="/moonkey-logo.png" alt="Moontuner logo" className="mn-logo-mark" />
           </Link>
 
           {/* Desktop groups */}
