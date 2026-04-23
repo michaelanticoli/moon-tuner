@@ -37,7 +37,7 @@ export function StartSessionCTA() {
       </div>
       <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[26rem] w-[26rem] pointer-events-none select-none hidden lg:block">
         <ImageInlay
-          src="/images/Moontuner%20Dial.png"
+          src="/images/Moontuner Dial.png"
           alt=""
           fade="left"
           className="h-full w-full object-contain object-center"
