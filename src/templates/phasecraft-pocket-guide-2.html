@@ -430,21 +430,16 @@
       <div class="phase-name">New<br>Moon</div>
       <div class="phase-theme">Initiation</div>
     </div>
-    <!-- New Moon sigil: perfect circle with center point, radiating potential -->
+    <!-- New Moon: completely dark disk -->
     <svg width="88" height="88" viewBox="0 0 88 88" fill="none">
-      <circle cx="44" cy="44" r="36" stroke="#1A1918" stroke-width="1"/>
-      <circle cx="44" cy="44" r="3" fill="#1A1918"/>
-      <circle cx="44" cy="44" r="20" stroke="#D9D3C9" stroke-width="0.5"/>
-      <!-- Cardinal axis lines, very thin -->
-      <line x1="44" y1="8" x2="44" y2="24" stroke="#D9D3C9" stroke-width="0.75"/>
-      <line x1="44" y1="64" x2="44" y2="80" stroke="#D9D3C9" stroke-width="0.75"/>
-      <line x1="8" y1="44" x2="24" y2="44" stroke="#D9D3C9" stroke-width="0.75"/>
-      <line x1="64" y1="44" x2="80" y2="44" stroke="#D9D3C9" stroke-width="0.75"/>
-      <!-- Diagonal -->
-      <line x1="18" y1="18" x2="29" y2="29" stroke="#D9D3C9" stroke-width="0.5"/>
-      <line x1="59" y1="59" x2="70" y2="70" stroke="#D9D3C9" stroke-width="0.5"/>
-      <line x1="70" y1="18" x2="59" y2="29" stroke="#D9D3C9" stroke-width="0.5"/>
-      <line x1="18" y1="70" x2="29" y2="59" stroke="#D9D3C9" stroke-width="0.5"/>
+      <circle cx="44" cy="44" r="36" fill="#1A1918"/>
+      <circle cx="44" cy="44" r="36" fill="none" stroke="#3D3A38" stroke-width="0.75"/>
+      <circle cx="44" cy="44" r="20" fill="none" stroke="#2E2C2A" stroke-width="0.5"/>
+      <line x1="44" y1="8" x2="44" y2="26" stroke="#2E2C2A" stroke-width="0.75"/>
+      <line x1="44" y1="62" x2="44" y2="80" stroke="#2E2C2A" stroke-width="0.75"/>
+      <line x1="8" y1="44" x2="26" y2="44" stroke="#2E2C2A" stroke-width="0.75"/>
+      <line x1="62" y1="44" x2="80" y2="44" stroke="#2E2C2A" stroke-width="0.75"/>
+      <circle cx="44" cy="44" r="2.5" fill="#3D3A38"/>
     </svg>
   </div>
 
@@ -482,14 +477,14 @@
       <div class="phase-name">Waxing<br>Crescent</div>
       <div class="phase-theme">Momentum</div>
     </div>
-    <!-- Crescent sigil with upward arrow energy -->
+    <!-- Waxing Crescent: thin light sliver on RIGHT — elliptical terminator, rx=11 ry=36 -->
     <svg width="88" height="88" viewBox="0 0 88 88" fill="none">
-      <circle cx="44" cy="44" r="36" stroke="#D9D3C9" stroke-width="0.5"/>
-      <!-- Waxing crescent shape -->
-      <path d="M 44 8 A 36 36 0 0 1 44 80 A 22 22 0 0 0 44 8 Z" fill="#1A1918"/>
-      <!-- vertical axis -->
-      <line x1="44" y1="8" x2="44" y2="80" stroke="#D9D3C9" stroke-width="0.4" stroke-dasharray="3 3"/>
-      <!-- Sacred triangle at center -->
+      <!-- Dark disk base -->
+      <circle cx="44" cy="44" r="36" fill="#1A1918"/>
+      <!-- Light crescent: outer right arc (CW) + narrow elliptical return (CCW) -->
+      <path d="M 44 8 A 36 36 0 0 1 44 80 A 11 36 0 0 0 44 8 Z" fill="#F9F7F4"/>
+      <circle cx="44" cy="44" r="36" fill="none" stroke="#6A6560" stroke-width="0.5"/>
+      <line x1="44" y1="8" x2="44" y2="80" stroke="#2E2C2A" stroke-width="0.4" stroke-dasharray="3 3"/>
       <polygon points="44,28 56,56 32,56" fill="none" stroke="#B89D6A" stroke-width="0.75"/>
     </svg>
   </div>
@@ -529,16 +524,15 @@
       <div class="phase-name">First<br>Quarter</div>
       <div class="phase-theme">Decision</div>
     </div>
-    <!-- Half-circle divided, decision geometry -->
+    <!-- First Quarter: RIGHT half lit — dark base, light right half -->
     <svg width="88" height="88" viewBox="0 0 88 88" fill="none">
-      <circle cx="44" cy="44" r="36" stroke="#D9D3C9" stroke-width="0.5"/>
-      <!-- Right half filled -->
-      <path d="M 44 8 A 36 36 0 0 1 44 80 Z" fill="#1A1918"/>
-      <!-- Vertical dividing line -->
-      <line x1="44" y1="8" x2="44" y2="80" stroke="#F9F7F4" stroke-width="1"/>
-      <!-- Horizontal axis -->
-      <line x1="8" y1="44" x2="80" y2="44" stroke="#D9D3C9" stroke-width="0.5"/>
-      <!-- Square at center — decision symbol -->
+      <!-- Dark base -->
+      <circle cx="44" cy="44" r="36" fill="#1A1918"/>
+      <!-- Light right half: right arc (CW) + straight line back -->
+      <path d="M 44 8 A 36 36 0 0 1 44 80 L 44 8 Z" fill="#F9F7F4"/>
+      <circle cx="44" cy="44" r="36" fill="none" stroke="#6A6560" stroke-width="0.5"/>
+      <line x1="44" y1="8" x2="44" y2="80" stroke="#6A6560" stroke-width="0.75"/>
+      <line x1="8" y1="44" x2="80" y2="44" stroke="#D9D3C9" stroke-width="0.4"/>
       <rect x="36" y="36" width="16" height="16" fill="none" stroke="#B89D6A" stroke-width="0.75" transform="rotate(45 44 44)"/>
     </svg>
   </div>
@@ -577,14 +571,14 @@
       <div class="phase-name">Waxing<br>Gibbous</div>
       <div class="phase-theme">Refinement</div>
     </div>
-    <!-- Almost full, detail-oriented geometry -->
+    <!-- Waxing Gibbous: mostly light, thin dark shadow on LEFT — elliptical terminator rx=13 ry=36 -->
     <svg width="88" height="88" viewBox="0 0 88 88" fill="none">
-      <circle cx="44" cy="44" r="36" stroke="#D9D3C9" stroke-width="0.5"/>
-      <!-- Gibbous shape — most filled, small slice dark -->
-      <path d="M 44 8 A 36 36 0 1 1 28 14 A 20 20 0 0 1 44 8 Z" fill="#1A1918"/>
-      <!-- Inner spiral -->
+      <!-- Light disk base -->
+      <circle cx="44" cy="44" r="36" fill="#F9F7F4"/>
+      <!-- Dark thin crescent on left: outer left arc (CCW) + narrow elliptical return (CW) -->
+      <path d="M 44 8 A 36 36 0 0 0 44 80 A 13 36 0 0 1 44 8 Z" fill="#1A1918"/>
+      <circle cx="44" cy="44" r="36" fill="none" stroke="#6A6560" stroke-width="0.5"/>
       <path d="M 44 44 Q 52 36 44 28 Q 36 20 28 28 Q 20 36 28 44" fill="none" stroke="#B89D6A" stroke-width="0.75"/>
-      <!-- Center cross -->
       <line x1="40" y1="44" x2="48" y2="44" stroke="#B89D6A" stroke-width="0.75"/>
       <line x1="44" y1="40" x2="44" y2="48" stroke="#B89D6A" stroke-width="0.75"/>
     </svg>
@@ -677,14 +671,15 @@
       <div class="phase-name">Waning<br>Gibbous</div>
       <div class="phase-theme">Integration</div>
     </div>
+    <!-- Waning Gibbous: mostly light, thin dark shadow growing on RIGHT — elliptical terminator rx=13 ry=36 -->
     <svg width="88" height="88" viewBox="0 0 88 88" fill="none">
-      <circle cx="44" cy="44" r="36" stroke="#D9D3C9" stroke-width="0.5"/>
-      <!-- Mirrored gibbous — receding -->
-      <path d="M 44 8 A 36 36 0 1 0 60 14 A 20 20 0 0 0 44 8 Z" fill="#1A1918"/>
-      <!-- Descending spiral -->
+      <!-- Light disk base -->
+      <circle cx="44" cy="44" r="36" fill="#F9F7F4"/>
+      <!-- Dark thin crescent on right: outer right arc (CW) + narrow elliptical return (CCW) -->
+      <path d="M 44 8 A 36 36 0 0 1 44 80 A 13 36 0 0 0 44 8 Z" fill="#1A1918"/>
+      <circle cx="44" cy="44" r="36" fill="none" stroke="#6A6560" stroke-width="0.5"/>
       <path d="M 44 44 Q 36 36 44 28 Q 52 20 60 28 Q 68 36 60 44" fill="none" stroke="#D4BF96" stroke-width="0.75"/>
-      <!-- horizontal integration bar -->
-      <line x1="28" y1="44" x2="60" y2="44" stroke="#D9D3C9" stroke-width="0.5"/>
+      <line x1="28" y1="44" x2="60" y2="44" stroke="#D9D3C9" stroke-width="0.4"/>
     </svg>
   </div>
 
@@ -722,15 +717,16 @@
       <div class="phase-name">Last<br>Quarter</div>
       <div class="phase-theme">Release</div>
     </div>
+    <!-- Last Quarter: LEFT half lit — dark base, light left half -->
     <svg width="88" height="88" viewBox="0 0 88 88" fill="none">
-      <circle cx="44" cy="44" r="36" stroke="#D9D3C9" stroke-width="0.5"/>
-      <!-- Left half filled — mirror of First Quarter -->
-      <path d="M 44 8 A 36 36 0 0 0 44 80 Z" fill="#1A1918"/>
-      <line x1="44" y1="8" x2="44" y2="80" stroke="#F9F7F4" stroke-width="1"/>
-      <line x1="8" y1="44" x2="80" y2="44" stroke="#D9D3C9" stroke-width="0.5"/>
-      <!-- Open diamond -->
-      <rect x="36" y="36" width="16" height="16" fill="none" stroke="#D9D3C9" stroke-width="0.75" transform="rotate(45 44 44)"/>
-      <!-- Small x at center -->
+      <!-- Dark base -->
+      <circle cx="44" cy="44" r="36" fill="#1A1918"/>
+      <!-- Light left half: left arc (CCW) + straight line back -->
+      <path d="M 44 8 A 36 36 0 0 0 44 80 L 44 8 Z" fill="#F9F7F4"/>
+      <circle cx="44" cy="44" r="36" fill="none" stroke="#6A6560" stroke-width="0.5"/>
+      <line x1="44" y1="8" x2="44" y2="80" stroke="#6A6560" stroke-width="0.75"/>
+      <line x1="8" y1="44" x2="80" y2="44" stroke="#D9D3C9" stroke-width="0.4"/>
+      <rect x="36" y="36" width="16" height="16" fill="none" stroke="#D9D3C9" stroke-width="0.5" transform="rotate(45 44 44)"/>
       <line x1="40" y1="40" x2="48" y2="48" stroke="#B89D6A" stroke-width="0.75"/>
       <line x1="48" y1="40" x2="40" y2="48" stroke="#B89D6A" stroke-width="0.75"/>
     </svg>
@@ -770,15 +766,15 @@
       <div class="phase-name">Waning<br>Crescent</div>
       <div class="phase-theme">Surrender</div>
     </div>
-    <!-- Thin crescent, vesica piscis fragment -->
+    <!-- Waning Crescent: thin light sliver on LEFT — elliptical terminator rx=11 ry=36 -->
     <svg width="88" height="88" viewBox="0 0 88 88" fill="none">
-      <circle cx="44" cy="44" r="36" stroke="#D9D3C9" stroke-width="0.5"/>
-      <!-- Thin waning crescent — left side -->
-      <path d="M 44 8 A 36 36 0 0 0 44 80 A 22 22 0 0 1 44 8 Z" fill="#1A1918"/>
-      <!-- Vesica piscis lines -->
-      <ellipse cx="44" cy="44" rx="18" ry="36" fill="none" stroke="#D9D3C9" stroke-width="0.4"/>
-      <!-- Center horizontal -->
-      <line x1="26" y1="44" x2="62" y2="44" stroke="#D9D3C9" stroke-width="0.4"/>
+      <!-- Dark disk base -->
+      <circle cx="44" cy="44" r="36" fill="#1A1918"/>
+      <!-- Light crescent: outer left arc (CCW) + narrow elliptical return (CW) -->
+      <path d="M 44 8 A 36 36 0 0 0 44 80 A 11 36 0 0 1 44 8 Z" fill="#F9F7F4"/>
+      <circle cx="44" cy="44" r="36" fill="none" stroke="#6A6560" stroke-width="0.5"/>
+      <ellipse cx="44" cy="44" rx="18" ry="36" fill="none" stroke="#2E2C2A" stroke-width="0.4"/>
+      <line x1="26" y1="44" x2="62" y2="44" stroke="#2E2C2A" stroke-width="0.4"/>
     </svg>
   </div>
 
