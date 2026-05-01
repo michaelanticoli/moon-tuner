@@ -122,12 +122,12 @@ export default function Sessions() {
           ══════════════════════════════════════════════════════════════════ */}
           <section className="py-20 px-6 lg:px-12 relative overflow-hidden">
             {/* Photo — left anchor, fades right into the section */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[110%] w-[38%] pointer-events-none select-none hidden lg:block">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[115%] w-[48%] pointer-events-none select-none hidden md:block">
               <ImageInlay
-                src="/images/tarot.jpeg"
-                alt="Michael with tarot cards"
+                src="/images/michael-tarot-spread.jpeg"
+                alt="Michael with tarot spread and turntable"
                 fade="right"
-                className="h-full w-full object-cover object-center"
+                className="h-full w-full object-contain object-left"
                 style={{ opacity: 0.55 }}
               />
             </div>
