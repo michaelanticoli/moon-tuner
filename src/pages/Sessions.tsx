@@ -191,7 +191,7 @@ export default function Sessions() {
           <section className="py-20 px-6 lg:px-12 bg-muted/10 relative overflow-hidden">
             {/* Studio photo — right anchor, fades left */}
             <div className="absolute right-0 top-0 h-full w-[44%] pointer-events-none select-none hidden lg:block">
-              <GhostPhoto
+              <ImageInlay
                 src="/images/michael-studio.png"
                 alt="Michael at the astro-harmonic studio"
                 fade="left"
