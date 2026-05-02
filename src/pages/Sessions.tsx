@@ -96,8 +96,7 @@ export default function Sessions() {
             backgroundPosition: "center top",
             backgroundRepeat: "no-repeat",
             opacity: 0.07,
-            maskImage:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 80%)",
+            maskImage: "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 80%)",
             WebkitMaskImage:
               "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 80%)",
           }}
@@ -259,10 +258,10 @@ export default function Sessions() {
             <div className="container mx-auto max-w-4xl relative z-10">
               <span className="system-label mb-3 block">Tier 2</span>
               <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
-                Astro-Harmonic Natal Analysis
+                Astro-Harmonic Natal Analysis Report
               </h2>
               <p className="font-serif italic text-lg text-muted-foreground mb-8">
-                Your birth chart is a frequency. This session makes it audible.
+                Your birth chart is a frequency. This process makes it audible.
               </p>
               <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-2xl mb-12">
                 This is not a standard chart reading. Michael analyzes your birth chart through both classical
@@ -279,9 +278,10 @@ export default function Sessions() {
                   </div>
                   <p className="font-sans text-xs text-muted-foreground mb-4">Immediate Generation</p>
                   <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
-                    Your natal chart translated into musical structure. Every planetary position, every angle, every
-                    harmonic relationship mapped to its corresponding frequency and interval. The result is a complete
-                    sonic portrait of the chart you were born into — generated algorithmically, yours permanently.
+                    A PDF report of your natal chart translated into musical structure. Every planetary position, every
+                    angle, every harmonic relationship mapped to its corresponding frequency and interval. The result is
+                    a complete sonic portrait of the chart you were born into — generated algorithmically, yours
+                    permanently. Paired with an mp3 download of your astro-harmonic sonic composition.
                   </p>
                   <Button
                     onClick={handleChartOverviewBooking}
@@ -296,7 +296,7 @@ export default function Sessions() {
                       </>
                     ) : (
                       <>
-                        Book a Session <ExternalLink className="w-3 h-3" />
+                        Generate Your Report & Song <ExternalLink className="w-3 h-3" />
                       </>
                     )}
                   </Button>
