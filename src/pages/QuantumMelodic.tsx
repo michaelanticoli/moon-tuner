@@ -238,9 +238,11 @@ const QuantumMelodic = () => {
   };
 
   useEffect(() => {
-    if (!audioUrl) return;
+    const url = deliverables.audioUrl;
+    if (!url) return;
     const audio = new Audio();
-    audio.src = audioUrl;
+    audio.src = url;
+    audio.crossOrigin = "anonymous";
     audioRef.current = audio;
     const onMeta = () => setDuration(audio.duration || 0);
     const onTime = () => setCurrentTime(audio.currentTime || 0);
@@ -258,7 +260,7 @@ const QuantumMelodic = () => {
       audio.removeEventListener("ended", onEnd);
       audioRef.current = null;
     };
-  }, [audioUrl]);
+  }, [deliverables.audioUrl]);
 
   const togglePlay = async () => {
     if (!audioRef.current) return;
