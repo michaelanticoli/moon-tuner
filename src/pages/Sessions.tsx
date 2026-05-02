@@ -86,6 +86,22 @@ export default function Sessions() {
   return (
     <PageTransition>
       <div className="min-h-screen bg-background relative">
+        {/* Page-wide soft background — Michael at the turntable with tarot spread */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none select-none fixed inset-0 z-0"
+          style={{
+            backgroundImage: "url('/images/michael-turntable-tarot.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+            backgroundRepeat: "no-repeat",
+            opacity: 0.07,
+            maskImage:
+              "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 80%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 80%)",
+          }}
+        />
         <Navigation />
 
         <main>
@@ -99,13 +115,13 @@ export default function Sessions() {
             <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
 
             {/* Michael — hero portrait, right-anchored, fades left */}
-            <div className="absolute right-0 top-0 h-full w-[55%] lg:w-[45%] pointer-events-none select-none hidden sm:block">
+            <div className="absolute right-0 top-0 h-full w-[60%] lg:w-[52%] pointer-events-none select-none hidden sm:block">
               <ImageInlay
-                src="/images/lunar.jpg"
-                alt="Michael Anticoli"
+                src="/images/michael-turntable-tarot.png"
+                alt="Michael Anticoli at the turntable with a tarot spread"
                 fade="left"
-                className="h-full w-full object-cover object-center"
-                style={{ opacity: 0.72 }}
+                className="h-full w-full object-contain object-right"
+                style={{ opacity: 0.85 }}
               />
               {/* Second pass: dark vignette at very bottom so text doesn't clash */}
               <div
