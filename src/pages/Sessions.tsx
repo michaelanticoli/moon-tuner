@@ -3,10 +3,11 @@ import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { ImageInlay } from "@/components/ImageInlay";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
+import { ExternalLink, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
-const STRIPE_BOOKING_URL = "https://buy.stripe.com/5kQ00i5QCdHm8qngTfe7m04";
 const SQUARE_BOOKING_URL = "https://square.site/book/LT09Q7KSGAF98/moontuner";
 
 // ─── IMAGE PATHS ─────────────────────────────────────────────────────────────
