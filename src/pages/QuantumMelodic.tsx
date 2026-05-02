@@ -492,7 +492,7 @@ const QuantumMelodic = () => {
                       <div className="pt-4">
                         <button
                           onClick={handleGenerate}
-                          disabled={loading || !formData.date || !formData.location}
+                          disabled={loading || !formData.date || !formData.location || !formData.email}
                           className="system-button w-full justify-center disabled:opacity-30 disabled:cursor-not-allowed"
                         >
                           Generate My Symphony
