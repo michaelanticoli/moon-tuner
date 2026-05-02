@@ -419,6 +419,16 @@ const QuantumMelodic = () => {
                         />
                       </div>
                       <div>
+                        <label className="system-label block mb-3">Email</label>
+                        <Input
+                          type="email"
+                          placeholder="So you can come back to your composition"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className="bg-transparent border-0 border-b border-border rounded-none py-4 text-foreground focus-visible:ring-0 focus-visible:border-accent placeholder:text-muted-foreground/40"
+                        />
+                      </div>
+                      <div>
                         <label className="system-label block mb-3">Birth Date</label>
                         <Input
                           type="date"
