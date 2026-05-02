@@ -10,7 +10,7 @@
   :root {
     --ink:     #1A1918;
     --mid:     #6A6560;
-    --light:   #A09890;
+    --light:   #6F665B;  /* darkened from #A09890 for legibility on cream/white */
     --rule:    #D9D3C9;
     --paper:   #F9F7F4;
     --gold:    #B89D6A;
@@ -474,8 +474,20 @@
   }
 
   @media print {
-    body { background: white; }
+    /* Force legible inks on white. Straw (--light) and washed gold become
+       unreadable on white, so we re-cast them as deep, high-contrast tones. */
+    :root {
+      --light: #4A453F;     /* was #A09890 — now deep warm graphite */
+      --mid:   #2E2C29;     /* was #6A6560 — now near-ink for body copy */
+      --gold:  #6B5424;     /* was #B89D6A — deep mustard for accents */
+      --gold-lt: #8B7340;   /* was #D4BF96 — readable on white */
+      --rule:  #B8B0A4;
+    }
+    body { background: white !important; color: #1A1918 !important;
+           -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .page { margin: 0; page-break-after: always; width: 100%; }
+    /* Bump thin Jost weights so 200-weight copy doesn't disappear on paper */
+    [style*="font-weight:200"], [style*="font-weight: 200"] { font-weight: 300 !important; }
   }
 
   @media (max-width: 640px) {
