@@ -688,24 +688,23 @@ const QuantumMelodic = () => {
 
                 <div className="container mx-auto px-6 lg:px-12 max-w-5xl space-y-0">
                   {/* Audio Player */}
-                  {(audioUrl || audioLoading || audioError) && (
+                  {(deliverables.audioUrl || deliverables.audioStatus === "generating" || deliverables.audioStatus === "failed") && (
                     <motion.section
                       initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.1 }}
                       className="py-16 border-b border-border"
                     >
-                      <span className="system-label mb-6 block">Audio Synthesis</span>
+                      <span className="system-label mb-6 block">Your Cosmic Composition</span>
                       <div className="node-card">
                         <div className="flex items-center justify-between mb-8">
                           <div>
-                            <h3 className="font-serif text-xl text-foreground italic">Your Cosmic Composition</h3>
+                            <h3 className="font-serif text-xl text-foreground italic">A Two-Minute Symphony Tuned to Your Chart</h3>
                             <p className="system-label mt-1">
-                              {reading.chartData.planets.filter((p) => p.name !== "Ascendant").length} planetary voices
-                              \u00B7 Tone.js synthesis
+                              ElevenLabs Music · Composed from your Sun, Moon, Rising & {qmReading?.aspects.length ?? 0} aspects
                             </p>
                           </div>
-                          {audioUrl && (
+                          {deliverables.audioUrl && (
                             <button
                               onClick={togglePlay}
                               className="w-14 h-14 rounded-full border border-border flex items-center justify-center hover:border-accent/50 transition-all duration-500 group"
@@ -726,7 +725,7 @@ const QuantumMelodic = () => {
                             </button>
                           )}
                         </div>
-                        {audioUrl ? (
+                        {deliverables.audioUrl ? (
                           <>
                             <div
                               className="w-full h-px bg-border overflow-hidden cursor-pointer mb-3"
@@ -749,21 +748,10 @@ const QuantumMelodic = () => {
                         ) : (
                           <div className="rounded-2xl border border-border/60 bg-background/40 p-5">
                             <p className="text-sm text-muted-foreground leading-relaxed">
-                              {audioLoading
-                                ? "Your report is ready. Audio is rendering separately so the harmonic analysis never stalls."
-                                : audioError ||
-                                  "Render audio on demand to keep the report fast, stable, and available even when synthesis is under load."}
+                              {deliverables.audioStatus === "generating"
+                                ? "ElevenLabs is composing your two-minute signature piece. This typically takes 30–90 seconds. Your report below is fully readable while you wait."
+                                : "Your composition couldn't be generated this time. The report and chart are still yours — try regenerating in a moment."}
                             </p>
-                            {!audioLoading && (
-                              <button
-                                onClick={() => {
-                                  generateAudio(reading.chartData);
-                                }}
-                                className="system-button text-xs mt-4 gap-2"
-                              >
-                                <Music className="w-3.5 h-3.5" /> Render Audio Now
-                              </button>
-                            )}
                           </div>
                         )}
                       </div>
