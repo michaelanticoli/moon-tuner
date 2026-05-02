@@ -47,6 +47,72 @@ export type Database = {
         }
         Relationships: []
       }
+      natal_reports: {
+        Row: {
+          ascendant: string | null
+          audio_status: string
+          audio_url: string | null
+          birth_date: string
+          birth_location: string | null
+          birth_time: string | null
+          chart_data: Json | null
+          chart_image_url: string | null
+          chart_status: string
+          created_at: string
+          eleven_labs_prompt: string | null
+          email: string
+          id: string
+          moon_sign: string | null
+          name: string | null
+          pdf_status: string
+          pdf_url: string | null
+          sun_sign: string | null
+          updated_at: string
+        }
+        Insert: {
+          ascendant?: string | null
+          audio_status?: string
+          audio_url?: string | null
+          birth_date: string
+          birth_location?: string | null
+          birth_time?: string | null
+          chart_data?: Json | null
+          chart_image_url?: string | null
+          chart_status?: string
+          created_at?: string
+          eleven_labs_prompt?: string | null
+          email: string
+          id?: string
+          moon_sign?: string | null
+          name?: string | null
+          pdf_status?: string
+          pdf_url?: string | null
+          sun_sign?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ascendant?: string | null
+          audio_status?: string
+          audio_url?: string | null
+          birth_date?: string
+          birth_location?: string | null
+          birth_time?: string | null
+          chart_data?: Json | null
+          chart_image_url?: string | null
+          chart_status?: string
+          created_at?: string
+          eleven_labs_prompt?: string | null
+          email?: string
+          id?: string
+          moon_sign?: string | null
+          name?: string | null
+          pdf_status?: string
+          pdf_url?: string | null
+          sun_sign?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           convertkit_subscriber_id: string | null
