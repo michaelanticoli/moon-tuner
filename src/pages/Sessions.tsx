@@ -160,29 +160,40 @@ export default function Sessions() {
           ══════════════════════════════════════════════════════════════════ */}
           <section className="py-20 px-6 lg:px-12 relative overflow-hidden">
             {/* Photo — left anchor, fades right into the section */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[115%] w-[48%] pointer-events-none select-none hidden md:block">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[115%] w-[44%] pointer-events-none select-none hidden md:block">
               <ImageInlay
                 src="/images/tarot-music-cards.jpg"
                 alt="Astrological tarot cards with sheet music — jewel-toned spread"
                 fade="right"
                 className="h-full w-full object-cover object-left"
-                style={{ opacity: 0.7 }}
+                style={{ opacity: 0.55 }}
+              />
+              {/* Extra readability scrim so right-side copy stays legible */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to right, transparent 0%, transparent 35%, hsl(var(--background) / 0.85) 70%, hsl(var(--background)) 100%)",
+                }}
               />
             </div>
 
             <div className="container mx-auto max-w-4xl relative z-10">
-              <span className="system-label mb-3 block">Tier 1</span>
-              <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
-                Tarot Reading
-              </h2>
-              <p className="font-serif italic text-lg text-muted-foreground mb-8">
-                The cards don't predict your future. They clarify your present.
-              </p>
-              <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-2xl mb-12">
-                Michael brings a holistic, conversation-led approach to every reading. Tarot is the entry point, but
-                nothing is off limits — astrology, numerology, life patterns, timing, all of it is fair game if it
-                serves you. You come with a question or a season of life. You leave with clarity.
-              </p>
+              {/* Right-anchored content: image breathes on the left, copy reads on the right */}
+              <div className="md:ml-auto md:w-[58%] lg:w-[55%]">
+                <span className="system-label mb-3 block">Tier 1</span>
+                <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
+                  Tarot Reading
+                </h2>
+                <p className="font-serif italic text-lg text-foreground/90 mb-8">
+                  The cards don't predict your future. They clarify your present.
+                </p>
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-12">
+                  Michael brings a holistic, conversation-led approach to every reading. Tarot is the entry point, but
+                  nothing is off limits — astrology, numerology, life patterns, timing, all of it is fair game if it
+                  serves you. You come with a question or a season of life. You leave with clarity.
+                </p>
+              </div>
 
               <div className="grid sm:grid-cols-2 gap-5 mb-8 lg:ml-0">
                 {/* Single Draw */}
