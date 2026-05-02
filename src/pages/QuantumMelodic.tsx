@@ -23,6 +23,9 @@ import {
 import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
 import { supabase } from "@/integrations/supabase/client";
 import { AstroHarmonicSample } from "@/components/AstroHarmonicSample";
+import { NatalWheelCard } from "@/components/NatalWheelCard";
+import { useCosmicDeliverables } from "@/hooks/useCosmicDeliverables";
+import { renderChartImageBase64, renderReportPdfBase64 } from "@/lib/renderDeliverables";
 
 const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
 const QM_STORAGE_KEY = "qm_paid";
@@ -64,10 +67,13 @@ const QuantumMelodic = () => {
 
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
     date: "1990-01-01",
     time: "12:00",
     location: "",
   });
+  const wheelCardRef = useRef<HTMLDivElement | null>(null);
+  const { state: deliverables, start: startDeliverables, reset: resetDeliverables } = useCosmicDeliverables();
 
   const persistPaidAccess = useCallback(() => {
     if (typeof window === "undefined") return;
@@ -174,8 +180,9 @@ const QuantumMelodic = () => {
   }, []);
 
   const handleGenerate = async () => {
-    if (!formData.date || !formData.location) return;
+    if (!formData.date || !formData.location || !formData.email) return;
     setStep("generating");
+    resetDeliverables();
 
     try {
       const birthData: BirthData = {
@@ -190,21 +197,52 @@ const QuantumMelodic = () => {
       await fetchData();
       const result = await generateReading(birthData);
 
+      let enriched: QuantumMelodicReading | null = null;
       if (result?.chartData?.planets) {
-        const enriched = buildReading(result.chartData.planets);
+        enriched = buildReading(result.chartData.planets);
         setQmReading(enriched);
       }
 
       setStep("result");
+
+      // Kick off all three deliverables (MP3, PDF, chart PNG) in parallel.
+      // Wait a tick so the off-screen wheel card has rendered.
+      if (result) {
+        setTimeout(() => {
+          startDeliverables({
+            email: formData.email,
+            birthData,
+            chart: result.chartData,
+            qmReading: enriched,
+            renderChartImageBase64: async () => {
+              if (!wheelCardRef.current) throw new Error("wheel card not mounted");
+              return renderChartImageBase64(wheelCardRef.current);
+            },
+            renderPdfBase64: async () => {
+              const harmonic = enriched ? calculateHarmonicAnalysis(enriched.aspects, enriched.planets) : null;
+              const guide = harmonic ? getResolutionGuidance(harmonic) : [];
+              return renderReportPdfBase64(
+                birthData.name || "Cosmic Traveler",
+                result,
+                enriched,
+                harmonic,
+                guide,
+              );
+            },
+          });
+        }, 400);
+      }
     } catch {
       setStep("input");
     }
   };
 
   useEffect(() => {
-    if (!audioUrl) return;
+    const url = deliverables.audioUrl;
+    if (!url) return;
     const audio = new Audio();
-    audio.src = audioUrl;
+    audio.src = url;
+    audio.crossOrigin = "anonymous";
     audioRef.current = audio;
     const onMeta = () => setDuration(audio.duration || 0);
     const onTime = () => setCurrentTime(audio.currentTime || 0);
@@ -222,7 +260,7 @@ const QuantumMelodic = () => {
       audio.removeEventListener("ended", onEnd);
       audioRef.current = null;
     };
-  }, [audioUrl]);
+  }, [deliverables.audioUrl]);
 
   const togglePlay = async () => {
     if (!audioRef.current) return;
@@ -413,6 +451,16 @@ const QuantumMelodic = () => {
                         />
                       </div>
                       <div>
+                        <label className="system-label block mb-3">Email</label>
+                        <Input
+                          type="email"
+                          placeholder="So you can come back to your composition"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className="bg-transparent border-0 border-b border-border rounded-none py-4 text-foreground focus-visible:ring-0 focus-visible:border-accent placeholder:text-muted-foreground/40"
+                        />
+                      </div>
+                      <div>
                         <label className="system-label block mb-3">Birth Date</label>
                         <Input
                           type="date"
@@ -446,7 +494,7 @@ const QuantumMelodic = () => {
                       <div className="pt-4">
                         <button
                           onClick={handleGenerate}
-                          disabled={loading || !formData.date || !formData.location}
+                          disabled={loading || !formData.date || !formData.location || !formData.email}
                           className="system-button w-full justify-center disabled:opacity-30 disabled:cursor-not-allowed"
                         >
                           Generate My Symphony
@@ -516,6 +564,20 @@ const QuantumMelodic = () => {
             {/* RESULT STEP — Report                       */}
             {/* ────────────────────────────────────────── */}
             {step === "result" && reading && (
+              <>
+                {/* Off-screen wheel card for html2canvas capture */}
+                <div style={{ position: "fixed", left: -99999, top: 0, pointerEvents: "none" }} aria-hidden="true">
+                  <div ref={wheelCardRef}>
+                    <NatalWheelCard
+                      chart={reading.chartData}
+                      name={reading.birthData.name || "Cosmic Traveler"}
+                      birthLine={`${reading.birthData.date} · ${reading.birthData.time} · ${reading.birthData.location}`}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+            {step === "result" && reading && (
               <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 {/* Report Header */}
                 <section className="py-20 border-b border-border">
@@ -549,32 +611,66 @@ const QuantumMelodic = () => {
                         )}
                       </div>
                       <div className="flex flex-wrap gap-3 shrink-0">
-                        {audioUrl ? (
-                          <button
-                            onClick={() => {
-                              const a = document.createElement("a");
-                              a.href = audioUrl;
-                              a.download = `${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_symphony.wav`;
-                              document.body.appendChild(a);
-                              a.click();
-                              document.body.removeChild(a);
-                            }}
-                            className="system-button text-xs gap-2"
-                          >
-                            <Download className="w-3.5 h-3.5" /> Download MP3
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => {
-                              generateAudio(reading.chartData);
-                            }}
-                            disabled={audioLoading}
-                            className="system-button text-xs gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
-                          >
-                            <Music className="w-3.5 h-3.5" />
-                            {audioLoading ? "Rendering Audio…" : "Render Audio"}
-                          </button>
-                        )}
+                        <a
+                          href={deliverables.audioUrl || "#"}
+                          download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_symphony.mp3`}
+                          aria-disabled={deliverables.audioStatus !== "ready"}
+                          onClick={(e) => {
+                            if (deliverables.audioStatus !== "ready") e.preventDefault();
+                          }}
+                          className={`system-button text-xs gap-2 ${
+                            deliverables.audioStatus !== "ready" ? "opacity-40 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <Music className="w-3.5 h-3.5" />
+                          {deliverables.audioStatus === "ready"
+                            ? "Download MP3"
+                            : deliverables.audioStatus === "generating"
+                            ? "Composing…"
+                            : deliverables.audioStatus === "failed"
+                            ? "Audio failed"
+                            : "Audio pending"}
+                        </a>
+                        <a
+                          href={deliverables.pdfUrl || "#"}
+                          download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_report.pdf`}
+                          aria-disabled={deliverables.pdfStatus !== "ready"}
+                          onClick={(e) => {
+                            if (deliverables.pdfStatus !== "ready") e.preventDefault();
+                          }}
+                          className={`system-button text-xs gap-2 ${
+                            deliverables.pdfStatus !== "ready" ? "opacity-40 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <FileText className="w-3.5 h-3.5" />
+                          {deliverables.pdfStatus === "ready"
+                            ? "Download PDF"
+                            : deliverables.pdfStatus === "generating"
+                            ? "Rendering…"
+                            : deliverables.pdfStatus === "failed"
+                            ? "PDF failed"
+                            : "PDF pending"}
+                        </a>
+                        <a
+                          href={deliverables.chartImageUrl || "#"}
+                          download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_chart.png`}
+                          aria-disabled={deliverables.chartStatus !== "ready"}
+                          onClick={(e) => {
+                            if (deliverables.chartStatus !== "ready") e.preventDefault();
+                          }}
+                          className={`system-button text-xs gap-2 ${
+                            deliverables.chartStatus !== "ready" ? "opacity-40 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          {deliverables.chartStatus === "ready"
+                            ? "Download Chart"
+                            : deliverables.chartStatus === "generating"
+                            ? "Capturing…"
+                            : deliverables.chartStatus === "failed"
+                            ? "Chart failed"
+                            : "Chart pending"}
+                        </a>
                         <button
                           onClick={() => {
                             const name = reading.birthData.name || "Cosmic Traveler";
@@ -591,6 +687,7 @@ const QuantumMelodic = () => {
                         <button
                           onClick={() => {
                             reset();
+                            resetDeliverables();
                             setQmReading(null);
                             setStep("input");
                           }}
@@ -605,24 +702,23 @@ const QuantumMelodic = () => {
 
                 <div className="container mx-auto px-6 lg:px-12 max-w-5xl space-y-0">
                   {/* Audio Player */}
-                  {(audioUrl || audioLoading || audioError) && (
+                  {(deliverables.audioUrl || deliverables.audioStatus === "generating" || deliverables.audioStatus === "failed") && (
                     <motion.section
                       initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.1 }}
                       className="py-16 border-b border-border"
                     >
-                      <span className="system-label mb-6 block">Audio Synthesis</span>
+                      <span className="system-label mb-6 block">Your Cosmic Composition</span>
                       <div className="node-card">
                         <div className="flex items-center justify-between mb-8">
                           <div>
-                            <h3 className="font-serif text-xl text-foreground italic">Your Cosmic Composition</h3>
+                            <h3 className="font-serif text-xl text-foreground italic">A Two-Minute Symphony Tuned to Your Chart</h3>
                             <p className="system-label mt-1">
-                              {reading.chartData.planets.filter((p) => p.name !== "Ascendant").length} planetary voices
-                              \u00B7 Tone.js synthesis
+                              ElevenLabs Music · Composed from your Sun, Moon, Rising & {qmReading?.aspects.length ?? 0} aspects
                             </p>
                           </div>
-                          {audioUrl && (
+                          {deliverables.audioUrl && (
                             <button
                               onClick={togglePlay}
                               className="w-14 h-14 rounded-full border border-border flex items-center justify-center hover:border-accent/50 transition-all duration-500 group"
@@ -643,7 +739,7 @@ const QuantumMelodic = () => {
                             </button>
                           )}
                         </div>
-                        {audioUrl ? (
+                        {deliverables.audioUrl ? (
                           <>
                             <div
                               className="w-full h-px bg-border overflow-hidden cursor-pointer mb-3"
@@ -666,21 +762,10 @@ const QuantumMelodic = () => {
                         ) : (
                           <div className="rounded-2xl border border-border/60 bg-background/40 p-5">
                             <p className="text-sm text-muted-foreground leading-relaxed">
-                              {audioLoading
-                                ? "Your report is ready. Audio is rendering separately so the harmonic analysis never stalls."
-                                : audioError ||
-                                  "Render audio on demand to keep the report fast, stable, and available even when synthesis is under load."}
+                              {deliverables.audioStatus === "generating"
+                                ? "ElevenLabs is composing your two-minute signature piece. This typically takes 30–90 seconds. Your report below is fully readable while you wait."
+                                : "Your composition couldn't be generated this time. The report and chart are still yours — try regenerating in a moment."}
                             </p>
-                            {!audioLoading && (
-                              <button
-                                onClick={() => {
-                                  generateAudio(reading.chartData);
-                                }}
-                                className="system-button text-xs mt-4 gap-2"
-                              >
-                                <Music className="w-3.5 h-3.5" /> Render Audio Now
-                              </button>
-                            )}
                           </div>
                         )}
                       </div>
