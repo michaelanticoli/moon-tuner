@@ -23,6 +23,9 @@ import {
 import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
 import { supabase } from "@/integrations/supabase/client";
 import { AstroHarmonicSample } from "@/components/AstroHarmonicSample";
+import { NatalWheelCard } from "@/components/NatalWheelCard";
+import { useCosmicDeliverables } from "@/hooks/useCosmicDeliverables";
+import { renderChartImageBase64, renderReportPdfBase64 } from "@/lib/renderDeliverables";
 
 const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
 const QM_STORAGE_KEY = "qm_paid";
@@ -64,10 +67,13 @@ const QuantumMelodic = () => {
 
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
     date: "1990-01-01",
     time: "12:00",
     location: "",
   });
+  const wheelCardRef = useRef<HTMLDivElement | null>(null);
+  const { state: deliverables, start: startDeliverables, reset: resetDeliverables } = useCosmicDeliverables();
 
   const persistPaidAccess = useCallback(() => {
     if (typeof window === "undefined") return;
