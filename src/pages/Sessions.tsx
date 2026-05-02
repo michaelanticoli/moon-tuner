@@ -162,11 +162,11 @@ export default function Sessions() {
             {/* Photo — left anchor, fades right into the section */}
             <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[115%] w-[48%] pointer-events-none select-none hidden md:block">
               <ImageInlay
-                src="/images/michael-tarot-spread.jpeg"
-                alt="Michael with tarot spread and turntable"
+                src="/images/tarot-music-cards.jpg"
+                alt="Astrological tarot cards with sheet music — jewel-toned spread"
                 fade="right"
-                className="h-full w-full object-contain object-left"
-                style={{ opacity: 0.55 }}
+                className="h-full w-full object-cover object-left"
+                style={{ opacity: 0.7 }}
               />
             </div>
 
