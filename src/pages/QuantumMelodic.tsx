@@ -22,6 +22,7 @@ import {
 } from "@/utils/harmonicWisdom";
 import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
 import { supabase } from "@/integrations/supabase/client";
+import { AstroHarmonicSample } from "@/components/AstroHarmonicSample";
 
 const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
 const QM_STORAGE_KEY = "qm_paid";
