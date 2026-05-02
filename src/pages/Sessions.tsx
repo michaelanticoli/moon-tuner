@@ -3,10 +3,11 @@ import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { ImageInlay } from "@/components/ImageInlay";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
+import { ExternalLink, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
-const STRIPE_BOOKING_URL = "https://buy.stripe.com/5kQ00i5QCdHm8qngTfe7m04";
 const SQUARE_BOOKING_URL = "https://square.site/book/LT09Q7KSGAF98/moontuner";
 
 // ─── IMAGE PATHS ─────────────────────────────────────────────────────────────
@@ -61,6 +62,27 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function Sessions() {
+  const [bookingLoading, setBookingLoading] = useState(false);
+
+  const handleChartOverviewBooking = async () => {
+    setBookingLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-report-payment", {
+        body: { product: "astro-harmonic" },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch (err) {
+      console.error("Astro-harmonic booking failed:", err);
+      toast.error("Could not start checkout. Please try again.");
+      setBookingLoading(false);
+    }
+  };
+
   return (
     <PageTransition>
       <div className="min-h-screen bg-background relative">
@@ -234,11 +256,23 @@ export default function Sessions() {
                     harmonic relationship mapped to its corresponding frequency and interval. The result is a complete
                     sonic portrait of the chart you were born into — generated algorithmically, yours permanently.
                   </p>
-                  <a href={STRIPE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-                    <Button variant="gold-outline" size="sm" className="w-full gap-2 text-xs tracking-wide">
-                      Book a Session <ExternalLink className="w-3 h-3" />
-                    </Button>
-                  </a>
+                  <Button
+                    onClick={handleChartOverviewBooking}
+                    disabled={bookingLoading}
+                    variant="gold-outline"
+                    size="sm"
+                    className="w-full gap-2 text-xs tracking-wide"
+                  >
+                    {bookingLoading ? (
+                      <>
+                        <Loader2 className="w-3 h-3 animate-spin" /> Starting checkout…
+                      </>
+                    ) : (
+                      <>
+                        Book a Session <ExternalLink className="w-3 h-3" />
+                      </>
+                    )}
+                  </Button>
                 </div>
 
                 {/* Cosmic Calibration */}
