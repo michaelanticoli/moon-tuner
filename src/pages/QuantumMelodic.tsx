@@ -180,8 +180,9 @@ const QuantumMelodic = () => {
   }, []);
 
   const handleGenerate = async () => {
-    if (!formData.date || !formData.location) return;
+    if (!formData.date || !formData.location || !formData.email) return;
     setStep("generating");
+    resetDeliverables();
 
     try {
       const birthData: BirthData = {
@@ -196,12 +197,41 @@ const QuantumMelodic = () => {
       await fetchData();
       const result = await generateReading(birthData);
 
+      let enriched: QuantumMelodicReading | null = null;
       if (result?.chartData?.planets) {
-        const enriched = buildReading(result.chartData.planets);
+        enriched = buildReading(result.chartData.planets);
         setQmReading(enriched);
       }
 
       setStep("result");
+
+      // Kick off all three deliverables (MP3, PDF, chart PNG) in parallel.
+      // Wait a tick so the off-screen wheel card has rendered.
+      if (result) {
+        setTimeout(() => {
+          startDeliverables({
+            email: formData.email,
+            birthData,
+            chart: result.chartData,
+            qmReading: enriched,
+            renderChartImageBase64: async () => {
+              if (!wheelCardRef.current) throw new Error("wheel card not mounted");
+              return renderChartImageBase64(wheelCardRef.current);
+            },
+            renderPdfBase64: async () => {
+              const harmonic = enriched ? calculateHarmonicAnalysis(enriched.aspects, enriched.planets) : null;
+              const guide = harmonic ? getResolutionGuidance(harmonic) : [];
+              return renderReportPdfBase64(
+                birthData.name || "Cosmic Traveler",
+                result,
+                enriched,
+                harmonic,
+                guide,
+              );
+            },
+          });
+        }, 400);
+      }
     } catch {
       setStep("input");
     }
