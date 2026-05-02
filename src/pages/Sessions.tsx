@@ -62,6 +62,27 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function Sessions() {
+  const [bookingLoading, setBookingLoading] = useState(false);
+
+  const handleChartOverviewBooking = async () => {
+    setBookingLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-report-payment", {
+        body: { product: "astro-harmonic" },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch (err) {
+      console.error("Astro-harmonic booking failed:", err);
+      toast.error("Could not start checkout. Please try again.");
+      setBookingLoading(false);
+    }
+  };
+
   return (
     <PageTransition>
       <div className="min-h-screen bg-background relative">
