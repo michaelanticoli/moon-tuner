@@ -256,11 +256,23 @@ export default function Sessions() {
                     harmonic relationship mapped to its corresponding frequency and interval. The result is a complete
                     sonic portrait of the chart you were born into — generated algorithmically, yours permanently.
                   </p>
-                  <a href={STRIPE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-                    <Button variant="gold-outline" size="sm" className="w-full gap-2 text-xs tracking-wide">
-                      Book a Session <ExternalLink className="w-3 h-3" />
-                    </Button>
-                  </a>
+                  <Button
+                    onClick={handleChartOverviewBooking}
+                    disabled={bookingLoading}
+                    variant="gold-outline"
+                    size="sm"
+                    className="w-full gap-2 text-xs tracking-wide"
+                  >
+                    {bookingLoading ? (
+                      <>
+                        <Loader2 className="w-3 h-3 animate-spin" /> Starting checkout…
+                      </>
+                    ) : (
+                      <>
+                        Book a Session <ExternalLink className="w-3 h-3" />
+                      </>
+                    )}
+                  </Button>
                 </div>
 
                 {/* Cosmic Calibration */}
