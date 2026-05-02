@@ -564,6 +564,20 @@ const QuantumMelodic = () => {
             {/* RESULT STEP — Report                       */}
             {/* ────────────────────────────────────────── */}
             {step === "result" && reading && (
+              <>
+              {/* Off-screen wheel card for html2canvas capture */}
+              <div style={{ position: "fixed", left: -99999, top: 0, pointerEvents: "none" }} aria-hidden="true">
+                <div ref={wheelCardRef}>
+                  <NatalWheelCard
+                    chart={reading.chartData}
+                    name={reading.birthData.name || "Cosmic Traveler"}
+                    birthLine={`${reading.birthData.date} · ${reading.birthData.time} · ${reading.birthData.location}`}
+                  />
+                </div>
+              </div>
+              </>
+            )}
+            {step === "result" && reading && false && (
               <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 {/* Report Header */}
                 <section className="py-20 border-b border-border">
