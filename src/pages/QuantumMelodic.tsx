@@ -595,32 +595,66 @@ const QuantumMelodic = () => {
                         )}
                       </div>
                       <div className="flex flex-wrap gap-3 shrink-0">
-                        {audioUrl ? (
-                          <button
-                            onClick={() => {
-                              const a = document.createElement("a");
-                              a.href = audioUrl;
-                              a.download = `${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_symphony.wav`;
-                              document.body.appendChild(a);
-                              a.click();
-                              document.body.removeChild(a);
-                            }}
-                            className="system-button text-xs gap-2"
-                          >
-                            <Download className="w-3.5 h-3.5" /> Download MP3
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => {
-                              generateAudio(reading.chartData);
-                            }}
-                            disabled={audioLoading}
-                            className="system-button text-xs gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
-                          >
-                            <Music className="w-3.5 h-3.5" />
-                            {audioLoading ? "Rendering Audio…" : "Render Audio"}
-                          </button>
-                        )}
+                        <a
+                          href={deliverables.audioUrl || "#"}
+                          download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_symphony.mp3`}
+                          aria-disabled={deliverables.audioStatus !== "ready"}
+                          onClick={(e) => {
+                            if (deliverables.audioStatus !== "ready") e.preventDefault();
+                          }}
+                          className={`system-button text-xs gap-2 ${
+                            deliverables.audioStatus !== "ready" ? "opacity-40 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <Music className="w-3.5 h-3.5" />
+                          {deliverables.audioStatus === "ready"
+                            ? "Download MP3"
+                            : deliverables.audioStatus === "generating"
+                            ? "Composing…"
+                            : deliverables.audioStatus === "failed"
+                            ? "Audio failed"
+                            : "Audio pending"}
+                        </a>
+                        <a
+                          href={deliverables.pdfUrl || "#"}
+                          download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_report.pdf`}
+                          aria-disabled={deliverables.pdfStatus !== "ready"}
+                          onClick={(e) => {
+                            if (deliverables.pdfStatus !== "ready") e.preventDefault();
+                          }}
+                          className={`system-button text-xs gap-2 ${
+                            deliverables.pdfStatus !== "ready" ? "opacity-40 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <FileText className="w-3.5 h-3.5" />
+                          {deliverables.pdfStatus === "ready"
+                            ? "Download PDF"
+                            : deliverables.pdfStatus === "generating"
+                            ? "Rendering…"
+                            : deliverables.pdfStatus === "failed"
+                            ? "PDF failed"
+                            : "PDF pending"}
+                        </a>
+                        <a
+                          href={deliverables.chartImageUrl || "#"}
+                          download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_chart.png`}
+                          aria-disabled={deliverables.chartStatus !== "ready"}
+                          onClick={(e) => {
+                            if (deliverables.chartStatus !== "ready") e.preventDefault();
+                          }}
+                          className={`system-button text-xs gap-2 ${
+                            deliverables.chartStatus !== "ready" ? "opacity-40 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          {deliverables.chartStatus === "ready"
+                            ? "Download Chart"
+                            : deliverables.chartStatus === "generating"
+                            ? "Capturing…"
+                            : deliverables.chartStatus === "failed"
+                            ? "Chart failed"
+                            : "Chart pending"}
+                        </a>
                         <button
                           onClick={() => {
                             const name = reading.birthData.name || "Cosmic Traveler";
@@ -637,6 +671,7 @@ const QuantumMelodic = () => {
                         <button
                           onClick={() => {
                             reset();
+                            resetDeliverables();
                             setQmReading(null);
                             setStep("input");
                           }}
