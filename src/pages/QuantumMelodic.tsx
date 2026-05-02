@@ -22,6 +22,7 @@ import {
 } from "@/utils/harmonicWisdom";
 import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
 import { supabase } from "@/integrations/supabase/client";
+import { AstroHarmonicSample } from "@/components/AstroHarmonicSample";
 
 const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
 const QM_STORAGE_KEY = "qm_paid";
@@ -295,6 +296,31 @@ const QuantumMelodic = () => {
                   After payment, return here to enter your birth data and generate your full report instantly.
                 </p>
                 <p className="text-xs text-muted-foreground/70 mt-2">Find Yourself In The Frequencies</p>
+              </div>
+            </section>
+
+            {/* Rich sample preview — shows the actual deliverable's look & feel */}
+            <AstroHarmonicSample />
+
+            {/* Closing CTA after the sample */}
+            <section className="py-20 border-t border-border">
+              <div className="container mx-auto px-6 lg:px-12 max-w-3xl text-center">
+                <span className="system-label mb-4 block text-accent">Ready when you are</span>
+                <h2 className="font-display text-3xl sm:text-4xl font-extralight mb-6">
+                  Generate <span className="font-serif italic">your own.</span>
+                </h2>
+                <p className="text-base text-muted-foreground leading-relaxed mb-8 max-w-xl mx-auto">
+                  One-time payment. Instant access. Yours forever — printable, shareable, and
+                  generated from your exact birth chart.
+                </p>
+                <Button onClick={beginCheckout} size="lg" className="system-button">
+                  Unlock Your Astro-Harmonic Report
+                </Button>
+                {checkoutUnavailable ? (
+                  <p className="text-xs text-destructive/80 mt-4">
+                    Checkout is temporarily unavailable. Please refresh and try again.
+                  </p>
+                ) : null}
               </div>
             </section>
           </main>
