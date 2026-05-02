@@ -305,33 +305,53 @@ const QuantumMelodic = () => {
               <div className="relative z-10 container mx-auto px-6 lg:px-12 max-w-5xl py-16">
                 <span className="system-label mb-6 block">Astro-Harmonic Natal Analysis</span>
                 <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extralight leading-[1.05] mb-6">
-                  Hear a sample of your
+                  Your birth chart,
                   <br />
-                  <span className="font-serif italic font-normal">chart’s harmonic report.</span>
+                  <span className="font-serif italic font-normal">rendered as music.</span>
                 </h1>
                 <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mb-10">
-                  Start with the sample structure below, then unlock the full personalized report after secure checkout.
-                  No account signup is required.
+                  Every chart carries a tonal signature — a unique arrangement of intervals, tensions, and resolutions.
+                  This report translates yours into a written analysis, a printable chart, and an original
+                  composition generated from your exact placements.
                 </p>
-                <div className="grid md:grid-cols-2 gap-4 mb-10 max-w-3xl">
-                  {[
-                    "Sample harmonic signature preview",
-                    "Sample planetary interval map",
-                    "Sample resonance guidance",
-                    "Full report unlock after payment",
-                  ].map((item) => (
-                    <div key={item} className="node-card text-sm text-muted-foreground">
-                      {item}
+
+                {/* Embedded sample player — preview a real Quantumelodic composition */}
+                <div className="mb-10 max-w-2xl rounded-2xl border border-border bg-card/40 backdrop-blur-sm p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-full bg-accent/10 flex items-center justify-center">
+                      <Music className="w-4 h-4 text-accent" />
                     </div>
-                  ))}
+                    <div>
+                      <p className="text-sm font-medium text-foreground">Listen — a sample composition</p>
+                      <p className="text-xs text-muted-foreground">
+                        Generated from a real natal chart. Yours will be unique to your placements.
+                      </p>
+                    </div>
+                  </div>
+                  <audio
+                    controls
+                    preload="none"
+                    src="/audio/sample-quantumelodic.mp3"
+                    className="w-full mt-2"
+                  >
+                    Your browser does not support the audio element.
+                  </audio>
+                  <p className="text-[10px] text-muted-foreground/60 mt-3 tracking-wide">
+                    Two-minute reference track · MP3 · streamable in-browser
+                  </p>
                 </div>
+
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Button onClick={beginCheckout} size="lg" className="system-button">
+                    Unlock Your Astro-Harmonic Report — $47
+                  </Button>
                   <div ref={buyButtonRef}>
                     {checkoutUnavailable ? <Button onClick={beginCheckout}>Purchase Report</Button> : null}
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground mt-4">
                   After payment, return here to enter your birth data and generate your full report instantly.
+                  No account signup required.
                 </p>
                 <p className="text-xs text-muted-foreground/70 mt-2">Find Yourself In The Frequencies</p>
               </div>
