@@ -7,7 +7,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { LunarBackground } from "@/components/LunarBackground";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Activity, Sparkles, Music, Waves, Zap, Download, FileText, ExternalLink } from "lucide-react";
+import { Activity, Sparkles, Music, Waves, Zap, Download, FileText } from "lucide-react";
 import { useCosmicReading } from "@/hooks/useCosmicReading";
 import { useQuantumMelodicData } from "@/hooks/useQuantumMelodicData";
 import type { BirthData } from "@/types/astrology";
