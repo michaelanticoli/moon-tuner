@@ -63,22 +63,37 @@ export async function renderReportPdfBase64(
     (innerBody as HTMLElement).style.background = "#ffffff";
     (innerBody as HTMLElement).style.color = "#111111";
   }
-  // Override dark surfaces for print rasterization
+  // Override dark surfaces for print rasterization. We want HIGH contrast —
+  // the user reported silver-on-white illegibility, so push every text
+  // class to near-black and keep accents to a saturated teal that survives
+  // JPEG compression.
   const styleOverride = document.createElement("style");
   styleOverride.textContent = `
     body, .container { background:#ffffff !important; color:#111 !important; }
-    h1, h3 { color:#111 !important; }
-    .sig-cell { background:#f5f5f5 !important; }
-    .sig-cell .val { color:#111 !important; }
-    .section { border-color:#ddd !important; }
-    td, th { border-color:#ddd !important; color:#222 !important; }
-    .dim { color:#666 !important; }
-    .meter-track, .bar-track { background:#ddd !important; }
-    .meter-fill, .bar-fill { background:#1a1a1a !important; }
-    .guidance { background:#f8f8f8 !important; border-color:#ddd !important; }
-    .guidance p { color:#333 !important; }
-    .closing, .brand { color:#666 !important; }
-    h2 { color:#666 !important; }
+    .container { padding: 36px 36px 48px !important; }
+    h1, h2, h3 { color:#0a0a0a !important; }
+    h2 { color:#0d6b63 !important; }
+    p, td, th, li, span, div { color:#111 !important; }
+    .sig-cell { background:#f3f3f3 !important; }
+    .sig-cell .val { color:#0a0a0a !important; }
+    .sig-cell .lbl { color:#0d6b63 !important; }
+    .section { border-color:#cfcfcf !important; padding: 28px 0 !important; }
+    .section { page-break-inside: avoid; break-inside: avoid; }
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; break-inside: avoid; }
+    td, th { border-color:#dcdcdc !important; color:#111 !important; }
+    th { color:#0d6b63 !important; }
+    .dim { color:#444 !important; }
+    .italic { color:#333 !important; }
+    .meter-track, .bar-track { background:#e3e3e3 !important; }
+    .meter-fill, .bar-fill { background:#0d6b63 !important; }
+    .meter-head .v, .el-pct { color:#0d6b63 !important; }
+    .meter-desc { color:#444 !important; }
+    .guidance { background:#f6f6f6 !important; border:1px solid #d8d8d8 !important; padding: 22px !important; }
+    .guidance p, .prose p { color:#0f0f0f !important; }
+    .closing { color:#222 !important; padding: 36px 24px !important; }
+    .brand { color:#555 !important; padding-bottom: 16px !important; }
+    .meta span, .meta div { color:#111 !important; }
   `;
   container.prepend(styleOverride);
   document.body.appendChild(container);
