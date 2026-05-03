@@ -29,6 +29,7 @@ import Sessions from "./pages/Sessions";
 import Services from "./pages/Services";
 import MoonPhaseToday from "./pages/MoonPhaseToday";
 import Studio from "./pages/Studio";
+import CazimiPunchcard from "./pages/CazimiPunchcard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
