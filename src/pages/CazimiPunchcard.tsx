@@ -6,6 +6,8 @@ import jsPDF from "jspdf";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
+import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
+import { useSharedBirth } from "@/hooks/useSharedBirth";
 import {
   generateCazimiProfile,
   getCoordinates,
@@ -13,23 +15,25 @@ import {
   type CazimiEntry,
 } from "@/lib/cazimiEngine";
 
-interface FormData {
-  name: string;
-  birthDate: string;
-  birthTime: string;
-  location: string;
-}
-
 type Stage = "input" | "loading" | "report";
 
 export default function CazimiPunchcard() {
+  const { birth, update } = useSharedBirth();
   const [stage, setStage] = useState<Stage>("input");
-  const [form, setForm] = useState<FormData>({
-    name: "",
-    birthDate: "",
-    birthTime: "",
-    location: "",
-  });
+  const form = {
+    name: birth.name,
+    birthDate: birth.date,
+    birthTime: birth.time,
+    location: birth.location,
+  };
+  const setForm = (partial: Partial<typeof form>) => {
+    update({
+      name: partial.name ?? form.name,
+      date: partial.birthDate ?? form.birthDate,
+      time: partial.birthTime ?? form.birthTime,
+      location: partial.location ?? form.location,
+    });
+  };
   const [resolvedLocation, setResolvedLocation] = useState("");
   const [profile, setProfile] = useState<CazimiEntry[] | null>(null);
   const [error, setError] = useState<string | null>(null);
