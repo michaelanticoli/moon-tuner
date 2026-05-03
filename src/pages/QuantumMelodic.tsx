@@ -780,9 +780,31 @@ const QuantumMelodic = () => {
                                 style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }}
                               />
                             </div>
-                            <div className="flex justify-between system-label">
+                            <div className="flex justify-between system-label mb-5">
                               <span>{formatTime(currentTime)}</span>
                               <span>-{formatTime(Math.max(0, duration - currentTime))}</span>
+                            </div>
+                            {/* Native HTML5 player — stream + download hybrid */}
+                            <div className="pt-5 border-t border-border/40">
+                              <span className="system-label block mb-3">Stream or download directly</span>
+                              <audio
+                                controls
+                                controlsList="nodownload"
+                                preload="metadata"
+                                src={deliverables.audioUrl}
+                                className="w-full"
+                              >
+                                Your browser does not support the audio element.
+                              </audio>
+                              <a
+                                href={deliverables.audioUrl}
+                                download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_symphony.mp3`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="system-label inline-flex items-center gap-2 mt-3 text-accent hover:opacity-70 transition-opacity"
+                              >
+                                <Download className="w-3 h-3" /> Save MP3 to your device
+                              </a>
                             </div>
                           </>
                         ) : (
