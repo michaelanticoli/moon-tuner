@@ -57,16 +57,51 @@ export interface HarmonicAnalysis {
   elements: Record<string, number>;
 }
 
+// Weighted aspect scoring. Conjunctions are context-dependent (treated as
+// 60% consonant / 40% tense — they amplify whatever they touch). Trines/Sextiles
+// are pure flow; Squares/Oppositions are pure friction; minor aspects (Quincunx,
+// Semi-square, etc.) add complexity but contribute lightly to the two poles.
+const ASPECT_WEIGHTS: Record<string, { cons: number; tens: number; weight: number }> = {
+  Conjunction:  { cons: 0.6, tens: 0.4, weight: 1.0 },
+  Trine:        { cons: 1.0, tens: 0.0, weight: 0.9 },
+  Sextile:      { cons: 0.7, tens: 0.0, weight: 0.6 },
+  Square:       { cons: 0.0, tens: 1.0, weight: 1.0 },
+  Opposition:   { cons: 0.0, tens: 0.9, weight: 1.0 },
+  Quincunx:     { cons: 0.0, tens: 0.5, weight: 0.4 },
+  'Semi-square':{ cons: 0.0, tens: 0.4, weight: 0.3 },
+  Sesquiquadrate:{ cons: 0.0, tens: 0.4, weight: 0.3 },
+  'Semi-sextile':{ cons: 0.3, tens: 0.0, weight: 0.3 },
+};
+
 export const calculateHarmonicAnalysis = (
   aspects: Array<{ aspectType: { name: string }; orb: number }>,
   planets: Array<{ signData: { element?: string } | null }>
 ): HarmonicAnalysis => {
-  let consonanceScore = 0, tensionScore = 0;
+  // Each aspect contributes (1 - orb/maxOrb) * weight. We normalize against the
+  // *maximum possible* score for the count of aspects in this chart so values
+  // express the *quality* of the aspect mix rather than just its volume.
+  let consonanceScore = 0, tensionScore = 0, totalWeight = 0;
   aspects.forEach(a => {
-    const f = 1 - (a.orb / 10);
-    if (['Conjunction', 'Sextile', 'Trine'].includes(a.aspectType.name)) consonanceScore += f;
-    if (['Square', 'Opposition'].includes(a.aspectType.name)) tensionScore += f;
+    const meta = ASPECT_WEIGHTS[a.aspectType.name] ?? { cons: 0.2, tens: 0.2, weight: 0.3 };
+    const tightness = Math.max(0, 1 - a.orb / 8); // 8° = soft cutoff
+    const contribution = tightness * meta.weight;
+    consonanceScore += contribution * meta.cons;
+    tensionScore    += contribution * meta.tens;
+    totalWeight     += meta.weight;
   });
+
+  // Normalize to 0–100 against the chart's own aspect mass (avoids the old
+  // bug where every chart pegged at 100%). The 0.7 ceiling is intentional:
+  // a chart at 70% consonance is exceptionally flowing; 85%+ is rare.
+  const denom = Math.max(totalWeight, 1);
+  const consonance = Math.min((consonanceScore / denom) * 140, 100);
+  const tension    = Math.min((tensionScore    / denom) * 140, 100);
+
+  // Complexity: aspect density per planet, log-shaped so it doesn't saturate.
+  // A typical natal chart has 8–14 aspects across 10 planets (ratio ~1.0).
+  // 2.0+ aspects/planet = densely woven; 0.5 = sparse, soloistic.
+  const ratio = aspects.length / Math.max(planets.length, 1);
+  const complexity = Math.min(Math.round((1 - Math.exp(-ratio * 0.9)) * 100), 100);
 
   const elementCounts: Record<string, number> = { Fire: 0, Earth: 0, Air: 0, Water: 0 };
   planets.forEach(p => {
@@ -75,12 +110,163 @@ export const calculateHarmonicAnalysis = (
   });
 
   return {
-    consonance: Math.min(consonanceScore * 20, 100),
-    tension: Math.min(tensionScore * 25, 100),
-    complexity: Math.min((aspects.length + planets.length / 2) * 8, 100),
+    consonance: Math.round(consonance),
+    tension: Math.round(tension),
+    complexity,
     elements: elementCounts,
   };
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Canonical chart signatures — derived from the data we already have. These
+// are real astrological measures (not flavor text) that translate cleanly into
+// musical metaphor for the report.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface CanonicalSignals {
+  elementBalance: { Fire: number; Earth: number; Air: number; Water: number };       // % of planets in each element
+  modalityBalance: { Cardinal: number; Fixed: number; Mutable: number };             // %
+  polarity: { Yang: number; Yin: number };                                            // Fire+Air vs Earth+Water
+  hemispheres: { Eastern: number; Western: number; Northern: number; Southern: number }; // % by house
+  quadrants: { Q1: number; Q2: number; Q3: number; Q4: number };                     // %
+  lunarPhaseAtBirth: { name: string; angle: number; musical: string };                // Sun-Moon angular separation
+  sect: 'Diurnal' | 'Nocturnal';                                                      // day vs night chart
+  chartRuler: string | null;                                                          // ruler of the rising sign
+  mostAspectedPlanet: { name: string; count: number } | null;                         // the chart's "lead voice"
+  retrogradeCount: number;                                                            // inward-listening planets
+  stellium: { sign: string; planets: string[] } | null;                               // 3+ planets in one sign
+}
+
+const SIGN_RULERS: Record<string, string> = {
+  Aries: 'Mars', Taurus: 'Venus', Gemini: 'Mercury', Cancer: 'Moon',
+  Leo: 'Sun', Virgo: 'Mercury', Libra: 'Venus', Scorpio: 'Pluto',
+  Sagittarius: 'Jupiter', Capricorn: 'Saturn', Aquarius: 'Uranus', Pisces: 'Neptune',
+};
+
+const SIGN_MODALITY: Record<string, 'Cardinal' | 'Fixed' | 'Mutable'> = {
+  Aries: 'Cardinal', Cancer: 'Cardinal', Libra: 'Cardinal', Capricorn: 'Cardinal',
+  Taurus: 'Fixed', Leo: 'Fixed', Scorpio: 'Fixed', Aquarius: 'Fixed',
+  Gemini: 'Mutable', Virgo: 'Mutable', Sagittarius: 'Mutable', Pisces: 'Mutable',
+};
+
+const SIGN_ELEMENT: Record<string, 'Fire' | 'Earth' | 'Air' | 'Water'> = {
+  Aries: 'Fire', Leo: 'Fire', Sagittarius: 'Fire',
+  Taurus: 'Earth', Virgo: 'Earth', Capricorn: 'Earth',
+  Gemini: 'Air', Libra: 'Air', Aquarius: 'Air',
+  Cancer: 'Water', Scorpio: 'Water', Pisces: 'Water',
+};
+
+function lunarPhaseFromAngle(angle: number): { name: string; musical: string } {
+  // Sun-Moon angular separation, 0–360 (Moon ahead of Sun)
+  const a = ((angle % 360) + 360) % 360;
+  if (a < 45)   return { name: 'New Moon',       musical: 'a single sustained tone before the orchestra enters — pure intention, undivided' };
+  if (a < 90)   return { name: 'Crescent',       musical: 'the first ascending phrase — a melody beginning to find its key' };
+  if (a < 135)  return { name: 'First Quarter',  musical: 'the sforzando — a decisive accent that breaks the silence and demands a downbeat' };
+  if (a < 180)  return { name: 'Gibbous',        musical: 'the development section — themes elaborated, refined, tested against counterpoint' };
+  if (a < 225)  return { name: 'Full Moon',      musical: 'the tutti — every voice in the orchestra at full volume, the whole score audible at once' };
+  if (a < 270)  return { name: 'Disseminating',  musical: 'the recapitulation — wisdom restated for the listeners, the theme handed outward' };
+  if (a < 315)  return { name: 'Last Quarter',   musical: 'the modulation — a key change that releases what came before' };
+  return            { name: 'Balsamic',       musical: 'the final diminuendo — instruments dropping out one by one into reverberant silence' };
+}
+
+export function deriveCanonicalSignals(reading: {
+  planets: Array<{
+    position: { name: string; sign: string; degree: number; isRetrograde?: boolean };
+    houseNumber?: number;
+    signData?: { element?: string; modality?: string } | null;
+  }>;
+  aspects: Array<{ planet1: string; planet2: string }>;
+}, ascendantSign?: string | null): CanonicalSignals {
+  const luminaries = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
+  const corePlanets = reading.planets.filter(p => luminaries.includes(p.position.name));
+  const total = Math.max(corePlanets.length, 1);
+
+  // Element & modality %
+  const elements = { Fire: 0, Earth: 0, Air: 0, Water: 0 };
+  const modalities = { Cardinal: 0, Fixed: 0, Mutable: 0 };
+  corePlanets.forEach(p => {
+    const el = SIGN_ELEMENT[p.position.sign];
+    const md = SIGN_MODALITY[p.position.sign];
+    if (el) elements[el]++;
+    if (md) modalities[md]++;
+  });
+  const pct = (n: number) => Math.round((n / total) * 100);
+  const elementBalance = { Fire: pct(elements.Fire), Earth: pct(elements.Earth), Air: pct(elements.Air), Water: pct(elements.Water) };
+  const modalityBalance = { Cardinal: pct(modalities.Cardinal), Fixed: pct(modalities.Fixed), Mutable: pct(modalities.Mutable) };
+  const polarity = { Yang: elementBalance.Fire + elementBalance.Air, Yin: elementBalance.Earth + elementBalance.Water };
+
+  // Hemispheres & quadrants by house
+  const hemispheres = { Eastern: 0, Western: 0, Northern: 0, Southern: 0 };
+  const quadrants = { Q1: 0, Q2: 0, Q3: 0, Q4: 0 };
+  let withHouse = 0;
+  corePlanets.forEach(p => {
+    const h = p.houseNumber;
+    if (!h) return;
+    withHouse++;
+    // Eastern (self): houses 10,11,12,1,2,3 ; Western (others): 4–9
+    if ([10,11,12,1,2,3].includes(h)) hemispheres.Eastern++;
+    else hemispheres.Western++;
+    // Northern (private/below horizon): 1–6 ; Southern (public/above): 7–12
+    if (h <= 6) hemispheres.Northern++;
+    else hemispheres.Southern++;
+    if (h >= 1 && h <= 3) quadrants.Q1++;
+    else if (h >= 4 && h <= 6) quadrants.Q2++;
+    else if (h >= 7 && h <= 9) quadrants.Q3++;
+    else quadrants.Q4++;
+  });
+  const hpct = (n: number) => withHouse ? Math.round((n / withHouse) * 100) : 0;
+  const hemispheresPct = { Eastern: hpct(hemispheres.Eastern), Western: hpct(hemispheres.Western), Northern: hpct(hemispheres.Northern), Southern: hpct(hemispheres.Southern) };
+  const quadrantsPct = { Q1: hpct(quadrants.Q1), Q2: hpct(quadrants.Q2), Q3: hpct(quadrants.Q3), Q4: hpct(quadrants.Q4) };
+
+  // Lunar phase at birth: angular separation Moon - Sun
+  const sun = reading.planets.find(p => p.position.name === 'Sun');
+  const moon = reading.planets.find(p => p.position.name === 'Moon');
+  const sepAngle = sun && moon ? (((moon.position.degree - sun.position.degree) % 360) + 360) % 360 : 0;
+  const phase = lunarPhaseFromAngle(sepAngle);
+  const lunarPhaseAtBirth = { name: phase.name, angle: Math.round(sepAngle), musical: phase.musical };
+
+  // Sect: diurnal if Sun is in houses 7–12 (above horizon), nocturnal if 1–6
+  const sectHouse = sun?.houseNumber;
+  const sect: 'Diurnal' | 'Nocturnal' = sectHouse && sectHouse >= 7 ? 'Diurnal' : 'Nocturnal';
+
+  // Chart ruler = ruler of the rising sign
+  const chartRuler = ascendantSign ? (SIGN_RULERS[ascendantSign] ?? null) : null;
+
+  // Most-aspected planet (lead voice)
+  const aspectCounts: Record<string, number> = {};
+  reading.aspects.forEach(a => {
+    aspectCounts[a.planet1] = (aspectCounts[a.planet1] ?? 0) + 1;
+    aspectCounts[a.planet2] = (aspectCounts[a.planet2] ?? 0) + 1;
+  });
+  const sorted = Object.entries(aspectCounts).sort((a, b) => b[1] - a[1]);
+  const mostAspectedPlanet = sorted.length ? { name: sorted[0][0], count: sorted[0][1] } : null;
+
+  // Retrograde count
+  const retrogradeCount = corePlanets.filter(p => p.position.isRetrograde).length;
+
+  // Stellium detection (3+ in one sign)
+  const bySign: Record<string, string[]> = {};
+  corePlanets.forEach(p => {
+    bySign[p.position.sign] ??= [];
+    bySign[p.position.sign].push(p.position.name);
+  });
+  const stelliumEntry = Object.entries(bySign).find(([, arr]) => arr.length >= 3);
+  const stellium = stelliumEntry ? { sign: stelliumEntry[0], planets: stelliumEntry[1] } : null;
+
+  return {
+    elementBalance,
+    modalityBalance,
+    polarity,
+    hemispheres: hemispheresPct,
+    quadrants: quadrantsPct,
+    lunarPhaseAtBirth,
+    sect,
+    chartRuler,
+    mostAspectedPlanet,
+    retrogradeCount,
+    stellium,
+  };
+}
 
 export const getResolutionGuidance = (analysis: HarmonicAnalysis): string[] => {
   const g: string[] = [];
