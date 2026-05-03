@@ -305,6 +305,8 @@ export default function CazimiPunchcard() {
                     </p>
                   </div>
                 </div>
+
+                <CrossGeneratorLinks exclude="/cazimi" />
               </motion.div>
             )}
           </AnimatePresence>
