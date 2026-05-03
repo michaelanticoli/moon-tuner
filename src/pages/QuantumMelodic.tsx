@@ -950,19 +950,36 @@ const QuantumMelodic = () => {
                         ))}
                       </div>
 
-                      {guidance.length > 0 && (
-                        <div className="mt-10 node-card">
-                          <span className="system-label block mb-4">Resolution Guidance</span>
-                          <div className="space-y-4">
-                            {guidance.map((g, i) => (
-                              <p key={i} className="text-sm text-foreground/80 leading-relaxed flex gap-3">
-                                <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-2" />
-                                {g}
-                              </p>
-                            ))}
+                      <div className="mt-10 node-card">
+                        <span className="system-label block mb-4">Resolution Guidance</span>
+                        {interpretationLoading && !interpretation && (
+                          <p className="text-sm text-muted-foreground italic">Composing your tailored interpretation from the QuantumMelodic metasystem…</p>
+                        )}
+                        {interpretationError && !interpretation && (
+                          <p className="text-sm text-destructive">{interpretationError}</p>
+                        )}
+                        {interpretation ? (
+                          <div className="space-y-4 text-sm text-foreground/85 leading-relaxed whitespace-pre-line">
+                            {interpretation.harmonicAlignment && (
+                              <p>{interpretation.harmonicAlignment}</p>
+                            )}
+                            {interpretation.resolutionGuidance && (
+                              <p>{interpretation.resolutionGuidance}</p>
+                            )}
                           </div>
-                        </div>
-                      )}
+                        ) : (
+                          guidance.length > 0 && (
+                            <div className="space-y-4">
+                              {guidance.map((g, i) => (
+                                <p key={i} className="text-sm text-foreground/80 leading-relaxed flex gap-3">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-2" />
+                                  {g}
+                                </p>
+                              ))}
+                            </div>
+                          )
+                        )}
+                      </div>
                     </motion.section>
                   )}
 
