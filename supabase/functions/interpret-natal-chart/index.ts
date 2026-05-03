@@ -95,6 +95,17 @@ HARMONIC METRICS:
 - complexity ${Math.round(p.harmonic.complexity)}%
 - elements ${JSON.stringify(p.harmonic.elements)}
 
+CANONICAL CHART SIGNATURES (derived directly from placements — reference these by name):
+${p.canonical ? `- Lunar phase at birth: ${p.canonical.lunarPhaseAtBirth?.name} (Sun-Moon ${p.canonical.lunarPhaseAtBirth?.angle}°) — ${p.canonical.lunarPhaseAtBirth?.musical}
+- Sect: ${p.canonical.sect} chart${p.canonical.chartRuler ? ` · chart ruler: ${p.canonical.chartRuler}` : ""}
+- Element balance %: ${JSON.stringify(p.canonical.elementBalance)}
+- Modality balance %: ${JSON.stringify(p.canonical.modalityBalance)}
+- Polarity Yang/Yin: ${JSON.stringify(p.canonical.polarity)}
+- Hemispheres %: ${JSON.stringify(p.canonical.hemispheres)}
+- Lead voice (most-aspected planet): ${p.canonical.mostAspectedPlanet ? `${p.canonical.mostAspectedPlanet.name} (${p.canonical.mostAspectedPlanet.count} aspects)` : "none"}
+- Retrograde count: ${p.canonical.retrogradeCount ?? 0}
+- Stellium: ${p.canonical.stellium ? `${p.canonical.stellium.planets.join(", ")} in ${p.canonical.stellium.sign}` : "none"}` : "(none provided)"}
+
 PLANETS (with full QM metasystem fields):
 ${planetLines}
 
