@@ -113,21 +113,37 @@ export async function renderReportPdfBase64(
     const pdf = new jsPDF({ unit: "pt", format: "a4", orientation: "portrait" });
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    let heightLeft = imgHeight;
-    let position = 0;
-    const imgData = canvas.toDataURL("image/jpeg", 0.92);
+    // Slice the source canvas into page-sized strips so text never gets
+    // sliced through the middle of a glyph at the page seam. We also
+    // overlap each page by ~24pt-equivalent of source pixels, which safely
+    // re-prints any partially-clipped line on the next page.
+    const pxPerPt = canvas.width / pageWidth;
+    const pageHeightPx = Math.floor(pageHeight * pxPerPt);
+    const overlapPx = Math.floor(24 * pxPerPt);
 
-    pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+    let renderedPx = 0;
+    let firstPage = true;
+    while (renderedPx < canvas.height) {
+      const sliceHeight = Math.min(pageHeightPx, canvas.height - renderedPx);
+      const slice = document.createElement("canvas");
+      slice.width = canvas.width;
+      slice.height = sliceHeight;
+      const ctx = slice.getContext("2d");
+      if (!ctx) break;
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, slice.width, slice.height);
+      ctx.drawImage(canvas, 0, renderedPx, canvas.width, sliceHeight, 0, 0, canvas.width, sliceHeight);
 
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      const sliceImgData = slice.toDataURL("image/jpeg", 0.92);
+      const renderedHeightPt = (sliceHeight / canvas.width) * pageWidth;
+      if (!firstPage) pdf.addPage();
+      pdf.addImage(sliceImgData, "JPEG", 0, 0, pageWidth, renderedHeightPt);
+      firstPage = false;
+
+      // Advance, but step back by the overlap so a clipped line repeats
+      renderedPx += sliceHeight;
+      if (renderedPx < canvas.height) renderedPx -= overlapPx;
     }
 
     const blob = pdf.output("blob");
