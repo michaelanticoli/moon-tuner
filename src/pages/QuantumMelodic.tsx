@@ -19,6 +19,7 @@ import {
   calculateHarmonicAnalysis,
   getResolutionGuidance,
   getOrbPrecision,
+  deriveCanonicalSignals,
 } from "@/utils/harmonicWisdom";
 import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
 import { supabase } from "@/integrations/supabase/client";
