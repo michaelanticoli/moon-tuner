@@ -9,12 +9,21 @@ interface HarmonicAnalysis {
   elements: Record<string, number>;
 }
 
+interface ChartInterpretation {
+  opening: string;
+  coreSignature: string;
+  harmonicAlignment: string;
+  resolutionGuidance: string;
+  closing: string;
+}
+
 export function buildSymphonyHTML(
   name: string,
   reading: CosmicReading,
   qmReading: QuantumMelodicReading | null,
   harmonicAnalysis: HarmonicAnalysis | null,
   guidance: string[],
+  interpretation?: ChartInterpretation | null,
 ): string {
   const planets = reading.chartData.planets;
   const sunSign = reading.chartData.sunSign;
