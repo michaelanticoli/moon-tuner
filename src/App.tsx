@@ -28,6 +28,7 @@ import MoonTunerStarter from "./pages/MoonTunerStarter";
 import Sessions from "./pages/Sessions";
 import Services from "./pages/Services";
 import MoonPhaseToday from "./pages/MoonPhaseToday";
+import Studio from "./pages/Studio";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -72,6 +73,14 @@ function AnimatedRoutes() {
             element={
               <ProtectedRoute>
                 <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/studio"
+            element={
+              <ProtectedRoute>
+                <Studio />
               </ProtectedRoute>
             }
           />
