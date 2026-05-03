@@ -21,7 +21,7 @@ import {
   getOrbPrecision,
   deriveCanonicalSignals,
 } from "@/utils/harmonicWisdom";
-import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
+
 import { supabase } from "@/integrations/supabase/client";
 import { AstroHarmonicSample } from "@/components/AstroHarmonicSample";
 import { NatalWheelCard } from "@/components/NatalWheelCard";
