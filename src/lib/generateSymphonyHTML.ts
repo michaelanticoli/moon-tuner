@@ -9,12 +9,21 @@ interface HarmonicAnalysis {
   elements: Record<string, number>;
 }
 
+interface ChartInterpretation {
+  opening: string;
+  coreSignature: string;
+  harmonicAlignment: string;
+  resolutionGuidance: string;
+  closing: string;
+}
+
 export function buildSymphonyHTML(
   name: string,
   reading: CosmicReading,
   qmReading: QuantumMelodicReading | null,
   harmonicAnalysis: HarmonicAnalysis | null,
   guidance: string[],
+  interpretation?: ChartInterpretation | null,
 ): string {
   const planets = reading.chartData.planets;
   const sunSign = reading.chartData.sunSign;
@@ -63,9 +72,26 @@ export function buildSymphonyHTML(
     return `<div class="el-bar"><span class="el-label">${info?.symbol || ''} ${el}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="el-pct">${pct}%</span></div>`;
   }).join('') : '';
 
-  const guidanceHTML = guidance.length > 0
-    ? `<div class="guidance"><h3>Resolution Guidance</h3>${guidance.map(g => `<p>• ${g}</p>`).join('')}</div>`
-    : '';
+  const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const proseHTML = (text: string) =>
+    text.split(/\n{2,}|(?<=\.)\s+(?=[A-Z])/).slice(0, 6)
+      .map(p => `<p>${escape(p.trim())}</p>`).join('');
+
+  const interpOpening = interpretation
+    ? `<div class="section"><h2>Overture</h2><div class="prose">${proseHTML(interpretation.opening)}</div></div>` : '';
+  const interpCore = interpretation
+    ? `<div class="section"><h2>Core Signature — Sun · Moon · Rising</h2><div class="prose">${proseHTML(interpretation.coreSignature)}</div></div>` : '';
+  const interpAlignment = interpretation
+    ? `<div class="prose">${proseHTML(interpretation.harmonicAlignment)}</div>` : '';
+  const interpResolution = interpretation
+    ? `<div class="guidance"><h3>Resolution Guidance</h3><div class="prose">${proseHTML(interpretation.resolutionGuidance)}</div></div>`
+    : (guidance.length > 0
+      ? `<div class="guidance"><h3>Resolution Guidance</h3>${guidance.map(g => `<p>• ${escape(g)}</p>`).join('')}</div>`
+      : '');
+  const interpClosing = interpretation
+    ? `<div class="closing">${escape(interpretation.closing)}</div>`
+    : `<div class="closing">Every chart is a score waiting to be heard.<br>Yours has been playing since the moment you arrived.</div>`;
+
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -108,6 +134,8 @@ export function buildSymphonyHTML(
   .bar-fill{height:100%;background:#4ECDC4}
   .el-pct{font-size:12px;color:#4ECDC4;font-family:monospace;width:36px;text-align:right}
   .guidance{background:#111;border:1px solid #1a1a1a;border-radius:8px;padding:24px;margin-top:32px}
+  .prose p{font-size:14px;color:#d0d0d0;margin-bottom:14px;line-height:1.75}
+  .prose p:last-child{margin-bottom:0}
   .guidance p{font-size:13px;color:#ccc;margin-bottom:8px;padding-left:12px}
   .closing{text-align:center;padding:64px 24px;font-family:'Playfair Display',serif;font-style:italic;color:#888;font-size:1.1rem;line-height:1.8}
   .brand{text-align:center;font-size:10px;text-transform:uppercase;letter-spacing:0.15em;color:#333;padding-bottom:48px}
@@ -124,6 +152,7 @@ export function buildSymphonyHTML(
     .meter-track,.bar-track{background:#ddd !important}
     .guidance{background:#f8f8f8 !important;border-color:#ddd !important}
     .guidance p{color:#333 !important}
+    .prose p{color:#222 !important}
     .closing{color:#666 !important}
   }
 </style>
@@ -140,6 +169,8 @@ export function buildSymphonyHTML(
     <div>Mode<span>${mode}</span></div>
   </div>
 
+  ${interpOpening}
+
   ${qmReading ? `
   <div class="section">
     <h2>Harmonic Signature</h2>
@@ -151,9 +182,13 @@ export function buildSymphonyHTML(
     </div>
   </div>` : ''}
 
+  ${interpCore}
+
   ${harmonicAnalysis ? `
   <div class="section">
-    <h2>Harmonic Analysis</h2>
+    <h2>Harmonic Alignment</h2>
+    ${interpAlignment}
+    <div style="margin-top:24px">
     ${['Consonance', 'Tension', 'Complexity'].map(label => {
       const key = label.toLowerCase() as keyof HarmonicAnalysis;
       const val = harmonicAnalysis[key] as number;
@@ -164,7 +199,8 @@ export function buildSymphonyHTML(
       };
       return `<div class="meter"><div class="meter-head"><span>${label}</span><span class="v">${Math.round(val)}%</span></div><div class="meter-track"><div class="meter-fill" style="width:${val}%"></div></div><div class="meter-desc">${descs[label]}</div></div>`;
     }).join('')}
-    ${guidanceHTML}
+    </div>
+    ${interpResolution}
   </div>` : ''}
 
   <div class="section">
@@ -190,9 +226,7 @@ export function buildSymphonyHTML(
     ${elementBars}
   </div>` : ''}
 
-  <div class="closing">
-    Every chart is a score waiting to be heard.<br>Yours has been playing since the moment you arrived.
-  </div>
+  ${interpClosing}
   <div class="brand">MOONtuner × QuantumMelodic</div>
 
 </div>

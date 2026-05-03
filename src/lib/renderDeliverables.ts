@@ -29,14 +29,23 @@ export async function renderChartImageBase64(node: HTMLElement): Promise<string>
 // (jsPDF.html() proved unreliable — fonts via @import + dark theme caused
 // blank black PDFs). We force a light "print" theme and slice the canvas
 // across A4 pages.
+export interface ChartInterpretation {
+  opening: string;
+  coreSignature: string;
+  harmonicAlignment: string;
+  resolutionGuidance: string;
+  closing: string;
+}
+
 export async function renderReportPdfBase64(
   name: string,
   reading: CosmicReading,
   qmReading: QuantumMelodicReading | null,
   harmonicAnalysis: HarmonicAnalysis | null,
   guidance: string[],
+  interpretation?: ChartInterpretation | null,
 ): Promise<string> {
-  const html = buildSymphonyHTML(name, reading, qmReading, harmonicAnalysis, guidance);
+  const html = buildSymphonyHTML(name, reading, qmReading, harmonicAnalysis, guidance, interpretation);
 
   // Off-screen container — print-mode forces light theme via @media print
   // override CSS already in the template, but html2canvas doesn't honor

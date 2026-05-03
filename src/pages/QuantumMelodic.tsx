@@ -65,6 +65,17 @@ const QuantumMelodic = () => {
   const [duration, setDuration] = useState(0);
   const [qmReading, setQmReading] = useState<QuantumMelodicReading | null>(null);
 
+  interface ChartInterpretation {
+    opening: string;
+    coreSignature: string;
+    harmonicAlignment: string;
+    resolutionGuidance: string;
+    closing: string;
+  }
+  const [interpretation, setInterpretation] = useState<ChartInterpretation | null>(null);
+  const [interpretationLoading, setInterpretationLoading] = useState(false);
+  const [interpretationError, setInterpretationError] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -205,6 +216,42 @@ const QuantumMelodic = () => {
 
       setStep("result");
 
+      // Fire LLM-grounded interpretation in parallel (uses QM metasystem fields)
+      let interpretationPromise: Promise<ChartInterpretation | null> = Promise.resolve(null);
+      if (enriched && result) {
+        const harmonic = calculateHarmonicAnalysis(enriched.aspects, enriched.planets);
+        setInterpretation(null);
+        setInterpretationError(null);
+        setInterpretationLoading(true);
+        interpretationPromise = supabase.functions
+          .invoke("interpret-natal-chart", {
+            body: {
+              name: birthData.name,
+              sunSign: result.chartData.sunSign,
+              moonSign: result.chartData.moonSign,
+              ascendant: result.chartData.ascendant,
+              qmReading: enriched,
+              harmonic,
+            },
+          })
+          .then(({ data, error }) => {
+            if (error || !data?.interpretation) {
+              setInterpretationError("Could not generate written interpretation.");
+              setInterpretationLoading(false);
+              return null;
+            }
+            setInterpretation(data.interpretation as ChartInterpretation);
+            setInterpretationLoading(false);
+            return data.interpretation as ChartInterpretation;
+          })
+          .catch((e) => {
+            console.error("interpretation error", e);
+            setInterpretationError("Could not generate written interpretation.");
+            setInterpretationLoading(false);
+            return null;
+          });
+      }
+
       // Kick off all three deliverables (MP3, PDF, chart PNG) in parallel.
       // Wait a tick so the off-screen wheel card has rendered.
       if (result) {
@@ -221,12 +268,14 @@ const QuantumMelodic = () => {
             renderPdfBase64: async () => {
               const harmonic = enriched ? calculateHarmonicAnalysis(enriched.aspects, enriched.planets) : null;
               const guide = harmonic ? getResolutionGuidance(harmonic) : [];
+              const interp = await interpretationPromise;
               return renderReportPdfBase64(
                 birthData.name || "Cosmic Traveler",
                 result,
                 enriched,
                 harmonic,
                 guide,
+                interp,
               );
             },
           });
@@ -901,19 +950,36 @@ const QuantumMelodic = () => {
                         ))}
                       </div>
 
-                      {guidance.length > 0 && (
-                        <div className="mt-10 node-card">
-                          <span className="system-label block mb-4">Resolution Guidance</span>
-                          <div className="space-y-4">
-                            {guidance.map((g, i) => (
-                              <p key={i} className="text-sm text-foreground/80 leading-relaxed flex gap-3">
-                                <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-2" />
-                                {g}
-                              </p>
-                            ))}
+                      <div className="mt-10 node-card">
+                        <span className="system-label block mb-4">Resolution Guidance</span>
+                        {interpretationLoading && !interpretation && (
+                          <p className="text-sm text-muted-foreground italic">Composing your tailored interpretation from the QuantumMelodic metasystem…</p>
+                        )}
+                        {interpretationError && !interpretation && (
+                          <p className="text-sm text-destructive">{interpretationError}</p>
+                        )}
+                        {interpretation ? (
+                          <div className="space-y-4 text-sm text-foreground/85 leading-relaxed whitespace-pre-line">
+                            {interpretation.harmonicAlignment && (
+                              <p>{interpretation.harmonicAlignment}</p>
+                            )}
+                            {interpretation.resolutionGuidance && (
+                              <p>{interpretation.resolutionGuidance}</p>
+                            )}
                           </div>
-                        </div>
-                      )}
+                        ) : (
+                          guidance.length > 0 && (
+                            <div className="space-y-4">
+                              {guidance.map((g, i) => (
+                                <p key={i} className="text-sm text-foreground/80 leading-relaxed flex gap-3">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-2" />
+                                  {g}
+                                </p>
+                              ))}
+                            </div>
+                          )
+                        )}
+                      </div>
                     </motion.section>
                   )}
 
