@@ -152,6 +152,7 @@ export function buildSymphonyHTML(
     .meter-track,.bar-track{background:#ddd !important}
     .guidance{background:#f8f8f8 !important;border-color:#ddd !important}
     .guidance p{color:#333 !important}
+    .prose p{color:#222 !important}
     .closing{color:#666 !important}
   }
 </style>
