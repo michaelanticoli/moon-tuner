@@ -79,12 +79,15 @@ const QuantumMelodic = () => {
   const [interpretationLoading, setInterpretationLoading] = useState(false);
   const [interpretationError, setInterpretationError] = useState<string | null>(null);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    date: "1990-01-01",
-    time: "12:00",
-    location: "",
+  const [formData, setFormData] = useState(() => {
+    const b = readSharedBirth();
+    return {
+      name: b.name || "",
+      email: "",
+      date: b.date || "1990-01-01",
+      time: b.time || "12:00",
+      location: b.location || "",
+    };
   });
   const wheelCardRef = useRef<HTMLDivElement | null>(null);
   const { state: deliverables, start: startDeliverables, reset: resetDeliverables } = useCosmicDeliverables();
