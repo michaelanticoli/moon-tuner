@@ -40,6 +40,19 @@ interface Payload {
     complexity: number;
     elements: Record<string, number>;
   };
+  canonical?: {
+    elementBalance?: Record<string, number>;
+    modalityBalance?: Record<string, number>;
+    polarity?: { Yang: number; Yin: number };
+    hemispheres?: Record<string, number>;
+    quadrants?: Record<string, number>;
+    lunarPhaseAtBirth?: { name: string; angle: number; musical: string };
+    sect?: string;
+    chartRuler?: string | null;
+    mostAspectedPlanet?: { name: string; count: number } | null;
+    retrogradeCount?: number;
+    stellium?: { sign: string; planets: string[] } | null;
+  };
 }
 
 const SYSTEM_PROMPT = `You are an expert astro-musical interpreter for MOONtuner × QuantumMelodic.
@@ -82,13 +95,24 @@ HARMONIC METRICS:
 - complexity ${Math.round(p.harmonic.complexity)}%
 - elements ${JSON.stringify(p.harmonic.elements)}
 
+CANONICAL CHART SIGNATURES (derived directly from placements — reference these by name):
+${p.canonical ? `- Lunar phase at birth: ${p.canonical.lunarPhaseAtBirth?.name} (Sun-Moon ${p.canonical.lunarPhaseAtBirth?.angle}°) — ${p.canonical.lunarPhaseAtBirth?.musical}
+- Sect: ${p.canonical.sect} chart${p.canonical.chartRuler ? ` · chart ruler: ${p.canonical.chartRuler}` : ""}
+- Element balance %: ${JSON.stringify(p.canonical.elementBalance)}
+- Modality balance %: ${JSON.stringify(p.canonical.modalityBalance)}
+- Polarity Yang/Yin: ${JSON.stringify(p.canonical.polarity)}
+- Hemispheres %: ${JSON.stringify(p.canonical.hemispheres)}
+- Lead voice (most-aspected planet): ${p.canonical.mostAspectedPlanet ? `${p.canonical.mostAspectedPlanet.name} (${p.canonical.mostAspectedPlanet.count} aspects)` : "none"}
+- Retrograde count: ${p.canonical.retrogradeCount ?? 0}
+- Stellium: ${p.canonical.stellium ? `${p.canonical.stellium.planets.join(", ")} in ${p.canonical.stellium.sign}` : "none"}` : "(none provided)"}
+
 PLANETS (with full QM metasystem fields):
 ${planetLines}
 
 ASPECTS (with QM harmonic mappings):
 ${aspectLines}
 
-Write a tailored interpretation. Each section must reference SPECIFIC placements by name and use the QM fields above. Do not produce generic horoscope language.`;
+Write a tailored interpretation. Each section must reference SPECIFIC placements by name and use the QM fields and CANONICAL signatures above (lunar phase at birth, sect, lead voice, stellium, hemisphere, element/modality %). Weave the canonical observations into the prose so the listener can verify the reading is theirs. Do not produce generic horoscope language.`;
 }
 
 const TOOL_SCHEMA = {
