@@ -40,6 +40,19 @@ interface Payload {
     complexity: number;
     elements: Record<string, number>;
   };
+  canonical?: {
+    elementBalance?: Record<string, number>;
+    modalityBalance?: Record<string, number>;
+    polarity?: { Yang: number; Yin: number };
+    hemispheres?: Record<string, number>;
+    quadrants?: Record<string, number>;
+    lunarPhaseAtBirth?: { name: string; angle: number; musical: string };
+    sect?: string;
+    chartRuler?: string | null;
+    mostAspectedPlanet?: { name: string; count: number } | null;
+    retrogradeCount?: number;
+    stellium?: { sign: string; planets: string[] } | null;
+  };
 }
 
 const SYSTEM_PROMPT = `You are an expert astro-musical interpreter for MOONtuner × QuantumMelodic.
