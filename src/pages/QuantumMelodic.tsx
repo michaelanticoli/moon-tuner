@@ -7,7 +7,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { LunarBackground } from "@/components/LunarBackground";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Activity, Sparkles, Music, Waves, Zap, Download, FileText, ExternalLink } from "lucide-react";
+import { Activity, Sparkles, Music, Waves, Zap, Download, FileText } from "lucide-react";
 import { useCosmicReading } from "@/hooks/useCosmicReading";
 import { useQuantumMelodicData } from "@/hooks/useQuantumMelodicData";
 import type { BirthData } from "@/types/astrology";
@@ -21,7 +21,7 @@ import {
   getOrbPrecision,
   deriveCanonicalSignals,
 } from "@/utils/harmonicWisdom";
-import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
+
 import { supabase } from "@/integrations/supabase/client";
 import { AstroHarmonicSample } from "@/components/AstroHarmonicSample";
 import { NatalWheelCard } from "@/components/NatalWheelCard";
@@ -756,19 +756,6 @@ const QuantumMelodic = () => {
                             ? "Chart failed"
                             : "Chart pending"}
                         </a>
-                        <button
-                          onClick={() => {
-                            const name = reading.birthData.name || "Cosmic Traveler";
-                            const html = buildSymphonyHTML(name, reading, qmReading, harmonicAnalysis, guidance, interpretation);
-                            const blob = new Blob([html], { type: "text/html" });
-                            const url = URL.createObjectURL(blob);
-                            window.open(url, "_blank");
-                            window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
-                          }}
-                          className="system-button text-xs gap-2"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" /> Interactive Report
-                        </button>
                         <button
                           onClick={() => {
                             reset();
