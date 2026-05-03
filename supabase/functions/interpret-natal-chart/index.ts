@@ -112,7 +112,7 @@ ${planetLines}
 ASPECTS (with QM harmonic mappings):
 ${aspectLines}
 
-Write a tailored interpretation. Each section must reference SPECIFIC placements by name and use the QM fields above. Do not produce generic horoscope language.`;
+Write a tailored interpretation. Each section must reference SPECIFIC placements by name and use the QM fields and CANONICAL signatures above (lunar phase at birth, sect, lead voice, stellium, hemisphere, element/modality %). Weave the canonical observations into the prose so the listener can verify the reading is theirs. Do not produce generic horoscope language.`;
 }
 
 const TOOL_SCHEMA = {
