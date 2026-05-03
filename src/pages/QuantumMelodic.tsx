@@ -29,6 +29,8 @@ import { Sigil, isSigilName } from "@/components/astro/AstroSigils";
 import { InteractiveNatalChart } from "@/components/InteractiveNatalChart";
 import { useCosmicDeliverables } from "@/hooks/useCosmicDeliverables";
 import { renderChartImageBase64, renderReportPdfBase64 } from "@/lib/renderDeliverables";
+import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
+import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 
 const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
 const QM_STORAGE_KEY = "qm_paid";
