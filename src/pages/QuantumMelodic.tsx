@@ -29,6 +29,8 @@ import { Sigil, isSigilName } from "@/components/astro/AstroSigils";
 import { InteractiveNatalChart } from "@/components/InteractiveNatalChart";
 import { useCosmicDeliverables } from "@/hooks/useCosmicDeliverables";
 import { renderChartImageBase64, renderReportPdfBase64 } from "@/lib/renderDeliverables";
+import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
+import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 
 const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
 const QM_STORAGE_KEY = "qm_paid";
@@ -79,12 +81,15 @@ const QuantumMelodic = () => {
   const [interpretationLoading, setInterpretationLoading] = useState(false);
   const [interpretationError, setInterpretationError] = useState<string | null>(null);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    date: "1990-01-01",
-    time: "12:00",
-    location: "",
+  const [formData, setFormData] = useState(() => {
+    const b = readSharedBirth();
+    return {
+      name: b.name || "",
+      email: "",
+      date: b.date || "1990-01-01",
+      time: b.time || "12:00",
+      location: b.location || "",
+    };
   });
   const wheelCardRef = useRef<HTMLDivElement | null>(null);
   const { state: deliverables, start: startDeliverables, reset: resetDeliverables } = useCosmicDeliverables();
@@ -97,6 +102,12 @@ const QuantumMelodic = () => {
   const saveBirthDraft = useCallback((birthData: BirthData) => {
     if (typeof window === "undefined") return;
     sessionStorage.setItem(QM_BIRTH_DATA_KEY, JSON.stringify(birthData));
+    writeSharedBirth({
+      name: birthData.name,
+      date: birthData.date,
+      time: birthData.time,
+      location: birthData.location,
+    });
   }, []);
 
   const beginCheckout = useCallback(async () => {
@@ -1273,6 +1284,8 @@ const QuantumMelodic = () => {
                     </p>
                     <p className="system-label mt-8 text-muted-foreground/40">MOONtuner {"\u00D7"} QuantumMelodic</p>
                   </motion.section>
+
+                  <CrossGeneratorLinks exclude="/quantumelodic" />
                 </div>
               </motion.div>
             )}

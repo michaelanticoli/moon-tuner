@@ -17,6 +17,8 @@ import { PowerDayGrid } from "@/components/report/PowerDayGrid";
 import { PeakSummaryPanel } from "@/components/report/PeakSummaryPanel";
 import { ArcPracticeSection } from "@/components/report/ArcPracticeSection";
 import { ReportClosing } from "@/components/report/ReportClosing";
+import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
+import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SIMULATED_LOADING_DELAY_MS = 600;
@@ -33,12 +35,22 @@ const LunarReports = () => {
   }, [isPaid, navigate]);
 
   const [step, setStep] = useState<'input' | 'generating' | 'result'>('input');
-  const [formData, setFormData] = useState({
-    name: '',
-    date: '',
-    time: '12:00',
-    location: '',
+  const [formData, setFormDataRaw] = useState(() => {
+    const b = readSharedBirth();
+    return {
+      name: b.name || '',
+      date: b.date || '',
+      time: b.time || '12:00',
+      location: b.location || '',
+    };
   });
+  const setFormData = (next: typeof formData | ((p: typeof formData) => typeof formData)) => {
+    setFormDataRaw((prev) => {
+      const value = typeof next === 'function' ? (next as (p: typeof formData) => typeof formData)(prev) : next;
+      writeSharedBirth({ name: value.name, date: value.date, time: value.time, location: value.location });
+      return value;
+    });
+  };
   const [report, setReport] = useState<LunarReport | null>(null);
   const [chartData, setChartData] = useState<ChartData | null>(null);
 
@@ -233,6 +245,7 @@ const LunarReports = () => {
                     <PowerDayGrid report={report} />
                     <ArcPracticeSection report={report} />
                     <ReportClosing report={report} />
+                    <CrossGeneratorLinks exclude="/lunar-reports" />
                   </motion.div>
                 )}
               </AnimatePresence>
