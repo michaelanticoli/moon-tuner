@@ -65,6 +65,17 @@ const QuantumMelodic = () => {
   const [duration, setDuration] = useState(0);
   const [qmReading, setQmReading] = useState<QuantumMelodicReading | null>(null);
 
+  interface ChartInterpretation {
+    opening: string;
+    coreSignature: string;
+    harmonicAlignment: string;
+    resolutionGuidance: string;
+    closing: string;
+  }
+  const [interpretation, setInterpretation] = useState<ChartInterpretation | null>(null);
+  const [interpretationLoading, setInterpretationLoading] = useState(false);
+  const [interpretationError, setInterpretationError] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
