@@ -25,8 +25,10 @@ export async function renderChartImageBase64(node: HTMLElement): Promise<string>
   return dataUrl.split(",")[1];
 }
 
-// Render the same HTML used for the "interactive report" into a PDF.
-// Uses jsPDF's html() method to keep formatting close to the on-screen version.
+// Render the symphony HTML into a PDF by rasterizing with html2canvas
+// (jsPDF.html() proved unreliable — fonts via @import + dark theme caused
+// blank black PDFs). We force a light "print" theme and slice the canvas
+// across A4 pages.
 export async function renderReportPdfBase64(
   name: string,
   reading: CosmicReading,
@@ -36,42 +38,80 @@ export async function renderReportPdfBase64(
 ): Promise<string> {
   const html = buildSymphonyHTML(name, reading, qmReading, harmonicAnalysis, guidance);
 
-  // Render HTML into an off-screen container so jsPDF.html() can convert it.
+  // Off-screen container — print-mode forces light theme via @media print
+  // override CSS already in the template, but html2canvas doesn't honor
+  // @media print, so we inject a wrapper that forces light colors.
   const container = document.createElement("div");
   container.style.position = "fixed";
   container.style.left = "-99999px";
   container.style.top = "0";
-  container.style.width = "794px"; // A4 width in CSS px @96dpi
+  container.style.width = "794px"; // A4 width @ 96dpi
+  container.style.background = "#ffffff";
   container.innerHTML = html;
+  // Force light theme on the inner body element so capture is readable.
+  const innerBody = container.querySelector("body");
+  if (innerBody) {
+    (innerBody as HTMLElement).style.background = "#ffffff";
+    (innerBody as HTMLElement).style.color = "#111111";
+  }
+  // Override dark surfaces for print rasterization
+  const styleOverride = document.createElement("style");
+  styleOverride.textContent = `
+    body, .container { background:#ffffff !important; color:#111 !important; }
+    h1, h3 { color:#111 !important; }
+    .sig-cell { background:#f5f5f5 !important; }
+    .sig-cell .val { color:#111 !important; }
+    .section { border-color:#ddd !important; }
+    td, th { border-color:#ddd !important; color:#222 !important; }
+    .dim { color:#666 !important; }
+    .meter-track, .bar-track { background:#ddd !important; }
+    .meter-fill, .bar-fill { background:#1a1a1a !important; }
+    .guidance { background:#f8f8f8 !important; border-color:#ddd !important; }
+    .guidance p { color:#333 !important; }
+    .closing, .brand { color:#666 !important; }
+    h2 { color:#666 !important; }
+  `;
+  container.prepend(styleOverride);
   document.body.appendChild(container);
 
-  // Wait for fonts/styles
-  await new Promise((r) => setTimeout(r, 250));
+  // Wait for fonts/styles to settle
+  await new Promise((r) => setTimeout(r, 400));
 
-  const pdf = new jsPDF({ unit: "px", format: "a4", orientation: "portrait", hotfixes: ["px_scaling"] });
-
-  await new Promise<void>((resolve, reject) => {
-    pdf.html(container, {
-      callback: () => resolve(),
-      x: 0,
-      y: 0,
-      width: 794,
+  try {
+    const canvas = await html2canvas(container, {
+      backgroundColor: "#ffffff",
+      scale: 2,
+      useCORS: true,
+      logging: false,
       windowWidth: 794,
-      autoPaging: "text",
-      margin: [20, 20, 20, 20],
-      html2canvas: { scale: 0.75, useCORS: true, logging: false, backgroundColor: "#0a0a0a" },
     });
-    setTimeout(() => reject(new Error("pdf timeout")), 30000);
-  }).catch(() => {
-    /* fall through */
-  });
 
-  document.body.removeChild(container);
+    const pdf = new jsPDF({ unit: "pt", format: "a4", orientation: "portrait" });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-  // jsPDF -> base64
-  const blob = pdf.output("blob");
-  const buf = await blob.arrayBuffer();
-  return arrayBufferToBase64(buf);
+    let heightLeft = imgHeight;
+    let position = 0;
+    const imgData = canvas.toDataURL("image/jpeg", 0.92);
+
+    pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    const blob = pdf.output("blob");
+    const buf = await blob.arrayBuffer();
+    return arrayBufferToBase64(buf);
+  } finally {
+    document.body.removeChild(container);
+  }
 }
 
 function arrayBufferToBase64(buf: ArrayBuffer): string {
