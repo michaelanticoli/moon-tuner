@@ -245,6 +245,7 @@ const LunarReports = () => {
                     <PowerDayGrid report={report} />
                     <ArcPracticeSection report={report} />
                     <ReportClosing report={report} />
+                    <CrossGeneratorLinks exclude="/lunar-reports" />
                   </motion.div>
                 )}
               </AnimatePresence>
