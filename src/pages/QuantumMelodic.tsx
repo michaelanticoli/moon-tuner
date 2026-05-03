@@ -102,6 +102,12 @@ const QuantumMelodic = () => {
   const saveBirthDraft = useCallback((birthData: BirthData) => {
     if (typeof window === "undefined") return;
     sessionStorage.setItem(QM_BIRTH_DATA_KEY, JSON.stringify(birthData));
+    writeSharedBirth({
+      name: birthData.name,
+      date: birthData.date,
+      time: birthData.time,
+      location: birthData.location,
+    });
   }, []);
 
   const beginCheckout = useCallback(async () => {
