@@ -134,6 +134,8 @@ export function buildSymphonyHTML(
   .bar-fill{height:100%;background:#4ECDC4}
   .el-pct{font-size:12px;color:#4ECDC4;font-family:monospace;width:36px;text-align:right}
   .guidance{background:#111;border:1px solid #1a1a1a;border-radius:8px;padding:24px;margin-top:32px}
+  .prose p{font-size:14px;color:#d0d0d0;margin-bottom:14px;line-height:1.75}
+  .prose p:last-child{margin-bottom:0}
   .guidance p{font-size:13px;color:#ccc;margin-bottom:8px;padding-left:12px}
   .closing{text-align:center;padding:64px 24px;font-family:'Playfair Display',serif;font-style:italic;color:#888;font-size:1.1rem;line-height:1.8}
   .brand{text-align:center;font-size:10px;text-transform:uppercase;letter-spacing:0.15em;color:#333;padding-bottom:48px}
