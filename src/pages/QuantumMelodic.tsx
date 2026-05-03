@@ -634,6 +634,8 @@ const QuantumMelodic = () => {
                         <a
                           href={deliverables.audioUrl || "#"}
                           download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_symphony.mp3`}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           aria-disabled={deliverables.audioStatus !== "ready"}
                           onClick={(e) => {
                             if (deliverables.audioStatus !== "ready") e.preventDefault();
@@ -654,6 +656,8 @@ const QuantumMelodic = () => {
                         <a
                           href={deliverables.pdfUrl || "#"}
                           download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_report.pdf`}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           aria-disabled={deliverables.pdfStatus !== "ready"}
                           onClick={(e) => {
                             if (deliverables.pdfStatus !== "ready") e.preventDefault();
@@ -674,6 +678,8 @@ const QuantumMelodic = () => {
                         <a
                           href={deliverables.chartImageUrl || "#"}
                           download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_chart.png`}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           aria-disabled={deliverables.chartStatus !== "ready"}
                           onClick={(e) => {
                             if (deliverables.chartStatus !== "ready") e.preventDefault();
