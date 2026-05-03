@@ -166,6 +166,8 @@ export function buildSymphonyHTML(
     <div>Mode<span>${mode}</span></div>
   </div>
 
+  ${interpOpening}
+
   ${qmReading ? `
   <div class="section">
     <h2>Harmonic Signature</h2>
@@ -177,9 +179,13 @@ export function buildSymphonyHTML(
     </div>
   </div>` : ''}
 
+  ${interpCore}
+
   ${harmonicAnalysis ? `
   <div class="section">
-    <h2>Harmonic Analysis</h2>
+    <h2>Harmonic Alignment</h2>
+    ${interpAlignment}
+    <div style="margin-top:24px">
     ${['Consonance', 'Tension', 'Complexity'].map(label => {
       const key = label.toLowerCase() as keyof HarmonicAnalysis;
       const val = harmonicAnalysis[key] as number;
@@ -190,7 +196,8 @@ export function buildSymphonyHTML(
       };
       return `<div class="meter"><div class="meter-head"><span>${label}</span><span class="v">${Math.round(val)}%</span></div><div class="meter-track"><div class="meter-fill" style="width:${val}%"></div></div><div class="meter-desc">${descs[label]}</div></div>`;
     }).join('')}
-    ${guidanceHTML}
+    </div>
+    ${interpResolution}
   </div>` : ''}
 
   <div class="section">
@@ -216,9 +223,7 @@ export function buildSymphonyHTML(
     ${elementBars}
   </div>` : ''}
 
-  <div class="closing">
-    Every chart is a score waiting to be heard.<br>Yours has been playing since the moment you arrived.
-  </div>
+  ${interpClosing}
   <div class="brand">MOONtuner × QuantumMelodic</div>
 
 </div>
