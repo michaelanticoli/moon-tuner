@@ -1007,7 +1007,130 @@ const QuantumMelodic = () => {
                     </motion.section>
                   )}
 
-                  {/* Planetary Positions */}
+                  {/* Canonical Chart Signatures — derived from real placements */}
+                  {canonical && (
+                    <motion.section
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.22 }}
+                      className="py-16 border-b border-border"
+                    >
+                      <span className="system-label mb-2 block">Canonical Signatures</span>
+                      <p className="text-xs text-muted-foreground mb-8 max-w-2xl">
+                        Derived directly from your placements — not generated, observed.
+                      </p>
+
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {/* Lunar phase at birth */}
+                        <div className="node-card">
+                          <span className="system-label block mb-2">Lunar Phase at Birth</span>
+                          <p className="font-serif text-2xl text-foreground mb-1">{canonical.lunarPhaseAtBirth.name}</p>
+                          <p className="text-xs text-muted-foreground mb-3">Sun–Moon separation: {canonical.lunarPhaseAtBirth.angle}°</p>
+                          <p className="text-sm text-foreground/80 leading-relaxed italic">
+                            Musically: {canonical.lunarPhaseAtBirth.musical}.
+                          </p>
+                        </div>
+
+                        {/* Sect & chart ruler */}
+                        <div className="node-card">
+                          <span className="system-label block mb-2">Sect &amp; Chart Ruler</span>
+                          <p className="font-serif text-xl text-foreground mb-1">
+                            {canonical.sect} chart
+                            {canonical.chartRuler && <span className="text-muted-foreground"> · ruled by {canonical.chartRuler}</span>}
+                          </p>
+                          <p className="text-sm text-foreground/80 leading-relaxed mt-2">
+                            {canonical.sect === 'Diurnal'
+                              ? 'Born under the Sun above the horizon — the score plays in the open air, public-facing register.'
+                              : 'Born under the Sun below the horizon — the score plays in the chamber-music register, intimate and inward.'}
+                          </p>
+                        </div>
+
+                        {/* Element bars */}
+                        <div className="node-card">
+                          <span className="system-label block mb-3">Elemental Distribution</span>
+                          <div className="space-y-2">
+                            {(['Fire','Earth','Air','Water'] as const).map(el => (
+                              <div key={el} className="flex items-center gap-3">
+                                <span className="text-xs text-muted-foreground w-12">{el}</span>
+                                <div className="flex-1 h-px bg-border overflow-hidden">
+                                  <div className="h-full bg-accent" style={{ width: `${canonical.elementBalance[el]}%` }} />
+                                </div>
+                                <span className="text-xs font-mono text-accent w-10 text-right">{canonical.elementBalance[el]}%</span>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-3">
+                            Yang (Fire+Air): {canonical.polarity.Yang}% · Yin (Earth+Water): {canonical.polarity.Yin}%
+                          </p>
+                        </div>
+
+                        {/* Modality bars */}
+                        <div className="node-card">
+                          <span className="system-label block mb-3">Modality Distribution</span>
+                          <div className="space-y-2">
+                            {(['Cardinal','Fixed','Mutable'] as const).map(md => (
+                              <div key={md} className="flex items-center gap-3">
+                                <span className="text-xs text-muted-foreground w-16">{md}</span>
+                                <div className="flex-1 h-px bg-border overflow-hidden">
+                                  <div className="h-full bg-accent" style={{ width: `${canonical.modalityBalance[md]}%` }} />
+                                </div>
+                                <span className="text-xs font-mono text-accent w-10 text-right">{canonical.modalityBalance[md]}%</span>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-3 italic">
+                            {canonical.modalityBalance.Cardinal >= 50 && 'Cardinal-led: a chart of downbeats and openings.'}
+                            {canonical.modalityBalance.Fixed >= 50 && 'Fixed-led: a chart of sustained tones and held intent.'}
+                            {canonical.modalityBalance.Mutable >= 50 && 'Mutable-led: a chart of modulation and bridge passages.'}
+                          </p>
+                        </div>
+
+                        {/* Hemisphere emphasis */}
+                        <div className="node-card">
+                          <span className="system-label block mb-3">Hemisphere Emphasis</span>
+                          <div className="grid grid-cols-2 gap-3 text-sm">
+                            <div><span className="text-muted-foreground">East · </span><span className="text-foreground">{canonical.hemispheres.Eastern}%</span></div>
+                            <div><span className="text-muted-foreground">West · </span><span className="text-foreground">{canonical.hemispheres.Western}%</span></div>
+                            <div><span className="text-muted-foreground">North · </span><span className="text-foreground">{canonical.hemispheres.Northern}%</span></div>
+                            <div><span className="text-muted-foreground">South · </span><span className="text-foreground">{canonical.hemispheres.Southern}%</span></div>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-3 italic">
+                            {canonical.hemispheres.Eastern > canonical.hemispheres.Western
+                              ? 'Self-directed register — the soloist initiates the phrase.'
+                              : 'Other-directed register — the ensemble responds to the surrounding voices.'}
+                          </p>
+                        </div>
+
+                        {/* Lead voice + retrogrades + stellium */}
+                        <div className="node-card">
+                          <span className="system-label block mb-3">Voice Leading</span>
+                          {canonical.mostAspectedPlanet && (
+                            <p className="text-sm text-foreground/85 mb-2">
+                              <span className="text-muted-foreground">Lead voice: </span>
+                              <span className="font-serif text-base">{canonical.mostAspectedPlanet.name}</span>
+                              <span className="text-xs text-muted-foreground"> ({canonical.mostAspectedPlanet.count} aspects)</span>
+                            </p>
+                          )}
+                          {canonical.retrogradeCount > 0 && (
+                            <p className="text-sm text-foreground/85 mb-2">
+                              <span className="text-muted-foreground">Inward-listening: </span>
+                              {canonical.retrogradeCount} retrograde {canonical.retrogradeCount === 1 ? 'planet' : 'planets'}
+                            </p>
+                          )}
+                          {canonical.stellium && (
+                            <p className="text-sm text-foreground/85">
+                              <span className="text-muted-foreground">Stellium in </span>
+                              <span className="font-serif">{canonical.stellium.sign}</span>
+                              <span className="text-xs text-muted-foreground"> ({canonical.stellium.planets.join(', ')})</span>
+                            </p>
+                          )}
+                          {!canonical.stellium && canonical.retrogradeCount === 0 && (
+                            <p className="text-xs text-muted-foreground italic">No stellium · no retrogrades — a forward-facing, distributed score.</p>
+                          )}
+                        </div>
+                      </div>
+                    </motion.section>
+                  )}
                   <motion.section
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
