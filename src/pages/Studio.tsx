@@ -4,7 +4,7 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { useAuth } from "@/contexts/AuthContext";
-import { Loader2, Music2, Moon, ArrowUpRight } from "lucide-react";
+import { Loader2, Music2, Moon, Sun, ArrowUpRight } from "lucide-react";
 
 // Creator allowlist — add your emails here
 const CREATOR_EMAILS = [
@@ -45,6 +45,13 @@ const TILES: Tile[] = [
     desc: "2026 ephemeris with VOC and exact phase timing.",
     icon: <Moon className="w-5 h-5" />,
     tag: "Cipher",
+  },
+  {
+    to: "/cazimi",
+    title: "Cazimi Punchcard",
+    desc: "Personal Power Punchcard: each year's exact Solar Returns to every natal placement.",
+    icon: <Sun className="w-5 h-5" />,
+    tag: "Cazimi",
   },
 ];
 
