@@ -289,6 +289,12 @@ export function buildSymphonyHTML(
     <div>Mode<span>${mode}</span></div>
   </div>
 
+  <div class="section" style="border-top:none;padding-top:8px">
+    <h2>Natal Chart</h2>
+    ${wheelSVG}
+    <p class="dim italic" style="text-align:center;margin-top:12px">Hover any aspect line for its harmonic interval. Sigils, planets and aspects are drawn from your exact chart.</p>
+  </div>
+
   ${interpOpening}
 
   ${qmReading ? `
