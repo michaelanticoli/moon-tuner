@@ -335,6 +335,11 @@ const QuantumMelodic = () => {
     return calculateHarmonicAnalysis(qmReading.aspects, qmReading.planets);
   }, [qmReading]);
 
+  const canonical = useMemo(() => {
+    if (!qmReading) return null;
+    return deriveCanonicalSignals(qmReading, reading?.chartData?.ascendant ?? null);
+  }, [qmReading, reading?.chartData?.ascendant]);
+
   const guidance = useMemo(() => {
     if (!harmonicAnalysis) return [];
     return getResolutionGuidance(harmonicAnalysis);
