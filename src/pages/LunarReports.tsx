@@ -18,7 +18,7 @@ import { PeakSummaryPanel } from "@/components/report/PeakSummaryPanel";
 import { ArcPracticeSection } from "@/components/report/ArcPracticeSection";
 import { ReportClosing } from "@/components/report/ReportClosing";
 import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
-import { useSharedBirth, readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
+import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SIMULATED_LOADING_DELAY_MS = 600;
