@@ -60,6 +60,7 @@ function AnimatedRoutes() {
           <Route path="/sessions" element={<Sessions />} />
           <Route path="/services" element={<Services />} />
           <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
+          <Route path="/cazimi" element={<CazimiPunchcard />} />
           <Route path="/auth" element={<Auth />} />
           <Route
             path="/dashboard"
