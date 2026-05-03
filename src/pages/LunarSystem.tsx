@@ -13,7 +13,7 @@ const LunarSystem = () => {
     <PageTransition>
       <div className="min-h-screen bg-background relative grain-overlay">
         <Navigation />
-        
+
         <main className="pt-32 pb-24">
           {/* Hero Section */}
           <section className="container mx-auto px-6 lg:px-12 mb-24">
@@ -26,9 +26,9 @@ const LunarSystem = () => {
                 <span className="italic">By Creating It.</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed opacity-0 animate-fade-in-up delay-200 mb-8">
-                The Moon visits 96 unique configurations every month—each phase expressing differently 
-                through each zodiac sign, activating specific regions of your body. This is your map 
-                to continuous, embodied lunar living.
+                The Moon visits 96 unique configurations every year—each phase expressing differently through each
+                zodiac sign, activating specific regions of your body. This is your map to continuous, embodied lunar
+                living.
               </p>
               <div className="flex items-center gap-4 text-sm text-muted-foreground opacity-0 animate-fade-in delay-300">
                 <ArrowDown className="w-4 h-4 animate-bounce" />
@@ -100,16 +100,16 @@ const LunarSystem = () => {
                   <span className="italic">You're Already Invited.</span>
                 </h2>
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-2xl mx-auto">
-                  This isn't about checking horoscopes or waiting for eclipses. The Moon cycles through 
-                  every phase, every sign, every body zone—continuously. Big Astrology only shows up 
-                  for the big events. We're here for the entire journey.
+                  This isn't about checking horoscopes or waiting for eclipses. The Moon cycles through every phase,
+                  every sign, every body zone—continuously. Big Astrology only shows up for the big events. We're here
+                  for the entire journey.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <a href="/workbooks" className="system-button">
                     Explore Workbooks
                   </a>
-                  <a 
-                    href="/method" 
+                  <a
+                    href="/method"
                     className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors"
                   >
                     <span>Learn Phasecraft</span>
