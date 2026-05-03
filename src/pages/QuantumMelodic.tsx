@@ -216,6 +216,42 @@ const QuantumMelodic = () => {
 
       setStep("result");
 
+      // Fire LLM-grounded interpretation in parallel (uses QM metasystem fields)
+      let interpretationPromise: Promise<ChartInterpretation | null> = Promise.resolve(null);
+      if (enriched && result) {
+        const harmonic = calculateHarmonicAnalysis(enriched.aspects, enriched.planets);
+        setInterpretation(null);
+        setInterpretationError(null);
+        setInterpretationLoading(true);
+        interpretationPromise = supabase.functions
+          .invoke("interpret-natal-chart", {
+            body: {
+              name: birthData.name,
+              sunSign: result.chartData.sunSign,
+              moonSign: result.chartData.moonSign,
+              ascendant: result.chartData.ascendant,
+              qmReading: enriched,
+              harmonic,
+            },
+          })
+          .then(({ data, error }) => {
+            if (error || !data?.interpretation) {
+              setInterpretationError("Could not generate written interpretation.");
+              setInterpretationLoading(false);
+              return null;
+            }
+            setInterpretation(data.interpretation as ChartInterpretation);
+            setInterpretationLoading(false);
+            return data.interpretation as ChartInterpretation;
+          })
+          .catch((e) => {
+            console.error("interpretation error", e);
+            setInterpretationError("Could not generate written interpretation.");
+            setInterpretationLoading(false);
+            return null;
+          });
+      }
+
       // Kick off all three deliverables (MP3, PDF, chart PNG) in parallel.
       // Wait a tick so the off-screen wheel card has rendered.
       if (result) {
@@ -232,12 +268,14 @@ const QuantumMelodic = () => {
             renderPdfBase64: async () => {
               const harmonic = enriched ? calculateHarmonicAnalysis(enriched.aspects, enriched.planets) : null;
               const guide = harmonic ? getResolutionGuidance(harmonic) : [];
+              const interp = await interpretationPromise;
               return renderReportPdfBase64(
                 birthData.name || "Cosmic Traveler",
                 result,
                 enriched,
                 harmonic,
                 guide,
+                interp,
               );
             },
           });
