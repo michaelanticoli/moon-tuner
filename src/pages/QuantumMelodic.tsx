@@ -25,6 +25,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AstroHarmonicSample } from "@/components/AstroHarmonicSample";
 import { NatalWheelCard } from "@/components/NatalWheelCard";
 import { Sigil, isSigilName } from "@/components/astro/AstroSigils";
+import { InteractiveNatalChart } from "@/components/InteractiveNatalChart";
 import { useCosmicDeliverables } from "@/hooks/useCosmicDeliverables";
 import { renderChartImageBase64, renderReportPdfBase64 } from "@/lib/renderDeliverables";
 
