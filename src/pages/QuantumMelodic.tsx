@@ -871,6 +871,20 @@ const QuantumMelodic = () => {
                     </motion.section>
                   )}
 
+                  {/* Interactive Natal Chart */}
+                  {qmReading && reading.chartData && (
+                    <motion.section
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                      className="py-16 border-b border-border"
+                    >
+                      <span className="system-label mb-2 block">Your Natal Chart</span>
+                      <h2 className="font-serif text-3xl text-foreground mb-8">A living instrument.</h2>
+                      <InteractiveNatalChart chart={reading.chartData} qmReading={qmReading} />
+                    </motion.section>
+                  )}
+
                   {/* Harmonic Signature */}
                   {qmReading && (
                     <motion.section
