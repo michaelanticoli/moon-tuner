@@ -46,6 +46,13 @@ const TILES: Tile[] = [
     icon: <Moon className="w-5 h-5" />,
     tag: "Cipher",
   },
+  {
+    to: "/cazimi",
+    title: "Cazimi Punchcard",
+    desc: "Personal Power Punchcard: each year's exact Solar Returns to every natal placement.",
+    icon: <Sun className="w-5 h-5" />,
+    tag: "Cazimi",
+  },
 ];
 
 export default function Studio() {
