@@ -230,9 +230,10 @@ function buildWheel(chart: ChartData) {
   // Wheel rotation: place Ascendant at the 9 o'clock position (left)
   const ascDeg = chart.planets.find((p) => p.name === "Ascendant")?.degree ?? 0;
   const toScreen = (eclipticDeg: number) => {
-    // 0° = ASC at left (180° in svg), increasing counter-clockwise
+    // ASC at left (9 o'clock); houses/signs progress counter-clockwise
+    // (left → bottom → right → top), per astrological convention.
     const offset = ((eclipticDeg - ascDeg) + 360) % 360;
-    const rad = ((180 - offset) * Math.PI) / 180;
+    const rad = ((180 + offset) * Math.PI) / 180;
     return rad;
   };
 
