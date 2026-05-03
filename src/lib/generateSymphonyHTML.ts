@@ -31,6 +31,8 @@ export function buildSymphonyHTML(
   const ascendant = reading.chartData.ascendant;
   const mode = reading.musicalMode;
 
+  const wheelSVG = buildWheelSVG(reading.chartData, qmReading);
+
   const degreeFmt = (deg: number) => {
     const d = Math.floor(deg % 30);
     const m = Math.round((deg % 1) * 60);
