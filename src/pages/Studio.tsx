@@ -4,7 +4,7 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { useAuth } from "@/contexts/AuthContext";
-import { Loader2, Music2, Moon, ArrowUpRight } from "lucide-react";
+import { Loader2, Music2, Moon, Sun, ArrowUpRight } from "lucide-react";
 
 // Creator allowlist — add your emails here
 const CREATOR_EMAILS = [
