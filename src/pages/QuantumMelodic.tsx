@@ -1284,6 +1284,8 @@ const QuantumMelodic = () => {
                     </p>
                     <p className="system-label mt-8 text-muted-foreground/40">MOONtuner {"\u00D7"} QuantumMelodic</p>
                   </motion.section>
+
+                  <CrossGeneratorLinks exclude="/quantumelodic" />
                 </div>
               </motion.div>
             )}
