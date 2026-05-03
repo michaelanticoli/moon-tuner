@@ -751,7 +751,7 @@ const QuantumMelodic = () => {
                         <button
                           onClick={() => {
                             const name = reading.birthData.name || "Cosmic Traveler";
-                            const html = buildSymphonyHTML(name, reading, qmReading, harmonicAnalysis, guidance);
+                            const html = buildSymphonyHTML(name, reading, qmReading, harmonicAnalysis, guidance, interpretation);
                             const blob = new Blob([html], { type: "text/html" });
                             const url = URL.createObjectURL(blob);
                             window.open(url, "_blank");
