@@ -223,6 +223,7 @@ const QuantumMelodic = () => {
       let interpretationPromise: Promise<ChartInterpretation | null> = Promise.resolve(null);
       if (enriched && result) {
         const harmonic = calculateHarmonicAnalysis(enriched.aspects, enriched.planets);
+        const canonicalSignals = deriveCanonicalSignals(enriched, result.chartData.ascendant);
         setInterpretation(null);
         setInterpretationError(null);
         setInterpretationLoading(true);
@@ -235,6 +236,7 @@ const QuantumMelodic = () => {
               ascendant: result.chartData.ascendant,
               qmReading: enriched,
               harmonic,
+              canonical: canonicalSignals,
             },
           })
           .then(({ data, error }) => {
