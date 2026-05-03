@@ -72,9 +72,26 @@ export function buildSymphonyHTML(
     return `<div class="el-bar"><span class="el-label">${info?.symbol || ''} ${el}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="el-pct">${pct}%</span></div>`;
   }).join('') : '';
 
-  const guidanceHTML = guidance.length > 0
-    ? `<div class="guidance"><h3>Resolution Guidance</h3>${guidance.map(g => `<p>• ${g}</p>`).join('')}</div>`
-    : '';
+  const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const proseHTML = (text: string) =>
+    text.split(/\n{2,}|(?<=\.)\s+(?=[A-Z])/).slice(0, 6)
+      .map(p => `<p>${escape(p.trim())}</p>`).join('');
+
+  const interpOpening = interpretation
+    ? `<div class="section"><h2>Overture</h2><div class="prose">${proseHTML(interpretation.opening)}</div></div>` : '';
+  const interpCore = interpretation
+    ? `<div class="section"><h2>Core Signature — Sun · Moon · Rising</h2><div class="prose">${proseHTML(interpretation.coreSignature)}</div></div>` : '';
+  const interpAlignment = interpretation
+    ? `<div class="prose">${proseHTML(interpretation.harmonicAlignment)}</div>` : '';
+  const interpResolution = interpretation
+    ? `<div class="guidance"><h3>Resolution Guidance</h3><div class="prose">${proseHTML(interpretation.resolutionGuidance)}</div></div>`
+    : (guidance.length > 0
+      ? `<div class="guidance"><h3>Resolution Guidance</h3>${guidance.map(g => `<p>• ${escape(g)}</p>`).join('')}</div>`
+      : '');
+  const interpClosing = interpretation
+    ? `<div class="closing">${escape(interpretation.closing)}</div>`
+    : `<div class="closing">Every chart is a score waiting to be heard.<br>Yours has been playing since the moment you arrived.</div>`;
+
 
   return `<!DOCTYPE html>
 <html lang="en">
