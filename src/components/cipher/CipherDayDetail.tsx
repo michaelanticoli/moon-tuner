@@ -116,6 +116,7 @@ function CycleContextSection({ phaseData, dayEvents }: { phaseData: any; dayEven
 }
 
 export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose }: CipherDayDetailProps) {
+  const navigate = useNavigate();
   const date = new Date(year, month, day);
   const phaseData = getMoonPhase2026(date);
   const signData = getMoonSign2026(date);
