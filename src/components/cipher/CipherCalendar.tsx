@@ -74,6 +74,13 @@ export function CipherCalendar({ year, month, onDaySelect }: CipherCalendarProps
         ))}
       </div>
 
+      {natal && landmarkMap.size > 0 && (
+        <div className="flex items-center gap-2 mb-4 text-[9px] uppercase tracking-widest text-muted-foreground">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          <span>Personal landmark days highlighted for your natal chart</span>
+        </div>
+      )}
+
       {/* Calendar grid */}
       <div className="grid grid-cols-7 gap-2 md:gap-4">
         {/* Empty offset cells */}
