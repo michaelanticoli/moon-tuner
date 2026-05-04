@@ -239,6 +239,20 @@ export default function Studio() {
               </div>
             </div>
 
+            <div className="mb-4">
+              <Label htmlFor="email" className="text-xs uppercase tracking-wider text-muted-foreground">
+                Email <span className="text-muted-foreground/60 normal-case">(optional — saves your chart + sends the lunar guide)</span>
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                placeholder="you@domain.com"
+                className="mt-1.5 bg-background"
+              />
+            </div>
+
             <div className="flex flex-wrap gap-3">
               <Button onClick={saveForm} variant="gold" size="sm">
                 Save subject
@@ -261,14 +275,17 @@ export default function Studio() {
             </div>
             <div className="border border-accent/30 rounded-lg p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-gradient-to-br from-accent/[0.04] to-transparent">
               <div>
-                <h3 className="text-xl font-light mb-1">Run all three reports</h3>
+                <h3 className="text-xl font-light mb-1 flex items-center gap-2">
+                  <Layers className="w-5 h-5 text-accent" /> Total Tuner Report
+                </h3>
                 <p className="text-sm text-muted-foreground max-w-md">
-                  Opens the Symphony, Lunar Arc, and Cazimi Punchcard in
-                  separate tabs — each pre-filled with the saved chart.
+                  All four engines assembled into one comprehensive document —
+                  Symphony, Lunar Arc, Cazimi Punchcard, and a personalized
+                  Cipher overlay. Exportable as a single PDF.
                 </p>
               </div>
               <Button onClick={generateAll} variant="gold" size="lg" disabled={!ready}>
-                <Rocket className="w-4 h-4" /> Generate all
+                <Rocket className="w-4 h-4" /> Generate Total Tuner
               </Button>
             </div>
           </section>
