@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { ReportLauncher } from "@/components/ReportLauncher";
 import Index from "./pages/Index";
 import Method from "./pages/Method";
 import Manifesto from "./pages/Manifesto";
