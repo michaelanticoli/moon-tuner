@@ -110,9 +110,13 @@ export default function Studio() {
 
   const ready = isCompleteBirth(form);
 
-  const saveForm = () => {
+  const saveForm = async () => {
     update(form);
     toast.success("Birth data saved — generators will pre-fill automatically.");
+    if (form.email && isValidEmail(form.email)) {
+      const r = await captureBirthEmail(form, "studio-intake");
+      if (r.ok) toast.success("Email captured to your subscriber list.");
+    }
   };
 
   const clearForm = () => {
@@ -139,11 +143,7 @@ export default function Studio() {
       return;
     }
     update(form);
-    // Open each birth-driven generator in a new tab so creator can run holistically
-    BIRTH_TILES.forEach((t, i) => {
-      setTimeout(() => window.open(t.to, "_blank", "noopener"), i * 250);
-    });
-    toast.success("Opening all three generators in new tabs.");
+    navigate("/total-tuner");
   };
 
   return (
