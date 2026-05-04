@@ -78,8 +78,8 @@ const STANDALONE_TILES: Tile[] = [
   {
     to: "/lunar-cipher",
     title: "Lunar Cipher",
-    desc: "2026 ephemeris with VOC and exact phase timing — no birth data required.",
-    icon: <Moon className="w-5 h-5" />,
+    desc: "2026 ephemeris with VOC and exact phase timing — overlays your chart when birth data is set.",
+    icon: <Calendar className="w-5 h-5" />,
     tag: "Cipher",
     needsBirth: false,
   },
@@ -105,26 +105,8 @@ export default function Studio() {
     );
   }
 
-  if (!isCreator(user?.email)) {
-    return (
-      <PageTransition>
-        <Navigation />
-        <main className="min-h-screen bg-background text-foreground pt-32 pb-24">
-          <div className="max-w-2xl mx-auto px-6 text-center">
-            <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">
-              Creator Studio
-            </p>
-            <h1 className="text-3xl font-thin mb-4">Access restricted</h1>
-            <p className="text-muted-foreground">
-              This area is reserved for the Moontuner creator team. Signed in as{" "}
-              <span className="text-foreground">{user?.email}</span>.
-            </p>
-          </div>
-        </main>
-        <Footer />
-      </PageTransition>
-    );
-  }
+  // Studio is open to all signed-in users (creator allowlist kept only as a label).
+  void isCreator;
 
   const ready = isCompleteBirth(form);
 
