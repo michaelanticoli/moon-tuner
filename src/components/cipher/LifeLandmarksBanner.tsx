@@ -81,7 +81,7 @@ function MajorLandmarkCard({ lm }: { lm: Landmark }) {
           <span className="text-xl text-accent">{lm.glyph}</span>
         </div>
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <Sparkles className="w-3.5 h-3.5 text-accent" />
             <h3 className="text-sm md:text-base font-bold text-foreground">{lm.title}</h3>
             {typeof lm.orb === "number" && (
@@ -93,6 +93,20 @@ function MajorLandmarkCard({ lm }: { lm: Landmark }) {
           <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
             {lm.subtitle}
           </p>
+          {(() => {
+            const hint = workbookHintFor(lm.kind);
+            if (!hint) return null;
+            return (
+              <Link
+                to={hint.href}
+                className="mt-3 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold text-accent hover:text-accent/80 transition-colors group"
+              >
+                <BookOpen className="w-3 h-3" />
+                <span>{hint.label}</span>
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            );
+          })()}
         </div>
       </div>
     </div>
