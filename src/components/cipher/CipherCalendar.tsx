@@ -1,6 +1,14 @@
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { getMoonPhase2026, getMoonSign2026 } from "@/data/lunar2026Data";
+import { useSharedBirth } from "@/hooks/useSharedBirth";
+import {
+  computeNatalLuminaries,
+  readCachedLuminaries,
+  type NatalLuminaries,
+} from "@/lib/natalOverlay";
+import { hasLandmarkForDate } from "@/lib/lifeLandmarks";
 
 interface CipherCalendarProps {
   year: number;
@@ -31,6 +39,26 @@ export function CipherCalendar({ year, month, onDaySelect }: CipherCalendarProps
   const today = new Date();
   const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
 
+  // Lazy-hydrate natal luminaries so we can pulse landmark days on the grid.
+  const { birth } = useSharedBirth();
+  const [natal, setNatal] = useState<NatalLuminaries | null>(() => readCachedLuminaries());
+  useEffect(() => {
+    if (natal) return;
+    if (!birth.date || !birth.time || !birth.location) return;
+    computeNatalLuminaries(birth).then((d) => d && setNatal(d));
+  }, [birth, natal]);
+
+  // Precompute landmark hits for the visible month (~30 lookups, cheap).
+  const landmarkMap = useMemo(() => {
+    const m = new Map<number, "major" | "notable" | "subtle">();
+    if (!natal) return m;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const r = hasLandmarkForDate(new Date(year, month, d), natal);
+      if (r.hit && r.tier) m.set(d, r.tier);
+    }
+    return m;
+  }, [natal, year, month, daysInMonth]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -45,6 +73,13 @@ export function CipherCalendar({ year, month, onDaySelect }: CipherCalendarProps
           </div>
         ))}
       </div>
+
+      {natal && landmarkMap.size > 0 && (
+        <div className="flex items-center gap-2 mb-4 text-[9px] uppercase tracking-widest text-muted-foreground">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          <span>Personal landmark days highlighted for your natal chart</span>
+        </div>
+      )}
 
       {/* Calendar grid */}
       <div className="grid grid-cols-7 gap-2 md:gap-4">
@@ -62,6 +97,7 @@ export function CipherCalendar({ year, month, onDaySelect }: CipherCalendarProps
           const phaseKey = PHASE_TO_KEY[phaseData.phaseName] || "new";
           const isToday = isCurrentMonth && today.getDate() === dayNum;
           const isKeyPhase = phaseData.phaseName === "New Moon" || phaseData.phaseName === "Full Moon";
+          const landmarkTier = landmarkMap.get(dayNum);
 
           return (
             <button
@@ -70,11 +106,26 @@ export function CipherCalendar({ year, month, onDaySelect }: CipherCalendarProps
               className={`aspect-square rounded-2xl border flex flex-col items-center justify-center transition-all group relative ${
                 isToday
                   ? 'border-accent bg-accent/10 ring-1 ring-accent/30'
-                  : isKeyPhase
-                    ? 'border-accent/30 bg-accent/5'
-                    : 'border-border bg-card/50'
+                  : landmarkTier === 'major'
+                    ? 'border-accent/60 bg-accent/10 ring-1 ring-accent/40'
+                    : isKeyPhase
+                      ? 'border-accent/30 bg-accent/5'
+                      : 'border-border bg-card/50'
               } hover:border-accent/50 hover:bg-accent/5`}
+              title={landmarkTier ? `Personal landmark (${landmarkTier})` : undefined}
             >
+              {landmarkTier && (
+                <span
+                  aria-hidden
+                  className={`absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full ${
+                    landmarkTier === 'major'
+                      ? 'bg-accent animate-pulse'
+                      : landmarkTier === 'notable'
+                        ? 'bg-accent/70'
+                        : 'bg-accent/40'
+                  }`}
+                />
+              )}
               <span className={`text-[9px] md:text-[10px] mb-0.5 ${isToday ? 'text-accent font-bold' : 'text-muted-foreground'}`}>
                 {dayNum}
               </span>

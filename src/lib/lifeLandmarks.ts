@@ -194,3 +194,74 @@ export function findNextSolarReturn(natalSunLon: number): Date | null {
     return null;
   }
 }
+
+/**
+ * Lightweight check used by the calendar grid to decide whether a day
+ * deserves a landmark pulse. Skips the ICS/eclipse path for speed.
+ */
+export function hasLandmarkForDate(date: Date, natal: NatalLuminaries): {
+  hit: boolean;
+  tier: LandmarkTier | null;
+} {
+  const t = noonUtc(date);
+  const sunLon = getSunLon(t);
+  const moonLon = getMoonLon(t);
+
+  const sunToNatalSun = arcDistance(sunLon, natal.sun);
+  if (sunToNatalSun <= RETURN_ORB) return { hit: true, tier: "major" };
+
+  const sunToNatalAsc = arcDistance(sunLon, natal.asc);
+  if (sunToNatalAsc <= RETURN_ORB) return { hit: true, tier: "major" };
+
+  const sunOpp = Math.abs(sunToNatalSun - 180);
+  if (sunOpp <= RETURN_ORB) return { hit: true, tier: "notable" };
+
+  const sunToNatalMoon = arcDistance(sunLon, natal.moon);
+  if (sunToNatalMoon <= CAZIMI_ORB * 4) return { hit: true, tier: "notable" };
+
+  const moonToNatalMoon = arcDistance(moonLon, natal.moon);
+  if (moonToNatalMoon <= 2) return { hit: true, tier: "notable" };
+  if (moonToNatalMoon <= LUNAR_RETURN_ORB) return { hit: true, tier: "subtle" };
+
+  return { hit: false, tier: null };
+}
+
+/**
+ * Map a landmark to its companion workbook in the 26-arc series. The
+ * Chaperone workbooks are evergreen and archetypal, so we route by phase
+ * intent rather than calendar date.
+ */
+export function workbookHintFor(kind: LandmarkKind): {
+  label: string;
+  href: string;
+} | null {
+  switch (kind) {
+    case "solar-return":
+    case "rising-return":
+      return {
+        label: "Companion workbook: New Moon → Full Moon arc",
+        href: "/workbook-preview?context=solar-return",
+      };
+    case "half-birthday":
+      return {
+        label: "Companion workbook: Full Moon → New Moon arc",
+        href: "/workbook-preview?context=solar-opposition",
+      };
+    case "lunar-return":
+    case "sun-cazimi-natal-moon":
+      return {
+        label: "Companion workbook: Emotional reset cycle",
+        href: "/workbook-preview?context=lunar-return",
+      };
+    case "eclipse-on-natal-sun":
+    case "eclipse-on-natal-moon":
+    case "eclipse-on-natal-asc":
+      return {
+        label: "Companion workbook: Eclipse Portal special",
+        href: "/workbook-preview?context=eclipse",
+      };
+    default:
+      return null;
+  }
+}
+
