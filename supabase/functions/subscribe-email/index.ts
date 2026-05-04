@@ -59,53 +59,49 @@ serve(async (req) => {
     const mailchimpApiKey = Deno.env.get("MAILCHIMP_API_KEY")?.trim();
     const mailchimpListId = Deno.env.get("MAILCHIMP_LIST_ID")?.trim();
 
-    if (!mailchimpApiKey) {
-      logStep("MAILCHIMP_API_KEY is not configured");
-      return new Response(
-        JSON.stringify({ success: false, error: "Unable to process subscription. Please try again." }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
-      );
-    }
+    let mailchimpData: { id?: string | number } = {};
 
-    if (!mailchimpListId) {
-      logStep("MAILCHIMP_LIST_ID is not configured");
-      return new Response(
-        JSON.stringify({ success: false, error: "Unable to process subscription. Please try again." }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
-      );
-    }
+    if (mailchimpApiKey && mailchimpListId) {
+      try {
+        const dc = mailchimpApiKey.split("-").pop();
+        const mailchimpResponse = await fetch(
+          `https://${dc}.api.mailchimp.com/3.0/lists/${mailchimpListId}/members`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Basic ${btoa("anystring:" + mailchimpApiKey)}`,
+            },
+            body: JSON.stringify({
+              email_address: email,
+              status: "subscribed",
+              merge_fields: { SOURCE: source },
+              tags: [source],
+            }),
+          }
+        );
 
-    const dc = mailchimpApiKey.split("-").pop();
+        mailchimpData = await mailchimpResponse.json();
 
-    // Subscribe to Mailchimp
-    const mailchimpResponse = await fetch(
-      `https://${dc}.api.mailchimp.com/3.0/lists/${mailchimpListId}/members`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Basic ${btoa("anystring:" + mailchimpApiKey)}`,
-        },
-        body: JSON.stringify({
-          email_address: email,
-          status: "subscribed",
-          merge_fields: { SOURCE: source },
-          tags: [source],
-        }),
-      }
-    );
-
-    const mailchimpData = await mailchimpResponse.json();
-
-    if (!mailchimpResponse.ok) {
-      // 400 with "Member Exists" is not a real error
-      if (mailchimpData.title === "Member Exists") {
-        logStep("Already subscribed", { email });
-      } else {
-        logStep("Mailchimp API error", mailchimpData);
+        if (!mailchimpResponse.ok) {
+          if (mailchimpData?.title === "Member Exists") {
+            logStep("Already subscribed", { email });
+          } else {
+            logStep("Mailchimp API error (non-fatal)", mailchimpData);
+          }
+        } else {
+          logStep("Mailchimp subscription successful", { subscriberId: mailchimpData.id });
+        }
+      } catch (mcErr) {
+        logStep("Mailchimp call failed (non-fatal)", {
+          error: mcErr instanceof Error ? mcErr.message : String(mcErr),
+        });
       }
     } else {
-      logStep("Mailchimp subscription successful", { subscriberId: mailchimpData.id });
+      logStep("Mailchimp not configured — saving to database only", {
+        hasApiKey: Boolean(mailchimpApiKey),
+        hasListId: Boolean(mailchimpListId),
+      });
     }
 
     // Also save to database for backup
