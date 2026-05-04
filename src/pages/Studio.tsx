@@ -127,7 +127,7 @@ export default function Studio() {
   };
 
   const clearForm = () => {
-    const empty = { name: "", date: "", time: "", location: "" };
+    const empty = { name: "", date: "", time: "", location: "", email: "" };
     setForm(empty);
     update(empty);
     toast("Birth data cleared.");
