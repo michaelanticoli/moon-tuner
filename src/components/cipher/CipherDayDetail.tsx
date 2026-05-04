@@ -7,6 +7,8 @@ import { DailyReading } from "@/data/parseDailyReadings";
 import { DayEvents } from "@/data/parseICS";
 import { fetchDatapoints, generateCycleInsight, type LunarDatapoint } from "@/data/lunarDatapoints";
 import { CycleInsightCard } from "@/components/CycleInsightCard";
+import { NatalOverlayBadges } from "@/components/cipher/NatalOverlayBadges";
+import { useNavigate } from "react-router-dom";
 
 interface CipherDayDetailProps {
   year: number;
