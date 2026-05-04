@@ -392,6 +392,15 @@ export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose 
             <CycleContextSection phaseData={phaseData} dayEvents={dayEvents} />
           </div>
         )}
+
+        {/* Light natal overlay — Sun/Moon transits to natal Sun/Moon/ASC */}
+        <NatalOverlayBadges
+          date={date}
+          onPromptBirth={() => {
+            onClose();
+            navigate("/studio");
+          }}
+        />
       </motion.div>
     </div>
   );
