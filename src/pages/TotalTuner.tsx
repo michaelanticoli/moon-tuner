@@ -182,13 +182,13 @@ export default function TotalTuner() {
               {arc.status === "ready" && arc.data && (
                 <div className="space-y-3 text-sm">
                   <div className="grid sm:grid-cols-3 gap-3">
-                    <Stat label="Natal Phase" value={arc.data.natalSignature?.natalPhase || "—"} />
+                    <Stat label="Natal Phase" value={arc.data.natal?.phase || "—"} />
                     <Stat label="Power Days" value={String(arc.data.powerDays?.length ?? 0)} />
-                    <Stat label="Months mapped" value={String(arc.data.monthlyArc?.length ?? 0)} />
+                    <Stat label="Archetype" value={arc.data.natal?.archetype || "—"} />
                   </div>
-                  {arc.data.natalSignature?.summary && (
+                  {arc.data.natal?.whatThisMeans && (
                     <p className="text-muted-foreground leading-relaxed pt-2">
-                      {arc.data.natalSignature.summary}
+                      {arc.data.natal.whatThisMeans}
                     </p>
                   )}
                 </div>
@@ -207,17 +207,17 @@ export default function TotalTuner() {
               {cazimi.status === "ready" && cazimi.data && (
                 <div className="grid sm:grid-cols-2 gap-3">
                   {cazimi.data.slice(0, 6).map((c) => (
-                    <div key={c.body} className="border border-border/40 rounded-lg p-3">
+                    <div key={c.id} className="border border-border/40 rounded-lg p-3">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-accent text-lg">{c.archetype.symbol}</span>
+                        <span className="text-accent text-lg">{c.symbol}</span>
                         <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                          {c.archetype.name}
+                          {c.name}
                         </span>
                       </div>
-                      <p className="text-xs text-muted-foreground">{c.archetype.theme}</p>
-                      {c.nextCazimiDate && (
+                      <p className="text-xs text-muted-foreground">{c.theme}</p>
+                      {c.cazimiDate && (
                         <p className="text-[10px] mt-1 text-accent/80">
-                          Next: {new Date(c.nextCazimiDate).toLocaleDateString()}
+                          Next: {c.cazimiDate}
                         </p>
                       )}
                     </div>
