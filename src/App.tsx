@@ -30,6 +30,7 @@ import Sessions from "./pages/Sessions";
 import Services from "./pages/Services";
 import MoonPhaseToday from "./pages/MoonPhaseToday";
 import Studio from "./pages/Studio";
+import TotalTuner from "./pages/TotalTuner";
 import CazimiPunchcard from "./pages/CazimiPunchcard";
 import NotFound from "./pages/NotFound";
 
@@ -79,17 +80,12 @@ function AnimatedRoutes() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/studio"
-            element={
-              <ProtectedRoute>
-                <Studio />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/studio" element={<Studio />} />
+          <Route path="/total-tuner" element={<TotalTuner />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
+      <ReportLauncher />
     </>
   );
 }
