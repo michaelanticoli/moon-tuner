@@ -7,6 +7,8 @@ import { DailyReading } from "@/data/parseDailyReadings";
 import { DayEvents } from "@/data/parseICS";
 import { fetchDatapoints, generateCycleInsight, type LunarDatapoint } from "@/data/lunarDatapoints";
 import { CycleInsightCard } from "@/components/CycleInsightCard";
+import { NatalOverlayBadges } from "@/components/cipher/NatalOverlayBadges";
+import { useNavigate } from "react-router-dom";
 
 interface CipherDayDetailProps {
   year: number;
@@ -114,6 +116,7 @@ function CycleContextSection({ phaseData, dayEvents }: { phaseData: any; dayEven
 }
 
 export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose }: CipherDayDetailProps) {
+  const navigate = useNavigate();
   const date = new Date(year, month, day);
   const phaseData = getMoonPhase2026(date);
   const signData = getMoonSign2026(date);
@@ -389,6 +392,15 @@ export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose 
             <CycleContextSection phaseData={phaseData} dayEvents={dayEvents} />
           </div>
         )}
+
+        {/* Light natal overlay — Sun/Moon transits to natal Sun/Moon/ASC */}
+        <NatalOverlayBadges
+          date={date}
+          onPromptBirth={() => {
+            onClose();
+            navigate("/studio");
+          }}
+        />
       </motion.div>
     </div>
   );
