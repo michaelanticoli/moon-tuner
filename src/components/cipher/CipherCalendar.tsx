@@ -1,6 +1,14 @@
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { getMoonPhase2026, getMoonSign2026 } from "@/data/lunar2026Data";
+import { useSharedBirth } from "@/hooks/useSharedBirth";
+import {
+  computeNatalLuminaries,
+  readCachedLuminaries,
+  type NatalLuminaries,
+} from "@/lib/natalOverlay";
+import { hasLandmarkForDate } from "@/lib/lifeLandmarks";
 
 interface CipherCalendarProps {
   year: number;
