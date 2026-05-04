@@ -8,6 +8,7 @@ import { DayEvents } from "@/data/parseICS";
 import { fetchDatapoints, generateCycleInsight, type LunarDatapoint } from "@/data/lunarDatapoints";
 import { CycleInsightCard } from "@/components/CycleInsightCard";
 import { NatalOverlayBadges } from "@/components/cipher/NatalOverlayBadges";
+import { LifeLandmarksBanner } from "@/components/cipher/LifeLandmarksBanner";
 import { useNavigate } from "react-router-dom";
 
 interface CipherDayDetailProps {
@@ -167,6 +168,9 @@ export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose 
             </h2>
           </div>
         </div>
+
+        {/* Personal landmarks (birthday, lunar return, eclipse-on-natal, etc.) */}
+        <LifeLandmarksBanner date={date} dayEvents={dayEvents} />
 
         {/* Astronomical Status Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
