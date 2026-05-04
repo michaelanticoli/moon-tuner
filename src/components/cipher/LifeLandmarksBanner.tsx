@@ -6,14 +6,15 @@
 // ICS events (eclipses, ingresses), and calls out landmark events the
 // user would otherwise miss — birthdays, lunar returns, eclipse hits.
 import { useEffect, useMemo, useState } from "react";
-import { Sparkles, Loader2 } from "lucide-react";
+import { Sparkles, Loader2, BookOpen, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useSharedBirth } from "@/hooks/useSharedBirth";
 import {
   computeNatalLuminaries,
   readCachedLuminaries,
   type NatalLuminaries,
 } from "@/lib/natalOverlay";
-import { detectLandmarks, type Landmark } from "@/lib/lifeLandmarks";
+import { detectLandmarks, workbookHintFor, type Landmark } from "@/lib/lifeLandmarks";
 import type { DayEvents } from "@/data/parseICS";
 
 interface Props {
