@@ -104,7 +104,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="flex gap-3">
-                  <Link to="/lunar-cipher">
+                  <Link to="/studio">
                     <Button variant="gold">
                       <Plus className="w-4 h-4 mr-2" />
                       New Chart
@@ -216,7 +216,7 @@ const Dashboard = () => {
                     <p className="text-muted-foreground mb-6">
                       Create your first lunar chart to begin your journey
                     </p>
-                    <Link to="/lunar-cipher">
+                    <Link to="/studio">
                       <Button variant="gold">
                         <Plus className="w-4 h-4 mr-2" />
                         Create Your First Chart

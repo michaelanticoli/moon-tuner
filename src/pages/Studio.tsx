@@ -4,7 +4,12 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { useAuth } from "@/contexts/AuthContext";
-import { useSharedBirth, isCompleteBirth } from "@/hooks/useSharedBirth";
+import {
+  useSharedBirth,
+  isCompleteBirth,
+  isValidEmail,
+  captureBirthEmail,
+} from "@/hooks/useSharedBirth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,6 +23,8 @@ import {
   AlertCircle,
   Rocket,
   Eraser,
+  Layers,
+  Calendar,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -71,8 +78,8 @@ const STANDALONE_TILES: Tile[] = [
   {
     to: "/lunar-cipher",
     title: "Lunar Cipher",
-    desc: "2026 ephemeris with VOC and exact phase timing — no birth data required.",
-    icon: <Moon className="w-5 h-5" />,
+    desc: "2026 ephemeris with VOC and exact phase timing — overlays your chart when birth data is set.",
+    icon: <Calendar className="w-5 h-5" />,
     tag: "Cipher",
     needsBirth: false,
   },
@@ -98,36 +105,22 @@ export default function Studio() {
     );
   }
 
-  if (!isCreator(user?.email)) {
-    return (
-      <PageTransition>
-        <Navigation />
-        <main className="min-h-screen bg-background text-foreground pt-32 pb-24">
-          <div className="max-w-2xl mx-auto px-6 text-center">
-            <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">
-              Creator Studio
-            </p>
-            <h1 className="text-3xl font-thin mb-4">Access restricted</h1>
-            <p className="text-muted-foreground">
-              This area is reserved for the Moontuner creator team. Signed in as{" "}
-              <span className="text-foreground">{user?.email}</span>.
-            </p>
-          </div>
-        </main>
-        <Footer />
-      </PageTransition>
-    );
-  }
+  // Studio is open to all signed-in users (creator allowlist kept only as a label).
+  void isCreator;
 
   const ready = isCompleteBirth(form);
 
-  const saveForm = () => {
+  const saveForm = async () => {
     update(form);
     toast.success("Birth data saved — generators will pre-fill automatically.");
+    if (form.email && isValidEmail(form.email)) {
+      const r = await captureBirthEmail(form, "studio-intake");
+      if (r.ok) toast.success("Email captured to your subscriber list.");
+    }
   };
 
   const clearForm = () => {
-    const empty = { name: "", date: "", time: "", location: "" };
+    const empty = { name: "", date: "", time: "", location: "", email: "" };
     setForm(empty);
     update(empty);
     toast("Birth data cleared.");
@@ -150,11 +143,7 @@ export default function Studio() {
       return;
     }
     update(form);
-    // Open each birth-driven generator in a new tab so creator can run holistically
-    BIRTH_TILES.forEach((t, i) => {
-      setTimeout(() => window.open(t.to, "_blank", "noopener"), i * 250);
-    });
-    toast.success("Opening all three generators in new tabs.");
+    navigate("/total-tuner");
   };
 
   return (
@@ -250,6 +239,20 @@ export default function Studio() {
               </div>
             </div>
 
+            <div className="mb-4">
+              <Label htmlFor="email" className="text-xs uppercase tracking-wider text-muted-foreground">
+                Email <span className="text-muted-foreground/60 normal-case">(optional — saves your chart + sends the lunar guide)</span>
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                placeholder="you@domain.com"
+                className="mt-1.5 bg-background"
+              />
+            </div>
+
             <div className="flex flex-wrap gap-3">
               <Button onClick={saveForm} variant="gold" size="sm">
                 Save subject
@@ -272,14 +275,17 @@ export default function Studio() {
             </div>
             <div className="border border-accent/30 rounded-lg p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-gradient-to-br from-accent/[0.04] to-transparent">
               <div>
-                <h3 className="text-xl font-light mb-1">Run all three reports</h3>
+                <h3 className="text-xl font-light mb-1 flex items-center gap-2">
+                  <Layers className="w-5 h-5 text-accent" /> Total Tuner Report
+                </h3>
                 <p className="text-sm text-muted-foreground max-w-md">
-                  Opens the Symphony, Lunar Arc, and Cazimi Punchcard in
-                  separate tabs — each pre-filled with the saved chart.
+                  All four engines assembled into one comprehensive document —
+                  Symphony, Lunar Arc, Cazimi Punchcard, and a personalized
+                  Cipher overlay. Exportable as a single PDF.
                 </p>
               </div>
               <Button onClick={generateAll} variant="gold" size="lg" disabled={!ready}>
-                <Rocket className="w-4 h-4" /> Generate all
+                <Rocket className="w-4 h-4" /> Generate Total Tuner
               </Button>
             </div>
           </section>
