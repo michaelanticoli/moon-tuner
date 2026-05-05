@@ -19,6 +19,12 @@ const tiles = [
     body: "Identify 100% resonance days based on natal lunar velocity and astronomical data.",
   },
   {
+    src: peakResonanceFlower,
+    eyebrow: "Resonance",
+    title: "Bloom At The Flower Moon",
+    body: "Locate the singular peak window where your natal signature flowers into full expression.",
+  },
+  {
     src: twelveMonthArchitecture,
     eyebrow: "Architecture",
     title: "The 12-Month Blueprint",
@@ -29,6 +35,12 @@ const tiles = [
     eyebrow: "Alignment",
     title: "Align Your Cognitive Geometry",
     body: "Phase your thoughts and feelings to match the rising frequency of the lunar spring.",
+  },
+  {
+    src: stretchCreativeLimits,
+    eyebrow: "Expansion",
+    title: "Stretch Your Creative Limits",
+    body: "Use phase-aware timing to push past plateaus without forcing or burning out.",
   },
   {
     src: beyondSurface,
