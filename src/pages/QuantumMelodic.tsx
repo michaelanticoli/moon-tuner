@@ -48,6 +48,7 @@ const QuantumMelodic = () => {
     return sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
   });
   const [checkoutUnavailable, setCheckoutUnavailable] = useState(false);
+  const [withNarration, setWithNarration] = useState(false);
   const buyButtonRef = useRef<HTMLDivElement | null>(null);
 
   const {
