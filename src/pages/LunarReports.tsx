@@ -42,11 +42,6 @@ function buildLunarNarrationText(report: LunarReport): string {
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SIMULATED_LOADING_DELAY_MS = 600;
 
-const LunarReports = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const isPaid = searchParams.get("paid") === "true";
-
 const LUNAR_CACHE_KEY = "moontuner_lunar_report_cache_v1";
 
 const LunarReports = () => {
@@ -87,7 +82,7 @@ const LunarReports = () => {
       return value;
     });
   };
-  const [report, setReport] = useState<LunarReport | null>(null);
+  const [report, setReport] = useState<LunarReport | null>(cached?.report ?? null);
   const [chartData, setChartData] = useState<ChartData | null>(null);
 
   const handleCalculate = async () => {
