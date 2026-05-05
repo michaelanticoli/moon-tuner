@@ -156,6 +156,18 @@ const LunarCipher = () => {
                 />
               )}
             </AnimatePresence>
+
+            {view === 'months' && (
+              <div className="mt-24 flex justify-center">
+                <img
+                  src={calendarSketch}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-full max-w-2xl opacity-25"
+                  loading="lazy"
+                />
+              </div>
+            )}
           </div>
         </main>
 
