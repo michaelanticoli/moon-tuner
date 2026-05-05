@@ -32,7 +32,18 @@ type Stage = "input" | "loading" | "report";
 
 export default function CazimiPunchcard() {
   const { birth, update } = useSharedBirth();
-  const [stage, setStage] = useState<Stage>("input");
+  const [searchParams] = useSearchParams();
+  const returningFromNarration = searchParams.get("narration_status") === "success";
+
+  const cached = (() => {
+    if (!returningFromNarration) return null;
+    try {
+      const raw = sessionStorage.getItem(CAZIMI_CACHE_KEY);
+      return raw ? JSON.parse(raw) as { profile: CazimiEntry[]; resolvedLocation: string } : null;
+    } catch { return null; }
+  })();
+
+  const [stage, setStage] = useState<Stage>(cached ? "report" : "input");
   const form = {
     name: birth.name,
     birthDate: birth.date,
@@ -47,11 +58,19 @@ export default function CazimiPunchcard() {
       location: partial.location ?? form.location,
     });
   };
-  const [resolvedLocation, setResolvedLocation] = useState("");
-  const [profile, setProfile] = useState<CazimiEntry[] | null>(null);
+  const [resolvedLocation, setResolvedLocation] = useState(cached?.resolvedLocation ?? "");
+  const [profile, setProfile] = useState<CazimiEntry[] | null>(cached?.profile ?? null);
   const [error, setError] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
   const reportRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (profile && resolvedLocation) {
+      try {
+        sessionStorage.setItem(CAZIMI_CACHE_KEY, JSON.stringify({ profile, resolvedLocation }));
+      } catch {}
+    }
+  }, [profile, resolvedLocation]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
