@@ -414,9 +414,22 @@ const QuantumMelodic = () => {
                   </p>
                 </div>
 
+                <label className="flex items-start gap-2.5 mb-4 cursor-pointer p-3 rounded-lg border border-gold/25 bg-gold/5 hover:bg-gold/10 transition-colors max-w-md">
+                  <input
+                    type="checkbox"
+                    checked={withNarration}
+                    onChange={(e) => setWithNarration(e.target.checked)}
+                    className="mt-0.5 accent-gold"
+                  />
+                  <span className="text-xs text-foreground/90 leading-snug">
+                    <span className="font-medium text-gold">+ Add voice narration ($5)</span>
+                    <br />
+                    <span className="text-muted-foreground">Hear your full report read in Michael's cloned voice — delivered as MP3.</span>
+                  </span>
+                </label>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Button onClick={beginCheckout} size="lg" className="system-button">
-                    Unlock Your Astro-Harmonic Report — $47
+                    Unlock Your Astro-Harmonic Report — ${withNarration ? "52" : "47"}
                   </Button>
                   <div ref={buyButtonRef}>
                     {checkoutUnavailable ? <Button onClick={beginCheckout}>Purchase Report</Button> : null}
