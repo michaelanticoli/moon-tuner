@@ -7,6 +7,9 @@ import { PhaseSignMatrix } from "@/components/PhaseSignMatrix";
 import { ZodiacBodyMap } from "@/components/ZodiacBodyMap";
 import { ArrowDown } from "lucide-react";
 import { DeepDiveSection } from "@/components/DeepDiveSection";
+import phasesGold from "@/assets/graphic-phases-gold.png";
+import waveDivider from "@/assets/graphic-wave-phases-divider.png";
+import phaseWaveforms from "@/assets/graphic-phase-waveforms.png";
 
 const LunarSystem = () => {
   return (
