@@ -338,6 +338,12 @@ export default function CazimiPunchcard() {
                   </div>
                 </div>
 
+                <NarrationUpsell
+                  reportType="cazimi"
+                  reportLabel={`${form.name || "Cazimi"} Punchcard`}
+                  sourceText={buildCazimiNarrationText(form.name, resolvedLocation, profile)}
+                  returnPath="/cazimi"
+                />
                 <CrossGeneratorLinks exclude="/cazimi" />
               </motion.div>
             )}
