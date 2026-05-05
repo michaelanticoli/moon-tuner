@@ -253,14 +253,28 @@ const Manifesto = () => {
           {/* Closing */}
           <section className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
             <ScrollReveal>
-              <div className="max-w-3xl mx-auto text-center">
-                <Moon className="w-16 h-16 text-accent/40 mx-auto mb-8" />
-                <p className="font-serif text-2xl lg:text-3xl text-foreground leading-relaxed italic mb-8">
-                  "We are on the way. We are the way. We are the guests arriving to the party."
-                </p>
-                <span className="system-label block text-accent">
-                  Welcome to Moontuner
-                </span>
+              <div className="max-w-5xl mx-auto grid md:grid-cols-[1fr_auto] gap-12 items-center">
+                <div className="text-center md:text-left">
+                  <Moon className="w-16 h-16 text-accent/40 mx-auto md:mx-0 mb-8" />
+                  <p className="font-serif text-2xl lg:text-3xl text-foreground leading-relaxed italic mb-8">
+                    "We are on the way. We are the way. We are the guests arriving to the party."
+                  </p>
+                  <span className="system-label block text-accent">
+                    Welcome to Moontuner
+                  </span>
+                </div>
+                <a
+                  href="/lunar-system"
+                  className="block w-full max-w-[280px] mx-auto group"
+                  aria-label="Ride the Coattails of the Moon"
+                >
+                  <img
+                    src={(await import("@/assets/ride-coattails-poster.png")).default}
+                    alt="Ride the Coattails of the Moon — Quantumelodic poster"
+                    className="w-full h-auto rounded-lg border border-border/40 shadow-2xl shadow-black/60 transition-transform duration-500 group-hover:scale-[1.02]"
+                    loading="lazy"
+                  />
+                </a>
               </div>
             </ScrollReveal>
           </section>
