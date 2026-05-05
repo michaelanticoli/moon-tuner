@@ -132,6 +132,7 @@ const QuantumMelodic = () => {
           birthName: birthDraft.name,
           successPath: "/quantumelodic?paid=true",
           cancelPath: "/quantumelodic",
+          withNarration,
         },
       });
 
