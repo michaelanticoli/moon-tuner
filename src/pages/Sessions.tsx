@@ -284,6 +284,19 @@ export default function Sessions() {
                     a complete sonic portrait of the chart you were born into — generated algorithmically, yours
                     permanently. Paired with an mp3 download of your astro-harmonic sonic composition.
                   </p>
+                  <label className="flex items-start gap-2.5 mb-4 cursor-pointer p-3 rounded-lg border border-gold/25 bg-gold/5 hover:bg-gold/10 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={chartWithNarration}
+                      onChange={(e) => setChartWithNarration(e.target.checked)}
+                      className="mt-0.5 accent-gold"
+                    />
+                    <span className="text-xs text-foreground/90 leading-snug">
+                      <span className="font-medium text-gold">+ Add voice narration ($5)</span>
+                      <br />
+                      <span className="text-muted-foreground">Hear your report read aloud in Michael's cloned voice — delivered as MP3.</span>
+                    </span>
+                  </label>
                   <Button
                     onClick={handleChartOverviewBooking}
                     disabled={bookingLoading}
@@ -297,7 +310,7 @@ export default function Sessions() {
                       </>
                     ) : (
                       <>
-                        Generate Your Report & Song <ExternalLink className="w-3 h-3" />
+                        Generate Your Report & Song{chartWithNarration ? " · $52" : ""} <ExternalLink className="w-3 h-3" />
                       </>
                     )}
                   </Button>
