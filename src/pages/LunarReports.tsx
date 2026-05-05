@@ -19,7 +19,25 @@ import { ArcPracticeSection } from "@/components/report/ArcPracticeSection";
 import { ReportClosing } from "@/components/report/ReportClosing";
 import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
 import { LunarArcPromo } from "@/components/report/LunarArcPromo";
+import { NarrationUpsell } from "@/components/report/NarrationUpsell";
 import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
+
+function buildLunarNarrationText(report: LunarReport): string {
+  const name = report.meta.querentName || "Friend";
+  const peaks = report.powerDays
+    .filter((d) => d.isPeak)
+    .slice(0, 6)
+    .map((d) => `${d.month}: ${d.keyword}`)
+    .join(", ");
+  return [
+    `${name}, this is your Personal Lunar Arc.`,
+    `You were born under a ${report.natal.phase} signature, at ${report.natal.angle} degrees of the lunar cycle.`,
+    `Across the next twelve months, twelve power days mark your highest-leverage windows.`,
+    `Your peak resonance windows include: ${peaks}.`,
+    `Each of these moments is a doorway. Walk through them with intention, and the year arranges itself around your natural rhythm.`,
+    `This is your timing. Move with it.`,
+  ].join(" ");
+}
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SIMULATED_LOADING_DELAY_MS = 600;
@@ -247,6 +265,12 @@ const LunarReports = () => {
                     <PowerDayGrid report={report} />
                     <ArcPracticeSection report={report} />
                     <ReportClosing report={report} />
+                    <NarrationUpsell
+                      reportType="lunar-arc"
+                      reportLabel={`${report.meta.querentName || "Lunar Arc"} Report`}
+                      sourceText={buildLunarNarrationText(report)}
+                      returnPath="/lunar-reports?paid=true"
+                    />
                     <CrossGeneratorLinks exclude="/lunar-reports" />
                   </motion.div>
                 )}
