@@ -176,9 +176,11 @@ export type Database = {
           id: string
           report_label: string | null
           report_type: string
+          source_text: string | null
           status: string
           stripe_session_id: string | null
           updated_at: string
+          voice_id: string | null
         }
         Insert: {
           audio_url?: string | null
@@ -188,9 +190,11 @@ export type Database = {
           id?: string
           report_label?: string | null
           report_type: string
+          source_text?: string | null
           status?: string
           stripe_session_id?: string | null
           updated_at?: string
+          voice_id?: string | null
         }
         Update: {
           audio_url?: string | null
@@ -200,9 +204,11 @@ export type Database = {
           id?: string
           report_label?: string | null
           report_type?: string
+          source_text?: string | null
           status?: string
           stripe_session_id?: string | null
           updated_at?: string
+          voice_id?: string | null
         }
         Relationships: []
       }
