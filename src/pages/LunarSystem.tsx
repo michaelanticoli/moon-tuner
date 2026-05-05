@@ -38,6 +38,13 @@ const LunarSystem = () => {
                 <span>Scroll to explore the living system</span>
               </div>
             </div>
+            <img
+              src={phasesGold}
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none select-none mx-auto mt-16 w-full max-w-4xl opacity-60"
+              loading="lazy"
+            />
           </section>
 
           <div className="divider-line container mx-auto opacity-0 animate-fade-in delay-400 mb-24" />
