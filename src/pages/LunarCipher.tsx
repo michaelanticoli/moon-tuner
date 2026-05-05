@@ -13,6 +13,8 @@ import { CipherCalendar } from "@/components/cipher/CipherCalendar";
 import { CipherDayDetail } from "@/components/cipher/CipherDayDetail";
 import { getDailyReadingsMap, getDailyReading, type DailyReading } from "@/data/parseDailyReadings";
 import { getICSEventIndex, getEventsForDate, type DayEvents } from "@/data/parseICS";
+import calendarSketch from "@/assets/graphic-calendar-sketch.png";
+import lunarCalendarRetro from "@/assets/graphic-lunar-calendar-retro.png";
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -68,9 +70,15 @@ const LunarCipher = () => {
               animate={{ opacity: 1, y: 0 }}
               className="flex flex-col md:flex-row gap-8 md:gap-12 items-start mb-16 md:mb-20"
             >
-              <div className="w-24 h-24 md:w-32 md:h-32 rounded-xl shadow-2xl shadow-accent/20 border border-border bg-card flex items-center justify-center">
-                <MoonPhaseGlyph phase="full" size={48} className="text-accent md:hidden" />
-                <MoonPhaseGlyph phase="full" size={64} className="text-accent hidden md:block" />
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-xl shadow-2xl shadow-accent/20 border border-border bg-card flex items-center justify-center relative overflow-hidden">
+                <img
+                  src={lunarCalendarRetro}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover opacity-20"
+                />
+                <MoonPhaseGlyph phase="full" size={48} className="text-accent md:hidden relative" />
+                <MoonPhaseGlyph phase="full" size={64} className="text-accent hidden md:block relative" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center space-x-4 mb-4">
@@ -148,6 +156,18 @@ const LunarCipher = () => {
                 />
               )}
             </AnimatePresence>
+
+            {view === 'months' && (
+              <div className="mt-24 flex justify-center">
+                <img
+                  src={calendarSketch}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-full max-w-2xl opacity-25"
+                  loading="lazy"
+                />
+              </div>
+            )}
           </div>
         </main>
 

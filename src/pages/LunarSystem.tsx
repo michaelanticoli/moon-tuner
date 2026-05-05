@@ -7,6 +7,9 @@ import { PhaseSignMatrix } from "@/components/PhaseSignMatrix";
 import { ZodiacBodyMap } from "@/components/ZodiacBodyMap";
 import { ArrowDown } from "lucide-react";
 import { DeepDiveSection } from "@/components/DeepDiveSection";
+import phasesGold from "@/assets/graphic-phases-gold.png";
+import waveDivider from "@/assets/graphic-wave-phases-divider.png";
+import phaseWaveforms from "@/assets/graphic-phase-waveforms.png";
 
 const LunarSystem = () => {
   return (
@@ -35,6 +38,13 @@ const LunarSystem = () => {
                 <span>Scroll to explore the living system</span>
               </div>
             </div>
+            <img
+              src={phasesGold}
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none select-none mx-auto mt-16 w-full max-w-4xl opacity-60"
+              loading="lazy"
+            />
           </section>
 
           <div className="divider-line container mx-auto opacity-0 animate-fade-in delay-400 mb-24" />
@@ -81,6 +91,16 @@ const LunarSystem = () => {
 
           <div className="divider-line container mx-auto mb-24" />
 
+          <div className="container mx-auto px-6 lg:px-12 mb-16">
+            <img
+              src={phaseWaveforms}
+              alt=""
+              aria-hidden="true"
+              className="mx-auto w-full max-w-3xl opacity-40"
+              loading="lazy"
+            />
+          </div>
+
           {/* Zodiac Body Map Section */}
           <section className="container mx-auto px-6 lg:px-12 mb-32">
             <ScrollReveal>
@@ -88,7 +108,15 @@ const LunarSystem = () => {
             </ScrollReveal>
           </section>
 
-          <div className="divider-line container mx-auto mb-24" />
+          <div className="container mx-auto px-6 lg:px-12 mb-24">
+            <img
+              src={waveDivider}
+              alt=""
+              aria-hidden="true"
+              className="mx-auto w-full max-w-3xl opacity-30"
+              loading="lazy"
+            />
+          </div>
 
           {/* Integration Message */}
           <section className="container mx-auto px-6 lg:px-12">

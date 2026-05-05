@@ -8,6 +8,8 @@ import mapPeakWindows from "@/assets/promo-map-peak-windows.png";
 import twelveMonthArchitecture from "@/assets/promo-lunar-arc-architecture.png";
 import beyondSurface from "@/assets/promo-beyond-surface-spirituality.png";
 import cognitiveGeometry from "@/assets/promo-cognitive-geometry.png";
+import peakResonanceFlower from "@/assets/promo-peak-resonance-flower-moon.png";
+import stretchCreativeLimits from "@/assets/promo-stretch-creative-limits.png";
 
 const tiles = [
   {
@@ -15,6 +17,12 @@ const tiles = [
     eyebrow: "Precision",
     title: "Map Your Peak Windows",
     body: "Identify 100% resonance days based on natal lunar velocity and astronomical data.",
+  },
+  {
+    src: peakResonanceFlower,
+    eyebrow: "Resonance",
+    title: "Bloom At The Flower Moon",
+    body: "Locate the singular peak window where your natal signature flowers into full expression.",
   },
   {
     src: twelveMonthArchitecture,
@@ -27,6 +35,12 @@ const tiles = [
     eyebrow: "Alignment",
     title: "Align Your Cognitive Geometry",
     body: "Phase your thoughts and feelings to match the rising frequency of the lunar spring.",
+  },
+  {
+    src: stretchCreativeLimits,
+    eyebrow: "Expansion",
+    title: "Stretch Your Creative Limits",
+    body: "Use phase-aware timing to push past plateaus without forcing or burning out.",
   },
   {
     src: beyondSurface,
@@ -76,7 +90,7 @@ export function LunarArcPromo() {
         </motion.div>
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {tiles.map((t, i) => (
           <motion.div
             key={t.title}
