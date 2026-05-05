@@ -8,6 +8,8 @@ import mapPeakWindows from "@/assets/promo-map-peak-windows.png";
 import twelveMonthArchitecture from "@/assets/promo-lunar-arc-architecture.png";
 import beyondSurface from "@/assets/promo-beyond-surface-spirituality.png";
 import cognitiveGeometry from "@/assets/promo-cognitive-geometry.png";
+import peakResonanceFlower from "@/assets/promo-peak-resonance-flower-moon.png";
+import stretchCreativeLimits from "@/assets/promo-stretch-creative-limits.png";
 
 const tiles = [
   {
