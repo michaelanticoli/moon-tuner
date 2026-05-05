@@ -134,7 +134,7 @@ export default function CazimiPunchcard() {
       {/* Print overrides — light mode for the captured report only */}
       <style>{`
         body.cazimi-print [data-cazimi-report] { background:#ffffff !important; color:#111 !important; }
-        body.cazimi-print [data-cazimi-report] * { color:#111 !important; border-color:#dcdcdc !important; }
+        body.cazimi-print [data-cazimi-report] * { color:#111 !important; border-color:#dcdcdc !important; opacity:1 !important; transform:none !important; filter:none !important; }
         body.cazimi-print [data-cazimi-report] .cz-accent { color:#0d6b63 !important; }
         body.cazimi-print [data-cazimi-report] .cz-muted { color:#555 !important; }
         body.cazimi-print [data-cazimi-report] .cz-cell { background:#f5f5f5 !important; }
