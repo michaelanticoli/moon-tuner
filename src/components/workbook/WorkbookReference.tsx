@@ -19,6 +19,7 @@ import {
   type MoonRitual
 } from "@/data/chaperoneRituals";
 import { getLoreForSign, getMythsForPhase, lunarEphemera } from "@/data/chaperoneLore";
+import { ZodiacGlyph } from "@/components/ZodiacGlyph";
 
 interface WorkbookReferenceProps {
   fromSign: string;
