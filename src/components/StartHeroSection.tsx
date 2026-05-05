@@ -1,6 +1,7 @@
 import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { LunarBackground } from "./LunarBackground";
 import { MoonPhaseGlyph, phaseNameToKey } from "./MoonPhaseGlyph";
+import michaelMoonPortrait from "@/assets/michael-moon-portrait.png";
 
 export function StartHeroSection() {
   const moonPhase = useMoonPhase();
@@ -9,6 +10,13 @@ export function StartHeroSection() {
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-20">
       <LunarBackground />
+      {/* Michael — anchored to bottom-right, sits naturally at section base */}
+      <img
+        src={michaelMoonPortrait}
+        alt="Michael Moontuner holding the Moon"
+        className="hidden lg:block absolute bottom-0 right-0 z-[5] pointer-events-none select-none h-[78vh] max-h-[820px] w-auto object-contain object-bottom opacity-90 drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
+        loading="eager"
+      />
       <div className="relative z-10 container mx-auto px-6 lg:px-12 max-w-4xl">
         {/* Live phase badge */}
         <div className="opacity-0 animate-fade-in-up mb-6 flex items-center gap-4">
