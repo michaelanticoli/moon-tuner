@@ -27,35 +27,47 @@ export function NarrationUpsell({
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
 
-  // On mount: if redirected back from Stripe with narration_id, generate
+  // On mount: if redirected back from Stripe with narration_id, generate.
+  // OR if prepaid as add-on at main checkout (session_id + narration_addon=1), claim it.
   useEffect(() => {
     const narrationId = searchParams.get("narration_id");
     const narrationStatus = searchParams.get("narration_status");
-    if (narrationId && narrationStatus === "success") {
-      setStatus("generating");
-      (async () => {
-        try {
-          const { data, error } = await supabase.functions.invoke(
-            "generate-narration",
-            { body: { narrationId } },
-          );
-          if (error) throw error;
-          if (data?.audioUrl) {
-            setAudioUrl(data.audioUrl);
-            setStatus("ready");
-          } else throw new Error("No audio URL returned");
-        } catch (e) {
-          console.error(e);
-          setError(e instanceof Error ? e.message : "Generation failed");
-          setStatus("error");
-        } finally {
-          // Clean URL
-          searchParams.delete("narration_id");
-          searchParams.delete("narration_status");
-          setSearchParams(searchParams, { replace: true });
-        }
-      })();
-    }
+    const sessionId = searchParams.get("session_id");
+    const narrationAddon = searchParams.get("narration_addon");
+
+    const claimViaSession = sessionId && narrationAddon === "1";
+    const claimViaNarrationId = narrationId && narrationStatus === "success";
+
+    if (!claimViaSession && !claimViaNarrationId) return;
+
+    setStatus("generating");
+    (async () => {
+      try {
+        const invokeBody = claimViaSession
+          ? { stripeSessionId: sessionId, reportType, reportLabel, sourceText, returnPath }
+          : { narrationId };
+        const { data, error } = await supabase.functions.invoke(
+          "generate-narration",
+          { body: invokeBody },
+        );
+        if (error) throw error;
+        if (data?.audioUrl) {
+          setAudioUrl(data.audioUrl);
+          setStatus("ready");
+        } else throw new Error("No audio URL returned");
+      } catch (e) {
+        console.error(e);
+        setError(e instanceof Error ? e.message : "Generation failed");
+        setStatus("error");
+      } finally {
+        searchParams.delete("narration_id");
+        searchParams.delete("narration_status");
+        searchParams.delete("narration_addon");
+        // keep session_id off URL too — it's been consumed
+        searchParams.delete("session_id");
+        setSearchParams(searchParams, { replace: true });
+      }
+    })();
   }, []); // eslint-disable-line
 
   const handlePurchase = async () => {
