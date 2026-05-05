@@ -18,6 +18,7 @@ import { PeakSummaryPanel } from "@/components/report/PeakSummaryPanel";
 import { ArcPracticeSection } from "@/components/report/ArcPracticeSection";
 import { ReportClosing } from "@/components/report/ReportClosing";
 import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
+import { LunarArcPromo } from "@/components/report/LunarArcPromo";
 import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
@@ -126,6 +127,7 @@ const LunarReports = () => {
               <AnimatePresence mode="wait">
                 {step === 'input' && (
                   <motion.div key="input" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+                    <LunarArcPromo />
                     <div className="flex flex-col md:flex-row gap-12 items-start mb-16">
                       <div className="w-32 h-32 rounded-[2rem] shadow-2xl shadow-gold/20 border border-border bg-card flex items-center justify-center">
                         <MoonPhaseGlyph phase="waxing-gibbous" size={64} className="text-gold" />
