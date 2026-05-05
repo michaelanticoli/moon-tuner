@@ -101,13 +101,14 @@ export function SchoolCycles() {
           const datapoints = grouped[cat] || [];
           if (datapoints.length === 0) return null;
           const info = DATAPOINT_CATEGORIES[cat];
+          const CatIcon = info.icon;
 
           return (
             <section key={cat}>
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="font-serif text-xl text-foreground flex items-center gap-2">
-                    <span>{info.icon}</span> {info.label}
+                    <CatIcon className="w-4 h-4 text-accent" /> {info.label}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">{info.description}</p>
                 </div>
