@@ -24,8 +24,57 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
     );
 
-    const { narrationId } = await req.json();
-    if (!narrationId) return json({ error: "narrationId required" }, 400);
+    const NARRATION_PRICE_ID = "price_1TTprKCbEehvrcXT91cX9Tl9";
+    const VOICE_ID = "bQjXuTZHN8ofphZ0QfAv";
+
+    const reqBody = await req.json();
+    let { narrationId } = reqBody;
+    const { stripeSessionId, reportType, reportLabel, sourceText, returnPath } = reqBody;
+
+    // Path A: Add-on at main checkout — verify session contains narration line item, then create + claim a row
+    if (!narrationId && stripeSessionId) {
+      if (!sourceText || typeof sourceText !== "string") {
+        return json({ error: "sourceText required for add-on claim" }, 400);
+      }
+      // Idempotency: if a narration already exists for this session, reuse it
+      const { data: existing } = await supabase
+        .from("report_narrations")
+        .select("*")
+        .eq("stripe_session_id", stripeSessionId)
+        .maybeSingle();
+      if (existing) {
+        narrationId = existing.id;
+      } else {
+        const session = await stripe.checkout.sessions.retrieve(stripeSessionId, {
+          expand: ["line_items"],
+        });
+        if (session.payment_status !== "paid") {
+          return json({ status: "unpaid", paymentStatus: session.payment_status }, 402);
+        }
+        const hasNarration = (session.line_items?.data ?? []).some(
+          (li: any) => li.price?.id === NARRATION_PRICE_ID,
+        );
+        if (!hasNarration) {
+          return json({ error: "Narration add-on not in this session" }, 400);
+        }
+        const { data: created, error: createErr } = await supabase
+          .from("report_narrations")
+          .insert({
+            report_type: reportType ?? "unknown",
+            report_label: reportLabel ?? null,
+            source_text: sourceText.slice(0, 12000),
+            voice_id: VOICE_ID,
+            stripe_session_id: stripeSessionId,
+            status: "pending",
+          })
+          .select()
+          .single();
+        if (createErr || !created) throw createErr ?? new Error("create failed");
+        narrationId = created.id;
+      }
+    }
+
+    if (!narrationId) return json({ error: "narrationId or stripeSessionId required" }, 400);
 
     const { data: narration, error: fetchErr } = await supabase
       .from("report_narrations")
@@ -39,7 +88,7 @@ Deno.serve(async (req) => {
       return json({ status: "ready", audioUrl: narration.audio_url });
     }
 
-    // Verify payment
+    // Verify payment (only if not already verified via add-on path above)
     if (!narration.stripe_session_id) return json({ error: "No checkout session" }, 400);
     const session = await stripe.checkout.sessions.retrieve(narration.stripe_session_id);
     if (session.payment_status !== "paid") {
