@@ -91,6 +91,16 @@ const LunarSystem = () => {
 
           <div className="divider-line container mx-auto mb-24" />
 
+          <div className="container mx-auto px-6 lg:px-12 mb-16">
+            <img
+              src={phaseWaveforms}
+              alt=""
+              aria-hidden="true"
+              className="mx-auto w-full max-w-3xl opacity-40"
+              loading="lazy"
+            />
+          </div>
+
           {/* Zodiac Body Map Section */}
           <section className="container mx-auto px-6 lg:px-12 mb-32">
             <ScrollReveal>
@@ -98,7 +108,15 @@ const LunarSystem = () => {
             </ScrollReveal>
           </section>
 
-          <div className="divider-line container mx-auto mb-24" />
+          <div className="container mx-auto px-6 lg:px-12 mb-24">
+            <img
+              src={waveDivider}
+              alt=""
+              aria-hidden="true"
+              className="mx-auto w-full max-w-3xl opacity-30"
+              loading="lazy"
+            />
+          </div>
 
           {/* Integration Message */}
           <section className="container mx-auto px-6 lg:px-12">
