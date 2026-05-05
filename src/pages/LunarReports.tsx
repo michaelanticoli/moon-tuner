@@ -47,14 +47,7 @@ const LUNAR_CACHE_KEY = "moontuner_lunar_report_cache_v1";
 const LunarReports = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const isPaid = searchParams.get("paid") === "true";
   const returningFromNarration = searchParams.get("narration_status") === "success";
-
-  useEffect(() => {
-    if (!isPaid) {
-      navigate("/#report", { replace: true });
-    }
-  }, [isPaid, navigate]);
 
   const cached = (() => {
     if (!returningFromNarration) return null;
