@@ -45,22 +45,32 @@ serve(async (req) => {
       ? body.cancelPath
       : offer.cancel;
 
+    const withNarration = body?.withNarration === true;
+    const NARRATION_PRICE_ID = "price_1TTprKCbEehvrcXT91cX9Tl9"; // Voice Narration Add-On — $5
+
     const metadata: Record<string, string> = { product: productKey, label: offer.label };
+    if (withNarration) metadata.narration_addon = "true";
     if (typeof body?.birthDate === "string") metadata.birthDate = body.birthDate.slice(0, 32);
     if (typeof body?.birthTime === "string") metadata.birthTime = body.birthTime.slice(0, 16);
     if (typeof body?.birthLocation === "string") metadata.birthLocation = body.birthLocation.slice(0, 120);
     if (typeof body?.birthName === "string") metadata.birthName = body.birthName.slice(0, 80);
 
+    const lineItems: Array<{ price: string; quantity: number }> = [
+      { price: offer.price, quantity: 1 },
+    ];
+    if (withNarration) {
+      lineItems.push({ price: NARRATION_PRICE_ID, quantity: 1 });
+    }
+
+    // Append session_id + narration flag so the report page can claim the prepaid narration
+    const joinChar = successPath.includes("?") ? "&" : "?";
+    const finalSuccess = `${origin}${successPath}${joinChar}session_id={CHECKOUT_SESSION_ID}${withNarration ? "&narration_addon=1" : ""}`;
+
     const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price: offer.price,
-          quantity: 1,
-        },
-      ],
+      line_items: lineItems,
       mode: "payment",
       metadata,
-      success_url: `${origin}${successPath}`,
+      success_url: finalSuccess,
       cancel_url: `${origin}${cancelPath}`,
     });
 
