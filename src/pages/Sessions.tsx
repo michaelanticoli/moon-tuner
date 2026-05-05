@@ -63,12 +63,13 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 export default function Sessions() {
   const [bookingLoading, setBookingLoading] = useState(false);
+  const [chartWithNarration, setChartWithNarration] = useState(false);
 
   const handleChartOverviewBooking = async () => {
     setBookingLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("create-report-payment", {
-        body: { product: "astro-harmonic" },
+        body: { product: "astro-harmonic", withNarration: chartWithNarration },
       });
       if (error) throw error;
       if (data?.url) {
