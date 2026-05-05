@@ -52,8 +52,11 @@ function AnimatedRoutes() {
           <Route path="/workbooks" element={<Workbooks />} />
           <Route path="/workbook-preview" element={<WorkbookPreview />} />
           <Route path="/lunar-chaperone" element={<LunarChaperone />} />
+          <Route path="/chaperone" element={<LunarChaperone />} />
           <Route path="/lunar-system" element={<LunarSystem />} />
           <Route path="/lunar-cipher" element={<LunarCipher />} />
+          <Route path="/cipher" element={<LunarCipher />} />
+          <Route path="/phasecraft" element={<Method />} />
           <Route path="/lunar-reports" element={<LunarReports />} />
           <Route path="/quantumelodic" element={<QuantumMelodic />} />
           <Route path="/school" element={<MoontunerSchool />} />
