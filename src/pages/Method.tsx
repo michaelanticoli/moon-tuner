@@ -163,9 +163,16 @@ const Method = () => {
         
         <main className="pt-24 lg:pt-32">
           {/* Hero Section */}
-          <section className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
+          <section className="container mx-auto px-6 lg:px-12 py-16 lg:py-24 relative">
+            <img
+              src={phasecraftMethodGraphic}
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none select-none absolute inset-0 m-auto w-[min(640px,80%)] opacity-[0.07] blur-[0.5px]"
+              loading="lazy"
+            />
             <ScrollReveal>
-              <div className="max-w-4xl mx-auto text-center">
+              <div className="max-w-4xl mx-auto text-center relative">
                 <p className="text-gold font-medium tracking-widest text-sm uppercase mb-6">
                   The Moontuner Method
                 </p>
@@ -178,6 +185,16 @@ const Method = () => {
               </div>
             </ScrollReveal>
           </section>
+
+          <div className="container mx-auto px-6 lg:px-12">
+            <img
+              src={waveDivider}
+              alt=""
+              aria-hidden="true"
+              className="mx-auto w-full max-w-3xl opacity-30"
+              loading="lazy"
+            />
+          </div>
 
           {/* What is Phasecraft */}
           <section className="container mx-auto px-6 lg:px-12 py-16 lg:py-24 border-t border-border/30">
