@@ -5,6 +5,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Moon, Waves, Eye, Heart, Compass, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
+import rideCoattailsPoster from "@/assets/ride-coattails-poster.png";
 
 const manifestoDeclarations = [
   {
@@ -269,7 +270,7 @@ const Manifesto = () => {
                   aria-label="Ride the Coattails of the Moon"
                 >
                   <img
-                    src={(await import("@/assets/ride-coattails-poster.png")).default}
+                    src={rideCoattailsPoster}
                     alt="Ride the Coattails of the Moon — Quantumelodic poster"
                     className="w-full h-auto rounded-lg border border-border/40 shadow-2xl shadow-black/60 transition-transform duration-500 group-hover:scale-[1.02]"
                     loading="lazy"
