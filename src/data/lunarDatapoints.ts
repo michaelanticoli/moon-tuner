@@ -1,14 +1,18 @@
 import { supabase } from "@/integrations/supabase/client";
+import {
+  Eclipse, Repeat, Moon, Sparkles, Link2, MoonStar, ScrollText, Telescope,
+  type LucideIcon,
+} from "lucide-react";
 
-export const DATAPOINT_CATEGORIES = {
-  saros: { label: "Saros Cycles", description: "The 18-year eclipse return pattern", icon: "🌑" },
-  metonic: { label: "Metonic Cycles", description: "The 19-year lunar-solar harmony", icon: "🔄" },
-  synodic: { label: "Synodic Month", description: "The 29.53-day lunation cycle", icon: "🌓" },
-  planetary: { label: "Planetary Returns", description: "Venus, Mars, Mercury & Jupiter synodic periods", icon: "✨" },
-  nodal: { label: "Nodal Cycles", description: "Draconic months & eclipse nodes", icon: "🪢" },
-  eclipse: { label: "Eclipse Patterns", description: "Periodicity, Inex cycles & umbral geometry", icon: "🌘" },
-  historical: { label: "Historical Astronomy", description: "Babylonian, Greek & Mayan observations", icon: "📜" },
-  general: { label: "General", description: "Other astronomical facts", icon: "🔭" },
+export const DATAPOINT_CATEGORIES: Record<string, { label: string; description: string; icon: LucideIcon }> = {
+  saros: { label: "Saros Cycles", description: "The 18-year eclipse return pattern", icon: Eclipse },
+  metonic: { label: "Metonic Cycles", description: "The 19-year lunar-solar harmony", icon: Repeat },
+  synodic: { label: "Synodic Month", description: "The 29.53-day lunation cycle", icon: Moon },
+  planetary: { label: "Planetary Returns", description: "Venus, Mars, Mercury & Jupiter synodic periods", icon: Sparkles },
+  nodal: { label: "Nodal Cycles", description: "Draconic months & eclipse nodes", icon: Link2 },
+  eclipse: { label: "Eclipse Patterns", description: "Periodicity, Inex cycles & umbral geometry", icon: MoonStar },
+  historical: { label: "Historical Astronomy", description: "Babylonian, Greek & Mayan observations", icon: ScrollText },
+  general: { label: "General", description: "Other astronomical facts", icon: Telescope },
 } as const;
 
 export type DatapointCategory = keyof typeof DATAPOINT_CATEGORIES;
