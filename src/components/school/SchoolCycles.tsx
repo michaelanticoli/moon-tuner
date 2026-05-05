@@ -78,17 +78,18 @@ export function SchoolCycles() {
           const count = grouped[cat]?.length || 0;
           if (count === 0) return null;
           const info = DATAPOINT_CATEGORIES[cat];
+          const CatIcon = info.icon;
           return (
             <button
               key={cat}
               onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-              className={`text-[10px] uppercase tracking-widest px-3 py-1.5 border transition-colors ${
+              className={`text-[10px] uppercase tracking-widest px-3 py-1.5 border transition-colors inline-flex items-center gap-1.5 ${
                 activeCategory === cat
                   ? "border-accent text-accent bg-accent/10"
                   : "border-border text-muted-foreground hover:border-accent/30"
               }`}
             >
-              {info.icon} {info.label} ({count})
+              <CatIcon className="w-3 h-3" /> {info.label} ({count})
             </button>
           );
         })}
