@@ -13,6 +13,8 @@ import { CipherCalendar } from "@/components/cipher/CipherCalendar";
 import { CipherDayDetail } from "@/components/cipher/CipherDayDetail";
 import { getDailyReadingsMap, getDailyReading, type DailyReading } from "@/data/parseDailyReadings";
 import { getICSEventIndex, getEventsForDate, type DayEvents } from "@/data/parseICS";
+import calendarSketch from "@/assets/graphic-calendar-sketch.png";
+import lunarCalendarRetro from "@/assets/graphic-lunar-calendar-retro.png";
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
