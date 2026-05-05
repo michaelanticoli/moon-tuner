@@ -47,14 +47,31 @@ const LunarReports = () => {
   const navigate = useNavigate();
   const isPaid = searchParams.get("paid") === "true";
 
+const LUNAR_CACHE_KEY = "moontuner_lunar_report_cache_v1";
+
+const LunarReports = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const isPaid = searchParams.get("paid") === "true";
+  const returningFromNarration = searchParams.get("narration_status") === "success";
+
   useEffect(() => {
     if (!isPaid) {
       navigate("/#report", { replace: true });
     }
   }, [isPaid, navigate]);
 
-  const [step, setStep] = useState<'input' | 'generating' | 'result'>('input');
+  const cached = (() => {
+    if (!returningFromNarration) return null;
+    try {
+      const raw = sessionStorage.getItem(LUNAR_CACHE_KEY);
+      return raw ? JSON.parse(raw) as { report: LunarReport; chartData: ChartData | null; formData: any } : null;
+    } catch { return null; }
+  })();
+
+  const [step, setStep] = useState<'input' | 'generating' | 'result'>(cached ? 'result' : 'input');
   const [formData, setFormDataRaw] = useState(() => {
+    if (cached?.formData) return cached.formData;
     const b = readSharedBirth();
     return {
       name: b.name || '',
