@@ -83,7 +83,16 @@ const LunarReports = () => {
     });
   };
   const [report, setReport] = useState<LunarReport | null>(cached?.report ?? null);
-  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [chartData, setChartData] = useState<ChartData | null>(cached?.chartData ?? null);
+
+  // Persist report to sessionStorage when it changes (so narration redirect can restore it)
+  useEffect(() => {
+    if (report) {
+      try {
+        sessionStorage.setItem(LUNAR_CACHE_KEY, JSON.stringify({ report, chartData, formData }));
+      } catch {}
+    }
+  }, [report, chartData, formData]);
 
   const handleCalculate = async () => {
     if (!formData.date) return;
