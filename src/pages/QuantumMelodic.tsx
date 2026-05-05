@@ -31,6 +31,7 @@ import { useCosmicDeliverables } from "@/hooks/useCosmicDeliverables";
 import { renderChartImageBase64, renderReportPdfBase64 } from "@/lib/renderDeliverables";
 import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
 import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
+import { NarrationUpsell } from "@/components/report/NarrationUpsell";
 
 const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
 const QM_STORAGE_KEY = "qm_paid";
@@ -1003,6 +1004,21 @@ const QuantumMelodic = () => {
                         )}
                       </div>
                     </motion.section>
+                  )}
+
+                  {interpretation && reading && (
+                    <NarrationUpsell
+                      reportType="natal"
+                      reportLabel={`${reading.birthData.name || "Natal"} Astro-Harmonic Report`}
+                      sourceText={[
+                        interpretation.opening,
+                        interpretation.coreSignature,
+                        interpretation.harmonicAlignment,
+                        interpretation.resolutionGuidance,
+                        interpretation.closing,
+                      ].filter(Boolean).join("\n\n")}
+                      returnPath="/quantum-melodic"
+                    />
                   )}
 
                   {/* Canonical Chart Signatures — derived from real placements */}

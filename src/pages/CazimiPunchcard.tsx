@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Download, ArrowLeft } from "lucide-react";
 import html2canvas from "html2canvas";
@@ -7,6 +8,7 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
+import { NarrationUpsell } from "@/components/report/NarrationUpsell";
 import { useSharedBirth } from "@/hooks/useSharedBirth";
 import {
   generateCazimiProfile,
@@ -15,11 +17,33 @@ import {
   type CazimiEntry,
 } from "@/lib/cazimiEngine";
 
+const CAZIMI_CACHE_KEY = "moontuner_cazimi_cache_v1";
+
+function buildCazimiNarrationText(name: string, location: string, profile: CazimiEntry[]): string {
+  const intro = `${name || "Friend"}, these are your solar alignments — your Cazimi punchcard, calculated for ${location}.`;
+  const lines = profile.slice(0, 7).map((p) =>
+    `${p.name}, your ${p.theme.toLowerCase()}: ${p.cazimiImpact} Your next alignment falls on ${p.cazimiDate}.`
+  );
+  const closing = `A Cazimi is a cosmic clean slate — a zenith surge of pure renewal. Use these brief windows to close old cycles, refuel your spirit, and vote boldly for magic.`;
+  return [intro, ...lines, closing].join(" ");
+}
+
 type Stage = "input" | "loading" | "report";
 
 export default function CazimiPunchcard() {
   const { birth, update } = useSharedBirth();
-  const [stage, setStage] = useState<Stage>("input");
+  const [searchParams] = useSearchParams();
+  const returningFromNarration = searchParams.get("narration_status") === "success";
+
+  const cached = (() => {
+    if (!returningFromNarration) return null;
+    try {
+      const raw = sessionStorage.getItem(CAZIMI_CACHE_KEY);
+      return raw ? JSON.parse(raw) as { profile: CazimiEntry[]; resolvedLocation: string } : null;
+    } catch { return null; }
+  })();
+
+  const [stage, setStage] = useState<Stage>(cached ? "report" : "input");
   const form = {
     name: birth.name,
     birthDate: birth.date,
@@ -34,11 +58,19 @@ export default function CazimiPunchcard() {
       location: partial.location ?? form.location,
     });
   };
-  const [resolvedLocation, setResolvedLocation] = useState("");
-  const [profile, setProfile] = useState<CazimiEntry[] | null>(null);
+  const [resolvedLocation, setResolvedLocation] = useState(cached?.resolvedLocation ?? "");
+  const [profile, setProfile] = useState<CazimiEntry[] | null>(cached?.profile ?? null);
   const [error, setError] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
   const reportRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (profile && resolvedLocation) {
+      try {
+        sessionStorage.setItem(CAZIMI_CACHE_KEY, JSON.stringify({ profile, resolvedLocation }));
+      } catch {}
+    }
+  }, [profile, resolvedLocation]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -306,6 +338,12 @@ export default function CazimiPunchcard() {
                   </div>
                 </div>
 
+                <NarrationUpsell
+                  reportType="cazimi"
+                  reportLabel={`${form.name || "Cazimi"} Punchcard`}
+                  sourceText={buildCazimiNarrationText(form.name, resolvedLocation, profile)}
+                  returnPath="/cazimi"
+                />
                 <CrossGeneratorLinks exclude="/cazimi" />
               </motion.div>
             )}

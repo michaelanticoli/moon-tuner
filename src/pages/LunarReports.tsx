@@ -19,15 +19,36 @@ import { ArcPracticeSection } from "@/components/report/ArcPracticeSection";
 import { ReportClosing } from "@/components/report/ReportClosing";
 import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
 import { LunarArcPromo } from "@/components/report/LunarArcPromo";
+import { NarrationUpsell } from "@/components/report/NarrationUpsell";
 import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
+
+function buildLunarNarrationText(report: LunarReport): string {
+  const name = report.meta.querentName || "Friend";
+  const peaks = report.powerDays
+    .filter((d) => d.isPeak)
+    .slice(0, 6)
+    .map((d) => `${d.month}: ${d.keyword}`)
+    .join(", ");
+  return [
+    `${name}, this is your Personal Lunar Arc.`,
+    `You were born under a ${report.natal.phase} signature, at ${report.natal.angle} degrees of the lunar cycle.`,
+    `Across the next twelve months, twelve power days mark your highest-leverage windows.`,
+    `Your peak resonance windows include: ${peaks}.`,
+    `Each of these moments is a doorway. Walk through them with intention, and the year arranges itself around your natural rhythm.`,
+    `This is your timing. Move with it.`,
+  ].join(" ");
+}
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SIMULATED_LOADING_DELAY_MS = 600;
+
+const LUNAR_CACHE_KEY = "moontuner_lunar_report_cache_v1";
 
 const LunarReports = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const isPaid = searchParams.get("paid") === "true";
+  const returningFromNarration = searchParams.get("narration_status") === "success";
 
   useEffect(() => {
     if (!isPaid) {
@@ -35,8 +56,17 @@ const LunarReports = () => {
     }
   }, [isPaid, navigate]);
 
-  const [step, setStep] = useState<'input' | 'generating' | 'result'>('input');
+  const cached = (() => {
+    if (!returningFromNarration) return null;
+    try {
+      const raw = sessionStorage.getItem(LUNAR_CACHE_KEY);
+      return raw ? JSON.parse(raw) as { report: LunarReport; chartData: ChartData | null; formData: any } : null;
+    } catch { return null; }
+  })();
+
+  const [step, setStep] = useState<'input' | 'generating' | 'result'>(cached ? 'result' : 'input');
   const [formData, setFormDataRaw] = useState(() => {
+    if (cached?.formData) return cached.formData;
     const b = readSharedBirth();
     return {
       name: b.name || '',
@@ -52,8 +82,17 @@ const LunarReports = () => {
       return value;
     });
   };
-  const [report, setReport] = useState<LunarReport | null>(null);
-  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [report, setReport] = useState<LunarReport | null>(cached?.report ?? null);
+  const [chartData, setChartData] = useState<ChartData | null>(cached?.chartData ?? null);
+
+  // Persist report to sessionStorage when it changes (so narration redirect can restore it)
+  useEffect(() => {
+    if (report) {
+      try {
+        sessionStorage.setItem(LUNAR_CACHE_KEY, JSON.stringify({ report, chartData, formData }));
+      } catch {}
+    }
+  }, [report, chartData, formData]);
 
   const handleCalculate = async () => {
     if (!formData.date) return;
@@ -247,6 +286,12 @@ const LunarReports = () => {
                     <PowerDayGrid report={report} />
                     <ArcPracticeSection report={report} />
                     <ReportClosing report={report} />
+                    <NarrationUpsell
+                      reportType="lunar-arc"
+                      reportLabel={`${report.meta.querentName || "Lunar Arc"} Report`}
+                      sourceText={buildLunarNarrationText(report)}
+                      returnPath="/lunar-reports?paid=true"
+                    />
                     <CrossGeneratorLinks exclude="/lunar-reports" />
                   </motion.div>
                 )}

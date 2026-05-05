@@ -167,6 +167,51 @@ export type Database = {
         }
         Relationships: []
       }
+      report_narrations: {
+        Row: {
+          audio_url: string | null
+          created_at: string
+          email: string | null
+          error: string | null
+          id: string
+          report_label: string | null
+          report_type: string
+          source_text: string | null
+          status: string
+          stripe_session_id: string | null
+          updated_at: string
+          voice_id: string | null
+        }
+        Insert: {
+          audio_url?: string | null
+          created_at?: string
+          email?: string | null
+          error?: string | null
+          id?: string
+          report_label?: string | null
+          report_type: string
+          source_text?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          voice_id?: string | null
+        }
+        Update: {
+          audio_url?: string | null
+          created_at?: string
+          email?: string | null
+          error?: string | null
+          id?: string
+          report_label?: string | null
+          report_type?: string
+          source_text?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          voice_id?: string | null
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           created_at: string
