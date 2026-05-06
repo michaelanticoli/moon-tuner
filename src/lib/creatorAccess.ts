@@ -1,8 +1,8 @@
 // Shared creator/admin allowlist for free internal access to paid features.
 export const CREATOR_EMAILS = [
-  "michael@creativealchemy.xyz",
-  "michael@moontuner.xyz",
-  "moontuner@gmail.com",
+  "michaelanticoli@gmail.com",
+  "hello@moontuner.xyz",
+  "logisticalastrology@gmail.com",
 ];
 
 export const isCreator = (email?: string | null): boolean =>

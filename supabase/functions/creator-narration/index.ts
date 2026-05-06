@@ -9,9 +9,9 @@ const corsHeaders = {
 };
 
 const CREATOR_EMAILS = [
-  "michael@creativealchemy.xyz",
-  "michael@moontuner.xyz",
-  "moontuner@gmail.com",
+  "michaelanticoli@gmail.com",
+  "hello@moontuner.xyz",
+  "logisticalastrology@gmail.com",
 ];
 
 const VOICE_ID = "bQjXuTZHN8ofphZ0QfAv";
