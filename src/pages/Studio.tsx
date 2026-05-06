@@ -327,6 +327,8 @@ export default function Studio() {
             </div>
           </section>
 
+          {isCreator(user?.email) && <CreatorNarrationStudio />}
+
           {/* Standalone — no birth data */}
           <section>
             <div className="flex items-center gap-3 mb-5">
