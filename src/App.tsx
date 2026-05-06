@@ -30,6 +30,7 @@ import Sessions from "./pages/Sessions";
 import Services from "./pages/Services";
 import MoonPhaseToday from "./pages/MoonPhaseToday";
 import Studio from "./pages/Studio";
+import FreeGuide from "./pages/FreeGuide";
 import TotalTuner from "./pages/TotalTuner";
 import CazimiPunchcard from "./pages/CazimiPunchcard";
 import NotFound from "./pages/NotFound";
@@ -84,6 +85,7 @@ function AnimatedRoutes() {
             }
           />
           <Route path="/studio" element={<Studio />} />
+          <Route path="/free-guide" element={<FreeGuide />} />
           <Route path="/total-tuner" element={<TotalTuner />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
