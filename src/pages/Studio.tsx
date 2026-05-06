@@ -27,6 +27,7 @@ import {
   Calendar,
 } from "lucide-react";
 import { toast } from "sonner";
+import { CreatorNarrationStudio } from "@/components/studio/CreatorNarrationStudio";
 
 // Creator allowlist — add your emails here
 const CREATOR_EMAILS = [
@@ -325,6 +326,8 @@ export default function Studio() {
               ))}
             </div>
           </section>
+
+          {isCreator(user?.email) && <CreatorNarrationStudio />}
 
           {/* Standalone — no birth data */}
           <section>
