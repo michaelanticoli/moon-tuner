@@ -125,6 +125,10 @@ serve(async (req) => {
 
     const result = ephemeris.getAllPlanets(dateObj, longitude, latitude, 0);
     const observed = result.observed;
+    // Sample +/- 1 day to detect retrograde via apparent longitude delta
+    const dayMs = 86400000;
+    const before = ephemeris.getAllPlanets(new Date(dateObj.getTime() - dayMs), longitude, latitude, 0).observed;
+    const after = ephemeris.getAllPlanets(new Date(dateObj.getTime() + dayMs), longitude, latitude, 0).observed;
     const planets: ReturnType<typeof createPlanet>[] = [];
 
     const bodies = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"] as const;
@@ -133,7 +137,13 @@ serve(async (req) => {
     bodies.forEach((key, i) => {
       const ob = observed[key];
       if (ob) {
-        const isRetro = key !== "sun" && key !== "moon" ? (ob.raw?.motion?.isRetrograde || false) : false;
+        let isRetro = false;
+        if (key !== "sun" && key !== "moon" && before[key] && after[key]) {
+          let delta = after[key].apparentLongitudeDd - before[key].apparentLongitudeDd;
+          if (delta > 180) delta -= 360;
+          if (delta < -180) delta += 360;
+          isRetro = delta < 0;
+        }
         planets.push(createPlanet(names[i], ob.apparentLongitudeDd, isRetro));
       }
     });
