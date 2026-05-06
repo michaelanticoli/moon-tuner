@@ -29,15 +29,7 @@ import {
 import { toast } from "sonner";
 import { CreatorNarrationStudio } from "@/components/studio/CreatorNarrationStudio";
 
-// Creator allowlist — add your emails here
-const CREATOR_EMAILS = [
-  "michael@creativealchemy.xyz",
-  "michael@moontuner.xyz",
-  "moontuner@gmail.com",
-];
-
-const isCreator = (email?: string | null) =>
-  !!email && CREATOR_EMAILS.includes(email.toLowerCase());
+import { isCreator } from "@/lib/creatorAccess";
 
 interface Tile {
   to: string;
