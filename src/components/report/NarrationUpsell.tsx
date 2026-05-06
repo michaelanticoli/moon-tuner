@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mic, Loader2, Play, Pause, Download, Sparkles } from "lucide-react";
+import { Mic, Loader2, Play, Pause, Download, Sparkles, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { isCreator } from "@/lib/creatorAccess";
 
 interface NarrationUpsellProps {
   reportType: "lunar-arc" | "cazimi" | "natal";
@@ -21,6 +23,8 @@ export function NarrationUpsell({
   returnPath,
 }: NarrationUpsellProps) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { user } = useAuth();
+  const creator = isCreator(user?.email);
   const [status, setStatus] = useState<Status>("idle");
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -96,6 +100,25 @@ export function NarrationUpsell({
     }
   };
 
+  const handleCreatorGenerate = async () => {
+    setStatus("generating");
+    setError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("creator-narration", {
+        body: { text: sourceText, label: reportLabel },
+      });
+      if (error) throw error;
+      const url = data?.audioUrl || data?.url;
+      if (!url) throw new Error("No audio URL returned");
+      setAudioUrl(url);
+      setStatus("ready");
+    } catch (e) {
+      console.error(e);
+      setError(e instanceof Error ? e.message : "Generation failed");
+      setStatus("error");
+    }
+  };
+
   const togglePlay = () => {
     if (!audioUrl) return;
     if (!audio) {
@@ -143,13 +166,25 @@ export function NarrationUpsell({
           </p>
 
           {status === "idle" && (
-            <Button
-              onClick={handlePurchase}
-              className="px-8 py-6 h-auto rounded-full text-[10px] uppercase tracking-[0.3em] font-bold bg-gold text-gold-foreground hover:bg-gold/90"
-            >
-              <Mic className="w-4 h-4 mr-2" />
-              Add Narration · $5
-            </Button>
+            <div className="flex flex-wrap gap-3">
+              <Button
+                onClick={handlePurchase}
+                className="px-8 py-6 h-auto rounded-full text-[10px] uppercase tracking-[0.3em] font-bold bg-gold text-gold-foreground hover:bg-gold/90"
+              >
+                <Mic className="w-4 h-4 mr-2" />
+                Add Narration · $5
+              </Button>
+              {creator && (
+                <Button
+                  onClick={handleCreatorGenerate}
+                  variant="outline"
+                  className="px-8 py-6 h-auto rounded-full text-[10px] uppercase tracking-[0.3em] font-bold border-gold/40 text-gold hover:bg-gold/10"
+                >
+                  <Zap className="w-4 h-4 mr-2" />
+                  Generate Free (Admin)
+                </Button>
+              )}
+            </div>
           )}
 
           {status === "checkout" && (
