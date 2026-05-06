@@ -27,6 +27,7 @@ import {
   Calendar,
 } from "lucide-react";
 import { toast } from "sonner";
+import { CreatorNarrationStudio } from "@/components/studio/CreatorNarrationStudio";
 
 // Creator allowlist — add your emails here
 const CREATOR_EMAILS = [
