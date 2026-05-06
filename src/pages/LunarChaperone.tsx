@@ -120,9 +120,11 @@ const LunarChaperone = () => {
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                   </Link>
-                  <Button variant="outline" size="lg">
-                    Download Sample Workbook
-                  </Button>
+                  <Link to="/free-guide">
+                    <Button variant="outline" size="lg">
+                      Download Sample Workbook
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </ScrollReveal>
