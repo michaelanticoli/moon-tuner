@@ -1,36 +1,22 @@
-import { Navigation } from "@/components/Navigation";
-import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
-import { StartHeroSection } from "@/components/StartHeroSection";
-import { StartMoonTool } from "@/components/StartMoonTool";
-import { StartReportCTA } from "@/components/StartReportCTA";
-import { StartSessionCTA } from "@/components/StartSessionCTA";
-import { Newsletter } from "@/components/Newsletter";
-import { StartGoDeeper } from "@/components/StartGoDeeper";
-import { ScrollReveal } from "@/components/ScrollReveal";
+import { Footer } from "@/components/Footer";
+import { DuskNav } from "@/components/dusk/DuskNav";
+import { DuskHero } from "@/components/dusk/DuskHero";
+import { TodaysDirective } from "@/components/dusk/TodaysDirective";
 
+/**
+ * Moontuner v2 — Cinematic Dusk redesign.
+ * Phase 1: design system + nav + hero + Today's Directive only.
+ * Remaining sections (profile, offerings, journal, capture) ship in follow-up turns.
+ */
 const Index = () => {
   return (
     <PageTransition>
-      <div className="min-h-screen bg-background relative">
-        <Navigation />
+      <div className="dusk min-h-screen relative">
+        <DuskNav />
         <main>
-          <StartHeroSection />
-          <ScrollReveal>
-            <StartMoonTool />
-          </ScrollReveal>
-          <ScrollReveal>
-            <StartReportCTA />
-          </ScrollReveal>
-          <ScrollReveal>
-            <StartSessionCTA />
-          </ScrollReveal>
-          <ScrollReveal>
-            <Newsletter />
-          </ScrollReveal>
-          <ScrollReveal>
-            <StartGoDeeper />
-          </ScrollReveal>
+          <DuskHero />
+          <TodaysDirective />
         </main>
         <Footer />
       </div>
