@@ -1,11 +1,26 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FileText } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export function StartReportCTA() {
-  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/4gMcN4asS9AS0Qf0bT2Ji01";
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
-  const handlePurchase = () => {
-    window.location.href = STRIPE_PAYMENT_LINK;
+  const handlePurchase = async () => {
+    setCheckoutLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-report-payment", {
+        body: { product: "lunar-arc" },
+      });
+      if (error) throw error;
+      if (!data?.url) throw new Error("No checkout URL returned");
+      window.location.href = data.url as string;
+    } catch (err) {
+      console.error("Lunar Arc checkout failed:", err);
+      toast.error("Could not start checkout. Please try again.");
+      setCheckoutLoading(false);
+    }
   };
 
   return (
@@ -58,9 +73,10 @@ export function StartReportCTA() {
 
               <Button
                 onClick={handlePurchase}
+                disabled={checkoutLoading}
                 className="w-full h-12 bg-foreground text-background hover:bg-accent hover:text-accent-foreground font-bold text-[11px] uppercase tracking-[0.3em] rounded-full transition-all duration-300"
               >
-                Get My Report · $17
+                {checkoutLoading ? "Starting Checkout…" : "Get My Report · $17"}
               </Button>
               <p className="text-[10px] text-muted-foreground text-center">
                 Secure checkout via Stripe. After payment you are routed directly to the generator.

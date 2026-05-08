@@ -50,7 +50,7 @@ Deno.serve(async (req) => {
       .single();
     if (insErr || !narration) throw insErr ?? new Error("insert failed");
 
-    const origin = req.headers.get("origin") ?? "https://moon-tuner.lovable.app";
+    const origin = req.headers.get("origin") ?? "https://moontuner.xyz";
     const successUrl = `${origin}${returnPath ?? "/"}?narration_id=${narration.id}&narration_status=success`;
     const cancelUrl = `${origin}${returnPath ?? "/"}?narration_status=canceled`;
 
