@@ -57,7 +57,7 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Moontuner custom colors
+        // Moontuner Core palette
         lunar: {
           ivory: "hsl(var(--lunar-ivory))",
           night: "hsl(var(--night-slate))",
@@ -73,11 +73,41 @@ export default {
           DEFAULT: "hsl(var(--gold))",
           foreground: "hsl(var(--gold-foreground))",
         },
+        // Dusk token set
+        dusk: {
+          black: "hsl(var(--dusk-black))",
+          ivory: "hsl(var(--dusk-ivory))",
+          silver: "hsl(var(--dusk-silver))",
+          gold: "hsl(var(--dusk-gold))",
+          line: "hsl(var(--dusk-line))",
+          mute: "hsl(var(--dusk-mute))",
+        },
+        // Digital Smudging theme palette
+        smudge: {
+          dusk: "hsl(var(--smudge-dusk))",
+          ember: "hsl(var(--smudge-ember))",
+          ash: "hsl(var(--smudge-ash))",
+          sage: "hsl(var(--smudge-sage))",
+          "sage-light": "hsl(var(--smudge-sage-light))",
+          warm: "hsl(var(--smudge-warm))",
+        },
+        // Spacetime Printer theme palette
+        space: {
+          paper: "hsl(var(--space-paper))",
+          ink: "hsl(var(--space-ink))",
+          rule: "hsl(var(--space-rule))",
+          grid: "hsl(var(--space-grid))",
+          signal: "hsl(var(--space-signal))",
+          mid: "hsl(var(--space-mid))",
+        },
       },
       fontFamily: {
         serif: ["Playfair Display", "Georgia", "serif"],
         sans: ["DM Sans", "system-ui", "sans-serif"],
         display: ["Inter", "system-ui", "sans-serif"],
+        editorial: ["Instrument Serif", "Playfair Display", "Georgia", "serif"],
+        ui: ["Work Sans", "system-ui", "-apple-system", "sans-serif"],
+        mono: ["ui-monospace", "SFMono-Regular", "SF Mono", "Menlo", "monospace"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -121,10 +151,29 @@ export default {
       spacing: {
         "18": "4.5rem",
         "22": "5.5rem",
+        "26": "6.5rem",
+        "30": "7.5rem",
+        "34": "8.5rem",
       },
       letterSpacing: {
         "widest": "0.2em",
         "ultra": "0.3em",
+        "button": "0.06em",
+        "eyebrow": "0.32em",
+        "meta": "0.28em",
+      },
+      maxWidth: {
+        "prose-narrow": "640px",
+        "prose-md": "760px",
+        "content": "1024px",
+        "layout": "1280px",
+        "full-bleed": "1400px",
+      },
+      lineHeight: {
+        "tighter": "1.05",
+        "snug-serif": "1.15",
+        "editorial": "1.25",
+        "readable": "1.7",
       },
     },
   },
