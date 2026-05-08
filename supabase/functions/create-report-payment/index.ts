@@ -5,6 +5,8 @@ const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+const NARRATION_ADDON_NAME = "Voice Narration Add-On";
+const NARRATION_ADDON_CREATOR = "Michael Moon";
 
 type ProductKey =
   | "lunar-arc"
@@ -118,8 +120,8 @@ serve(async (req) => {
           currency: "usd",
           unit_amount: 500,
           product_data: {
-            name: "Voice Narration Add-On",
-            description: `Michael Moon's voice narration for ${offer.label}`,
+            name: NARRATION_ADDON_NAME,
+            description: `${NARRATION_ADDON_CREATOR}'s voice narration for ${offer.label}`,
           },
         },
       });

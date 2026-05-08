@@ -50,12 +50,7 @@ Deno.serve(async (req) => {
         if (session.payment_status !== "paid") {
           return json({ status: "unpaid", paymentStatus: session.payment_status }, 402);
         }
-        const hasNarration =
-          session.metadata?.narration_addon === "true" ||
-          (session.line_items?.data ?? []).some((li: any) =>
-            typeof li.description === "string" &&
-            li.description.toLowerCase().includes("narration")
-          );
+        const hasNarration = session.metadata?.narration_addon === "true";
         if (!hasNarration) {
           return json({ error: "Narration add-on not in this session" }, 400);
         }

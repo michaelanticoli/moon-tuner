@@ -14,8 +14,9 @@ export function StartReportCTA() {
         body: { product: "lunar-arc" },
       });
       if (error) throw error;
-      if (!data?.url) throw new Error("No checkout URL returned");
-      window.location.href = data.url as string;
+      const checkoutUrl = typeof data?.url === "string" ? data.url : null;
+      if (!checkoutUrl) throw new Error("No checkout URL returned");
+      window.location.href = checkoutUrl;
     } catch (err) {
       console.error("Lunar Arc checkout failed:", err);
       toast.error("Could not start checkout. Please try again.");
