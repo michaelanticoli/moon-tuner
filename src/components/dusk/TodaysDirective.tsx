@@ -93,9 +93,10 @@ export function TodaysDirective() {
     []
   );
 
-  const phaseKey = moon.astronomical.phaseName
-    .toLowerCase()
-    .replace(/\s+/g, "-") as
+  const rawKey = moon.astronomical.phaseName.toLowerCase().replace(/\s+/g, "-");
+  const normalizedKey = (
+    rawKey === "new-moon" ? "new" : rawKey === "full-moon" ? "full" : rawKey
+  ) as
     | "new"
     | "waxing-crescent"
     | "first-quarter"
@@ -104,10 +105,6 @@ export function TodaysDirective() {
     | "waning-gibbous"
     | "last-quarter"
     | "waning-crescent";
-
-  // Normalize phase key — useMoonPhase returns "New Moon" / "Full Moon"
-  const normalizedKey =
-    phaseKey === "new-moon" ? "new" : phaseKey === "full-moon" ? "full" : phaseKey;
 
   const illumPct = Math.round(moon.astronomical.illumination * 100);
 
