@@ -84,7 +84,7 @@ export const letterSpacing = {
 // ─── Spacing Scale ───────────────────────────────────────────────────────────
 
 /**
- * Base-4 spacing scale (px reference, use rem in practice).
+ * Base-8 spacing scale (px reference, use rem in practice).
  * Maps to Tailwind spacing with `spacing-[value]` or predefined classes.
  */
 export const spacing = {

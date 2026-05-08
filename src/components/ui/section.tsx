@@ -29,6 +29,10 @@ interface SectionProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const sectionSizeMap: Record<NonNullable<SectionProps["size"]>, string> = {
+  // Values intentionally expressed as Tailwind classes rather than
+  // referencing design-system/tokens.sectionPadding directly, since
+  // Tailwind needs static strings at build time. Keep in sync with
+  // tokens.sectionPadding when updating either.
   sm: "py-12 lg:py-16",
   md: "py-16 lg:py-24",
   lg: "py-20 lg:py-32",
