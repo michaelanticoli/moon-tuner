@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Circle, Moon, Compass, Waves, Zap, Eye, Shield, Flame } from "lucide-react";
+import { ArrowRight, Circle, Moon, Compass, Waves, Zap, Eye, Shield, Flame, Grid3x3, Sparkles, Anchor } from "lucide-react";
 import { Link } from "react-router-dom";
 import phasecraftMethodGraphic from "@/assets/graphic-phasecraft-method.png";
 import waveDivider from "@/assets/graphic-wave-phases-divider.png";
