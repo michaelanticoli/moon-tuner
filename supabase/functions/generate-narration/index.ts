@@ -24,7 +24,6 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
     );
 
-    const NARRATION_PRICE_ID = "price_1TTprKCbEehvrcXT91cX9Tl9";
     const VOICE_ID = "bQjXuTZHN8ofphZ0QfAv";
 
     const reqBody = await req.json();
@@ -51,9 +50,7 @@ Deno.serve(async (req) => {
         if (session.payment_status !== "paid") {
           return json({ status: "unpaid", paymentStatus: session.payment_status }, 402);
         }
-        const hasNarration = (session.line_items?.data ?? []).some(
-          (li: any) => li.price?.id === NARRATION_PRICE_ID,
-        );
+        const hasNarration = session.metadata?.narration_addon === "true";
         if (!hasNarration) {
           return json({ error: "Narration add-on not in this session" }, 400);
         }

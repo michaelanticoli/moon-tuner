@@ -5,21 +5,62 @@ const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+const NARRATION_ADDON_NAME = "Voice Narration Add-On";
+const NARRATION_ADDON_CREATOR = "Michael Moon";
 
-type ProductKey = "lunar-arc" | "astro-harmonic";
+type ProductKey =
+  | "lunar-arc"
+  | "astro-harmonic"
+  | "phasecraft"
+  | "cipher-calendar"
+  | "lunar-chaperone";
 
-const PRODUCT_CATALOG: Record<ProductKey, { price: string; success: string; cancel: string; label: string }> = {
+const PRODUCT_CATALOG: Record<
+  ProductKey,
+  {
+    productId: string;
+    amount: number;
+    recurring?: { interval: "month" };
+    success: string;
+    cancel: string;
+    label: string;
+  }
+> = {
   "lunar-arc": {
-    price: "price_1TFj0NCbEehvrcXTegTFTtAL",
+    productId: "prod_UEBc9uSaRZ43aU",
+    amount: 1700,
     success: "/lunar-reports?paid=true",
     cancel: "/#report",
     label: "Lunar Arc Report",
   },
   "astro-harmonic": {
-    price: "price_1TOwXBCbEehvrcXTgo8cVfk6",
+    productId: "prod_UECWWxRmAEWGwV",
+    amount: 4700,
     success: "/quantumelodic?paid=true",
     cancel: "/quantumelodic",
     label: "Astro-Harmonic Natal Analysis",
+  },
+  phasecraft: {
+    productId: "prod_ULCS3phxieBPCX",
+    amount: 1700,
+    recurring: { interval: "month" },
+    success: "/school",
+    cancel: "/services",
+    label: "Academy of Phasecraft",
+  },
+  "cipher-calendar": {
+    productId: "prod_ULBtSxOG8oH17X",
+    amount: 2000,
+    success: "/lunar-cipher",
+    cancel: "/services",
+    label: "Lunar Cipher 2026 Calendar",
+  },
+  "lunar-chaperone": {
+    productId: "prod_ULCXBTdFl9UvUj",
+    amount: 9700,
+    success: "/lunar-chaperone",
+    cancel: "/services",
+    label: "Lunar Chaperone",
   },
 };
 
@@ -34,7 +75,14 @@ serve(async (req) => {
     });
 
     const body = await req.json().catch(() => ({}));
-    const productKey: ProductKey = (body?.product === "astro-harmonic") ? "astro-harmonic" : "lunar-arc";
+    const validProducts: ProductKey[] = [
+      "lunar-arc",
+      "astro-harmonic",
+      "phasecraft",
+      "cipher-calendar",
+      "lunar-chaperone",
+    ];
+    const productKey: ProductKey = validProducts.includes(body?.product) ? body.product : "lunar-arc";
     const offer = PRODUCT_CATALOG[productKey];
 
     const origin = req.headers.get("origin") || "https://moontuner.xyz";
@@ -46,7 +94,6 @@ serve(async (req) => {
       : offer.cancel;
 
     const withNarration = body?.withNarration === true;
-    const NARRATION_PRICE_ID = "price_1TTprKCbEehvrcXT91cX9Tl9"; // Voice Narration Add-On — $5
 
     const metadata: Record<string, string> = { product: productKey, label: offer.label };
     if (withNarration) metadata.narration_addon = "true";
@@ -55,11 +102,29 @@ serve(async (req) => {
     if (typeof body?.birthLocation === "string") metadata.birthLocation = body.birthLocation.slice(0, 120);
     if (typeof body?.birthName === "string") metadata.birthName = body.birthName.slice(0, 80);
 
-    const lineItems: Array<{ price: string; quantity: number }> = [
-      { price: offer.price, quantity: 1 },
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
+      {
+        quantity: 1,
+        price_data: {
+          currency: "usd",
+          product: offer.productId,
+          unit_amount: offer.amount,
+          ...(offer.recurring ? { recurring: offer.recurring } : {}),
+        },
+      },
     ];
     if (withNarration) {
-      lineItems.push({ price: NARRATION_PRICE_ID, quantity: 1 });
+      lineItems.push({
+        quantity: 1,
+        price_data: {
+          currency: "usd",
+          unit_amount: 500,
+          product_data: {
+            name: NARRATION_ADDON_NAME,
+            description: `${NARRATION_ADDON_CREATOR}'s voice narration for ${offer.label}`,
+          },
+        },
+      });
     }
 
     // Append session_id + narration flag so the report page can claim the prepaid narration
@@ -68,7 +133,7 @@ serve(async (req) => {
 
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
-      mode: "payment",
+      mode: offer.recurring ? "subscription" : "payment",
       metadata,
       success_url: finalSuccess,
       cancel_url: `${origin}${cancelPath}`,

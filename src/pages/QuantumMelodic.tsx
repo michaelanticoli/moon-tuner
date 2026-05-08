@@ -33,15 +33,12 @@ import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
 import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 import { NarrationUpsell } from "@/components/report/NarrationUpsell";
 
-const STRIPE_BUTTON_LOAD_TIMEOUT_MS = 1500;
 const QM_STORAGE_KEY = "qm_paid";
 const QM_BIRTH_DATA_KEY = "qm_birth_data";
 
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const stripeBuyButtonId = import.meta.env.VITE_STRIPE_QM_BUY_BUTTON_ID;
-  const stripePublishableKey = import.meta.env.VITE_STRIPE_QM_PUBLISHABLE_KEY;
   const returnedFromCheckout = searchParams.get("paid") === "true" || !!searchParams.get("session_id");
   const [hasPaidAccess, setHasPaidAccess] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
@@ -49,7 +46,6 @@ const QuantumMelodic = () => {
   });
   const [checkoutUnavailable, setCheckoutUnavailable] = useState(false);
   const [withNarration, setWithNarration] = useState(false);
-  const buyButtonRef = useRef<HTMLDivElement | null>(null);
 
   const {
     loading,
@@ -151,52 +147,6 @@ const QuantumMelodic = () => {
     persistPaidAccess();
     setHasPaidAccess(true);
   }, [persistPaidAccess, returnedFromCheckout]);
-
-  useEffect(() => {
-    if (!buyButtonRef.current || hasPaidAccess) return;
-    if (!stripeBuyButtonId || !stripePublishableKey) {
-      setCheckoutUnavailable(true);
-      return;
-    }
-
-    setCheckoutUnavailable(false);
-
-    const mountBuyButton = () => {
-      if (!buyButtonRef.current) return false;
-      if (buyButtonRef.current.querySelector("stripe-buy-button")) return true;
-      if (!customElements.get("stripe-buy-button")) return false;
-      const button = document.createElement("stripe-buy-button");
-      button.setAttribute("buy-button-id", stripeBuyButtonId);
-      button.setAttribute("publishable-key", stripePublishableKey);
-      button.addEventListener("click", () =>
-        saveBirthDraft({
-          name: formData.name || "Cosmic Traveler",
-          date: formData.date,
-          time: formData.time,
-          location: formData.location,
-        }),
-      );
-      buyButtonRef.current.appendChild(button);
-      return true;
-    };
-
-    if (mountBuyButton()) return;
-
-    const timer = window.setTimeout(() => {
-      if (!mountBuyButton()) setCheckoutUnavailable(true);
-    }, STRIPE_BUTTON_LOAD_TIMEOUT_MS);
-
-    return () => window.clearTimeout(timer);
-  }, [
-    formData.date,
-    formData.location,
-    formData.name,
-    formData.time,
-    hasPaidAccess,
-    saveBirthDraft,
-    stripeBuyButtonId,
-    stripePublishableKey,
-  ]);
 
   useEffect(() => {
     try {
@@ -431,9 +381,6 @@ const QuantumMelodic = () => {
                   <Button onClick={beginCheckout} size="lg" className="system-button">
                     Unlock Your Astro-Harmonic Report — ${withNarration ? "52" : "47"}
                   </Button>
-                  <div ref={buyButtonRef}>
-                    {checkoutUnavailable ? <Button onClick={beginCheckout}>Purchase Report</Button> : null}
-                  </div>
                 </div>
                 <p className="text-xs text-muted-foreground mt-4">
                   After payment, return here to enter your birth data and generate your full report instantly.

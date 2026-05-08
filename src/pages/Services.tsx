@@ -1,14 +1,13 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
-/* ── External links ── */
-const STRIPE_LUNAR_ARC = "https://buy.stripe.com/5kQbJ0en87iYfSPfPbe7m03";
-const STRIPE_PHASECRAFT = "https://buy.stripe.com/eVqbJ03Iu46M6if1Yle7m07";
-const STRIPE_CIPHER = "https://buy.stripe.com/6oU3cugvg9r6bCzauRe7m06";
-const STRIPE_CHAPERONE = "https://buy.stripe.com/7sY6oG2Eq6eU363eL7e7m08";
+type CheckoutProduct = "lunar-arc" | "phasecraft" | "cipher-calendar" | "lunar-chaperone";
 
 const SQUARE_TAROT =
   "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/SWPXX34N2NRJTB6ZGFC7OEKR";
@@ -56,16 +55,20 @@ function SectionDivider({ label }: { label: string }) {
 /* ── CTA button ── */
 function ServiceCTA({
   href,
+  onClick,
   label,
   variant = "accent",
   external = true,
   subtitle,
+  loading = false,
 }: {
-  href: string;
+  href?: string;
+  onClick?: () => void;
   label: string;
   variant?: "accent" | "gold" | "gold-solid";
   external?: boolean;
   subtitle?: string;
+  loading?: boolean;
 }) {
   const base = "inline-flex items-center gap-2 px-7 py-3 rounded-sm text-[11px] font-medium tracking-[0.25em] uppercase transition-all duration-300";
   const styles = {
@@ -76,14 +79,25 @@ function ServiceCTA({
 
   return (
     <div className="flex items-center gap-4 flex-wrap">
-      <a
-        href={href}
-        target={external ? "_blank" : undefined}
-        rel={external ? "noopener noreferrer" : undefined}
-        className={`${base} ${styles[variant]}`}
-      >
-        {label}
-      </a>
+      {onClick ? (
+        <button
+          type="button"
+          onClick={onClick}
+          disabled={loading}
+          className={`${base} ${styles[variant]} disabled:opacity-70 disabled:pointer-events-none`}
+        >
+          {loading ? "Starting Checkout…" : label}
+        </button>
+      ) : (
+        <a
+          href={href}
+          target={external ? "_blank" : undefined}
+          rel={external ? "noopener noreferrer" : undefined}
+          className={`${base} ${styles[variant]}`}
+        >
+          {label}
+        </a>
+      )}
       {subtitle && (
         <span className="text-[11.5px] text-muted-foreground tracking-[0.05em]">{subtitle}</span>
       )}
@@ -111,6 +125,25 @@ function IncludedList({ items, dotColor = "accent" }: { items: string[]; dotColo
 }
 
 export default function Services() {
+  const [checkoutLoading, setCheckoutLoading] = useState<CheckoutProduct | null>(null);
+
+  const startCheckout = async (product: CheckoutProduct) => {
+    setCheckoutLoading(product);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-report-payment", {
+        body: { product },
+      });
+      if (error) throw error;
+      const checkoutUrl = typeof data?.url === "string" ? data.url : null;
+      if (!checkoutUrl) throw new Error("No checkout URL returned");
+      window.location.href = checkoutUrl;
+    } catch (err) {
+      console.error("Checkout failed:", err);
+      toast.error("Could not start checkout. Please try again.");
+      setCheckoutLoading(null);
+    }
+  };
+
   return (
     <PageTransition>
       <Navigation />
@@ -177,7 +210,12 @@ export default function Services() {
                       "Interactive HTML report + downloadable PDF",
                     ]}
                   />
-                  <ServiceCTA href={STRIPE_LUNAR_ARC} label="Get Your Report" subtitle="Most popular starting point" />
+                  <ServiceCTA
+                    onClick={() => startCheckout("lunar-arc")}
+                    loading={checkoutLoading === "lunar-arc"}
+                    label="Get Your Report"
+                    subtitle="Most popular starting point"
+                  />
                 </div>
               </article>
             </ScrollReveal>
@@ -268,7 +306,12 @@ export default function Services() {
                       "New content added monthly",
                     ]}
                   />
-                  <ServiceCTA href={STRIPE_PHASECRAFT} label="Subscribe" subtitle="Full curriculum access" />
+                  <ServiceCTA
+                    onClick={() => startCheckout("phasecraft")}
+                    loading={checkoutLoading === "phasecraft"}
+                    label="Subscribe"
+                    subtitle="Full curriculum access"
+                  />
                 </div>
               </article>
             </ScrollReveal>
@@ -307,7 +350,11 @@ export default function Services() {
                       "Downloadable ICS calendar sync",
                     ]}
                   />
-                  <ServiceCTA href={STRIPE_CIPHER} label="Unlock the Cipher" />
+                  <ServiceCTA
+                    onClick={() => startCheckout("cipher-calendar")}
+                    loading={checkoutLoading === "cipher-calendar"}
+                    label="Unlock the Cipher"
+                  />
                 </div>
               </article>
             </ScrollReveal>
@@ -351,7 +398,12 @@ export default function Services() {
                     ]}
                   />
                   <div className="flex items-center gap-3 flex-wrap">
-                    <ServiceCTA href={STRIPE_CHAPERONE} label="Get Full Access" variant="gold" />
+                    <ServiceCTA
+                      onClick={() => startCheckout("lunar-chaperone")}
+                      loading={checkoutLoading === "lunar-chaperone"}
+                      label="Get Full Access"
+                      variant="gold"
+                    />
                     <a
                       href="/lunar-chaperone"
                       className="inline-flex items-center gap-2 px-5 py-3 rounded-sm text-[11px] font-medium tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300"
