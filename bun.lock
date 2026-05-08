@@ -6,8 +6,10 @@
       "name": "vite_react_shadcn_ts",
       "dependencies": {
         "@fontsource/dm-sans": "^5.2.8",
+        "@fontsource/instrument-serif": "^5.2.8",
         "@fontsource/inter": "^5.2.8",
         "@fontsource/playfair-display": "^5.2.8",
+        "@fontsource/work-sans": "^5.2.8",
         "@hookform/resolvers": "^3.10.0",
         "@radix-ui/react-accordion": "^1.2.11",
         "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -36,8 +38,8 @@
         "@radix-ui/react-toggle": "^1.1.9",
         "@radix-ui/react-toggle-group": "^1.1.10",
         "@radix-ui/react-tooltip": "^1.2.7",
-        "@supabase/supabase-js": "^2.94.1",
         "@supabase/supabase-js": "^2.93.1",
+        "@supabase/supabase-js": "^2.94.1",
         "@tanstack/react-query": "^5.83.0",
         "astronomy-engine": "^2.1.19",
         "class-variance-authority": "^0.7.1",
@@ -171,9 +173,13 @@
 
     "@fontsource/dm-sans": ["@fontsource/dm-sans@5.2.8", "", {}, "sha512-tlovG42m9ESG28WiHpLq3F5umAlm64rv0RkqTbYowRn70e9OlRr5a3yTJhrhrY+k5lftR/OFJjPzOLQzk8EfCA=="],
 
+    "@fontsource/instrument-serif": ["@fontsource/instrument-serif@5.2.8", "https://europe-west1-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@fontsource/instrument-serif/-/instrument-serif-5.2.8.tgz", {}, "sha512-s+bkz+syj2rO00Rmq9g0P+PwuLig33DR1xDR8pTWmovH1pUjwnncrFk++q9mmOex8fUQ7oW80gPpPDaw7V1MMw=="],
+
     "@fontsource/inter": ["@fontsource/inter@5.2.8", "", {}, "sha512-P6r5WnJoKiNVV+zvW2xM13gNdFhAEpQ9dQJHt3naLvfg+LkF2ldgSLiF4T41lf1SQCM9QmkqPTn4TH568IRagg=="],
 
     "@fontsource/playfair-display": ["@fontsource/playfair-display@5.2.8", "", {}, "sha512-fUEhib70SszNhQVsGbUMSsWJhr7Je0rdeuZdtGpDNu0GKF1xJM8QhpI/y0pckU25GcChXm9TLOmeZupkvvZo2g=="],
+
+    "@fontsource/work-sans": ["@fontsource/work-sans@5.2.8", "https://europe-west1-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@fontsource/work-sans/-/work-sans-5.2.8.tgz", {}, "sha512-6LaHjVVgts+rnrcqvEkP2+iUB/jw1oDSYsGO0+TltAhnWki9Hnf/UGpgMQh2jcm0GEH8VqCPnq4PpmHLFzxXtQ=="],
 
     "@hookform/resolvers": ["@hookform/resolvers@3.10.0", "", { "peerDependencies": { "react-hook-form": "^7.0.0" } }, "sha512-79Dv+3mDF7i+2ajj7SkypSKHhl1cbln1OGavqrsF7p6mbUv11xpqpacPsGDCTRvCSjEEIez2ef1NveSVL3b0Ag=="],
 
