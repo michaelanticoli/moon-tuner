@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Circle, Moon, Compass, Waves, Zap, Eye, Shield, Flame } from "lucide-react";
+import { ArrowRight, Circle, Moon, Compass, Waves, Zap, Eye, Shield, Flame, Grid3x3, Sparkles, Anchor } from "lucide-react";
 import { Link } from "react-router-dom";
 import phasecraftMethodGraphic from "@/assets/graphic-phasecraft-method.png";
 import waveDivider from "@/assets/graphic-wave-phases-divider.png";
@@ -455,6 +455,89 @@ const Method = () => {
                     </div>
                   </ScrollReveal>
                 ))}
+              </div>
+            </div>
+          </section>
+
+          {/* The 96-Cell Daily Companion */}
+          <section className="bg-card/20 border-y border-border/30">
+            <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
+              <div className="max-w-6xl mx-auto">
+                <ScrollReveal>
+                  <div className="text-center mb-16">
+                    <span className="system-label block mb-6 text-accent">Daily Resolution</span>
+                    <h2 className="font-serif text-3xl lg:text-4xl text-foreground mb-6">
+                      The 96-Cell Companion
+                    </h2>
+                    <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                      The Four Arcs give you the season. The 8 Phases give you the week.
+                      The 96-Cell Matrix gives you the <em className="text-foreground">day</em> — every Moon-sign
+                      crossed with every phase, mapped to a unique activation.
+                    </p>
+                  </div>
+                </ScrollReveal>
+
+                <div className="grid md:grid-cols-3 gap-6 mb-12">
+                  <ScrollReveal delay={0.1}>
+                    <div className="node-card h-full">
+                      <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center mb-5">
+                        <Grid3x3 className="w-5 h-5 text-accent" />
+                      </div>
+                      <span className="system-label text-accent/60 block mb-2">The Grid</span>
+                      <h3 className="font-serif text-lg text-foreground mb-3">8 × 12 = 96</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        Eight phases meet twelve zodiac flavors. Each crossing produces a distinct
+                        energetic cell — never the same twice in a single lunation.
+                      </p>
+                    </div>
+                  </ScrollReveal>
+
+                  <ScrollReveal delay={0.2}>
+                    <div className="node-card h-full">
+                      <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center mb-5">
+                        <Sparkles className="w-5 h-5 text-accent" />
+                      </div>
+                      <span className="system-label text-accent/60 block mb-2">The Prompt</span>
+                      <h3 className="font-serif text-lg text-foreground mb-3">Daily Activation</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        Each cell carries a reflective prompt and a small practical application —
+                        a ritual, sketch, sound, or gesture sized to fit a real day.
+                      </p>
+                    </div>
+                  </ScrollReveal>
+
+                  <ScrollReveal delay={0.3}>
+                    <div className="node-card h-full">
+                      <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center mb-5">
+                        <Anchor className="w-5 h-5 text-accent" />
+                      </div>
+                      <span className="system-label text-accent/60 block mb-2">The Anchor</span>
+                      <h3 className="font-serif text-lg text-foreground mb-3">Symbolic Glyph</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        Every cell has a symbolic anchor — a glyph or motif you can return to,
+                        making the day's resonance portable beyond the page.
+                      </p>
+                    </div>
+                  </ScrollReveal>
+                </div>
+
+                <ScrollReveal delay={0.4}>
+                  <div className="bg-night-slate/40 border border-border/50 rounded-2xl p-8 lg:p-10 text-center">
+                    <p className="font-serif italic text-foreground/90 text-lg lg:text-xl leading-relaxed mb-6 max-w-3xl mx-auto">
+                      "Big astrology hands you the headline. Phasecraft hands you the hour."
+                    </p>
+                    <p className="text-muted-foreground text-sm mb-8 max-w-2xl mx-auto">
+                      The 96-Cell Companion lives inside the Lunar Cipher — every day pre-calculated,
+                      every cell ready to meet you where the Moon actually is.
+                    </p>
+                    <Button variant="gold-outline" size="lg" asChild>
+                      <Link to="/lunar-cipher">
+                        Open the Cipher
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                </ScrollReveal>
               </div>
             </div>
           </section>
