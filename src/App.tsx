@@ -34,6 +34,7 @@ import FreeGuide from "./pages/FreeGuide";
 import TotalTuner from "./pages/TotalTuner";
 import CazimiPunchcard from "./pages/CazimiPunchcard";
 import HarmonicProfile from "./pages/HarmonicProfile";
+import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -69,6 +70,7 @@ function AnimatedRoutes() {
           <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
           <Route path="/cazimi" element={<CazimiPunchcard />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route
             path="/dashboard"
             element={
