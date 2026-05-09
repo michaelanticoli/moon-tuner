@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { MembershipProvider } from "@/contexts/MembershipContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ReportLauncher } from "@/components/ReportLauncher";
@@ -40,6 +41,11 @@ import DigitalSmudging from "./pages/DigitalSmudging";
 import Offerings from "./pages/Offerings";
 import Journal from "./pages/Journal";
 import JournalEntry from "./pages/JournalEntry";
+import Membership from "./pages/Membership";
+import MembershipManage from "./pages/MembershipManage";
+import DigitalStore from "./pages/DigitalStore";
+import GiftPage from "./pages/GiftPage";
+import GiftConfirmation from "./pages/GiftConfirmation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -101,6 +107,21 @@ function AnimatedRoutes() {
           <Route path="/offerings" element={<Offerings />} />
           <Route path="/journal" element={<Journal />} />
           <Route path="/journal/:slug" element={<JournalEntry />} />
+
+          {/* ── Membership & payments ─────────────────────────────── */}
+          <Route path="/membership" element={<Membership />} />
+          <Route
+            path="/membership/manage"
+            element={
+              <ProtectedRoute>
+                <MembershipManage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/store" element={<DigitalStore />} />
+          <Route path="/gift" element={<GiftPage />} />
+          <Route path="/gift/confirmation" element={<GiftConfirmation />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
@@ -112,13 +133,15 @@ function AnimatedRoutes() {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AnimatedRoutes />
-        </BrowserRouter>
-      </TooltipProvider>
+      <MembershipProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AnimatedRoutes />
+          </BrowserRouter>
+        </TooltipProvider>
+      </MembershipProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
