@@ -21,7 +21,14 @@ function useScrollReveal() {
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      ([entry]) => {
+        // One-way reveal: once in view, stay visible. Matches the ambient,
+        // non-reactive motion philosophy of the dusk design system.
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
+      },
       { threshold: 0.1 }
     );
     observer.observe(el);
