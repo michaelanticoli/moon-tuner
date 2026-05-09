@@ -387,16 +387,17 @@ function PrintingAnimation() {
     "PRINTING",
   ];
   const [visible, setVisible] = useState(0);
+  const lineCount = lines.length;
 
   useEffect(() => {
     let i = 0;
     const interval = setInterval(() => {
       i++;
       setVisible(i);
-      if (i >= lines.length) clearInterval(interval);
+      if (i >= lineCount) clearInterval(interval);
     }, 420);
     return () => clearInterval(interval);
-  }, []);
+  }, [lineCount]);
 
   return (
     <div className="inline-block text-left">
