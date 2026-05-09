@@ -2,7 +2,7 @@ import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { Navigation } from "@/components/Navigation";
 import { Link } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
-import { useEffect } from "react";
+import { SEOHead } from "@/components/SEOHead";
 
 const ALL_PHASES = [
   {
@@ -249,16 +249,22 @@ export default function MoonPhaseToday() {
     day: "numeric",
   });
 
-  // Set page title + meta via effect (no helmet library needed)
-  useEffect(() => {
-    document.title = "Moon Phase Today — Live Lunar Phase Tracker | Moontuner";
-    const desc = document.querySelector('meta[name="description"]');
-    if (desc) desc.setAttribute("content", "What is the moon phase today? See the current moon phase live — phase name, illumination percentage, cycle day, and what today's lunar energy means for your focus and practice.");
-    return () => { document.title = "Moontuner"; };
-  }, []);
-
+  // Set page title + meta via SEOHead component (rendered in return below)
   return (
     <PageTransition>
+      <SEOHead
+        title="Moon Phase Today — Live Lunar Phase Tracker | Moontuner"
+        description="What is the moon phase today? See the current moon phase live — phase name, illumination percentage, cycle day, and what today's lunar energy means for your focus and practice."
+        canonical="/moon-phase-today"
+        keywords={[
+          "moon phase today",
+          "current moon phase",
+          "lunar phase tracker",
+          "what is the moon phase today",
+          "lunar cycle",
+          "moon illumination",
+        ]}
+      />
       <Navigation />
 
       <main className="min-h-screen bg-background text-foreground">

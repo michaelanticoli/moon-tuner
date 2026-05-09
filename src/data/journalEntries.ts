@@ -422,6 +422,233 @@ The Wall is not asking you to stop. It is asking you to prove you want to contin
       "waxing-gibbous-patience-practice",
     ],
   },
+  // ─── SEO-targeted entries ──────────────────────────────────────────────────
+  {
+    slug: "why-i-lose-momentum",
+    title: "Why You Lose Momentum — and What the Cycle Is Actually Telling You",
+    type: "lunar-essay",
+    date: "2025-05-12",
+    moonPhase: "Waning Gibbous",
+    illumination: 76,
+    emotionalWeather: "Soft · Generous · Returning",
+    timingTheme: "Integration",
+    tags: [
+      "momentum",
+      "cyclical-productivity",
+      "push-vs-hold",
+      "energy-management",
+      "creative-rhythm",
+    ],
+    excerpt:
+      "The loss of momentum is one of the most common experiences creative people bring to therapy, to coaches, to journal pages. And almost universally, it is framed as a personal failing. It isn't.",
+    body: `The loss of momentum is one of the most common experiences creative people bring to therapy, to coaches, to journal pages. And almost universally, it is framed as a personal failing. It isn't.
+
+Momentum is not a constant. It is a phase. And like every phase, it has a beginning, a peak, and an end — not because something has gone wrong, but because that is the structural nature of energy moving through time.
+
+We lose momentum because we are in a different part of the cycle. The question is not "how do I get my momentum back" — as if momentum were a possession you left somewhere. The question is "what phase am I in, and what does this phase require?"
+
+---
+
+There is a specific quality to the loss of momentum that people often misread. They describe it as feeling stuck, flat, blocked. They assume this means the direction was wrong, the project is failing, the inspiration has dried up.
+
+But look closely. Is there still a pull toward the work — even a quiet one? Is there still something that matters about the direction you were moving in, even if the movement has stalled?
+
+If yes: you are in a Hold phase, not a dead end. The energy has turned inward. What was outward momentum is becoming internal processing. The work is not stopped. It has moved underground, where the real work of integration happens.
+
+---
+
+Hold phases are the most misread state in the creative cycle. In a culture that celebrates visible productivity and visible progress, a Hold phase looks like failure. It is not visible. It does not photograph well. It does not make good progress reports.
+
+But Hold phases are doing something that Push phases cannot: they are metabolizing the creative material, resolving the unresolved tensions, allowing the work to find its actual form before it crystallizes.
+
+The tree does not mourn winter. It recognizes winter as the season in which root growth happens.
+
+---
+
+If you are in a period of lost momentum, try this: stop trying to restore the momentum, and start trying to identify what phase you are in. Not philosophically — practically.
+
+Are you in the second half of your lunar cycle? You may be in a structurally Hold-oriented time. Are you in the Waning Gibbous — integrating, sharing, reviewing? The energy is real but differently directed. Are you in the Waning Crescent — the quiet dark before a new cycle? Rest is the directive. Not productivity.
+
+The cycle has not failed you. You have been trying to stay in one phase of it permanently.`,
+    isPublic: true,
+    relatedSlugs: [
+      "waning-crescent-quiet-before",
+      "first-quarter-push-through",
+      "evolution-timeline-first-year",
+    ],
+  },
+  {
+    slug: "how-to-stop-forcing-things",
+    title: "How to Stop Forcing Things (Without Stopping Caring)",
+    type: "reflection",
+    date: "2025-05-15",
+    moonPhase: "New Moon",
+    illumination: 3,
+    emotionalWeather: "Quiet · Inward · Slow",
+    timingTheme: "Surrender",
+    tags: [
+      "forcing",
+      "intention-vs-control",
+      "new-moon",
+      "non-attachment",
+      "intentional-living",
+    ],
+    excerpt:
+      "There is a particular exhaustion that comes from forcing — from pushing on something that is not moving, with increasing effort, because you are convinced that the right level of effort will eventually produce the result. The Moon has a suggestion.",
+    body: `There is a particular exhaustion that comes from forcing — from pushing on something that is not moving, with increasing effort, because you are convinced that the right level of effort will eventually produce the result.
+
+This exhaustion is different from the tiredness that comes from good hard work. Good hard work produces something afterward — a sense of completion, of rightness. Forcing produces only more tired, and the uncomfortable awareness that you are pushing against something that is not responding.
+
+The Moon has a suggestion, and it arrives at New Moon: stop.
+
+---
+
+Not stop caring. Not abandon the project. Not pretend the thing doesn't matter.
+
+Stop forcing.
+
+There is a difference between committed direction and an anxious grip. Intention is directional. Forcing is positional — holding a position against incoming information, against the natural movement of the situation, against your own body's clear signals.
+
+The New Moon arrives when the cycle is genuinely dark. When the light is gone and what you thought you were heading toward is no longer visible. This is not a failure of the direction. It is a phase change. The cycle has turned.
+
+---
+
+The question to ask at the moment of forcing is: what am I actually afraid will happen if I stop?
+
+Usually, the answer is: that I will lose the thing I care about. That stopping will mean abandoning. That rest will mean failure.
+
+But consider the alternative: what has sustained forcing produced so far? Has the thing moved? Or has it hardened the resistance?
+
+Forcing has a paradoxical relationship with outcomes. In domains that respond to raw application of effort — physical tasks, certain kinds of execution work — force produces results. But in creative work, in relationships, in the deep work of self-understanding, force typically produces exactly the thing it's trying to prevent: the stuckness, the silence, the closing of what you were trying to open.
+
+---
+
+Stopping forcing does not mean stopping caring. It means changing your relationship to the outcome. It means setting the intention clearly and honestly, taking the most available action toward it, and then releasing your grip on how and when it arrives.
+
+This is not passivity. It is a different kind of engagement — one that stays in motion without requiring that every moment of motion be visible and measurable progress.
+
+The New Moon practice at Moontuner is built around exactly this: state the intention. Release the grip. Watch what surfaces when you stop trying to control the surfacing.`,
+    isPublic: true,
+    relatedSlugs: [
+      "new-moon-intention-setting",
+      "waning-crescent-quiet-before",
+      "why-i-lose-momentum",
+    ],
+  },
+  {
+    slug: "emotional-burnout-cycles",
+    title: "Emotional Burnout Cycles: What They Are and How to Break Them",
+    type: "lunar-essay",
+    date: "2025-05-20",
+    moonPhase: "First Quarter",
+    illumination: 52,
+    emotionalWeather: "Tension into traction",
+    timingTheme: "Pattern Recognition",
+    tags: [
+      "burnout",
+      "emotional-cycles",
+      "emotional-burnout",
+      "cyclical-productivity",
+      "recovery",
+      "pattern-recognition",
+    ],
+    excerpt:
+      "Emotional burnout doesn't happen in a single moment. It happens in a cycle — a repeating pattern of overextension followed by collapse. Understanding the cycle is the first step to breaking it.",
+    body: `Emotional burnout doesn't happen in a single moment. It happens in a cycle — a repeating pattern of overextension followed by collapse, partial recovery, then overextension again.
+
+Most interventions address the collapse: therapy, rest, time off. These help — but they don't address the structural pattern that produces the collapse. The cycle continues because nothing has changed in the conditions that create it.
+
+Understanding the cycle is the first intervention.
+
+---
+
+The emotional burnout cycle typically has four phases:
+
+Overextension: the period when you are giving more than you have. Not necessarily dramatically — sometimes just slightly more, consistently, for a long time. The emotional reserves are being drawn down faster than they are being replenished.
+
+Depletion: the point where the deficit becomes visible. You feel flat, disconnected, less responsive. What used to feel meaningful feels obligatory. What used to energize you now merely exhausts you.
+
+Collapse: the point where the system simply stops. This can look like illness, emotional breakdown, sudden withdrawal, or a complete inability to function in domains that previously felt manageable.
+
+Partial recovery: the return to baseline function — but not to full capacity. You feel better. You resume. You may not notice that you resumed without fully restoring the emotional reserves. The next overextension phase begins at a lower starting point.
+
+---
+
+This is why emotional burnout tends to worsen over time. Each cycle begins from a slightly lower baseline. The intervals between cycles shorten. The collapses become more severe.
+
+The pattern can only be broken at the overextension phase — which means it can only be broken during the period when things seem to be working. This is deeply counterintuitive. The impulse to address burnout arrives at collapse, not at overextension.
+
+---
+
+What breaks the cycle is structural restoration: building recovery into the rhythm before collapse requires it. This is the cyclical productivity model in practice — not resting when you break down, but resting before you break down, as part of the normal cycle.
+
+The lunar calendar is one way to externalize this rhythm. New Moon and Waning Crescent phases are structurally designated for restoration. If you honor them — if you actually do less, protect sleep, reduce output — the overextension phase has less opportunity to accumulate.
+
+This is not magic. It is maintenance. The machine that is never turned off eventually breaks. The machine that has regular rest periods runs for much longer.`,
+    isPublic: true,
+    relatedSlugs: [
+      "waning-crescent-quiet-before",
+      "evolution-timeline-first-year",
+      "why-i-lose-momentum",
+    ],
+  },
+  {
+    slug: "reconnecting-with-yourself",
+    title: "How to Reconnect With Yourself After a Long Period of Going Through Motions",
+    type: "reflection",
+    date: "2025-05-25",
+    moonPhase: "Waning Crescent",
+    illumination: 9,
+    emotionalWeather: "Low · Dreaming · Restorative",
+    timingTheme: "Return",
+    tags: [
+      "reconnection",
+      "self-awareness",
+      "waning-crescent",
+      "reflective-recovery",
+      "identity",
+      "presence",
+    ],
+    excerpt:
+      "There is a specific quality of returning to yourself after a long period of not being quite present — not a dramatic awakening, but a quiet re-recognition. This is what that looks like.",
+    body: `There is a specific quality of returning to yourself after a long period of not being quite present — not a dramatic awakening, but a quiet re-recognition. Oh. There I am.
+
+The period of going through motions is recognizable. You are functioning. You are showing up. You are producing, responding, maintaining. But the quality of aliveness that you know is possible is not fully available. Something is on autopilot.
+
+---
+
+What produces the going-through-motions state varies. Extended periods of high demand. Chronic stress. Grief, even when it is not acute grief. A slow drift from the things that actually matter to the things that merely need doing. The accumulated weight of obligations that were never really yours.
+
+The reconnection is not usually a single moment of clarity. It tends to be a series of small recognitions: oh, I haven't done that thing I love in months. Oh, I forgot I used to find this interesting. Oh, I am tired in a way that sleep hasn't touched.
+
+These small recognitions are the signal. They are not failures or indictments. They are navigational — the system flagging that something needs attention.
+
+---
+
+How do you actually reconnect? There is no universal protocol. But some things tend to help:
+
+Reduction. Remove obligations that are not essential. Not permanently — just for long enough to feel the difference between a full schedule and an honest one.
+
+Unstructured time. Not vacation with a plan. Literal unstructured time. An afternoon with no agenda. See what surfaces when nothing is required of you.
+
+Physical sensation. The body often returns to presence before the mind does. Movement, water, sunlight, food that is prepared slowly — these are not metaphors. They are the direct channels back to embodied experience.
+
+Honest inventory. What have you been doing versus what do you actually want to be doing? Not in the aspirational sense — in the practical sense. What would you do tomorrow if no one expected anything of you?
+
+---
+
+The Waning Crescent is the natural phase for this return. The cycle is dark. The output pressure is structurally minimal. The invitation is inward.
+
+This is not the phase for dramatic reinvention. It is the phase for quiet re-recognition. For sitting with your own company long enough to remember what it's like to be in it.
+
+You have not lost yourself. You have simply been elsewhere for a while. The return happens slowly, then all at once.`,
+    isPublic: true,
+    relatedSlugs: [
+      "waning-crescent-quiet-before",
+      "full-moon-release-practice",
+      "how-to-stop-forcing-things",
+    ],
+  },
 ];
 
 // ─── Helper utilities ─────────────────────────────────────────────────────────

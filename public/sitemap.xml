@@ -1,111 +1,302 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core pages -->
   <url>
     <loc>https://moontuner.xyz/</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://moontuner.xyz/moon-phase-today</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://moontuner.xyz/moon-phase-today</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/explore</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/harmonic-profile</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/digital-smudging</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://moontuner.xyz/services</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/lunar-system</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/school</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/sessions</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/lunar-cipher</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/lunar-reports</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/app</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://moontuner.xyz/offerings</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
     <loc>https://moontuner.xyz/workbooks</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/workbook-preview</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/lunar-chaperone</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/method</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/the-moon</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/quantumelodic</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/starter</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/manifesto</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://moontuner.xyz/philosophy</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/free-guide</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/studio</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/total-tuner</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/cazimi</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+
+  <!-- Explore / SEO landing pages -->
+  <url>
+    <loc>https://moontuner.xyz/explore/push-vs-hold</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/explore/emotional-weather</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/explore/digital-smudging</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/explore/cyclical-productivity</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/explore/creative-exhaustion</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/explore/when-to-rest</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/explore/intention-vs-control</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/explore/reflective-recovery</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/explore/how-to-regain-clarity</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/explore/what-is-a-harmonic-profile</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Journal entries -->
+  <url>
+    <loc>https://moontuner.xyz/journal/waning-crescent-quiet-before</loc>
+    <lastmod>2025-05-06</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal/new-moon-intention-setting</loc>
+    <lastmod>2025-05-08</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal/full-moon-release-practice</loc>
+    <lastmod>2025-04-23</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal/harmonic-profile-waxing-crescent-natal</loc>
+    <lastmod>2025-04-09</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal/workbook-entry-phase-2-arrival</loc>
+    <lastmod>2025-03-28</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal/evolution-timeline-first-year</loc>
+    <lastmod>2025-05-01</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal/waxing-gibbous-patience-practice</loc>
+    <lastmod>2025-04-18</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal/first-quarter-push-through</loc>
+    <lastmod>2025-04-10</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal/why-i-lose-momentum</loc>
+    <lastmod>2025-05-12</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal/how-to-stop-forcing-things</loc>
+    <lastmod>2025-05-15</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal/emotional-burnout-cycles</loc>
+    <lastmod>2025-05-20</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moontuner.xyz/journal/reconnecting-with-yourself</loc>
+    <lastmod>2025-05-25</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

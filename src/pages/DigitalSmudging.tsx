@@ -8,6 +8,7 @@ import { CordCutting } from "@/components/smudging/CordCutting";
 import { TheVoid } from "@/components/smudging/TheVoid";
 import { Wards } from "@/components/smudging/Wards";
 import { LunarSync } from "@/components/smudging/LunarSync";
+import { SEOHead } from "@/components/SEOHead";
 
 // Step indicator — subtle progress dots at top of screen
 function ProgressDots({ step, total }: { step: number; total: number }) {
@@ -100,6 +101,21 @@ const DigitalSmudging = () => {
 
   return (
     <PageTransition>
+      <SEOHead
+        title="Digital Smudging — Clear Digital Overwhelm & Reclaim Your Attention | Moontuner"
+        description="Digital Smudging is a structured clearing ritual for digital overwhelm. Scan, release, and reset your digital environment — then set intentional boundaries for what follows."
+        canonical="/digital-smudging"
+        keywords={[
+          "digital smudging",
+          "digital overwhelm",
+          "screen time anxiety",
+          "digital detox alternative",
+          "clear digital clutter",
+          "digital wellness practice",
+          "reclaim attention",
+          "information overload",
+        ]}
+      />
       <div
         className="min-h-screen relative"
         style={{ background: "hsl(22, 12%, 8%)" }}
