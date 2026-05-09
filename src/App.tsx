@@ -35,6 +35,7 @@ import TotalTuner from "./pages/TotalTuner";
 import CazimiPunchcard from "./pages/CazimiPunchcard";
 import SpacetimePrinter from "./pages/SpacetimePrinter";
 import HarmonicProfile from "./pages/HarmonicProfile";
+import DigitalSmudging from "./pages/DigitalSmudging";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -91,6 +92,7 @@ function AnimatedRoutes() {
           <Route path="/free-guide" element={<FreeGuide />} />
           <Route path="/total-tuner" element={<TotalTuner />} />
           <Route path="/harmonic-profile" element={<HarmonicProfile />} />
+          <Route path="/digital-smudging" element={<DigitalSmudging />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
