@@ -49,25 +49,6 @@ function MoonGlyph({
   const cx = 32;
   const cy = 32;
 
-  // Calculate shadow path
-  const shadowRx = r * Math.abs(1 - 2 * illumination);
-  const shadowSide = isWaxing ? "right" : "left";
-
-  // The lit side is an arc; shadow fills the other side
-  const litPath =
-    illumination < 0.01
-      ? "" // new moon, all dark
-      : illumination > 0.99
-      ? "" // full moon, no shadow
-      : (() => {
-          // simplified: use an ellipse clip
-          return "";
-        })();
-
-  void litPath;
-  void shadowSide;
-  void shadowRx;
-
   return (
     <svg
       width="64"
