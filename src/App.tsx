@@ -37,6 +37,8 @@ import SpacetimePrinter from "./pages/SpacetimePrinter";
 import HarmonicProfile from "./pages/HarmonicProfile";
 import AuthCallback from "./pages/AuthCallback";
 import DigitalSmudging from "./pages/DigitalSmudging";
+import Journal from "./pages/Journal";
+import JournalEntry from "./pages/JournalEntry";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -95,6 +97,8 @@ function AnimatedRoutes() {
           <Route path="/total-tuner" element={<TotalTuner />} />
           <Route path="/harmonic-profile" element={<HarmonicProfile />} />
           <Route path="/digital-smudging" element={<DigitalSmudging />} />
+          <Route path="/journal" element={<Journal />} />
+          <Route path="/journal/:slug" element={<JournalEntry />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
