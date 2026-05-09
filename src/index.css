@@ -710,8 +710,8 @@
 .today-page {
   /* Smooth momentum scrolling on iOS */
   -webkit-overflow-scrolling: touch;
-  /* Prevent rubber-band overscroll on body; keep within container */
-  overscroll-behavior-y: none;
+  /* Contain overscroll within this container; allow natural scroll within the page */
+  overscroll-behavior-y: contain;
 }
 
 /* Grain texture overlay — identical opacity to grain-overlay */
@@ -759,6 +759,14 @@
   border-bottom: 1px solid hsl(var(--dusk-line) / 0.4);
 }
 
+/* ── Shared touch-safe sizing ─────────────────────────────────── */
+
+/* WCAG 2.5.5 — minimum touch target size (44×44 px) */
+.today-touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
 .today-nav-back {
   display: flex;
   align-items: center;
@@ -769,7 +777,6 @@
   border: 1px solid hsl(var(--dusk-line));
   color: hsl(var(--dusk-ivory));
   transition: border-color 0.3s ease, background 0.3s ease;
-  /* Minimum touch target */
   min-width: 44px;
   min-height: 44px;
 }
@@ -1002,7 +1009,8 @@
   text-transform: uppercase;
   transition: all 0.3s cubic-bezier(0.2,0.8,0.2,1);
   cursor: pointer;
-  min-height: 44px;     /* Touch-safe minimum */
+  min-width: 44px;
+  min-height: 44px;
   background: transparent;
   -webkit-tap-highlight-color: transparent;
 }
@@ -1038,6 +1046,7 @@
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.2,0.8,0.2,1);
+  min-width: 44px;
   min-height: 44px;
   -webkit-tap-highlight-color: transparent;
 }

@@ -15,6 +15,10 @@ import { Link } from "react-router-dom";
 import { useTodayData } from "@/hooks/useTodayData";
 import { useHaptic } from "@/hooks/useHaptic";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
+
+type PhaseKey =
+  | "new" | "waxing-crescent" | "first-quarter" | "waxing-gibbous"
+  | "full" | "waning-gibbous" | "last-quarter" | "waning-crescent";
 import { PageTransition } from "@/components/PageTransition";
 
 // ─── Scroll-reveal hook (lightweight, no framer dep needed for simple fades) ──
@@ -37,8 +41,15 @@ function useReveal(threshold = 0.12) {
 }
 
 // ─── Phase key normalizer (for MoonPhaseGlyph) ────────────────────────────────
-function normalizePhaseKey(phaseName: string) {
-  return phaseName.toLowerCase().replace(/\s+/g, "-").replace("new-moon", "new").replace("full-moon", "full") as never;
+function normalizePhaseKey(phaseName: string): PhaseKey {
+  const slug = phaseName.toLowerCase().replace(/\s+/g, "-");
+  if (slug === "new-moon") return "new";
+  if (slug === "full-moon") return "full";
+  const valid: PhaseKey[] = [
+    "waxing-crescent", "first-quarter", "waxing-gibbous",
+    "waning-gibbous", "last-quarter", "waning-crescent",
+  ];
+  return valid.includes(slug as PhaseKey) ? (slug as PhaseKey) : "new";
 }
 
 // ─── Tiny section fade wrapper ─────────────────────────────────────────────────
@@ -92,14 +103,17 @@ function TodayCard({
   );
 }
 
+/** Default accent color used when directive state is not in the map */
+const DEFAULT_DIRECTIVE_ACCENT = "hsl(38 47% 59%)";
+
 // ─── Directive badge ──────────────────────────────────────────────────────────
 const DIRECTIVE_ACCENT: Record<string, string> = {
-  Push:      "hsl(38 47% 59%)",
+  Push:      DEFAULT_DIRECTIVE_ACCENT,
   Hold:      "hsl(38 33% 91% / 0.5)",
   Reflect:   "hsl(40 5% 53%)",
   Release:   "hsl(38 47% 59% / 0.7)",
   Reconnect: "hsl(168 65% 52%)",
-  Create:    "hsl(38 47% 59%)",
+  Create:    DEFAULT_DIRECTIVE_ACCENT,
   Recover:   "hsl(40 5% 53% / 0.7)",
 };
 
@@ -113,7 +127,7 @@ const Today = () => {
   const [reflectionOpen, setReflectionOpen] = useState(false);
 
   const phaseKey = normalizePhaseKey(data.lunar.phaseName);
-  const directiveAccent = DIRECTIVE_ACCENT[data.directive.state] ?? "hsl(38 47% 59%)";
+  const directiveAccent = DIRECTIVE_ACCENT[data.directive.state] ?? DEFAULT_DIRECTIVE_ACCENT;
 
   const handleRitualToggle = () => {
     vibrate("soft");

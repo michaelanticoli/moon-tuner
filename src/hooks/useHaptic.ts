@@ -18,7 +18,7 @@ export type HapticPattern =
   | "ritual"      // ritual completion — ceremonial triple rhythm
   | "milestone"   // timeline milestone — weighted, once
   | "release"     // releasing to The Void — long exhale
-  | "transition"  // emotional weather shift — soft flutter;
+  | "transition"  // emotional weather shift — soft flutter
 
 const PATTERNS: Record<HapticPattern, number | number[]> = {
   light:      8,
