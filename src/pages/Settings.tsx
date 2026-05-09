@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserMemory } from "@/hooks/useUserMemory";
 import { supabase } from "@/lib/supabase";
 import { Link } from "react-router-dom";
 import {
@@ -19,6 +20,10 @@ import {
   Save,
   Loader2,
   Check,
+  Shield,
+  Download,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 
 interface UserPreferences {
@@ -32,19 +37,23 @@ interface UserProfile {
   birth_date: string;
   birth_time: string;
   birth_location: string;
+  private_mode: boolean;
 }
 
 const Settings = () => {
   const { user } = useAuth();
+  const { exportArchive } = useUserMemory();
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
 
   const [profile, setProfile] = useState<UserProfile>({
     display_name: "",
     birth_date: "",
     birth_time: "",
     birth_location: "",
+    private_mode: false,
   });
 
   const [preferences, setPreferences] = useState<UserPreferences>({
@@ -61,7 +70,6 @@ const Settings = () => {
     if (!user) return;
 
     try {
-      // Fetch profile
       const { data: profileData } = await supabase
         .from("profiles")
         .select("*")
@@ -74,10 +82,10 @@ const Settings = () => {
           birth_date: profileData.birth_date || "",
           birth_time: profileData.birth_time || "",
           birth_location: profileData.birth_location || "",
+          private_mode: profileData.private_mode ?? false,
         });
       }
 
-      // Fetch preferences
       const { data: prefsData } = await supabase
         .from("user_preferences")
         .select("*")
@@ -105,7 +113,6 @@ const Settings = () => {
     setSaved(false);
 
     try {
-      // Upsert profile
       await supabase.from("profiles").upsert({
         id: user.id,
         email: user.email || "",
@@ -113,10 +120,10 @@ const Settings = () => {
         birth_date: profile.birth_date || null,
         birth_time: profile.birth_time || null,
         birth_location: profile.birth_location || null,
+        private_mode: profile.private_mode,
         updated_at: new Date().toISOString(),
       });
 
-      // Upsert preferences
       await supabase.from("user_preferences").upsert({
         user_id: user.id,
         audio_enabled: preferences.audio_enabled,
@@ -131,6 +138,15 @@ const Settings = () => {
       console.error("Error saving settings:", error);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      await exportArchive();
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -154,45 +170,49 @@ const Settings = () => {
             <ScrollReveal>
               <div className="max-w-2xl mx-auto">
                 {/* Header */}
-                <div className="flex items-center gap-4 mb-8">
+                <div className="flex items-center gap-4 mb-10">
                   <Link
                     to="/dashboard"
-                    className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="p-2 text-muted-foreground/50 hover:text-foreground transition-colors"
                   >
                     <ArrowLeft className="w-5 h-5" />
                   </Link>
                   <div>
-                    <h1 className="font-serif text-3xl text-foreground">Settings</h1>
-                    <p className="text-muted-foreground text-sm">
-                      Manage your account and preferences
+                    <p className="text-[11px] tracking-widest uppercase text-muted-foreground/40 mb-0.5 font-sans">
+                      Preferences
                     </p>
+                    <h1 className="font-serif text-3xl text-foreground">Your Profile</h1>
                   </div>
                 </div>
 
                 {/* Profile Section */}
-                <div className="node-card mb-6">
+                <div className="node-card mb-6 border-border/40">
                   <div className="flex items-center gap-3 mb-6">
-                    <User className="w-5 h-5 text-accent" />
-                    <h2 className="font-serif text-xl text-foreground">Profile</h2>
+                    <User className="w-4 h-4 text-accent/70" />
+                    <h2 className="font-serif text-lg text-foreground">Signal</h2>
                   </div>
 
                   <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="displayName">Display Name</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="displayName" className="text-foreground/70 text-sm">
+                        Name
+                      </Label>
                       <Input
                         id="displayName"
                         value={profile.display_name}
                         onChange={(e) =>
                           setProfile({ ...profile, display_name: e.target.value })
                         }
-                        placeholder="Your name"
-                        className="bg-background"
+                        placeholder="How you'd like to be known"
+                        className="bg-background border-border/50"
                       />
                     </div>
 
                     <div className="grid sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="birthDate">Birth Date</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="birthDate" className="text-foreground/70 text-sm">
+                          Birth Date
+                        </Label>
                         <Input
                           id="birthDate"
                           type="date"
@@ -200,11 +220,13 @@ const Settings = () => {
                           onChange={(e) =>
                             setProfile({ ...profile, birth_date: e.target.value })
                           }
-                          className="bg-background"
+                          className="bg-background border-border/50"
                         />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="birthTime">Birth Time</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="birthTime" className="text-foreground/70 text-sm">
+                          Birth Time
+                        </Label>
                         <Input
                           id="birthTime"
                           type="time"
@@ -212,13 +234,15 @@ const Settings = () => {
                           onChange={(e) =>
                             setProfile({ ...profile, birth_time: e.target.value })
                           }
-                          className="bg-background"
+                          className="bg-background border-border/50"
                         />
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="birthLocation">Birth Location</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="birthLocation" className="text-foreground/70 text-sm">
+                        Birth Location
+                      </Label>
                       <Input
                         id="birthLocation"
                         value={profile.birth_location}
@@ -226,27 +250,27 @@ const Settings = () => {
                           setProfile({ ...profile, birth_location: e.target.value })
                         }
                         placeholder="City, Country"
-                        className="bg-background"
+                        className="bg-background border-border/50"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Audio Preferences */}
-                <div className="node-card mb-6">
+                <div className="node-card mb-6 border-border/40">
                   <div className="flex items-center gap-3 mb-6">
-                    <Volume2 className="w-5 h-5 text-accent" />
-                    <h2 className="font-serif text-xl text-foreground">Audio</h2>
+                    <Volume2 className="w-4 h-4 text-accent/70" />
+                    <h2 className="font-serif text-lg text-foreground">Ambient Audio</h2>
                   </div>
 
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label htmlFor="audioEnabled" className="text-foreground">
-                          Enable Audio
+                        <Label htmlFor="audioEnabled" className="text-foreground/80">
+                          Lunar Tones
                         </Label>
-                        <p className="text-muted-foreground text-sm">
-                          Play ambient lunar tones
+                        <p className="text-muted-foreground/50 text-sm">
+                          Play ambient sound during sessions
                         </p>
                       </div>
                       <Switch
@@ -260,8 +284,8 @@ const Settings = () => {
 
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <Label htmlFor="volume">Volume</Label>
-                        <span className="text-muted-foreground text-sm">
+                        <Label htmlFor="volume" className="text-foreground/70 text-sm">Volume</Label>
+                        <span className="text-muted-foreground/50 text-sm">
                           {Math.round(preferences.volume * 100)}%
                         </span>
                       </div>
@@ -282,19 +306,19 @@ const Settings = () => {
                 </div>
 
                 {/* Notifications */}
-                <div className="node-card mb-8">
+                <div className="node-card mb-6 border-border/40">
                   <div className="flex items-center gap-3 mb-6">
-                    <Bell className="w-5 h-5 text-accent" />
-                    <h2 className="font-serif text-xl text-foreground">Notifications</h2>
+                    <Bell className="w-4 h-4 text-accent/70" />
+                    <h2 className="font-serif text-lg text-foreground">Reminders</h2>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label htmlFor="notifications" className="text-foreground">
+                      <Label htmlFor="notifications" className="text-foreground/80">
                         Lunar Phase Reminders
                       </Label>
-                      <p className="text-muted-foreground text-sm">
-                        Get notified at key moon phases
+                      <p className="text-muted-foreground/50 text-sm">
+                        A quiet signal at key moon phases
                       </p>
                     </div>
                     <Switch
@@ -307,6 +331,61 @@ const Settings = () => {
                         })
                       }
                     />
+                  </div>
+                </div>
+
+                {/* Privacy */}
+                <div className="node-card mb-8 border-border/40">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Shield className="w-4 h-4 text-accent/70" />
+                    <h2 className="font-serif text-lg text-foreground">Privacy</h2>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="privateMode" className="text-foreground/80 flex items-center gap-2">
+                          {profile.private_mode ? (
+                            <EyeOff className="w-3.5 h-3.5 text-muted-foreground/60" />
+                          ) : (
+                            <Eye className="w-3.5 h-3.5 text-muted-foreground/60" />
+                          )}
+                          Private Mode
+                        </Label>
+                        <p className="text-muted-foreground/50 text-sm mt-0.5">
+                          Keeps your record entirely to yourself
+                        </p>
+                      </div>
+                      <Switch
+                        id="privateMode"
+                        checked={profile.private_mode}
+                        onCheckedChange={(checked) =>
+                          setProfile({ ...profile, private_mode: checked })
+                        }
+                      />
+                    </div>
+
+                    <div className="pt-4 border-t border-border/20">
+                      <p className="text-foreground/70 text-sm mb-1">Export Archive</p>
+                      <p className="text-muted-foreground/50 text-sm mb-4 leading-relaxed">
+                        Download a complete copy of your memories, timeline, and charts
+                        as a JSON file. Your data belongs to you.
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleExport}
+                        disabled={exporting}
+                        className="border-border/40"
+                      >
+                        {exporting ? (
+                          <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                        ) : (
+                          <Download className="w-4 h-4 mr-2" />
+                        )}
+                        {exporting ? "Preparing archive…" : "Download Archive"}
+                      </Button>
+                    </div>
                   </div>
                 </div>
 
@@ -343,3 +422,4 @@ const Settings = () => {
 };
 
 export default Settings;
+
