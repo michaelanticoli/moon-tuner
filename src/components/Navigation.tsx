@@ -40,6 +40,7 @@ const NAV_GROUPS: NavGroupData[] = [
     items: [
       { label: 'Moon Phase Today', href: '/moon-phase-today', desc: 'Live lunar tracker' },
       { label: 'Lunar Cipher', href: '/lunar-cipher', desc: 'Decode your chart' },
+      { label: 'Spacetime Printer', href: '/spacetime-printer', desc: 'Submit a proposal' },
       { label: 'App', href: '/app', desc: 'Full lunar toolkit' },
     ],
   },
