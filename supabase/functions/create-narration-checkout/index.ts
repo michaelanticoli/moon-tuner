@@ -12,6 +12,7 @@ const corsHeaders = {
 
 const VOICE_ID = "bQjXuTZHN8ofphZ0QfAv"; // Michael Moon voice clone
 const PRICE_CENTS = 500; // $5
+const ASTRO_HARMONIC_PROFILE_URL = "https://buy.stripe.com/5kQ00i5QCdHm8qngTfe7m04";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -33,6 +34,10 @@ Deno.serve(async (req) => {
     }
     if (sourceText.length > 12000) {
       return json({ error: "Report text exceeds 12000 char limit" }, 400);
+    }
+
+    if (reportType === "astro-harmonic-profile") {
+      return json({ url: ASTRO_HARMONIC_PROFILE_URL });
     }
 
     // Insert pending narration row
