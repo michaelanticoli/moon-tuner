@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAnalyticsContext } from '@/contexts/AnalyticsContext';
 
+const HAS_VISITED_KEY = 'mt_has_visited';
+
 /**
  * Tracks page views and dwell time automatically as the route changes.
  * Place this hook inside a component that is rendered inside both the
@@ -35,19 +37,21 @@ export function usePageTracking(): void {
       });
     }
 
-    // Check for return visit: session token was already set in a previous session
-    const sessionExpiry = localStorage.getItem('mt_session_expiry');
-    const isReturn = sessionExpiry
-      ? parseInt(sessionExpiry, 10) < Date.now() + 23 * 60 * 60 * 1000
-      : false;
-
+    // Ecosystem entry — detect return visits via a persistent has-visited flag
     if (!prev) {
-      track(isReturn ? 'return_visit' : 'ecosystem_entry', {
+      let hasVisited = false;
+      try {
+        hasVisited = Boolean(localStorage.getItem(HAS_VISITED_KEY));
+        localStorage.setItem(HAS_VISITED_KEY, '1');
+      } catch {
+        /* localStorage may be unavailable */
+      }
+      track(hasVisited ? 'return_visit' : 'ecosystem_entry', {
         entry_page: current,
       });
     }
 
     enteredAtRef.current = now;
     prevPathRef.current = current;
-  }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [location.pathname, track, isOptedOut]);
 }

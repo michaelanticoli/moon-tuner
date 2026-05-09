@@ -26,7 +26,7 @@ const SESSION_TOKEN_KEY = 'mt_session_token';
 const SESSION_EXPIRY_KEY = 'mt_session_expiry';
 const OPT_OUT_KEY = 'mt_analytics_opt_out';
 
-const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24 h — privacy-safe rotation
+const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours — privacy-safe rotation
 const FLUSH_INTERVAL_MS = 30 * 1000;
 const MAX_QUEUE = 200;
 

@@ -140,11 +140,15 @@ function StatCard({
 
 const AnalyticsDashboard = () => {
   const analytics = getAnalytics();
-  const [, setRefresh] = useState(0);
+  const [refreshCount, setRefresh] = useState(0);
 
+  // Re-read from the analytics engine on each render (triggered by refresh button)
   const queue = analytics.getQueue() as AnalyticsEvent[];
   const userState = analytics.getUserState();
   const behavior = analytics.getBehavior();
+
+  // Suppress unused variable warning — refreshCount drives the re-render
+  void refreshCount;
 
   // --- Aggregations ---
 
