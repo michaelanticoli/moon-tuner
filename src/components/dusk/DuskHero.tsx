@@ -78,9 +78,8 @@ export function DuskHero() {
             className="text-[1.0625rem] lg:text-[1.125rem] leading-[1.7] max-w-[560px] dusk-mute mb-12 dusk-rise"
             style={{ animationDelay: "0.24s", color: "hsl(var(--dusk-ivory) / 0.7)" }}
           >
-            Personalized lunar guidance, identity mapping, and creative
-            calibration tools designed to help you move with better timing —
-            instead of harder force.
+            Personalized lunar guidance, identity mapping, and reflective tools
+            designed to help you move with better timing instead of harder force.
           </p>
 
           <div
