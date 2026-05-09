@@ -16,6 +16,7 @@ import {
   type ContentType,
 } from "@/data/journalEntries";
 import { useLunarCalculations } from "@/hooks/useLunarCalculations";
+import { JournalAISynthesis } from "@/components/ai/JournalAISynthesis";
 import { format } from "date-fns";
 
 // ─── Today's status panel ─────────────────────────────────────────────────────
@@ -435,6 +436,7 @@ function TypeFilter({
 const Journal = () => {
   const [search, setSearch] = useState("");
   const [activeType, setActiveType] = useState<ContentType | "all">("all");
+  const { phaseName } = useLunarCalculations();
 
   const sorted = useMemo(
     () =>
@@ -472,6 +474,9 @@ const Journal = () => {
             className="mx-auto max-w-[1100px] px-6 lg:px-12"
             style={{ height: "1px", background: "hsl(22 12% 14%)" }}
           />
+
+          {/* AI emotional season synthesis */}
+          <JournalAISynthesis lunarPhase={phaseName} />
 
           {/* Main content */}
           <section className="mx-auto max-w-[1100px] px-6 lg:px-12 py-20 lg:py-28">
