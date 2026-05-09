@@ -86,7 +86,7 @@ export function DuskHero() {
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 dusk-rise"
             style={{ animationDelay: "0.36s" }}
           >
-            <Link to="/lunar-reports" className="dusk-btn dusk-btn-primary">
+            <Link to="/harmonic-profile" className="dusk-btn dusk-btn-primary">
               Generate Your Harmonic Profile
             </Link>
             <a href="#todays-directive" className="dusk-btn dusk-btn-ghost">
