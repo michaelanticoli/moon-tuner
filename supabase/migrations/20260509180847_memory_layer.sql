@@ -8,7 +8,7 @@
 CREATE TABLE IF NOT EXISTS public.user_memories (
   id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id         UUID        NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  entity_type     TEXT        NOT NULL,   -- 'directive' | 'reflection' | 'proposal' | 'report' | 'ritual' | 'workbook' | 'chart'
+  entity_type     TEXT        NOT NULL,   -- 'directive' | 'reflection' | 'proposal' | 'report' | 'ritual' | 'workbook' | 'chart' | 'harmonic_profile' | 'spacetime'
   entity_id       TEXT,                   -- external reference (slug, id, etc.)
   title           TEXT,
   emotional_theme TEXT,

@@ -32,7 +32,8 @@ function TimelineNode({ event, index }: { event: TimelineEvent; index: number })
   const date = new Date(event.occurred_at);
 
   return (
-    <motion.div
+    <motion.article
+      aria-label={`${label}: ${event.title}`}
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: index * 0.05, ease: [0.4, 0, 0.2, 1] }}
@@ -82,7 +83,7 @@ function TimelineNode({ event, index }: { event: TimelineEvent; index: number })
           {formatDistanceToNow(date, { addSuffix: true })}
         </p>
       </div>
-    </motion.div>
+    </motion.article>
   );
 }
 
@@ -140,7 +141,7 @@ export function Timeline() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" role="feed" aria-label="Your lunar archive">
       {events.map((event, i) => (
         <TimelineNode key={event.id} event={event} index={i} />
       ))}

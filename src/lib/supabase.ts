@@ -26,7 +26,9 @@ export type MemoryEntityType =
   | 'report'
   | 'ritual'
   | 'workbook'
-  | 'chart';
+  | 'chart'
+  | 'harmonic_profile'
+  | 'spacetime';
 
 export type TimelineEventType =
   | 'directive_view'
