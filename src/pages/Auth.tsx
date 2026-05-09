@@ -1,19 +1,26 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
-import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { Moon, Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
+import { Moon, Mail, Lock, ArrowRight, Loader2, Sparkles } from "lucide-react";
 
-type AuthMode = "signin" | "signup" | "reset";
+type AuthMode = "enter" | "begin" | "reset" | "magic";
+
+const FADE = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -8 },
+  transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] as const },
+};
 
 const Auth = () => {
-  const [mode, setMode] = useState<AuthMode>("signin");
+  const [mode, setMode] = useState<AuthMode>("enter");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -21,8 +28,14 @@ const Auth = () => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  const { signIn, signUp, resetPassword } = useAuth();
+  const { signIn, signUp, resetPassword, signInWithMagicLink, signInAnonymously } = useAuth();
   const navigate = useNavigate();
+
+  const switchMode = (next: AuthMode) => {
+    setMode(next);
+    setError(null);
+    setMessage(null);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,14 +44,14 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      if (mode === "signup") {
+      if (mode === "begin") {
         if (password !== confirmPassword) {
-          setError("Passwords do not match");
+          setError("The signals don't match — please re-enter your key.");
           setLoading(false);
           return;
         }
         if (password.length < 6) {
-          setError("Password must be at least 6 characters");
+          setError("Your key must be at least 6 characters.");
           setLoading(false);
           return;
         }
@@ -46,9 +59,9 @@ const Auth = () => {
         if (error) {
           setError(error.message);
         } else {
-          setMessage("Check your email for a confirmation link");
+          setMessage("A thread has been sent to your email. Follow it to continue.");
         }
-      } else if (mode === "signin") {
+      } else if (mode === "enter") {
         const { error } = await signIn(email, password);
         if (error) {
           setError(error.message);
@@ -60,87 +73,158 @@ const Auth = () => {
         if (error) {
           setError(error.message);
         } else {
-          setMessage("Check your email for a password reset link");
+          setMessage("A reset thread has been sent to your email.");
+        }
+      } else if (mode === "magic") {
+        const { error } = await signInWithMagicLink(email);
+        if (error) {
+          setError(error.message);
+        } else {
+          setMessage("A signal has been sent to your email. Open it to enter.");
         }
       }
-    } catch (err) {
-      setError("An unexpected error occurred");
+    } catch {
+      setError("Something shifted unexpectedly. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
+  const handleAnonymous = async () => {
+    setLoading(true);
+    setError(null);
+    const { error } = await signInAnonymously();
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+    } else {
+      navigate("/dashboard");
+    }
+  };
+
+  const headings: Record<AuthMode, string> = {
+    enter:  "Continue Your Record",
+    begin:  "Begin Reflection",
+    reset:  "Recover Your Signal",
+    magic:  "Enter the Archive",
+  };
+
+  const subheadings: Record<AuthMode, string> = {
+    enter:  "Return to where you left off.",
+    begin:  "Initialize your profile. Save your signal.",
+    reset:  "We'll send a thread to guide you back.",
+    magic:  "Receive a link — no password required.",
+  };
+
+  const ctaLabels: Record<AuthMode, string> = {
+    enter:  "Continue Your Record",
+    begin:  "Save Your Signal",
+    reset:  "Send Recovery Thread",
+    magic:  "Send Magic Link",
+  };
+
+  const showPassword = mode === "enter" || mode === "begin";
+  const showConfirm  = mode === "begin";
 
   return (
     <PageTransition>
       <div className="min-h-screen bg-background relative grain-overlay">
         <Navigation />
 
-        <main className="pt-24 lg:pt-32 pb-16">
+        <main className="pt-24 lg:pt-32 pb-20">
           <section className="container mx-auto px-6 lg:px-12">
-            <ScrollReveal>
-              <div className="max-w-md mx-auto">
-                <div className="text-center mb-12">
-                  <Moon className="w-12 h-12 text-accent mx-auto mb-6" />
-                  <h1 className="font-serif text-3xl md:text-4xl text-foreground mb-4">
-                    {mode === "signin" && "Welcome Back"}
-                    {mode === "signup" && "Begin Your Journey"}
-                    {mode === "reset" && "Reset Password"}
-                  </h1>
-                  <p className="text-muted-foreground">
-                    {mode === "signin" && "Continue your lunar journey"}
-                    {mode === "signup" && "Create your account to save your charts"}
-                    {mode === "reset" && "We'll send you a reset link"}
-                  </p>
+            <div className="max-w-md mx-auto">
+
+              {/* Moon glyph */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                className="text-center mb-12"
+              >
+                <div className="relative inline-flex items-center justify-center mb-7">
+                  <div className="absolute w-20 h-20 rounded-full bg-accent/5 blur-xl" />
+                  <Moon className="w-10 h-10 text-accent relative z-10" />
                 </div>
 
-                <div className="node-card">
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-foreground">Email</Label>
+                <AnimatePresence mode="wait">
+                  <motion.div key={mode} {...FADE}>
+                    <h1 className="font-serif text-3xl md:text-4xl text-foreground mb-3 leading-tight">
+                      {headings[mode]}
+                    </h1>
+                    <p className="text-muted-foreground/80 text-sm leading-relaxed">
+                      {subheadings[mode]}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+
+              {/* Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
+                className="node-card border-border/50"
+              >
+                <AnimatePresence mode="wait">
+                  <motion.form
+                    key={mode}
+                    onSubmit={handleSubmit}
+                    className="space-y-5"
+                    {...FADE}
+                  >
+                    <div className="space-y-1.5">
+                      <Label htmlFor="email" className="text-foreground/80 text-sm">
+                        Email
+                      </Label>
                       <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
                         <Input
                           id="email"
                           type="email"
                           placeholder="your@email.com"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="pl-10 bg-background border-border"
+                          className="pl-10 bg-background border-border/60 focus:border-accent/50"
                           required
                         />
                       </div>
                     </div>
 
-                    {mode !== "reset" && (
-                      <div className="space-y-2">
-                        <Label htmlFor="password" className="text-foreground">Password</Label>
+                    {showPassword && (
+                      <div className="space-y-1.5">
+                        <Label htmlFor="password" className="text-foreground/80 text-sm">
+                          Key
+                        </Label>
                         <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
                           <Input
                             id="password"
                             type="password"
-                            placeholder="Enter your password"
+                            placeholder="Your private key"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="pl-10 bg-background border-border"
+                            className="pl-10 bg-background border-border/60 focus:border-accent/50"
                             required
                           />
                         </div>
                       </div>
                     )}
 
-                    {mode === "signup" && (
-                      <div className="space-y-2">
-                        <Label htmlFor="confirmPassword" className="text-foreground">Confirm Password</Label>
+                    {showConfirm && (
+                      <div className="space-y-1.5">
+                        <Label htmlFor="confirmPassword" className="text-foreground/80 text-sm">
+                          Confirm Key
+                        </Label>
                         <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
                           <Input
                             id="confirmPassword"
                             type="password"
-                            placeholder="Confirm your password"
+                            placeholder="Repeat your key"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="pl-10 bg-background border-border"
+                            className="pl-10 bg-background border-border/60 focus:border-accent/50"
                             required
                           />
                         </div>
@@ -148,15 +232,23 @@ const Auth = () => {
                     )}
 
                     {error && (
-                      <div className="p-3 bg-destructive/10 border border-destructive/30 rounded-md text-sm text-destructive">
+                      <motion.div
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="p-3 bg-destructive/10 border border-destructive/20 rounded-md text-sm text-destructive/90"
+                      >
                         {error}
-                      </div>
+                      </motion.div>
                     )}
 
                     {message && (
-                      <div className="p-3 bg-accent/10 border border-accent/30 rounded-md text-sm text-accent">
+                      <motion.div
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="p-3 bg-accent/10 border border-accent/25 rounded-md text-sm text-accent/90"
+                      >
                         {message}
-                      </div>
+                      </motion.div>
                     )}
 
                     <Button
@@ -169,67 +261,114 @@ const Auth = () => {
                         <Loader2 className="w-4 h-4 animate-spin" />
                       ) : (
                         <>
-                          {mode === "signin" && "Sign In"}
-                          {mode === "signup" && "Create Account"}
-                          {mode === "reset" && "Send Reset Link"}
+                          {ctaLabels[mode]}
                           <ArrowRight className="ml-2 w-4 h-4" />
                         </>
                       )}
                     </Button>
-                  </form>
+                  </motion.form>
+                </AnimatePresence>
 
-                  <div className="mt-6 pt-6 border-t border-border space-y-3">
-                    {mode === "signin" && (
-                      <>
+                {/* Secondary actions */}
+                <div className="mt-7 pt-6 border-t border-border/30 space-y-3">
+                  {mode === "enter" && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => switchMode("magic")}
+                        className="w-full flex items-center justify-center gap-2 text-sm text-muted-foreground/70 hover:text-foreground transition-colors py-1"
+                      >
+                        <Sparkles className="w-3.5 h-3.5" />
+                        Send a magic link instead
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => switchMode("reset")}
+                        className="w-full text-center text-sm text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+                      >
+                        Recover your access
+                      </button>
+                      <p className="text-center text-sm text-muted-foreground/50">
+                        New here?{" "}
                         <button
-                          onClick={() => setMode("reset")}
-                          className="w-full text-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+                          type="button"
+                          onClick={() => switchMode("begin")}
+                          className="text-accent hover:text-accent/80 transition-colors"
                         >
-                          Forgot your password?
-                        </button>
-                        <p className="text-center text-sm text-muted-foreground">
-                          Don't have an account?{" "}
-                          <button
-                            onClick={() => setMode("signup")}
-                            className="text-accent hover:underline"
-                          >
-                            Sign up
-                          </button>
-                        </p>
-                      </>
-                    )}
-
-                    {mode === "signup" && (
-                      <p className="text-center text-sm text-muted-foreground">
-                        Already have an account?{" "}
-                        <button
-                          onClick={() => setMode("signin")}
-                          className="text-accent hover:underline"
-                        >
-                          Sign in
+                          Begin Reflection
                         </button>
                       </p>
-                    )}
+                    </>
+                  )}
 
-                    {mode === "reset" && (
+                  {mode === "begin" && (
+                    <>
                       <button
-                        onClick={() => setMode("signin")}
-                        className="w-full text-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        type="button"
+                        onClick={() => switchMode("magic")}
+                        className="w-full flex items-center justify-center gap-2 text-sm text-muted-foreground/70 hover:text-foreground transition-colors py-1"
                       >
-                        Back to sign in
+                        <Sparkles className="w-3.5 h-3.5" />
+                        Use a magic link instead
                       </button>
-                    )}
-                  </div>
-                </div>
+                      <p className="text-center text-sm text-muted-foreground/50">
+                        Already have a record?{" "}
+                        <button
+                          type="button"
+                          onClick={() => switchMode("enter")}
+                          className="text-accent hover:text-accent/80 transition-colors"
+                        >
+                          Continue Your Record
+                        </button>
+                      </p>
+                    </>
+                  )}
 
-                <p className="text-center text-xs text-muted-foreground mt-8">
-                  By continuing, you agree to our{" "}
-                  <Link to="/terms" className="underline hover:text-foreground">Terms of Service</Link>
-                  {" "}and{" "}
-                  <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>
+                  {(mode === "reset" || mode === "magic") && (
+                    <button
+                      type="button"
+                      onClick={() => switchMode("enter")}
+                      className="w-full text-center text-sm text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+                    >
+                      ← Back
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+
+              {/* Anonymous entry */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.35 }}
+                className="mt-8 text-center"
+              >
+                <button
+                  type="button"
+                  onClick={handleAnonymous}
+                  disabled={loading}
+                  className="text-xs text-muted-foreground/40 hover:text-muted-foreground/70 transition-colors leading-relaxed"
+                >
+                  Enter quietly, without a name
+                </button>
+                <p className="text-xs text-muted-foreground/30 mt-1">
+                  Temporary session — nothing is saved
                 </p>
-              </div>
-            </ScrollReveal>
+              </motion.div>
+
+              {/* Legal */}
+              <p className="text-center text-xs text-muted-foreground/30 mt-10 leading-relaxed">
+                By continuing, you agree to our{" "}
+                <Link to="/terms" className="underline hover:text-muted-foreground/60">
+                  Terms
+                </Link>
+                {" "}and{" "}
+                <Link to="/privacy" className="underline hover:text-muted-foreground/60">
+                  Privacy Policy
+                </Link>
+                . Your data is your own.
+              </p>
+            </div>
           </section>
         </main>
 

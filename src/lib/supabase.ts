@@ -19,6 +19,30 @@ export const supabase = createClient(
   hasSupabaseConfig ? supabaseAnonKey! : fallbackAnonKey
 );
 
+export type MemoryEntityType =
+  | 'directive'
+  | 'reflection'
+  | 'proposal'
+  | 'report'
+  | 'ritual'
+  | 'workbook'
+  | 'chart';
+
+export type TimelineEventType =
+  | 'directive_view'
+  | 'reflection_write'
+  | 'proposal_submit'
+  | 'report_purchase'
+  | 'ritual'
+  | 'workbook_progress'
+  | 'chart_saved';
+
+export type DataVisibility = {
+  timeline: 'private' | 'public';
+  reflections: 'private' | 'public';
+  rituals: 'private' | 'public';
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -30,6 +54,8 @@ export type Database = {
           birth_date: string | null;
           birth_time: string | null;
           birth_location: string | null;
+          private_mode: boolean;
+          data_visibility: DataVisibility;
           created_at: string;
           updated_at: string;
         };
@@ -40,12 +66,16 @@ export type Database = {
           birth_date?: string | null;
           birth_time?: string | null;
           birth_location?: string | null;
+          private_mode?: boolean;
+          data_visibility?: DataVisibility;
         };
         Update: {
           display_name?: string | null;
           birth_date?: string | null;
           birth_time?: string | null;
           birth_location?: string | null;
+          private_mode?: boolean;
+          data_visibility?: DataVisibility;
           updated_at?: string;
         };
       };
@@ -91,6 +121,64 @@ export type Database = {
           theme?: string;
           notifications_enabled?: boolean;
           updated_at?: string;
+        };
+      };
+      user_memories: {
+        Row: {
+          id: string;
+          user_id: string;
+          entity_type: MemoryEntityType;
+          entity_id: string | null;
+          title: string | null;
+          emotional_theme: string | null;
+          lunar_phase: string | null;
+          lunar_phase_pct: number | null;
+          metadata: Record<string, unknown>;
+          created_at: string;
+        };
+        Insert: {
+          user_id: string;
+          entity_type: MemoryEntityType;
+          entity_id?: string | null;
+          title?: string | null;
+          emotional_theme?: string | null;
+          lunar_phase?: string | null;
+          lunar_phase_pct?: number | null;
+          metadata?: Record<string, unknown>;
+        };
+        Update: {
+          emotional_theme?: string | null;
+          metadata?: Record<string, unknown>;
+        };
+      };
+      timeline_events: {
+        Row: {
+          id: string;
+          user_id: string;
+          event_type: TimelineEventType;
+          title: string;
+          description: string | null;
+          emotional_theme: string | null;
+          lunar_phase: string | null;
+          lunar_phase_pct: number | null;
+          metadata: Record<string, unknown>;
+          occurred_at: string;
+        };
+        Insert: {
+          user_id: string;
+          event_type: TimelineEventType;
+          title: string;
+          description?: string | null;
+          emotional_theme?: string | null;
+          lunar_phase?: string | null;
+          lunar_phase_pct?: number | null;
+          metadata?: Record<string, unknown>;
+          occurred_at?: string;
+        };
+        Update: {
+          title?: string;
+          description?: string | null;
+          metadata?: Record<string, unknown>;
         };
       };
     };
