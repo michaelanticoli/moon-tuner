@@ -829,7 +829,7 @@ Waxing Crescent (Initiator): naturally inclined toward beginning, learning, and 
 
 First Quarter (Architect): decisive, action-oriented, comfortable with friction. Natural movers who transform tension into traction.
 
-Waxing Gibbous (Refiner): detail-oriented, patient, skilled at perfectionism in service of quality. The necessary presense before publication.
+Waxing Gibbous (Refiner): detail-oriented, patient, skilled at perfectionism in service of quality. The necessary presence before publication.
 
 Full Moon (Illuminator): highly relational, emotionally visible, natural collaborators. Most powerful when visible and sharing.
 
