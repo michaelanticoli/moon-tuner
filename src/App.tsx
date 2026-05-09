@@ -40,6 +40,7 @@ import DigitalSmudging from "./pages/DigitalSmudging";
 import Offerings from "./pages/Offerings";
 import Journal from "./pages/Journal";
 import JournalEntry from "./pages/JournalEntry";
+import Today from "./pages/Today";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -101,6 +102,7 @@ function AnimatedRoutes() {
           <Route path="/offerings" element={<Offerings />} />
           <Route path="/journal" element={<Journal />} />
           <Route path="/journal/:slug" element={<JournalEntry />} />
+          <Route path="/today" element={<Today />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
