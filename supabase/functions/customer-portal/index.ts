@@ -54,7 +54,7 @@ serve(async (req) => {
     return json({ url: portalSession.url });
   } catch (err) {
     console.error("customer-portal error:", err);
-    return json({ error: err instanceof Error ? err.message : String(err) }, 500);
+    return json({ error: "An unexpected error occurred. Please try again." }, 500);
   }
 });
 

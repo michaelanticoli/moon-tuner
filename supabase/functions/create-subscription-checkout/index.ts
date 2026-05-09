@@ -107,7 +107,7 @@ serve(async (req) => {
     return json({ url: session.url });
   } catch (err) {
     console.error("create-subscription-checkout error:", err);
-    return json({ error: err instanceof Error ? err.message : String(err) }, 500);
+    return json({ error: "An unexpected error occurred. Please try again." }, 500);
   }
 });
 
