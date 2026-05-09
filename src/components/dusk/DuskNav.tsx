@@ -8,8 +8,8 @@ import { Link, useLocation } from "react-router-dom";
  */
 const LINKS = [
   { label: "Today", href: "/lunar-cipher" },
-  { label: "Harmonic Profile", href: "/lunar-reports" },
-  { label: "Reports", href: "/lunar-reports" },
+  { label: "Profile", href: "/lunar-reports" },
+  { label: "Printer", href: "/the-moon" },
   { label: "Journal", href: "https://moontuner.ghost.io", external: true },
   { label: "About", href: "/manifesto" },
 ];
