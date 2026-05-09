@@ -336,7 +336,10 @@ export const PROMPTS: HarmonicPrompt[] = [
 
 type AnswerMap = Record<number, number>; // promptId → optionIndex
 
-export function scoreAnswers(answers: AnswerMap): HarmonicArchetype {
+/** Minimum score for a dimension to surface as a detected pattern. */
+const PATTERN_THRESHOLD = 3;
+
+function calculateArchetypeScores(answers: AnswerMap): Record<ArchetypeKey, number> {
   const totals: Record<ArchetypeKey, number> = {
     "sustained-arc": 0,
     "emergent-burst": 0,
@@ -355,6 +358,12 @@ export function scoreAnswers(answers: AnswerMap): HarmonicArchetype {
       totals[key as ArchetypeKey] += pts;
     }
   }
+
+  return totals;
+}
+
+export function scoreAnswers(answers: AnswerMap): HarmonicArchetype {
+  const totals = calculateArchetypeScores(answers);
 
   // Find the highest-scoring archetype
   let best: ArchetypeKey = "sustained-arc";
@@ -376,38 +385,21 @@ export function scoreAnswers(answers: AnswerMap): HarmonicArchetype {
  * shown during the "Pattern Identification" step.
  */
 export function detectPatterns(answers: AnswerMap): string[] {
-  const totals: Record<ArchetypeKey, number> = {
-    "sustained-arc": 0,
-    "emergent-burst": 0,
-    "threshold-tender": 0,
-    "deliberate-pulse": 0,
-    "recursive-architect": 0,
-    "open-field": 0,
-  };
-
-  for (const prompt of PROMPTS) {
-    const selectedIndex = answers[prompt.id];
-    if (selectedIndex === undefined) continue;
-    const option = prompt.options[selectedIndex];
-    if (!option) continue;
-    for (const [key, pts] of Object.entries(option.scores)) {
-      totals[key as ArchetypeKey] += pts;
-    }
-  }
+  const totals = calculateArchetypeScores(answers);
 
   const patterns: string[] = [];
 
-  if (totals["sustained-arc"] >= 3)
+  if (totals["sustained-arc"] >= PATTERN_THRESHOLD)
     patterns.push("Depth-first orientation — you work in layers, not sprints");
-  if (totals["emergent-burst"] >= 3)
+  if (totals["emergent-burst"] >= PATTERN_THRESHOLD)
     patterns.push("Surge-cycle rhythm — intensity followed by necessary recovery");
-  if (totals["threshold-tender"] >= 3)
+  if (totals["threshold-tender"] >= PATTERN_THRESHOLD)
     patterns.push("High environmental sensitivity — context shapes your output");
-  if (totals["deliberate-pulse"] >= 3)
+  if (totals["deliberate-pulse"] >= PATTERN_THRESHOLD)
     patterns.push("System-dependent productivity — structure is a performance tool");
-  if (totals["recursive-architect"] >= 3)
+  if (totals["recursive-architect"] >= PATTERN_THRESHOLD)
     patterns.push("Pre-execution mapping — you build the model before the object");
-  if (totals["open-field"] >= 3)
+  if (totals["open-field"] >= PATTERN_THRESHOLD)
     patterns.push("Dialogic intelligence — ideas arrive through relational exchange");
 
   // Always return 3–4 patterns

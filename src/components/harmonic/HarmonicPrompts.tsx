@@ -11,6 +11,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { PROMPTS } from "@/data/harmonicArchetypes";
 import { HarmonicProgressBar } from "./HarmonicProgressBar";
 
+/** Duration (ms) of the slide-out animation before mounting the next question. */
+const TRANSITION_DURATION_MS = 380;
+
 interface HarmonicPromptsProps {
   answers: Record<number, number>;
   onAnswer: (promptId: number, optionIndex: number) => void;
@@ -46,7 +49,7 @@ export function HarmonicPrompts({ answers, onAnswer, onComplete }: HarmonicPromp
         setSelected(answers[PROMPTS[next].id] ?? null);
         setTransitioning(false);
       }
-    }, 380);
+    }, TRANSITION_DURATION_MS);
   }
 
   function handleBack() {
@@ -57,7 +60,7 @@ export function HarmonicPrompts({ answers, onAnswer, onComplete }: HarmonicPromp
       setCurrent(prev);
       setSelected(answers[PROMPTS[prev].id] ?? null);
       setTransitioning(false);
-    }, 280);
+    }, TRANSITION_DURATION_MS - 100);
   }
 
   return (

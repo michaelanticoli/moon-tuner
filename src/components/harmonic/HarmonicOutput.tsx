@@ -11,6 +11,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import type { HarmonicArchetype } from "@/data/harmonicArchetypes";
 
+/** Duration (ms) of the archetype generation animation before showing the profile. */
+const GENERATION_DURATION_MS = 2600;
+
 interface HarmonicOutputProps {
   archetype: HarmonicArchetype;
   onRestart: () => void;
@@ -20,7 +23,7 @@ interface HarmonicOutputProps {
 
 function GenerationMoment({ onDone }: { onDone: () => void }) {
   useEffect(() => {
-    const t = setTimeout(onDone, 2600);
+    const t = setTimeout(onDone, GENERATION_DURATION_MS);
     return () => clearTimeout(t);
   }, [onDone]);
 

@@ -9,6 +9,11 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+/** Interval (ms) between each pattern line revealing. */
+const PATTERN_REVEAL_INTERVAL_MS = 680;
+/** Delay (ms) after all patterns are shown before the continue button appears. */
+const CONTINUE_BUTTON_DELAY_MS = 900;
+
 interface HarmonicPatternProps {
   patterns: string[];
   onContinue: () => void;
@@ -26,9 +31,9 @@ export function HarmonicPattern({ patterns, onContinue }: HarmonicPatternProps) 
       setVisibleCount(count);
       if (count >= patterns.length) {
         clearInterval(interval);
-        setTimeout(() => setShowContinue(true), 900);
+        setTimeout(() => setShowContinue(true), CONTINUE_BUTTON_DELAY_MS);
       }
-    }, 680);
+    }, PATTERN_REVEAL_INTERVAL_MS);
     return () => clearInterval(interval);
   }, [patterns.length]);
 
