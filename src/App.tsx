@@ -33,6 +33,7 @@ import Studio from "./pages/Studio";
 import FreeGuide from "./pages/FreeGuide";
 import TotalTuner from "./pages/TotalTuner";
 import CazimiPunchcard from "./pages/CazimiPunchcard";
+import HarmonicProfile from "./pages/HarmonicProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -87,6 +88,7 @@ function AnimatedRoutes() {
           <Route path="/studio" element={<Studio />} />
           <Route path="/free-guide" element={<FreeGuide />} />
           <Route path="/total-tuner" element={<TotalTuner />} />
+          <Route path="/harmonic-profile" element={<HarmonicProfile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>

@@ -90,7 +90,7 @@ export function HarmonicProfileTeaser() {
               pause, and when to let things complete themselves.
             </p>
 
-            <Link to="/lunar-reports" className="dusk-btn dusk-btn-primary">
+            <Link to="/harmonic-profile" className="dusk-btn dusk-btn-primary">
               Generate Your Harmonic Profile
             </Link>
           </div>
