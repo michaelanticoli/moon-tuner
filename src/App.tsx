@@ -33,6 +33,7 @@ import Studio from "./pages/Studio";
 import FreeGuide from "./pages/FreeGuide";
 import TotalTuner from "./pages/TotalTuner";
 import CazimiPunchcard from "./pages/CazimiPunchcard";
+import SpacetimePrinter from "./pages/SpacetimePrinter";
 import HarmonicProfile from "./pages/HarmonicProfile";
 import DigitalSmudging from "./pages/DigitalSmudging";
 import NotFound from "./pages/NotFound";
@@ -69,6 +70,7 @@ function AnimatedRoutes() {
           <Route path="/services" element={<Services />} />
           <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
           <Route path="/cazimi" element={<CazimiPunchcard />} />
+          <Route path="/spacetime-printer" element={<SpacetimePrinter />} />
           <Route path="/auth" element={<Auth />} />
           <Route
             path="/dashboard"
