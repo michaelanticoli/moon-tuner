@@ -268,7 +268,7 @@ Deno.serve(async (req) => {
     return json({ recommendations, cached: false });
   } catch (err) {
     console.error("recommend-next error:", err);
-    return json({ error: String(err) }, 500);
+    return json({ error: "Internal server error" }, 500);
   }
 });
 

@@ -4,7 +4,7 @@
 
 -- ─── user_preferences: AI synthesis opt-in ───────────────────────────────────
 ALTER TABLE public.user_preferences
-  ADD COLUMN IF NOT EXISTS ai_synthesis_enabled BOOLEAN NOT NULL DEFAULT true;
+  ADD COLUMN IF NOT EXISTS ai_synthesis_enabled BOOLEAN NOT NULL DEFAULT false;
 
 -- ─── ai_synthesis_cache ───────────────────────────────────────────────────────
 -- Stores the most recent synthesis result per user per synthesis type.

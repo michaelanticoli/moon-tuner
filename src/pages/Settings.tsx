@@ -62,7 +62,7 @@ const Settings = () => {
     audio_enabled: true,
     volume: 0.5,
     notifications_enabled: true,
-    ai_synthesis_enabled: true,
+    ai_synthesis_enabled: false,
   });
 
   useEffect(() => {
@@ -430,8 +430,8 @@ const Settings = () => {
                     >
                       When enabled, your timeline and memory data is processed by the
                       synthesis engine to generate observations. No data is shared with
-                      third parties. Synthesis results are cached locally for 24 hours.
-                      You can disable this at any time.
+                      third parties. Synthesis results are cached on the server for 24 hours
+                      to reduce processing. You can disable this at any time.
                     </p>
                   </div>
                 </div>

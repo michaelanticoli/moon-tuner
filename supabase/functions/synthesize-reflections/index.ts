@@ -272,7 +272,7 @@ Deno.serve(async (req) => {
     return json({ synthesis, cached: false });
   } catch (err) {
     console.error("synthesize-reflections error:", err);
-    return json({ error: String(err) }, 500);
+    return json({ error: "Internal server error" }, 500);
   }
 });
 

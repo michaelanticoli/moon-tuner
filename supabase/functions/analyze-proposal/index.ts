@@ -184,7 +184,7 @@ Deno.serve(async (req) => {
     return json({ analysis });
   } catch (err) {
     console.error("analyze-proposal error:", err);
-    return json({ error: String(err) }, 500);
+    return json({ error: "Internal server error" }, 500);
   }
 });
 

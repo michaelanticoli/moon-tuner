@@ -233,7 +233,7 @@ Deno.serve(async (req) => {
     return json({ report, reportType, periodDays });
   } catch (err) {
     console.error("generate-report error:", err);
-    return json({ error: String(err) }, 500);
+    return json({ error: "Internal server error" }, 500);
   }
 });
 
