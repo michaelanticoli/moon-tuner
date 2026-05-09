@@ -8,7 +8,7 @@ import { Link, useLocation } from "react-router-dom";
  */
 const LINKS = [
   { label: "Today", href: "/lunar-cipher" },
-  { label: "Profile", href: "/lunar-reports" },
+  { label: "Profile", href: "/harmonic-profile" },
   { label: "Printer", href: "/the-moon" },
   { label: "Journal", href: "https://moontuner.ghost.io", external: true },
   { label: "About", href: "/manifesto" },
@@ -79,7 +79,7 @@ export function DuskNav() {
         </ul>
 
         <div className="hidden md:block">
-          <Link to="/lunar-reports" className="dusk-btn dusk-btn-primary text-[0.72rem]">
+          <Link to="/harmonic-profile" className="dusk-btn dusk-btn-primary text-[0.72rem]">
             Generate Profile
           </Link>
         </div>
@@ -137,7 +137,7 @@ export function DuskNav() {
             )
           )}
           <div className="dusk-hairline mt-2" />
-          <Link to="/lunar-reports" className="dusk-btn dusk-btn-primary self-start">
+          <Link to="/harmonic-profile" className="dusk-btn dusk-btn-primary self-start">
             Generate Profile
           </Link>
         </div>
