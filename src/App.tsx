@@ -35,6 +35,7 @@ import TotalTuner from "./pages/TotalTuner";
 import CazimiPunchcard from "./pages/CazimiPunchcard";
 import SpacetimePrinter from "./pages/SpacetimePrinter";
 import HarmonicProfile from "./pages/HarmonicProfile";
+import AuthCallback from "./pages/AuthCallback";
 import DigitalSmudging from "./pages/DigitalSmudging";
 import NotFound from "./pages/NotFound";
 
@@ -72,6 +73,7 @@ function AnimatedRoutes() {
           <Route path="/cazimi" element={<CazimiPunchcard />} />
           <Route path="/spacetime-printer" element={<SpacetimePrinter />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route
             path="/dashboard"
             element={
