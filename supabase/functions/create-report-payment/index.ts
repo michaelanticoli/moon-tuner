@@ -5,8 +5,8 @@ const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
-const NARRATION_ADDON_NAME = "Voice Narration Add-On";
-const NARRATION_ADDON_CREATOR = "Michael Moon";
+// Stripe product ID for the $5 voice narration add-on
+const NARRATION_ADDON_PRODUCT_ID = "prod_UTrOc6guGO6oxE";
 
 type ProductKey =
   | "lunar-arc"
@@ -75,6 +75,65 @@ serve(async (req) => {
     });
 
     const body = await req.json().catch(() => ({}));
+    const origin = req.headers.get("origin") || "https://moontuner.xyz";
+
+    // ── Digital-good purchases from DigitalStore ──────────────────────────
+    if (body?.product === "digital-good") {
+      const { productId, productLabel, amountCents } = body;
+
+      if (typeof productLabel !== "string" || productLabel.trim() === "") {
+        return new Response(JSON.stringify({ error: "productLabel is required for digital-good purchases" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        });
+      }
+      if (typeof amountCents !== "number" || !Number.isInteger(amountCents) || amountCents <= 0) {
+        return new Response(JSON.stringify({ error: "amountCents must be a positive integer for digital-good purchases" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        });
+      }
+
+      const successPath = typeof body?.successPath === "string" && body.successPath.startsWith("/")
+        ? body.successPath
+        : "/store";
+      const cancelPath = typeof body?.cancelPath === "string" && body.cancelPath.startsWith("/")
+        ? body.cancelPath
+        : "/store";
+
+      const metadata: Record<string, string> = {
+        product: "digital-good",
+        label: productLabel.trim(),
+      };
+      if (typeof productId === "string") metadata.productId = productId.slice(0, 80); // Stripe metadata values max 500 chars; 80 is a safe product-ID ceiling
+
+      const joinChar = successPath.includes("?") ? "&" : "?";
+      const finalSuccess = `${origin}${successPath}${joinChar}session_id={CHECKOUT_SESSION_ID}`;
+
+      const session = await stripe.checkout.sessions.create({
+        mode: "payment",
+        line_items: [
+          {
+            quantity: 1,
+            price_data: {
+              currency: "usd",
+              unit_amount: amountCents,
+              product_data: { name: productLabel.trim() },
+            },
+          },
+        ],
+        metadata,
+        success_url: finalSuccess,
+        cancel_url: `${origin}${cancelPath}`,
+      });
+
+      return new Response(JSON.stringify({ url: session.url }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      });
+    }
+
+    // ── Catalog-backed products ───────────────────────────────────────────
     const validProducts: ProductKey[] = [
       "lunar-arc",
       "astro-harmonic",
@@ -82,10 +141,15 @@ serve(async (req) => {
       "cipher-calendar",
       "lunar-chaperone",
     ];
-    const productKey: ProductKey = validProducts.includes(body?.product) ? body.product : "lunar-arc";
+    if (!validProducts.includes(body?.product)) {
+      return new Response(JSON.stringify({ error: `Unknown product: "${body?.product}". Valid catalog values are: ${validProducts.join(", ")}. For digital store items use product "digital-good" with productLabel and amountCents.` }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400,
+      });
+    }
+    const productKey: ProductKey = body.product;
     const offer = PRODUCT_CATALOG[productKey];
 
-    const origin = req.headers.get("origin") || "https://moontuner.xyz";
     const successPath = typeof body?.successPath === "string" && body.successPath.startsWith("/")
       ? body.successPath
       : offer.success;
@@ -119,10 +183,7 @@ serve(async (req) => {
         price_data: {
           currency: "usd",
           unit_amount: 500,
-          product_data: {
-            name: NARRATION_ADDON_NAME,
-            description: `${NARRATION_ADDON_CREATOR}'s voice narration for ${offer.label}`,
-          },
+          product: NARRATION_ADDON_PRODUCT_ID,
         },
       });
     }
