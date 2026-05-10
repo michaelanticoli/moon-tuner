@@ -6,7 +6,9 @@ import { Link, useLocation } from "react-router-dom";
  * IA per redesign brief: Today · Harmonic Profile · Reports · Journal · About
  * Folds existing routes into the new structure.
  */
-const LINKS = [
+type DuskLink = { label: string; href: string; external?: boolean };
+
+const LINKS: DuskLink[] = [
   { label: "Today", href: "/today" },
   { label: "Profile", href: "/harmonic-profile" },
   { label: "Explore", href: "/explore" },
