@@ -12,6 +12,13 @@ import { Moon, Mail, Lock, ArrowRight, Loader2, Sparkles } from "lucide-react";
 
 type AuthMode = "enter" | "begin" | "reset" | "magic";
 
+const maskEmail = (value: string) => {
+  const [localPart = "", domain = ""] = value.trim().split("@");
+  if (!localPart || !domain) return "";
+  const visible = localPart.slice(0, 2);
+  return `${visible}${"*".repeat(Math.max(localPart.length - visible.length, 1))}@${domain}`;
+};
+
 const FADE = {
   initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0 },
@@ -62,12 +69,16 @@ const Auth = () => {
           navigate("/dashboard");
         } else if (requiresEmailVerification) {
           setMessage(
-            "Your account was created and requires email verification. We requested the verification email, but delivery can fail if Supabase Auth email provider settings are incomplete. Check inbox/spam, then use 'Resend verification email' below if needed."
+            "Account created. Check your inbox (and spam) for a verification link. If it doesn't arrive, use 'Resend verification email' below."
           );
         } else {
-          console.warn("Signup completed without session and without explicit verification requirement.");
+          console.warn("Signup completed without session and without explicit verification requirement.", {
+            email: maskEmail(email),
+            signedIn,
+            requiresEmailVerification,
+          });
           setMessage(
-            "Signup was accepted, but verification status could not be confirmed. We requested a verification email; if nothing arrives, Supabase Auth email provider settings may be misconfigured. Check inbox/spam, then use 'Resend verification email' below."
+            "Signup was accepted, but verification status couldn't be confirmed. Check your inbox (and spam), then use 'Resend verification email' below if needed."
           );
         }
       } else if (mode === "enter") {
