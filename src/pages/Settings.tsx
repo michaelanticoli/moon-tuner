@@ -78,7 +78,7 @@ const Settings = () => {
       const { data: profileData } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", user.id)
+        .eq("user_id", user.id)
         .single();
 
       if (profileData) {
@@ -120,7 +120,7 @@ const Settings = () => {
 
     try {
       await supabase.from("profiles").upsert({
-        id: user.id,
+        user_id: user.id,
         email: user.email || "",
         display_name: profile.display_name || null,
         birth_date: profile.birth_date || null,
@@ -128,7 +128,7 @@ const Settings = () => {
         birth_location: profile.birth_location || null,
         private_mode: profile.private_mode,
         updated_at: new Date().toISOString(),
-      });
+      }, { onConflict: 'user_id' });
 
       await supabase.from("user_preferences").upsert({
         user_id: user.id,
