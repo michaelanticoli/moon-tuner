@@ -60,6 +60,18 @@ The newsletter signup edge function expects these Supabase secrets to be configu
 
 Set them in your Supabase project so `supabase/functions/subscribe-email/index.ts` can route new subscribers to the correct Mailchimp audience without relying on a hard-coded list ID.
 
+### Supabase Auth email verification requirements
+
+User signup in the app uses `supabase.auth.signUp(...)` from the browser (`src/contexts/AuthContext.tsx`). Verification email delivery depends on Supabase Auth configuration outside this repository.
+
+Make sure your Supabase project has all of the following configured:
+
+- Auth email provider/SMTP settings enabled and valid (default Supabase mailer or custom SMTP).
+- Email confirmations enabled if you require verified emails before sign-in.
+- Site URL and redirect URLs include your deployed callback route (`/auth/callback`), for example `https://moontuner.xyz/auth/callback`.
+
+Without valid Supabase Auth email configuration, signup may still return success on the client while verification messages are not delivered.
+
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).
