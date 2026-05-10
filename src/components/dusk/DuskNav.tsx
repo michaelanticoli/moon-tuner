@@ -59,23 +59,12 @@ export function DuskNav() {
         <ul className="hidden md:flex items-center gap-9">
           {LINKS.map((l) => (
             <li key={l.label}>
-              {l.external ? (
-                <a
-                  href={l.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[0.78rem] tracking-[0.14em] uppercase dusk-silver hover:dusk-ivory transition-colors"
-                >
-                  {l.label}
-                </a>
-              ) : (
-                <Link
-                  to={l.href}
-                  className="text-[0.78rem] tracking-[0.14em] uppercase dusk-silver hover:dusk-ivory transition-colors"
-                >
-                  {l.label}
-                </Link>
-              )}
+              <Link
+                to={l.href}
+                className="text-[0.78rem] tracking-[0.14em] uppercase dusk-silver hover:dusk-ivory transition-colors"
+              >
+                {l.label}
+              </Link>
             </li>
           ))}
         </ul>
@@ -121,23 +110,11 @@ export function DuskNav() {
         aria-hidden={!mobileOpen}
       >
         <div className="flex flex-col px-6 py-10 gap-8">
-          {LINKS.map((l) =>
-            l.external ? (
-              <a
-                key={l.label}
-                href={l.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="dusk-serif text-3xl dusk-ivory"
-              >
-                {l.label}
-              </a>
-            ) : (
-              <Link key={l.label} to={l.href} className="dusk-serif text-3xl dusk-ivory">
-                {l.label}
-              </Link>
-            )
-          )}
+          {LINKS.map((l) => (
+            <Link key={l.label} to={l.href} className="dusk-serif text-3xl dusk-ivory">
+              {l.label}
+            </Link>
+          ))}
           <div className="dusk-hairline mt-2" />
           <Link to="/harmonic-profile" className="dusk-btn dusk-btn-primary self-start">
             Generate Profile
