@@ -130,7 +130,7 @@ const Settings = () => {
         birth_location: profile.birth_location || null,
         private_mode: profile.private_mode,
         updated_at: new Date().toISOString(),
-      });
+      }, { onConflict: 'user_id' });
 
       await supabase.from("user_preferences").upsert({
         user_id: user.id,
