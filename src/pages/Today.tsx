@@ -419,41 +419,49 @@ const Today = () => {
             </TodayCard>
           </Reveal>
 
-          {/* ── Cipher & Report links ──────────────────────────────────── */}
+          {/* ── Phase 2 teaser links ──────────────────────────────────── */}
           <Reveal delay={0.04} className="today-section">
             <div className="today-links-row">
-              <Link
-                to="/lunar-cipher"
-                onClick={() => vibrate("light")}
+              <div
                 className="today-deep-link"
                 style={{
-                  background: `hsl(${data.ambient.accentHsl} / 0.08)`,
-                  borderColor: `hsl(${data.ambient.accentHsl} / 0.2)`,
+                  background: `hsl(${data.ambient.accentHsl} / 0.05)`,
+                  borderColor: `hsl(${data.ambient.accentHsl} / 0.15)`,
                 }}
               >
-                <span className="today-eyebrow" style={{ color: `hsl(${data.ambient.accentHsl})` }}>
+                <span className="today-eyebrow" style={{ color: `hsl(${data.ambient.accentHsl} / 0.6)` }}>
                   Lunar Cipher
                 </span>
                 <p className="today-data-meta mt-1">
                   Your natal phase · pattern · timing
                 </p>
-              </Link>
-              <Link
-                to="/lunar-reports"
-                onClick={() => vibrate("light")}
+                <p
+                  className="today-eyebrow mt-3"
+                  style={{ color: "hsl(var(--dusk-mute) / 0.7)" }}
+                >
+                  Coming in Phase II
+                </p>
+              </div>
+              <div
                 className="today-deep-link"
                 style={{
-                  background: `hsl(${data.ambient.accentHsl} / 0.06)`,
+                  background: `hsl(${data.ambient.accentHsl} / 0.04)`,
                   borderColor: `hsl(var(--dusk-line))`,
                 }}
               >
-                <span className="today-eyebrow" style={{ color: "hsl(var(--dusk-silver))" }}>
+                <span className="today-eyebrow" style={{ color: "hsl(var(--dusk-silver) / 0.6)" }}>
                   Reports
                 </span>
                 <p className="today-data-meta mt-1">
                   Personalized lunar documents
                 </p>
-              </Link>
+                <p
+                  className="today-eyebrow mt-3"
+                  style={{ color: "hsl(var(--dusk-mute) / 0.7)" }}
+                >
+                  Coming in Phase II
+                </p>
+              </div>
             </div>
           </Reveal>
 

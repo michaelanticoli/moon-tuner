@@ -10,7 +10,7 @@ export function SchoolWorkbook() {
 
   const handleSave = () => {
     // In a real app, this would save to database
-    localStorage.setItem('moontuner-workbook', JSON.stringify(responses));
+    localStorage.setItem('mt_workbook', JSON.stringify(responses));
     toast({
       title: "Progress Saved",
       description: "Your workbook responses have been saved locally.",

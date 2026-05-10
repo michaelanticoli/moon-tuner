@@ -318,12 +318,22 @@ export function TodaysDirective() {
                 </p>
 
                 <div className="mt-12 flex flex-wrap items-center gap-4">
-                  <Link to="/lunar-cipher" className="dusk-btn dusk-btn-primary">
-                    Open Today's Cipher
+                  <Link to="/today" className="dusk-btn dusk-btn-primary">
+                    Open Today's Page
                   </Link>
-                  <Link to="/lunar-reports" className="dusk-btn dusk-btn-ghost">
-                    Personalize It
-                  </Link>
+                  <div
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-sm text-[0.7rem] tracking-[0.2em] uppercase"
+                    style={{
+                      border: "1px solid hsl(var(--dusk-ivory) / 0.1)",
+                      color: "hsl(var(--dusk-ivory) / 0.32)",
+                    }}
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ background: "hsl(var(--dusk-gold) / 0.4)" }}
+                    />
+                    Reports — Coming Soon
+                  </div>
                   <DirectiveShareCard
                     phaseName={moon.astronomical.phaseName}
                     phaseKey={normalizedKey}
