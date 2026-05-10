@@ -10,6 +10,8 @@ import { useLunarCalculations } from "@/hooks/useLunarCalculations";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { LunarAudioPlayer } from "@/components/LunarAudioPlayer";
 import { Timeline } from "@/components/Timeline";
+import { ReflectiveSynthesisPanel } from "@/components/ai/ReflectiveSynthesisPanel";
+import { RecommendationPanel } from "@/components/ai/RecommendationPanel";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Moon,
@@ -203,6 +205,11 @@ const Dashboard = () => {
 
             {activeTab === "overview" && (
               <>
+                {/* Gentle Recommendations */}
+                <ScrollReveal delay={0.18}>
+                  <RecommendationPanel lunarPhase={phaseName} />
+                </ScrollReveal>
+
                 {/* Quick Actions */}
                 <ScrollReveal delay={0.2}>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
@@ -302,6 +309,11 @@ const Dashboard = () => {
                       </div>
                     )}
                   </div>
+                </ScrollReveal>
+
+                {/* Reflective Synthesis */}
+                <ScrollReveal delay={0.35}>
+                  <ReflectiveSynthesisPanel lunarPhase={phaseName} />
                 </ScrollReveal>
               </>
             )}

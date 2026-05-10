@@ -42,6 +42,7 @@ import Journal from "./pages/Journal";
 import JournalEntry from "./pages/JournalEntry";
 import Explore from "./pages/Explore";
 import ExploreConcept from "./pages/ExploreConcept";
+import Today from "./pages/Today";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -105,6 +106,7 @@ function AnimatedRoutes() {
           <Route path="/journal/:slug" element={<JournalEntry />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/explore/:slug" element={<ExploreConcept />} />
+          <Route path="/today" element={<Today />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
