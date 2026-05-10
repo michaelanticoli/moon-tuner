@@ -69,6 +69,7 @@ Make sure your Supabase project has all of the following configured:
 - Auth email provider/SMTP settings enabled and valid (default Supabase mailer or custom SMTP).
 - Email confirmations enabled if you require verified emails before sign-in.
 - Site URL and redirect URLs include your deployed callback route (`/auth/callback`), for example `https://moontuner.xyz/auth/callback`.
+- Set `VITE_SITE_URL` in your deployed frontend environment to the same public origin allowlisted in Supabase (for example `https://moontuner.xyz`). This keeps signup, magic-link, and password-reset emails pointed at the canonical site instead of whichever preview domain a user happened to visit.
 
 Without valid Supabase Auth email configuration, signup may still return success on the client while verification messages are not delivered.
 

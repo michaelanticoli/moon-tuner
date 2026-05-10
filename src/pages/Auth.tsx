@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
+import { getRedirectPathFromLocationState, sanitizeRedirectPath } from "@/lib/authRedirect";
 import { Moon, Mail, Lock, ArrowRight, Loader2, Sparkles } from "lucide-react";
 
 type AuthMode = "enter" | "begin" | "reset" | "magic";
@@ -37,6 +38,12 @@ const Auth = () => {
 
   const { signIn, signUp, resendSignupVerification, resetPassword, signInWithMagicLink, signInAnonymously } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  const redirectPath = sanitizeRedirectPath(
+    searchParams.get("redirect") ?? getRedirectPathFromLocationState(location.state)
+  );
 
   const switchMode = (next: AuthMode) => {
     setMode(next);
@@ -62,11 +69,11 @@ const Auth = () => {
           setLoading(false);
           return;
         }
-        const { error, signedIn, requiresEmailVerification } = await signUp(email, password);
+        const { error, signedIn, requiresEmailVerification } = await signUp(email, password, redirectPath);
         if (error) {
           setError(error.message);
         } else if (signedIn) {
-          navigate("/dashboard");
+          navigate(redirectPath);
         } else if (requiresEmailVerification) {
           setMessage(
             "Account created. Check your inbox (and spam) for a verification link. If it doesn't arrive, use 'Resend verification email' below."
@@ -86,17 +93,17 @@ const Auth = () => {
         if (error) {
           setError(error.message);
         } else {
-          navigate("/dashboard");
+          navigate(redirectPath);
         }
       } else if (mode === "reset") {
         const { error } = await resetPassword(email);
         if (error) {
           setError(error.message);
         } else {
-          setMessage("A reset thread has been sent to your email.");
+          setMessage("A reset link has been sent to your email. Open it to choose a new key.");
         }
       } else if (mode === "magic") {
-        const { error } = await signInWithMagicLink(email);
+        const { error } = await signInWithMagicLink(email, redirectPath);
         if (error) {
           setError(error.message);
         } else {
@@ -115,7 +122,7 @@ const Auth = () => {
     setMessage(null);
     setLoading(true);
     try {
-      const { error } = await resendSignupVerification(email);
+      const { error } = await resendSignupVerification(email, redirectPath);
       if (error) {
         setError(error.message);
       } else {

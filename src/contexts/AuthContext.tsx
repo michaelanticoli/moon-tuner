@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { buildAuthCallbackUrl } from '@/lib/authRedirect';
 
 interface AuthContextType {
   user: User | null;
@@ -21,12 +22,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-const getAuthCallbackUrl = (redirectPath = "/dashboard") => {
-  const callbackUrl = new URL(`${window.location.origin}/auth/callback`);
-  callbackUrl.searchParams.set("next", redirectPath);
-  return callbackUrl.toString();
-};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -60,7 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email,
       password,
       options: {
-        emailRedirectTo: getAuthCallbackUrl(redirectPath),
+        emailRedirectTo: buildAuthCallbackUrl(redirectPath),
       },
     });
     return {
@@ -75,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       type: 'signup',
       email,
       options: {
-        emailRedirectTo: getAuthCallbackUrl(redirectPath),
+        emailRedirectTo: buildAuthCallbackUrl(redirectPath),
       },
     });
     return { error };
@@ -93,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: getAuthCallbackUrl(redirectPath),
+        emailRedirectTo: buildAuthCallbackUrl(redirectPath),
         shouldCreateUser: true,
       },
     });
@@ -111,7 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const resetPassword = async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/reset-password`,
+      redirectTo: buildAuthCallbackUrl('/auth/reset-password'),
     });
     return { error };
   };
