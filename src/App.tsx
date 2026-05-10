@@ -89,33 +89,27 @@ function AnimatedRoutes() {
           <Route path="/free-guide" element={<FreeGuide />} />
           <Route path="/analytics" element={<AnalyticsDashboard />} />
 
-          {/* ── Phase 2 — Auth + accounts (gated) ────────────────────── */}
-          <Route path="/auth" element={PHASE_2_ENABLED ? <Auth /> : <ComingSoon />} />
-          <Route path="/auth/callback" element={PHASE_2_ENABLED ? <AuthCallback /> : <ComingSoon />} />
+          {/* ── Auth routes — always live (needed for email verification) ── */}
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route
             path="/dashboard"
             element={
-              PHASE_2_ENABLED ? (
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              ) : (
-                <ComingSoon />
-              )
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/settings"
             element={
-              PHASE_2_ENABLED ? (
-                <ProtectedRoute>
-                  <Settings />
-                </ProtectedRoute>
-              ) : (
-                <ComingSoon />
-              )
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
             }
           />
+
+          {/* ── Phase 2 — Remaining gated features ───────────────────── */}
           <Route path="/lunar-reports" element={PHASE_2_ENABLED ? <LunarReports /> : <ComingSoon />} />
           <Route path="/workbooks" element={PHASE_2_ENABLED ? <Workbooks /> : <ComingSoon />} />
           <Route path="/workbook-preview" element={PHASE_2_ENABLED ? <WorkbookPreview /> : <ComingSoon />} />
@@ -192,15 +186,6 @@ const App = () => (
             </BrowserRouter>
           </TooltipProvider>
         </AnalyticsProvider>
-      <AnalyticsProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AnimatedRoutes />
-          </BrowserRouter>
-        </TooltipProvider>
-      </AnalyticsProvider>
       </MembershipProvider>
     </AuthProvider>
   </QueryClientProvider>
