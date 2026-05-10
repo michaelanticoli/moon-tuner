@@ -11,6 +11,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ReportLauncher } from "@/components/ReportLauncher";
 import { usePageTracking } from "@/hooks/usePageTracking";
+import { PHASE_2_ENABLED, PHASE_3_ENABLED } from "@/lib/featureFlags";
 import Index from "./pages/Index";
 import Method from "./pages/Method";
 import Manifesto from "./pages/Manifesto";
@@ -55,6 +56,7 @@ import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import Explore from "./pages/Explore";
 import ExploreConcept from "./pages/ExploreConcept";
 import Today from "./pages/Today";
+import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -68,84 +70,107 @@ function AnimatedRoutes() {
       <ScrollToTop />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
+          {/* ── Phase 1 — Core public routes ──────────────────────────── */}
           <Route path="/" element={<Index />} />
+          <Route path="/today" element={<Today />} />
+          <Route path="/harmonic-profile" element={<HarmonicProfile />} />
+          <Route path="/journal" element={<Journal />} />
+          <Route path="/journal/:slug" element={<JournalEntry />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/explore/:slug" element={<ExploreConcept />} />
+          <Route path="/manifesto" element={<Manifesto />} />
+          <Route path="/about" element={<About />} />
           <Route path="/the-moon" element={<Moon />} />
           <Route path="/method" element={<Method />} />
-          <Route path="/manifesto" element={<Manifesto />} />
-          <Route path="/philosophy" element={<Philosophy />} />
-          <Route path="/workbooks" element={<Workbooks />} />
-          <Route path="/workbook-preview" element={<WorkbookPreview />} />
-          <Route path="/lunar-chaperone" element={<LunarChaperone />} />
-          <Route path="/chaperone" element={<LunarChaperone />} />
-          <Route path="/lunar-system" element={<LunarSystem />} />
-          <Route path="/lunar-cipher" element={<LunarCipher />} />
-          <Route path="/cipher" element={<LunarCipher />} />
           <Route path="/phasecraft" element={<Method />} />
-          <Route path="/lunar-reports" element={<LunarReports />} />
-          <Route path="/quantumelodic" element={<QuantumMelodic />} />
-          <Route path="/school" element={<MoontunerSchool />} />
-          <Route path="/app" element={<MoontunedApp />} />
-          <Route path="/starter" element={<MoonTunerStarter />} />
-          <Route path="/sessions" element={<Sessions />} />
-          <Route path="/services" element={<Services />} />
+          <Route path="/philosophy" element={<Philosophy />} />
+          <Route path="/lunar-system" element={<LunarSystem />} />
           <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
-          <Route path="/cazimi" element={<CazimiPunchcard />} />
-          <Route path="/spacetime-printer" element={<SpacetimePrinter />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/free-guide" element={<FreeGuide />} />
+          <Route path="/analytics" element={<AnalyticsDashboard />} />
+
+          {/* ── Phase 2 — Auth + accounts (gated) ────────────────────── */}
+          <Route path="/auth" element={PHASE_2_ENABLED ? <Auth /> : <ComingSoon />} />
+          <Route path="/auth/callback" element={PHASE_2_ENABLED ? <AuthCallback /> : <ComingSoon />} />
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
+              PHASE_2_ENABLED ? (
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              ) : (
+                <ComingSoon />
+              )
             }
           />
           <Route
             path="/settings"
             element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
+              PHASE_2_ENABLED ? (
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              ) : (
+                <ComingSoon />
+              )
             }
           />
-          <Route path="/studio" element={<Studio />} />
-          <Route path="/free-guide" element={<FreeGuide />} />
-          <Route path="/total-tuner" element={<TotalTuner />} />
-          <Route path="/harmonic-profile" element={<HarmonicProfile />} />
-          <Route path="/digital-smudging" element={<DigitalSmudging />} />
-          <Route path="/offerings" element={<Offerings />} />
-          <Route path="/journal" element={<Journal />} />
-          <Route path="/journal/:slug" element={<JournalEntry />} />
+          <Route path="/lunar-reports" element={PHASE_2_ENABLED ? <LunarReports /> : <ComingSoon />} />
+          <Route path="/workbooks" element={PHASE_2_ENABLED ? <Workbooks /> : <ComingSoon />} />
+          <Route path="/workbook-preview" element={PHASE_2_ENABLED ? <WorkbookPreview /> : <ComingSoon />} />
+          <Route path="/lunar-chaperone" element={PHASE_2_ENABLED ? <LunarChaperone /> : <ComingSoon />} />
+          <Route path="/chaperone" element={PHASE_2_ENABLED ? <LunarChaperone /> : <ComingSoon />} />
+          <Route path="/lunar-cipher" element={PHASE_2_ENABLED ? <LunarCipher /> : <ComingSoon />} />
+          <Route path="/cipher" element={PHASE_2_ENABLED ? <LunarCipher /> : <ComingSoon />} />
+          <Route path="/offerings" element={PHASE_2_ENABLED ? <Offerings /> : <ComingSoon />} />
+          <Route path="/services" element={PHASE_2_ENABLED ? <Services /> : <ComingSoon />} />
+          <Route path="/sessions" element={PHASE_2_ENABLED ? <Sessions /> : <ComingSoon />} />
+          <Route path="/studio" element={PHASE_2_ENABLED ? <Studio /> : <ComingSoon />} />
+          <Route path="/total-tuner" element={PHASE_2_ENABLED ? <TotalTuner /> : <ComingSoon />} />
+          <Route path="/cazimi" element={PHASE_2_ENABLED ? <CazimiPunchcard /> : <ComingSoon />} />
+          <Route path="/spacetime-printer" element={PHASE_2_ENABLED ? <SpacetimePrinter /> : <ComingSoon />} />
+          <Route path="/app" element={PHASE_2_ENABLED ? <MoontunedApp /> : <ComingSoon />} />
+          <Route path="/starter" element={PHASE_2_ENABLED ? <MoonTunerStarter /> : <ComingSoon />} />
 
-          {/* ── Membership & payments ─────────────────────────────── */}
-          <Route path="/membership" element={<Membership />} />
+          {/* ── Membership & payments (Phase 2) ──────────────────────── */}
+          <Route path="/membership" element={PHASE_2_ENABLED ? <Membership /> : <ComingSoon />} />
           <Route
             path="/membership/manage"
             element={
-              <ProtectedRoute>
-                <MembershipManage />
-              </ProtectedRoute>
+              PHASE_2_ENABLED ? (
+                <ProtectedRoute>
+                  <MembershipManage />
+                </ProtectedRoute>
+              ) : (
+                <ComingSoon />
+              )
             }
           />
-          <Route path="/store" element={<DigitalStore />} />
-          <Route path="/gift" element={<GiftPage />} />
-          <Route path="/gift/confirmation" element={<GiftConfirmation />} />
-          <Route path="/gift/claim" element={<GiftClaim />} />
+          <Route path="/store" element={PHASE_2_ENABLED ? <DigitalStore /> : <ComingSoon />} />
+          <Route path="/gift" element={PHASE_2_ENABLED ? <GiftPage /> : <ComingSoon />} />
+          <Route path="/gift/confirmation" element={PHASE_2_ENABLED ? <GiftConfirmation /> : <ComingSoon />} />
+          <Route path="/gift/claim" element={PHASE_2_ENABLED ? <GiftClaim /> : <ComingSoon />} />
           <Route
             path="/purchases"
             element={
-              <ProtectedRoute>
-                <PurchaseHistory />
-              </ProtectedRoute>
+              PHASE_2_ENABLED ? (
+                <ProtectedRoute>
+                  <PurchaseHistory />
+                </ProtectedRoute>
+              ) : (
+                <ComingSoon />
+              )
             }
           />
 
-          <Route path="/about" element={<About />} />
-          <Route path="/analytics" element={<AnalyticsDashboard />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/explore/:slug" element={<ExploreConcept />} />
-          <Route path="/today" element={<Today />} />
+          {/* ── Phase 2/3 — School + advanced tools (gated) ──────────── */}
+          <Route path="/school" element={PHASE_2_ENABLED ? <MoontunerSchool /> : <ComingSoon />} />
+          <Route path="/quantumelodic" element={PHASE_2_ENABLED ? <QuantumMelodic /> : <ComingSoon />} />
+
+          {/* ── Phase 3 — Digital Smudging (gated) ───────────────────── */}
+          <Route path="/digital-smudging" element={PHASE_3_ENABLED ? <DigitalSmudging /> : <ComingSoon />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
@@ -158,16 +183,16 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <MembershipProvider>
-      <AnalyticsProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AnimatedRoutes />
-          </BrowserRouter>
-        </TooltipProvider>
+        <AnalyticsProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AnimatedRoutes />
+            </BrowserRouter>
+          </TooltipProvider>
+        </AnalyticsProvider>
       </MembershipProvider>
-      </AnalyticsProvider>
     </AuthProvider>
   </QueryClientProvider>
 );

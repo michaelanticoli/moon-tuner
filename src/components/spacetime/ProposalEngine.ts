@@ -31,7 +31,7 @@ export interface ProposalOutput {
   nextAction: string;
 }
 
-const STORAGE_KEY = "moontuner_spacetime_proposals_v1";
+const STORAGE_KEY = "mt_spacetime_proposals_v1";
 
 // ─── ID generation ─────────────────────────────────────────────────────────
 

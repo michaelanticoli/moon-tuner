@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, BookOpen, Clock, Moon } from "lucide-react";
-import { Navigation } from "@/components/Navigation";
+import { Search, BookOpen, Clock, Moon, CheckCircle2, Loader2 } from "lucide-react";
+import { DuskNav } from "@/components/dusk/DuskNav";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { ScrollReveal } from "@/components/ScrollReveal";
@@ -18,6 +18,7 @@ import {
   type ContentType,
 } from "@/data/journalEntries";
 import { useLunarCalculations } from "@/hooks/useLunarCalculations";
+import { usePersonalJournal } from "@/hooks/usePersonalJournal";
 import { JournalAISynthesis } from "@/components/ai/JournalAISynthesis";
 import { format } from "date-fns";
 
@@ -439,6 +440,14 @@ const Journal = () => {
   const [search, setSearch] = useState("");
   const [activeType, setActiveType] = useState<ContentType | "all">("all");
   const { phaseName } = useLunarCalculations();
+  const {
+    draft,
+    setDraft,
+    saveStatus,
+    entries: personalEntries,
+    saveEntry,
+    deleteEntry,
+  } = usePersonalJournal(phaseName);
 
   const sorted = useMemo(
     () =>
@@ -479,7 +488,7 @@ const Journal = () => {
         className="min-h-screen"
         style={{ background: "hsl(22 12% 7%)" }}
       >
-        <Navigation />
+        <DuskNav />
 
         <main>
           {/* Hero / today panel */}
@@ -493,6 +502,161 @@ const Journal = () => {
 
           {/* AI emotional season synthesis */}
           <JournalAISynthesis lunarPhase={phaseName} />
+
+          {/* ── Personal write area ─────────────────────────────────── */}
+          <section
+            className="mx-auto max-w-[1100px] px-6 lg:px-12 py-16"
+            aria-label="Write a personal reflection"
+          >
+            <ScrollReveal>
+              <div
+                className="p-8 lg:p-10 rounded-xl border"
+                style={{
+                  background: "hsl(22 12% 9%)",
+                  borderColor: "hsl(22 12% 18%)",
+                }}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <p
+                      className="text-[0.58rem] tracking-[0.28em] uppercase mb-2"
+                      style={{ color: "hsl(38 90% 58% / 0.6)" }}
+                    >
+                      Your reflection · {phaseName}
+                    </p>
+                    <h2
+                      className="font-serif text-xl"
+                      style={{ color: "hsl(40 18% 84%)" }}
+                    >
+                      Write here. It autosaves.
+                    </h2>
+                  </div>
+                  {/* Save status indicator */}
+                  <div className="flex items-center gap-2 text-[0.62rem] tracking-wide shrink-0">
+                    {saveStatus === "saving" && (
+                      <Loader2
+                        className="w-3.5 h-3.5 animate-spin"
+                        style={{ color: "hsl(40 12% 40%)" }}
+                      />
+                    )}
+                    {saveStatus === "saved" && (
+                      <CheckCircle2
+                        className="w-3.5 h-3.5"
+                        style={{ color: "hsl(168 60% 48%)" }}
+                      />
+                    )}
+                    <span
+                      style={{
+                        color:
+                          saveStatus === "saved"
+                            ? "hsl(168 60% 48%)"
+                            : "hsl(40 12% 38%)",
+                      }}
+                    >
+                      {saveStatus === "idle" && "No account required"}
+                      {saveStatus === "saving" && "Saving…"}
+                      {saveStatus === "saved" && "Draft saved"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Textarea */}
+                <textarea
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  placeholder="What's present for you right now? No pressure — no structure required."
+                  rows={6}
+                  className="w-full resize-none rounded-lg px-5 py-4 text-base leading-[1.75] outline-none transition-colors duration-200 font-serif placeholder:font-sans"
+                  style={{
+                    background: "hsl(22 12% 6%)",
+                    border: "1px solid hsl(22 12% 20%)",
+                    color: "hsl(40 18% 82%)",
+                  }}
+                  aria-label="Personal reflection"
+                />
+
+                {/* Actions row */}
+                <div className="flex items-center justify-between mt-4 gap-4 flex-wrap">
+                  <p
+                    className="text-[0.6rem] leading-relaxed max-w-[360px]"
+                    style={{ color: "hsl(40 12% 32%)" }}
+                  >
+                    Saved privately in your browser. No account needed. Sign in
+                    later to preserve entries across devices.
+                  </p>
+
+                  {draft.trim() && (
+                    <button
+                      onClick={saveEntry}
+                      className="shrink-0 text-[0.65rem] tracking-[0.18em] uppercase px-5 py-2.5 rounded-sm border transition-colors duration-200"
+                      style={{
+                        color: "hsl(38 90% 65%)",
+                        borderColor: "hsl(38 90% 58% / 0.35)",
+                        background: "hsl(38 90% 58% / 0.06)",
+                      }}
+                    >
+                      Save as Entry
+                    </button>
+                  )}
+                </div>
+
+                {/* Saved personal entries */}
+                {personalEntries.length > 0 && (
+                  <div className="mt-10 pt-8" style={{ borderTop: "1px solid hsl(22 12% 16%)" }}>
+                    <p
+                      className="text-[0.58rem] tracking-[0.24em] uppercase mb-6"
+                      style={{ color: "hsl(40 12% 36%)" }}
+                    >
+                      Your saved reflections ({personalEntries.length})
+                    </p>
+                    <div className="flex flex-col gap-4">
+                      {personalEntries.map((entry) => (
+                        <div
+                          key={entry.id}
+                          className="p-5 rounded-lg border group"
+                          style={{
+                            background: "hsl(22 12% 7%)",
+                            borderColor: "hsl(22 12% 15%)",
+                          }}
+                        >
+                          <div className="flex items-start justify-between gap-3 mb-3">
+                            <span
+                              className="text-[0.58rem] tracking-[0.2em] uppercase"
+                              style={{ color: "hsl(40 12% 36%)" }}
+                            >
+                              {entry.moonPhase} ·{" "}
+                              {format(new Date(entry.date), "MMM d, yyyy")}
+                            </span>
+                            <button
+                              onClick={() => deleteEntry(entry.id)}
+                              className="text-[0.58rem] tracking-wide opacity-0 group-hover:opacity-100 transition-opacity"
+                              style={{ color: "hsl(0 45% 50%)" }}
+                              aria-label="Delete entry"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                          <p
+                            className="text-sm leading-[1.7] font-serif"
+                            style={{ color: "hsl(40 18% 72%)" }}
+                          >
+                            {entry.content}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ScrollReveal>
+          </section>
+
+          {/* Divider */}
+          <div
+            className="mx-auto max-w-[1100px] px-6 lg:px-12"
+            style={{ height: "1px", background: "hsl(22 12% 14%)" }}
+          />
 
           {/* Main content */}
           <section className="mx-auto max-w-[1100px] px-6 lg:px-12 py-20 lg:py-28">
@@ -609,17 +773,19 @@ const Journal = () => {
                     comparative lunar states
                   </p>
                 </div>
-                <Link
-                  to="/lunar-cipher"
-                  className="shrink-0 text-[0.65rem] tracking-[0.2em] uppercase px-5 py-2.5 rounded-sm border transition-colors duration-200"
+                <div
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm border"
                   style={{
-                    color: "hsl(38 90% 65%)",
-                    borderColor: "hsl(38 90% 58% / 0.35)",
-                    background: "hsl(38 90% 58% / 0.06)",
+                    color: "hsl(40 12% 38%)",
+                    borderColor: "hsl(22 12% 20%)",
                   }}
                 >
-                  Open Your Cipher
-                </Link>
+                  <span
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ background: "hsl(38 90% 58% / 0.4)" }}
+                  />
+                  <span className="text-[0.65rem] tracking-[0.2em] uppercase">Coming in Phase II</span>
+                </div>
               </div>
             </ScrollReveal>
 
