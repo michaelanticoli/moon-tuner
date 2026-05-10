@@ -209,7 +209,7 @@ const Dashboard = () => {
               <>
                 {/* Membership status strip */}
                 <ScrollReveal delay={0.15}>
-                  <div className="flex items-center justify-between node-card border-border/30 mb-6 py-4 px-6">
+                  <div className="flex items-center justify-between node-card border-border/30 mb-3 py-4 px-6">
                     <div className="flex items-center gap-3">
                       <Layers className="w-4 h-4 text-accent/60" />
                       <span className="text-xs text-muted-foreground/50 font-sans uppercase tracking-widest">
@@ -222,6 +222,17 @@ const Dashboard = () => {
                       className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground/40 hover:text-foreground transition-colors"
                     >
                       {tier === "free" ? "Explore Membership" : "Manage"}
+                    </Link>
+                  </div>
+                  <div className="flex items-center justify-between node-card border-border/20 bg-transparent mb-6 py-3 px-6">
+                    <span className="text-xs text-muted-foreground/40 font-sans">
+                      Reports & purchases
+                    </span>
+                    <Link
+                      to="/purchases"
+                      className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground/30 hover:text-foreground transition-colors"
+                    >
+                      View History
                     </Link>
                   </div>
                 </ScrollReveal>

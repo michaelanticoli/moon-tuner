@@ -46,6 +46,8 @@ import MembershipManage from "./pages/MembershipManage";
 import DigitalStore from "./pages/DigitalStore";
 import GiftPage from "./pages/GiftPage";
 import GiftConfirmation from "./pages/GiftConfirmation";
+import GiftClaim from "./pages/GiftClaim";
+import PurchaseHistory from "./pages/PurchaseHistory";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -121,6 +123,15 @@ function AnimatedRoutes() {
           <Route path="/store" element={<DigitalStore />} />
           <Route path="/gift" element={<GiftPage />} />
           <Route path="/gift/confirmation" element={<GiftConfirmation />} />
+          <Route path="/gift/claim" element={<GiftClaim />} />
+          <Route
+            path="/purchases"
+            element={
+              <ProtectedRoute>
+                <PurchaseHistory />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

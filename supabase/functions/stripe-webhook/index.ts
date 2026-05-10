@@ -21,6 +21,8 @@ const supabase = createClient(
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
 );
 
+const BASE_URL = "https://moontuner.xyz";
+
 // Map Stripe price IDs → membership tiers
 const PRICE_TIER_MAP: Record<string, string> = {
   [Deno.env.get("STRIPE_PRICE_REFLECTIVE") ?? "price_reflective"]: "reflective",
@@ -30,6 +32,71 @@ const PRICE_TIER_MAP: Record<string, string> = {
 
 function tierFromPriceId(priceId: string): string {
   return PRICE_TIER_MAP[priceId] ?? "reflective";
+}
+
+async function sendGiftClaimEmail(
+  recipientEmail: string,
+  claimCode: string,
+  giftType: string,
+  tier: string | null
+): Promise<void> {
+  const resendKey = Deno.env.get("RESEND_API_KEY");
+  if (!resendKey) {
+    console.log(`[stripe-webhook] DRY RUN: gift claim email for ${recipientEmail}`);
+    return;
+  }
+
+  const tierLabel = tier ? (tier.charAt(0).toUpperCase() + tier.slice(1)) : "Reflective";
+  const typeLabel = giftType.startsWith("membership")
+    ? `${tierLabel} Membership`
+    : giftType === "report" ? "Lunar Arc Report" : "Digital Good";
+
+  const claimUrl = `${BASE_URL}/gift/claim?code=${claimCode}`;
+
+  const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:40px 20px;background:#0a0a0a;font-family:Georgia,serif;color:#c8c4b8;">
+  <div style="max-width:560px;margin:0 auto;">
+    <p style="font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#5a5550;margin-bottom:48px;">Moontuner</p>
+    <p style="font-size:28px;font-weight:300;line-height:1.3;color:#e8e4dc;margin-bottom:24px;">Someone sent you a gift.</p>
+    <p style="font-size:15px;line-height:1.7;color:#6a6660;margin-bottom:20px;">
+      You've received a <strong style="color:#c8c4b8;">${typeLabel}</strong> on Moontuner —
+      a tool for lunar-oriented reflection, emotional pacing, and intentional living.
+    </p>
+    <p style="font-size:15px;line-height:1.7;color:#6a6660;margin-bottom:40px;">
+      Your claim link is below. It's yours whenever you're ready — no urgency, no expiration pressure.
+    </p>
+    <a href="${claimUrl}" style="display:inline-block;padding:14px 28px;border-radius:100px;background:#e8e4dc;color:#0a0a0a;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;font-weight:700;text-decoration:none;margin-bottom:24px;">
+      Claim Your Gift
+    </a>
+    <p style="font-size:12px;color:#3a3830;margin-top:24px;">
+      Or copy this link: <span style="color:#6a6660;">${claimUrl}</span>
+    </p>
+    <hr style="border:none;border-top:1px solid #1a1a1a;margin:40px 0 32px;">
+    <p style="font-size:11px;color:#3a3830;line-height:1.6;">
+      Moontuner is a tool for reflective clarity and timing awareness — not predictions or mystical certainty.
+      You can learn more at moontuner.xyz.
+    </p>
+  </div>
+</body>
+</html>`;
+
+  await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${resendKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "Moontuner <hello@moontuner.xyz>",
+      reply_to: "support@moontuner.xyz",
+      to: [recipientEmail],
+      subject: `You've received a gift — ${typeLabel}`,
+      html,
+    }),
+  }).catch((err) => console.error("Gift email send error:", err));
 }
 
 serve(async (req) => {
@@ -86,13 +153,64 @@ serve(async (req) => {
         }
 
         if (session.mode === "payment" && meta.purchase_type === "gift") {
-          // Mark gift as paid
+          // Mark gift as paid and send claim email to recipient
           if (session.id) {
             await supabase
               .from("gifts")
               .update({ status: "paid" })
               .eq("stripe_session_id", session.id);
+
+            // Fetch the gift row to get recipient email and claim code
+            const { data: gift } = await supabase
+              .from("gifts")
+              .select("recipient_email, claim_code, gift_type, tier")
+              .eq("stripe_session_id", session.id)
+              .single();
+
+            if (gift?.recipient_email && gift?.claim_code) {
+              await sendGiftClaimEmail(gift.recipient_email, gift.claim_code, gift.gift_type, gift.tier);
+            }
           }
+        }
+
+        // ── Track report/product purchases from create-report-payment ──────────
+        // Sessions created by create-report-payment have a `product` metadata field
+        // but no `purchase_type`. We create a purchases row here if one doesn't exist.
+        if (
+          session.mode === "payment" &&
+          !meta.purchase_type &&
+          meta.product &&
+          session.customer_details?.email
+        ) {
+          const paymentIntent =
+            typeof session.payment_intent === "string"
+              ? session.payment_intent
+              : session.payment_intent?.id;
+
+          // Resolve user_id from email if possible
+          const { data: users } = await supabase.rpc("get_user_id_by_email", {
+            email_input: session.customer_details.email,
+          }).maybeSingle();
+          const userId = (users as { id: string } | null)?.id ?? null;
+
+          const amountTotal = session.amount_total ?? 0;
+
+          await supabase.from("purchases").upsert(
+            {
+              user_id: userId,
+              product_type: "report",
+              product_id: meta.product,
+              product_label: meta.label ?? meta.product,
+              amount_cents: amountTotal,
+              currency: session.currency ?? "usd",
+              stripe_session_id: session.id,
+              stripe_payment_intent_id: paymentIntent ?? null,
+              status: "completed",
+              fulfilled_at: new Date().toISOString(),
+              metadata: { narration: meta.narration_addon === "true" },
+            },
+            { onConflict: "stripe_session_id", ignoreDuplicates: true }
+          );
         }
         break;
       }
@@ -126,6 +244,11 @@ serve(async (req) => {
         };
         const internalStatus = statusMap[sub.status] ?? "active";
 
+        const previousStatus = event.type === "customer.subscription.updated"
+          ? statusMap[(event.data.previous_attributes as { status?: string })?.status ?? ""] ?? null
+          : null;
+
+        // Update subscription row
         await supabase
           .from("subscriptions")
           .update({
@@ -141,6 +264,51 @@ serve(async (req) => {
               : null,
           })
           .eq("stripe_customer_id", customerId);
+
+        // ── Send welcome / lifecycle emails ─────────────────────────────────
+        // Get customer details from Stripe for email sending
+        try {
+          const customer = await stripe.customers.retrieve(customerId);
+          if (customer && !customer.deleted) {
+            const customerEmail = customer.email;
+            const customerName = typeof customer.name === "string" ? customer.name : "";
+
+            if (customerEmail && internalStatus === "active") {
+              const isNew = event.type === "customer.subscription.created";
+              const wasNotActive = previousStatus && previousStatus !== "active";
+              const isReturn = !isNew && wasNotActive;
+
+              await supabase.functions.invoke("send-membership-email", {
+                body: {
+                  flow: isReturn ? "welcome_return" : isNew ? "welcome_new" : null,
+                  to: customerEmail,
+                  name: customerName,
+                  tier,
+                },
+              }).catch((emailErr) => {
+                // Email failures should not fail the webhook
+                console.error("Welcome email error:", emailErr);
+              });
+            }
+
+            // Send paused email when status changes to paused
+            if (customerEmail && internalStatus === "paused" && previousStatus !== "paused") {
+              await supabase.functions.invoke("send-membership-email", {
+                body: {
+                  flow: "paused",
+                  to: customerEmail,
+                  name: customerName,
+                },
+              }).catch((emailErr) => {
+                console.error("Paused email error:", emailErr);
+              });
+            }
+          }
+        } catch (emailLookupErr) {
+          // Non-critical — do not fail the webhook
+          console.error("Customer email lookup error:", emailLookupErr);
+        }
+
         break;
       }
 

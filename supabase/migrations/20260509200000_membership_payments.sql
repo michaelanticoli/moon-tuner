@@ -166,6 +166,24 @@ CREATE POLICY "Service role can manage gifts"
   USING (auth.role() = 'service_role')
   WITH CHECK (auth.role() = 'service_role');
 
+-- ─── helper function: resolve user ID from email ──────────────────────────────
+-- Used by stripe-webhook to associate report purchases with authenticated users.
+-- SECURITY DEFINER so it can read auth.users; only callable by service_role.
+CREATE OR REPLACE FUNCTION public.get_user_id_by_email(email_input TEXT)
+RETURNS TABLE(id UUID) AS $$
+BEGIN
+  RETURN QUERY
+    SELECT u.id
+    FROM auth.users u
+    WHERE u.email = email_input
+    LIMIT 1;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Restrict execution to service role
+REVOKE ALL ON FUNCTION public.get_user_id_by_email(TEXT) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.get_user_id_by_email(TEXT) TO service_role;
+
 -- ─── seed digital products catalog ───────────────────────────────────────────
 INSERT INTO public.digital_products (id, label, description, product_type, amount_cents, min_tier, sort_order)
 VALUES
