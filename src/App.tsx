@@ -40,6 +40,8 @@ import DigitalSmudging from "./pages/DigitalSmudging";
 import Offerings from "./pages/Offerings";
 import Journal from "./pages/Journal";
 import JournalEntry from "./pages/JournalEntry";
+import Explore from "./pages/Explore";
+import ExploreConcept from "./pages/ExploreConcept";
 import Today from "./pages/Today";
 import NotFound from "./pages/NotFound";
 
@@ -102,6 +104,8 @@ function AnimatedRoutes() {
           <Route path="/offerings" element={<Offerings />} />
           <Route path="/journal" element={<Journal />} />
           <Route path="/journal/:slug" element={<JournalEntry />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/explore/:slug" element={<ExploreConcept />} />
           <Route path="/today" element={<Today />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

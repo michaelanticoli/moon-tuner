@@ -8,6 +8,8 @@ import { PageTransition } from "@/components/PageTransition";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { EntryTypeTag } from "@/components/journal/EntryTypeTag";
+import { SEOHead } from "@/components/SEOHead";
+import { LunarCapture } from "@/components/LunarCapture";
 import {
   JOURNAL_ENTRIES,
   CONTENT_TYPE_META,
@@ -459,6 +461,20 @@ const Journal = () => {
 
   return (
     <PageTransition>
+      <SEOHead
+        title="Journal — Moontuner | Reflections, Directives & Lunar Observations"
+        description="A reflective observatory — an archive of daily directives, lunar essays, emotional weather reports, and self-observation notes. Return daily. Your emotional memory lives here."
+        canonical="/journal"
+        keywords={[
+          "reflective journaling",
+          "lunar journal",
+          "daily directive",
+          "emotional patterns",
+          "intentional living journal",
+          "moon phase journal",
+          "self-observation practice",
+        ]}
+      />
       <div
         className="min-h-screen"
         style={{ background: "hsl(22 12% 7%)" }}
@@ -604,6 +620,17 @@ const Journal = () => {
                 >
                   Open Your Cipher
                 </Link>
+              </div>
+            </ScrollReveal>
+
+            {/* Email acquisition */}
+            <ScrollReveal delay={0.25}>
+              <div className="mt-12">
+                <LunarCapture
+                  source="journal-page"
+                  heading="Stay in the cycle."
+                  subheading="Reflective transmissions, aligned to the lunar rhythm."
+                />
               </div>
             </ScrollReveal>
           </section>
