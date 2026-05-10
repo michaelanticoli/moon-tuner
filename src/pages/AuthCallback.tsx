@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Moon, Loader2, AlertCircle } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -24,23 +24,31 @@ import { Button } from "@/components/ui/button";
  */
 export default function AuthCallback() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let settled = false;
+    const safeNext = (() => {
+      const next = searchParams.get("next") || "/dashboard";
+      return next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
+    })();
+
+    const finish = (path = safeNext) => {
+      if (settled) return;
+      settled = true;
+      navigate(path, { replace: true });
+    };
 
     // Listen for the auth state change that Supabase fires once the
     // session is established (works for both flows).
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        if (settled) return;
         if (event === "SIGNED_IN" && session) {
-          settled = true;
-          navigate("/dashboard", { replace: true });
+          finish();
         }
         if (event === "PASSWORD_RECOVERY") {
-          settled = true;
-          navigate("/auth/reset-password", { replace: true });
+          finish("/auth/reset-password");
         }
       }
     );
@@ -51,13 +59,19 @@ export default function AuthCallback() {
     if (code) {
       supabase.auth
         .exchangeCodeForSession(code)
-        .then(({ error: exchErr }) => {
+        .then(async ({ error: exchErr }) => {
           if (exchErr && !settled) {
             settled = true;
             setError(exchErr.message);
+            return;
           }
-          // On success, onAuthStateChange fires SIGNED_IN → navigate above.
+          const { data } = await supabase.auth.getSession();
+          if (data.session) finish();
         });
+    } else {
+      supabase.auth.getSession().then(({ data }) => {
+        if (data.session) finish();
+      });
     }
 
     // Safety timeout: if nothing happens in 12 s, show a helpful error.
@@ -74,7 +88,7 @@ export default function AuthCallback() {
       subscription.unsubscribe();
       clearTimeout(timer);
     };
-  }, [navigate]);
+  }, [navigate, searchParams]);
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-8 px-6">
