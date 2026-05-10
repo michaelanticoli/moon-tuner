@@ -58,6 +58,8 @@ import Explore from "./pages/Explore";
 import ExploreConcept from "./pages/ExploreConcept";
 import Today from "./pages/Today";
 import ComingSoon from "./pages/ComingSoon";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -166,6 +168,10 @@ function AnimatedRoutes() {
 
           {/* ── Phase 3 — Digital Smudging (gated) ───────────────────── */}
           <Route path="/digital-smudging" element={PHASE_3_ENABLED ? <DigitalSmudging /> : <ComingSoon />} />
+
+          {/* ── Legal pages ─────────────────────────────────────────── */}
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

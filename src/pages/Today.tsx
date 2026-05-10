@@ -419,14 +419,16 @@ const Today = () => {
             </TodayCard>
           </Reveal>
 
-          {/* ── Phase 2 teaser links ──────────────────────────────────── */}
+          {/* ── Deep-dive links ──────────────────────────────────── */}
           <Reveal delay={0.04} className="today-section">
             <div className="today-links-row">
-              <div
+              <Link
+                to="/lunar-cipher"
                 className="today-deep-link"
                 style={{
                   background: `hsl(${data.ambient.accentHsl} / 0.05)`,
                   borderColor: `hsl(${data.ambient.accentHsl} / 0.15)`,
+                  textDecoration: "none",
                 }}
               >
                 <span className="today-eyebrow" style={{ color: `hsl(${data.ambient.accentHsl} / 0.6)` }}>
@@ -437,16 +439,18 @@ const Today = () => {
                 </p>
                 <p
                   className="today-eyebrow mt-3"
-                  style={{ color: "hsl(var(--dusk-mute) / 0.7)" }}
+                  style={{ color: `hsl(${data.ambient.accentHsl} / 0.5)` }}
                 >
-                  Coming in Phase II
+                  Decode your chart →
                 </p>
-              </div>
-              <div
+              </Link>
+              <Link
+                to="/lunar-reports"
                 className="today-deep-link"
                 style={{
                   background: `hsl(${data.ambient.accentHsl} / 0.04)`,
                   borderColor: `hsl(var(--dusk-line))`,
+                  textDecoration: "none",
                 }}
               >
                 <span className="today-eyebrow" style={{ color: "hsl(var(--dusk-silver) / 0.6)" }}>
@@ -457,11 +461,11 @@ const Today = () => {
                 </p>
                 <p
                   className="today-eyebrow mt-3"
-                  style={{ color: "hsl(var(--dusk-mute) / 0.7)" }}
+                  style={{ color: "hsl(var(--dusk-silver) / 0.5)" }}
                 >
-                  Coming in Phase II
+                  View reports →
                 </p>
-              </div>
+              </Link>
             </div>
           </Reveal>
 

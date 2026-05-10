@@ -1,9 +1,5 @@
-// Shared birth data across all generators (Cazimi, Astro-Harmonic, Lunar
-// Reports, Lunar Cipher overlay). Lightweight sessionStorage layer — no
-// provider, no context. Each generator hydrates its own form on mount and
-// persists back on submit.
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 
 export interface SharedBirth {
   name: string;

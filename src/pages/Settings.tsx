@@ -78,12 +78,12 @@ const Settings = () => {
       const { data: profileData } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", user.id)
+        .eq("user_id", user.id)
         .single();
 
       if (profileData) {
         setProfile({
-          display_name: profileData.display_name || "",
+          display_name: profileData.display_name || profileData.full_name || "",
           birth_date: profileData.birth_date || "",
           birth_time: profileData.birth_time || "",
           birth_location: profileData.birth_location || "",
@@ -120,8 +120,10 @@ const Settings = () => {
 
     try {
       await supabase.from("profiles").upsert({
-        id: user.id,
+        user_id: user.id,
         email: user.email || "",
+        // full_name is the column in the current schema; display_name after migration
+        full_name: profile.display_name || null,
         display_name: profile.display_name || null,
         birth_date: profile.birth_date || null,
         birth_time: profile.birth_time || null,
