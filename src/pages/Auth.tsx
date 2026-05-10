@@ -28,7 +28,7 @@ const Auth = () => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  const { signIn, signUp, resetPassword, signInWithMagicLink, signInAnonymously } = useAuth();
+  const { signIn, signUp, resendSignupVerification, resetPassword, signInWithMagicLink, signInAnonymously } = useAuth();
   const navigate = useNavigate();
 
   const switchMode = (next: AuthMode) => {
@@ -55,11 +55,19 @@ const Auth = () => {
           setLoading(false);
           return;
         }
-        const { error } = await signUp(email, password);
+        const { error, signedIn, requiresEmailVerification } = await signUp(email, password);
         if (error) {
           setError(error.message);
+        } else if (signedIn) {
+          navigate("/dashboard");
+        } else if (requiresEmailVerification) {
+          setMessage(
+            "Your account was created and requires email verification. We requested the verification email, but delivery can fail if Supabase Auth email provider settings are incomplete. Check inbox/spam, then use 'Resend verification email' below if needed."
+          );
         } else {
-          setMessage("A thread has been sent to your email. Follow it to continue.");
+          setMessage(
+            "Signup was accepted, but verification status could not be confirmed. We requested a verification email; if nothing arrives, Supabase Auth email provider settings may be misconfigured. Check inbox/spam, then use 'Resend verification email' below."
+          );
         }
       } else if (mode === "enter") {
         const { error } = await signIn(email, password);
@@ -82,6 +90,26 @@ const Auth = () => {
         } else {
           setMessage("A signal has been sent to your email. Open it to enter.");
         }
+      }
+    } catch {
+      setError("Something shifted unexpectedly. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    setError(null);
+    setMessage(null);
+    setLoading(true);
+    try {
+      const { error } = await resendSignupVerification(email);
+      if (error) {
+        setError(error.message);
+      } else {
+        setMessage(
+          "Verification email resend requested. If Supabase Auth email settings are configured correctly, it should arrive shortly."
+        );
       }
     } catch {
       setError("Something shifted unexpectedly. Please try again.");
@@ -303,6 +331,14 @@ const Auth = () => {
 
                   {mode === "begin" && (
                     <>
+                      <button
+                        type="button"
+                        onClick={handleResendVerification}
+                        disabled={loading || !email}
+                        className="w-full text-center text-sm text-muted-foreground/70 hover:text-foreground transition-colors py-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Resend verification email
+                      </button>
                       <button
                         type="button"
                         onClick={() => switchMode("magic")}

@@ -7,7 +7,12 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   isAnonymous: boolean;
-  signUp: (email: string, password: string, redirectPath?: string) => Promise<{ error: AuthError | null }>;
+  signUp: (
+    email: string,
+    password: string,
+    redirectPath?: string
+  ) => Promise<{ error: AuthError | null; signedIn: boolean; requiresEmailVerification: boolean }>;
+  resendSignupVerification: (email: string, redirectPath?: string) => Promise<{ error: AuthError | null }>;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signInWithMagicLink: (email: string, redirectPath?: string) => Promise<{ error: AuthError | null }>;
   signInAnonymously: () => Promise<{ error: AuthError | null }>;
@@ -51,9 +56,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = async (email: string, password: string, redirectPath?: string) => {
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: getAuthCallbackUrl(redirectPath),
+      },
+    });
+    return {
+      error,
+      signedIn: Boolean(data.session),
+      requiresEmailVerification: Boolean(data.user && !data.session),
+    };
+  };
+
+  const resendSignupVerification = async (email: string, redirectPath?: string) => {
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
       options: {
         emailRedirectTo: getAuthCallbackUrl(redirectPath),
       },
@@ -104,6 +124,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         isAnonymous,
         signUp,
+        resendSignupVerification,
         signIn,
         signInWithMagicLink,
         signInAnonymously,
