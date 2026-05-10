@@ -26,6 +26,7 @@ import QuantumMelodic from "./pages/QuantumMelodic";
 import MoontunedApp from "./pages/App";
 import Moon from "./pages/Moon";
 import Auth from "./pages/Auth";
+import AuthResetPassword from "./pages/AuthResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import MoontunerSchool from "./pages/MoontunerSchool";
@@ -92,6 +93,7 @@ function AnimatedRoutes() {
           {/* ── Auth routes — always live (needed for email verification) ── */}
           <Route path="/auth" element={<Auth />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/auth/reset-password" element={<AuthResetPassword />} />
           <Route
             path="/dashboard"
             element={

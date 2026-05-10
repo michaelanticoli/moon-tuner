@@ -3,6 +3,9 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Moon, Loader2, AlertCircle } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
+import { sanitizeRedirectPath } from "@/lib/authRedirect";
+
+const isRecoveryType = (params: URLSearchParams) => params.get("type") === "recovery";
 
 /**
  * AuthCallback
@@ -29,12 +32,25 @@ export default function AuthCallback() {
 
   useEffect(() => {
     let settled = false;
-    const safeNext = (() => {
-      const next = searchParams.get("next") || "/dashboard";
-      return next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
-    })();
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    const safeNext = sanitizeRedirectPath(searchParams.get("next"));
+    const authError =
+      searchParams.get("error_description") ||
+      hashParams.get("error_description") ||
+      searchParams.get("error") ||
+      hashParams.get("error");
+    const isRecoveryFlow =
+      isRecoveryType(searchParams) ||
+      isRecoveryType(hashParams) ||
+      safeNext === "/auth/reset-password";
+    const defaultDestination = isRecoveryFlow ? "/auth/reset-password" : safeNext;
 
-    const finish = (path = safeNext) => {
+    if (authError) {
+      setError(authError);
+      return;
+    }
+
+    const finish = (path = defaultDestination) => {
       if (settled) return;
       settled = true;
       navigate(path, { replace: true });
@@ -45,7 +61,7 @@ export default function AuthCallback() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === "SIGNED_IN" && session) {
-          finish();
+          finish(defaultDestination);
         }
         if (event === "PASSWORD_RECOVERY") {
           finish("/auth/reset-password");
@@ -66,11 +82,11 @@ export default function AuthCallback() {
             return;
           }
           const { data } = await supabase.auth.getSession();
-          if (data.session) finish();
+          if (data.session) finish(defaultDestination);
         });
     } else {
       supabase.auth.getSession().then(({ data }) => {
-        if (data.session) finish();
+        if (data.session) finish(defaultDestination);
       });
     }
 
