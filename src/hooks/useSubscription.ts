@@ -60,10 +60,19 @@ export function useSubscription(): UseSubscriptionReturn {
     fetchSubscription();
   }, [fetchSubscription]);
 
-  const tier: MembershipTier =
-    subscription?.status === 'active' || subscription?.status === 'trialing'
-      ? (subscription.tier ?? 'free')
-      : 'free';
+  const tier: MembershipTier = (() => {
+    if (!subscription) return 'free';
+    const isActive =
+      subscription.status === 'active' || subscription.status === 'trialing';
+    if (!isActive) return 'free';
+    // Prefer the explicit tier field (available after the membership migration).
+    // Fall back gracefully for the legacy schema that only has subscription_type.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rawTier = (subscription as any).tier as MembershipTier | undefined;
+    const validTiers: MembershipTier[] = ['free', 'reflective', 'insight', 'practitioner'];
+    if (rawTier && validTiers.includes(rawTier)) return rawTier;
+    return 'reflective'; // legacy active subscriptions get minimum paid tier
+  })();
 
   const isActive =
     subscription?.status === 'active' || subscription?.status === 'trialing';

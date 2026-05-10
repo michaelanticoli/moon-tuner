@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 /**
  * Cinematic Dusk navigation — minimal, editorial, premium.
@@ -20,6 +21,7 @@ export function DuskNav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -34,6 +36,9 @@ export function DuskNav() {
   }, [mobileOpen]);
 
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+
+  const authLabel = !loading && user ? "Dashboard" : "Get Started";
+  const authHref  = !loading && user ? "/dashboard" : "/auth";
 
   return (
     <header
@@ -69,7 +74,13 @@ export function DuskNav() {
           ))}
         </ul>
 
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-3">
+          <Link
+            to={authHref}
+            className="text-[0.72rem] tracking-[0.12em] uppercase dusk-silver hover:dusk-ivory transition-colors"
+          >
+            {authLabel}
+          </Link>
           <Link to="/harmonic-profile" className="dusk-btn dusk-btn-primary text-[0.72rem]">
             Generate Profile
           </Link>
@@ -116,6 +127,9 @@ export function DuskNav() {
             </Link>
           ))}
           <div className="dusk-hairline mt-2" />
+          <Link to={authHref} className="dusk-serif text-xl dusk-silver">
+            {authLabel}
+          </Link>
           <Link to="/harmonic-profile" className="dusk-btn dusk-btn-primary self-start">
             Generate Profile
           </Link>

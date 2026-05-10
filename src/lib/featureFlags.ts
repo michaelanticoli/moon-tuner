@@ -11,10 +11,10 @@
  */
 
 /** Phase 2 features: Reports, Proposal Engine, Auth/Accounts, Membership */
-export const PHASE_2_ENABLED = false;
+export const PHASE_2_ENABLED = true;
 
 /** Phase 3 features: Digital Smudging, AI synthesis, PWA, Recommendations */
-export const PHASE_3_ENABLED = false;
+export const PHASE_3_ENABLED = true;
 
 /** Phase 4 features: Native apps, Widgets, Advanced archive, Expanded AI */
 export const PHASE_4_ENABLED = false;

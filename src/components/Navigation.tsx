@@ -221,8 +221,8 @@ export function Navigation() {
     setOpenMobGroup(null);
   };
 
-  const ctaLabel = !loading && user ? 'Dashboard' : 'Services';
-  const ctaHref = !loading && user ? '/dashboard' : '/services';
+  const ctaLabel = !loading && user ? 'Dashboard' : 'Get Started';
+  const ctaHref = !loading && user ? '/dashboard' : '/auth';
 
   return (
     <>
