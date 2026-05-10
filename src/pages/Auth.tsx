@@ -65,6 +65,7 @@ const Auth = () => {
             "Your account was created and requires email verification. We requested the verification email, but delivery can fail if Supabase Auth email provider settings are incomplete. Check inbox/spam, then use 'Resend verification email' below if needed."
           );
         } else {
+          console.warn("Signup completed without session and without explicit verification requirement.");
           setMessage(
             "Signup was accepted, but verification status could not be confirmed. We requested a verification email; if nothing arrives, Supabase Auth email provider settings may be misconfigured. Check inbox/spam, then use 'Resend verification email' below."
           );
