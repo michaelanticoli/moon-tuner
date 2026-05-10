@@ -25,6 +25,7 @@ import {
   detectPatterns,
   type HarmonicArchetype,
 } from "@/data/harmonicArchetypes";
+import { SEOHead } from "@/components/SEOHead";
 
 type FlowStep = "welcome" | "prompts" | "pattern" | "output";
 
@@ -59,6 +60,20 @@ const HarmonicProfile = () => {
 
   return (
     <PageTransition>
+      <SEOHead
+        title="Harmonic Profile — Discover Your Natal Moon Phase & Personal Archetype | Moontuner"
+        description="Your Harmonic Profile maps your natal moon phase to your natural orientation toward timing, creativity, and self-expression. A reflective self-knowledge tool — not a prediction."
+        canonical="/harmonic-profile"
+        keywords={[
+          "harmonic profile",
+          "natal moon phase",
+          "moon phase personality",
+          "lunar archetype",
+          "self-knowledge tool",
+          "personal lunar map",
+          "what moon phase was I born under",
+        ]}
+      />
       <div className="dusk min-h-screen relative">
         {/* Nav with back link on inner steps */}
         <div className="fixed top-0 inset-x-0 z-50">

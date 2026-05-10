@@ -30,6 +30,7 @@ const NAV_GROUPS: NavGroupData[] = [
   {
     label: 'Learn',
     items: [
+      { label: 'Explore', href: '/explore', desc: 'Guides & emotional intelligence' },
       { label: 'School', href: '/school', desc: 'Structured learning' },
       { label: 'Quantumelodic', href: '/quantumelodic', desc: 'Sound + lunar theory' },
       { label: 'Blog', href: 'https://moontuner.ghost.io', desc: 'Articles & essays', external: true },

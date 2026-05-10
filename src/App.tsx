@@ -5,9 +5,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { AnalyticsProvider } from "@/contexts/AnalyticsContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ReportLauncher } from "@/components/ReportLauncher";
+import { usePageTracking } from "@/hooks/usePageTracking";
 import Index from "./pages/Index";
 import Method from "./pages/Method";
 import Manifesto from "./pages/Manifesto";
@@ -41,12 +43,17 @@ import Offerings from "./pages/Offerings";
 import Journal from "./pages/Journal";
 import JournalEntry from "./pages/JournalEntry";
 import About from "./pages/About";
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import Explore from "./pages/Explore";
+import ExploreConcept from "./pages/ExploreConcept";
+import Today from "./pages/Today";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 function AnimatedRoutes() {
   const location = useLocation();
+  usePageTracking();
 
   return (
     <>
@@ -103,6 +110,10 @@ function AnimatedRoutes() {
           <Route path="/journal" element={<Journal />} />
           <Route path="/journal/:slug" element={<JournalEntry />} />
           <Route path="/about" element={<About />} />
+          <Route path="/analytics" element={<AnalyticsDashboard />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/explore/:slug" element={<ExploreConcept />} />
+          <Route path="/today" element={<Today />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
@@ -114,13 +125,15 @@ function AnimatedRoutes() {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AnimatedRoutes />
-        </BrowserRouter>
-      </TooltipProvider>
+      <AnalyticsProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AnimatedRoutes />
+          </BrowserRouter>
+        </TooltipProvider>
+      </AnalyticsProvider>
     </AuthProvider>
   </QueryClientProvider>
 );

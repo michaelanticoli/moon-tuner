@@ -7,10 +7,10 @@ import { Link, useLocation } from "react-router-dom";
  * Folds existing routes into the new structure.
  */
 const LINKS = [
-  { label: "Today", href: "/lunar-cipher" },
+  { label: "Today", href: "/today" },
   { label: "Profile", href: "/harmonic-profile" },
-  { label: "Printer", href: "/the-moon" },
-  { label: "Journal", href: "https://moontuner.ghost.io", external: true },
+  { label: "Explore", href: "/explore" },
+  { label: "Journal", href: "/journal" },
   { label: "About", href: "/manifesto" },
 ];
 
