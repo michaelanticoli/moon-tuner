@@ -166,8 +166,8 @@ const App = () => (
             <AnimatedRoutes />
           </BrowserRouter>
         </TooltipProvider>
-      </MembershipProvider>
       </AnalyticsProvider>
+      </MembershipProvider>
     </AuthProvider>
   </QueryClientProvider>
 );

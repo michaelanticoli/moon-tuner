@@ -237,6 +237,7 @@ const Dashboard = () => {
                       View History
                     </Link>
                   </div>
+                </ScrollReveal>
                 {/* Gentle Recommendations */}
                 <ScrollReveal delay={0.18}>
                   <RecommendationPanel lunarPhase={phaseName} />
