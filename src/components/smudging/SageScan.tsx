@@ -78,7 +78,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.2, 0.8, 0.2, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.2, 0.8, 0.2, 1] as const } },
 };
 
 export function SageScan({ onComplete }: SageScanProps) {
@@ -112,7 +112,7 @@ export function SageScan({ onComplete }: SageScanProps) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] }}
+        transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] as const }}
         className="text-center mb-14 max-w-xl"
       >
         <p

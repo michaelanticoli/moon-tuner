@@ -131,13 +131,13 @@ export function TheVoid({ onComplete }: TheVoidProps) {
               : phase === "releasing"
               ? {
                   duration: 1.2,
-                  ease: [0.2, 0.8, 0.2, 1],
+                  ease: [0.2, 0.8, 0.2, 1] as const,
                   delay: p.id * 0.008,
                 }
               : phase === "dissolving"
               ? {
                   duration: 2,
-                  ease: [0.4, 0, 0.8, 1],
+                  ease: [0.4, 0, 0.8, 1] as const,
                   delay: p.id * 0.01,
                 }
               : {
@@ -162,9 +162,9 @@ export function TheVoid({ onComplete }: TheVoidProps) {
           }
           transition={
             phase === "releasing"
-              ? { duration: 1.5, ease: [0.2, 0.8, 0.2, 1] }
+              ? { duration: 1.5, ease: [0.2, 0.8, 0.2, 1] as const }
               : phase === "dissolving"
-              ? { duration: 2, ease: [0.4, 0, 0.8, 1] }
+              ? { duration: 2, ease: [0.4, 0, 0.8, 1] as const }
               : { duration: 0 }
           }
         >
@@ -266,7 +266,7 @@ export function TheVoid({ onComplete }: TheVoidProps) {
               transition={
                 phase === "resting"
                   ? { duration: 5, repeat: Infinity, ease: "easeInOut" }
-                  : { duration: 1.4, ease: [0.2, 0.8, 0.2, 1] }
+                  : { duration: 1.4, ease: [0.2, 0.8, 0.2, 1] as const }
               }
             />
 
@@ -298,7 +298,7 @@ export function TheVoid({ onComplete }: TheVoidProps) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] }}
+              transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] as const }}
               className="text-center flex flex-col items-center gap-6 max-w-sm px-6"
             >
               <p
@@ -371,7 +371,7 @@ export function TheVoid({ onComplete }: TheVoidProps) {
               key="settled-text"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 2, delay: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+              transition={{ duration: 2, delay: 0.8, ease: [0.2, 0.8, 0.2, 1] as const }}
               className="text-center flex flex-col items-center gap-8 max-w-sm px-6"
             >
               <motion.p
@@ -435,7 +435,7 @@ export function TheVoid({ onComplete }: TheVoidProps) {
                   transition={{
                     duration: 2.5,
                     delay: i * 0.35,
-                    ease: [0.2, 0.8, 0.2, 1],
+                    ease: [0.2, 0.8, 0.2, 1] as const,
                   }}
                 />
               ))}

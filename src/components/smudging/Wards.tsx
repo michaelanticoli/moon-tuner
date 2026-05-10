@@ -33,7 +33,7 @@ const containerVariants = {
 
 const fieldVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.2, 0.8, 0.2, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.2, 0.8, 0.2, 1] as const } },
 };
 
 export function Wards({ onComplete }: WardsProps) {
@@ -68,7 +68,7 @@ export function Wards({ onComplete }: WardsProps) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] }}
+        transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] as const }}
         className="text-center mb-14 max-w-xl"
       >
         <p
