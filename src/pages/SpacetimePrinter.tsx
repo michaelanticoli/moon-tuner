@@ -13,6 +13,7 @@ import {
   type ProposalOutput,
   type TimingPosture,
 } from "@/components/spacetime/ProposalEngine";
+import { AIProposalAnalysis } from "@/components/ai/AIProposalAnalysis";
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 
@@ -240,6 +241,9 @@ export default function SpacetimePrinter() {
 
                 {/* Document */}
                 <ProposalDocument proposal={proposal} />
+
+                {/* AI analysis — layered on top of deterministic output */}
+                <AIProposalAnalysis proposal={proposal.input} />
 
                 {/* Archive nudge */}
                 <div className="mt-16 text-center">

@@ -4,6 +4,7 @@ import { DuskNav } from "@/components/dusk/DuskNav";
 import { DuskHero } from "@/components/dusk/DuskHero";
 import { TodaysDirective } from "@/components/dusk/TodaysDirective";
 import { HarmonicProfileTeaser } from "@/components/dusk/HarmonicProfileTeaser";
+import { SEOHead, websiteSchema } from "@/components/SEOHead";
 
 /**
  * Moontuner v2 — Cinematic Dusk redesign.
@@ -13,6 +14,22 @@ import { HarmonicProfileTeaser } from "@/components/dusk/HarmonicProfileTeaser";
 const Index = () => {
   return (
     <PageTransition>
+      <SEOHead
+        title="Moontuner | A Reflective Operating System for Emotionally Intelligent People"
+        description="Today's Directive, your Harmonic Profile, and a lunar framework for creative rhythm, emotional regulation, and intentional living. Not astrology — a reflective system."
+        canonical="/"
+        keywords={[
+          "emotional regulation",
+          "intentional living",
+          "creative rhythm",
+          "cyclical productivity",
+          "daily directive",
+          "lunar alignment system",
+          "emotional wellness",
+          "moon phases",
+        ]}
+        jsonLd={websiteSchema()}
+      />
       <div className="dusk min-h-screen relative">
         <DuskNav />
         <main>

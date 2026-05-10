@@ -11,7 +11,7 @@ const footerLinks = {
     { label: "Pocket Guide", href: "/#pocket-guide" },
   ],
   connect: [
-    { label: "About", href: "/#about" },
+    { label: "About", href: "/about" },
     { label: "Contact", href: "/#contact" },
     { label: "Newsletter", href: "/#newsletter" },
   ],

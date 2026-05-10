@@ -12,6 +12,8 @@ import { LunarAudioPlayer } from "@/components/LunarAudioPlayer";
 import { Timeline } from "@/components/Timeline";
 import { MembershipBadge } from "@/components/membership/MembershipBadge";
 import { useMembership } from "@/contexts/MembershipContext";
+import { ReflectiveSynthesisPanel } from "@/components/ai/ReflectiveSynthesisPanel";
+import { RecommendationPanel } from "@/components/ai/RecommendationPanel";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Moon,
@@ -235,6 +237,9 @@ const Dashboard = () => {
                       View History
                     </Link>
                   </div>
+                {/* Gentle Recommendations */}
+                <ScrollReveal delay={0.18}>
+                  <RecommendationPanel lunarPhase={phaseName} />
                 </ScrollReveal>
 
                 {/* Quick Actions */}
@@ -336,6 +341,11 @@ const Dashboard = () => {
                       </div>
                     )}
                   </div>
+                </ScrollReveal>
+
+                {/* Reflective Synthesis */}
+                <ScrollReveal delay={0.35}>
+                  <ReflectiveSynthesisPanel lunarPhase={phaseName} />
                 </ScrollReveal>
               </>
             )}

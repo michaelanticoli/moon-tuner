@@ -6,9 +6,11 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { MembershipProvider } from "@/contexts/MembershipContext";
+import { AnalyticsProvider } from "@/contexts/AnalyticsContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ReportLauncher } from "@/components/ReportLauncher";
+import { usePageTracking } from "@/hooks/usePageTracking";
 import Index from "./pages/Index";
 import Method from "./pages/Method";
 import Manifesto from "./pages/Manifesto";
@@ -48,12 +50,18 @@ import GiftPage from "./pages/GiftPage";
 import GiftConfirmation from "./pages/GiftConfirmation";
 import GiftClaim from "./pages/GiftClaim";
 import PurchaseHistory from "./pages/PurchaseHistory";
+import About from "./pages/About";
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import Explore from "./pages/Explore";
+import ExploreConcept from "./pages/ExploreConcept";
+import Today from "./pages/Today";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 function AnimatedRoutes() {
   const location = useLocation();
+  usePageTracking();
 
   return (
     <>
@@ -133,6 +141,11 @@ function AnimatedRoutes() {
             }
           />
 
+          <Route path="/about" element={<About />} />
+          <Route path="/analytics" element={<AnalyticsDashboard />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/explore/:slug" element={<ExploreConcept />} />
+          <Route path="/today" element={<Today />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
@@ -145,6 +158,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <MembershipProvider>
+      <AnalyticsProvider>
         <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -153,6 +167,7 @@ const App = () => (
           </BrowserRouter>
         </TooltipProvider>
       </MembershipProvider>
+      </AnalyticsProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
