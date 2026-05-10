@@ -25,12 +25,14 @@ import {
   Download,
   Eye,
   EyeOff,
+  Sparkles,
 } from "lucide-react";
 
 interface UserPreferences {
   audio_enabled: boolean;
   volume: number;
   notifications_enabled: boolean;
+  ai_synthesis_enabled: boolean;
 }
 
 interface UserProfile {
@@ -62,6 +64,7 @@ const Settings = () => {
     audio_enabled: true,
     volume: 0.5,
     notifications_enabled: true,
+    ai_synthesis_enabled: false,
   });
 
   useEffect(() => {
@@ -99,6 +102,7 @@ const Settings = () => {
           audio_enabled: prefsData.audio_enabled ?? true,
           volume: prefsData.volume ?? 0.5,
           notifications_enabled: prefsData.notifications_enabled ?? true,
+          ai_synthesis_enabled: prefsData.ai_synthesis_enabled ?? true,
         });
       }
     } catch (error) {
@@ -131,6 +135,7 @@ const Settings = () => {
         audio_enabled: preferences.audio_enabled,
         volume: preferences.volume,
         notifications_enabled: preferences.notifications_enabled,
+        ai_synthesis_enabled: preferences.ai_synthesis_enabled,
         updated_at: new Date().toISOString(),
       });
 
@@ -337,7 +342,7 @@ const Settings = () => {
                 </div>
 
                 {/* Privacy */}
-                <div className="node-card mb-8 border-border/40">
+                <div className="node-card mb-6 border-border/40">
                   <div className="flex items-center gap-3 mb-6">
                     <Shield className="w-4 h-4 text-accent/70" />
                     <h2 className="font-serif text-lg text-foreground">Privacy</h2>
@@ -408,6 +413,48 @@ const Settings = () => {
                         {exporting ? "Preparing archive…" : "Download Archive"}
                       </Button>
                     </div>
+                  </div>
+                </div>
+
+                {/* AI Synthesis */}
+                <div className="node-card mb-8 border-border/40">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Sparkles className="w-4 h-4 text-accent/70" />
+                    <h2 className="font-serif text-lg text-foreground">Reflective AI</h2>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="aiSynthesis" className="text-foreground/80">
+                          Pattern Synthesis
+                        </Label>
+                        <p className="text-muted-foreground/50 text-sm mt-0.5 leading-relaxed">
+                          Allow the AI to observe patterns in your record and surface
+                          recurring themes, timing observations, and gentle suggestions.
+                        </p>
+                      </div>
+                      <Switch
+                        id="aiSynthesis"
+                        checked={preferences.ai_synthesis_enabled}
+                        onCheckedChange={(checked) =>
+                          setPreferences({
+                            ...preferences,
+                            ai_synthesis_enabled: checked,
+                          })
+                        }
+                      />
+                    </div>
+
+                    <p
+                      className="text-[0.68rem] leading-[1.6]"
+                      style={{ color: "hsl(40 12% 36%)" }}
+                    >
+                      When enabled, your timeline and memory data is processed by the
+                      synthesis engine to generate observations. No data is shared with
+                      third parties. Synthesis results are cached on the server for 24 hours
+                      to reduce processing. You can disable this at any time.
+                    </p>
                   </div>
                 </div>
 

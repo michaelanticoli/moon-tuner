@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
+import { DirectiveShareCard } from "@/components/sharing/DirectiveShareCard";
 
 type Directive = "Push" | "Hold" | "Reflect" | "Release" | "Reconnect" | "Create" | "Recover";
 
@@ -323,6 +324,14 @@ export function TodaysDirective() {
                   <Link to="/lunar-reports" className="dusk-btn dusk-btn-ghost">
                     Personalize It
                   </Link>
+                  <DirectiveShareCard
+                    phaseName={moon.astronomical.phaseName}
+                    phaseKey={normalizedKey}
+                    directiveState={payload.state}
+                    emotionalWeather={payload.weather}
+                    guidance={payload.guidance}
+                    date={today}
+                  />
                 </div>
               </div>
             </div>

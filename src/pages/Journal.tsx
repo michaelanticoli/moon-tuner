@@ -8,6 +8,8 @@ import { PageTransition } from "@/components/PageTransition";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { EntryTypeTag } from "@/components/journal/EntryTypeTag";
+import { SEOHead } from "@/components/SEOHead";
+import { LunarCapture } from "@/components/LunarCapture";
 import {
   JOURNAL_ENTRIES,
   CONTENT_TYPE_META,
@@ -16,6 +18,7 @@ import {
   type ContentType,
 } from "@/data/journalEntries";
 import { useLunarCalculations } from "@/hooks/useLunarCalculations";
+import { JournalAISynthesis } from "@/components/ai/JournalAISynthesis";
 import { format } from "date-fns";
 
 // ─── Today's status panel ─────────────────────────────────────────────────────
@@ -435,6 +438,7 @@ function TypeFilter({
 const Journal = () => {
   const [search, setSearch] = useState("");
   const [activeType, setActiveType] = useState<ContentType | "all">("all");
+  const { phaseName } = useLunarCalculations();
 
   const sorted = useMemo(
     () =>
@@ -457,6 +461,20 @@ const Journal = () => {
 
   return (
     <PageTransition>
+      <SEOHead
+        title="Journal — Moontuner | Reflections, Directives & Lunar Observations"
+        description="A reflective observatory — an archive of daily directives, lunar essays, emotional weather reports, and self-observation notes. Return daily. Your emotional memory lives here."
+        canonical="/journal"
+        keywords={[
+          "reflective journaling",
+          "lunar journal",
+          "daily directive",
+          "emotional patterns",
+          "intentional living journal",
+          "moon phase journal",
+          "self-observation practice",
+        ]}
+      />
       <div
         className="min-h-screen"
         style={{ background: "hsl(22 12% 7%)" }}
@@ -472,6 +490,9 @@ const Journal = () => {
             className="mx-auto max-w-[1100px] px-6 lg:px-12"
             style={{ height: "1px", background: "hsl(22 12% 14%)" }}
           />
+
+          {/* AI emotional season synthesis */}
+          <JournalAISynthesis lunarPhase={phaseName} />
 
           {/* Main content */}
           <section className="mx-auto max-w-[1100px] px-6 lg:px-12 py-20 lg:py-28">
@@ -599,6 +620,17 @@ const Journal = () => {
                 >
                   Open Your Cipher
                 </Link>
+              </div>
+            </ScrollReveal>
+
+            {/* Email acquisition */}
+            <ScrollReveal delay={0.25}>
+              <div className="mt-12">
+                <LunarCapture
+                  source="journal-page"
+                  heading="Stay in the cycle."
+                  subheading="Reflective transmissions, aligned to the lunar rhythm."
+                />
               </div>
             </ScrollReveal>
           </section>

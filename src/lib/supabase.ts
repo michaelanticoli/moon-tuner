@@ -107,6 +107,7 @@ export type Database = {
           volume: number;
           theme: string;
           notifications_enabled: boolean;
+          ai_synthesis_enabled: boolean;
           created_at: string;
           updated_at: string;
         };
@@ -116,13 +117,34 @@ export type Database = {
           volume?: number;
           theme?: string;
           notifications_enabled?: boolean;
+          ai_synthesis_enabled?: boolean;
         };
         Update: {
           audio_enabled?: boolean;
           volume?: number;
           theme?: string;
           notifications_enabled?: boolean;
+          ai_synthesis_enabled?: boolean;
           updated_at?: string;
+        };
+      };
+      ai_synthesis_cache: {
+        Row: {
+          id: string;
+          user_id: string;
+          synthesis_type: string;
+          result: Record<string, unknown>;
+          generated_at: string;
+        };
+        Insert: {
+          user_id: string;
+          synthesis_type: string;
+          result: Record<string, unknown>;
+          generated_at?: string;
+        };
+        Update: {
+          result?: Record<string, unknown>;
+          generated_at?: string;
         };
       };
       user_memories: {

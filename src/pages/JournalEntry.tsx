@@ -10,6 +10,7 @@ import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { EntryTypeTag } from "@/components/journal/EntryTypeTag";
 import { ReadingProgress } from "@/components/journal/ReadingProgress";
 import { RelatedEntries } from "@/components/journal/RelatedEntries";
+import { SEOHead, articleSchema, breadcrumbSchema } from "@/components/SEOHead";
 import {
   getEntryBySlug,
   getRelatedEntries,
@@ -96,10 +97,40 @@ const JournalEntry = () => {
   const meta = CONTENT_TYPE_META[entry.type];
   const phaseKey = normalizeMoonPhaseKey(entry.moonPhase);
   const formattedDate = format(new Date(entry.date), "MMMM d, yyyy");
+  const canonicalUrl = `/journal/${entry.slug}`;
+  const jsonLd = {
+    "@graph": [
+      articleSchema({
+        title: entry.title,
+        description: entry.excerpt,
+        url: canonicalUrl,
+        publishedTime: entry.date,
+        tags: entry.tags,
+      }),
+      breadcrumbSchema([
+        { name: "Home", url: "/" },
+        { name: "Journal", url: "/journal" },
+        { name: entry.title, url: canonicalUrl },
+      ]),
+    ],
+  };
 
   return (
     <PageTransition>
       <ReadingProgress />
+      <SEOHead
+        title={`${entry.title} — Moontuner Journal`}
+        description={entry.excerpt}
+        canonical={canonicalUrl}
+        ogType="article"
+        keywords={entry.tags}
+        article={{
+          publishedTime: entry.date,
+          tags: entry.tags,
+          author: "Moontuner",
+        }}
+        jsonLd={jsonLd}
+      />
 
       <div
         className="min-h-screen"
