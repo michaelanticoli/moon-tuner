@@ -5,6 +5,8 @@ import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { sanitizeRedirectPath } from "@/lib/authRedirect";
 
+const isRecoveryType = (params: URLSearchParams) => params.get("type") === "recovery";
+
 /**
  * AuthCallback
  *
@@ -38,8 +40,8 @@ export default function AuthCallback() {
       searchParams.get("error") ||
       hashParams.get("error");
     const isRecoveryFlow =
-      searchParams.get("type") === "recovery" ||
-      hashParams.get("type") === "recovery" ||
+      isRecoveryType(searchParams) ||
+      isRecoveryType(hashParams) ||
       safeNext === "/auth/reset-password";
     const defaultDestination = isRecoveryFlow ? "/auth/reset-password" : safeNext;
 

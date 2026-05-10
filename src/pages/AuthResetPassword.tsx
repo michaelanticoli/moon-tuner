@@ -10,6 +10,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { AlertCircle, ArrowRight, Loader2, Lock, Moon } from "lucide-react";
 
+const PASSWORD_UPDATE_SUCCESS_DELAY_MS = 1200;
+
 export default function AuthResetPassword() {
   const navigate = useNavigate();
   const { session, loading: authLoading } = useAuth();
@@ -45,7 +47,10 @@ export default function AuthResetPassword() {
       }
 
       setMessage("Your key has been updated. Continue to your archive.");
-      window.setTimeout(() => navigate("/dashboard", { replace: true }), 1200);
+      window.setTimeout(
+        () => navigate("/dashboard", { replace: true }),
+        PASSWORD_UPDATE_SUCCESS_DELAY_MS
+      );
     } catch {
       setError("Something shifted unexpectedly. Please try again.");
     } finally {
