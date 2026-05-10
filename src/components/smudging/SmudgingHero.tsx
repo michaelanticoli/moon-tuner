@@ -70,7 +70,7 @@ export function SmudgingHero({ onBegin }: SmudgingHeroProps) {
       <motion.div
         initial={{ opacity: 0, scale: 0.75 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 3.5, ease: [0.2, 0.8, 0.2, 1] }}
+        transition={{ duration: 3.5, ease: [0.2, 0.8, 0.2, 1] as const }}
         className="relative mb-14 flex items-center justify-center"
       >
         {/* outer glow */}
@@ -167,7 +167,7 @@ export function SmudgingHero({ onBegin }: SmudgingHeroProps) {
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 2, delay: 1, ease: [0.2, 0.8, 0.2, 1] }}
+        transition={{ duration: 2, delay: 1, ease: [0.2, 0.8, 0.2, 1] as const }}
         className="text-center max-w-xl px-6 relative z-10"
       >
         <p

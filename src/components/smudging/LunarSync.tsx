@@ -97,7 +97,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.2, 0.8, 0.2, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: "easeOut" as const } },
 };
 
 export function LunarSync({ items, wards, onRestart }: LunarSyncProps) {

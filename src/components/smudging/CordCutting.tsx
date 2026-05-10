@@ -65,7 +65,7 @@ export function CordCutting({ items, onComplete }: CordCuttingProps) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] }}
+        transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] as const }}
         className="text-center mb-14 max-w-xl"
       >
         <p
@@ -105,10 +105,7 @@ export function CordCutting({ items, onComplete }: CordCuttingProps) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 40, filter: "blur(4px)" }}
-                transition={{
-                  enter: { duration: 0.7, delay: index * 0.1, ease: [0.2, 0.8, 0.2, 1] },
-                  exit: { duration: 0.9, ease: [0.4, 0, 0.8, 1] },
-                }}
+                transition={{ duration: 0.7, delay: index * 0.1, ease: "easeOut" as const }}
                 layout
               >
                 <motion.button

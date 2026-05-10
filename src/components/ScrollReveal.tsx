@@ -15,10 +15,10 @@ export function ScrollReveal({
   direction = "up" 
 }: ScrollRevealProps) {
   const directionOffset = {
-    up: { y: 40, x: 0 },
-    down: { y: -40, x: 0 },
-    left: { y: 0, x: 40 },
-    right: { y: 0, x: -40 },
+    up: { y: 18, x: 0 },
+    down: { y: -18, x: 0 },
+    left: { y: 0, x: 18 },
+    right: { y: 0, x: -18 },
   };
 
   return (

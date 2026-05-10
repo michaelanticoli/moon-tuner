@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap');
-
 /* ─── Tokens ─── */
 :root {
   --nav-h: 64px;
@@ -15,7 +13,6 @@
   --nav-drop-hover: rgba(255, 255, 255, 0.05);
   --nav-logo-border: rgba(255, 255, 255, 0.08);
   --nav-font-body: 'DM Sans', sans-serif;
-  --nav-font-display: 'Cormorant Garamond', serif;
   --nav-radius: 8px;
   --nav-transition: 0.18s ease;
 }

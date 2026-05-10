@@ -192,6 +192,15 @@ const App = () => (
             </BrowserRouter>
           </TooltipProvider>
         </AnalyticsProvider>
+      <AnalyticsProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AnimatedRoutes />
+          </BrowserRouter>
+        </TooltipProvider>
+      </AnalyticsProvider>
       </MembershipProvider>
     </AuthProvider>
   </QueryClientProvider>

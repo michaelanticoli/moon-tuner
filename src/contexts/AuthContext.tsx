@@ -7,15 +7,21 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   isAnonymous: boolean;
-  signUp: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+  signUp: (email: string, password: string, redirectPath?: string) => Promise<{ error: AuthError | null }>;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
-  signInWithMagicLink: (email: string) => Promise<{ error: AuthError | null }>;
+  signInWithMagicLink: (email: string, redirectPath?: string) => Promise<{ error: AuthError | null }>;
   signInAnonymously: () => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const getAuthCallbackUrl = (redirectPath = "/dashboard") => {
+  const callbackUrl = new URL(`${window.location.origin}/auth/callback`);
+  callbackUrl.searchParams.set("next", redirectPath);
+  return callbackUrl.toString();
+};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -44,12 +50,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, redirectPath?: string) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: getAuthCallbackUrl(redirectPath),
       },
     });
     return { error };
@@ -63,11 +69,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   };
 
-  const signInWithMagicLink = async (email: string) => {
+  const signInWithMagicLink = async (email: string, redirectPath?: string) => {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: getAuthCallbackUrl(redirectPath),
         shouldCreateUser: true,
       },
     });
