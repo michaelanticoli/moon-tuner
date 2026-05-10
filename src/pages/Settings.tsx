@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserMemory } from "@/hooks/useUserMemory";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import { supabase } from "@/lib/supabase";
 import { Link } from "react-router-dom";
 import {
@@ -45,6 +46,7 @@ interface UserProfile {
 const Settings = () => {
   const { user } = useAuth();
   const { exportArchive } = useUserMemory();
+  const { isOptedOut, optOut, optIn } = useAnalytics();
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -368,6 +370,26 @@ const Settings = () => {
                           setProfile({ ...profile, private_mode: checked })
                         }
                       />
+                    </div>
+
+                    <div className="pt-4 border-t border-border/20">
+                      <div className="flex items-center justify-between mb-1">
+                        <div>
+                          <Label className="text-foreground/80">
+                            Ecosystem Analytics
+                          </Label>
+                          <p className="text-muted-foreground/50 text-sm mt-0.5">
+                            Anonymised, local-first usage data that helps improve
+                            clarity and emotional usability. No PII, no profiling.
+                          </p>
+                        </div>
+                        <Switch
+                          checked={!isOptedOut}
+                          onCheckedChange={(checked) =>
+                            checked ? optIn() : optOut()
+                          }
+                        />
+                      </div>
                     </div>
 
                     <div className="pt-4 border-t border-border/20">
