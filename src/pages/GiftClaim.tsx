@@ -213,8 +213,8 @@ export default function GiftClaim() {
                     <Input
                       id="claimCode"
                       value={code}
-                      onChange={(e) => setCode(e.target.value.toUpperCase())}
-                      placeholder="XXXXXXXXXXXXXXXX"
+                      onChange={(e) => setCode(e.target.value)}
+                      placeholder="Enter claim code"
                       className="bg-background border-border/50 font-mono tracking-wider text-center"
                       disabled={status === 'loading'}
                     />

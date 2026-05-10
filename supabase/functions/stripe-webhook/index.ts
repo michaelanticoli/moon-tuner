@@ -188,10 +188,10 @@ serve(async (req) => {
               : session.payment_intent?.id;
 
           // Resolve user_id from email if possible
-          const { data: users } = await supabase.rpc("get_user_id_by_email", {
+          const { data: userRows } = await supabase.rpc("get_user_id_by_email", {
             email_input: session.customer_details.email,
-          }).maybeSingle();
-          const userId = (users as { id: string } | null)?.id ?? null;
+          });
+          const userId = (userRows as Array<{ id: string }> | null)?.[0]?.id ?? null;
 
           const amountTotal = session.amount_total ?? 0;
 
