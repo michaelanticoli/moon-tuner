@@ -10,6 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { AlertCircle, ArrowRight, Loader2, Lock, Moon } from "lucide-react";
 
+const MIN_PASSWORD_LENGTH = 6;
 const PASSWORD_UPDATE_SUCCESS_DELAY_MS = 1200;
 
 export default function AuthResetPassword() {
@@ -31,8 +32,8 @@ export default function AuthResetPassword() {
       return;
     }
 
-    if (password.length < 6) {
-      setError("Your key must be at least 6 characters.");
+    if (password.length < MIN_PASSWORD_LENGTH) {
+      setError(`Your key must be at least ${MIN_PASSWORD_LENGTH} characters.`);
       return;
     }
 

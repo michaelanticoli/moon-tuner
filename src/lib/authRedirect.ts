@@ -35,7 +35,7 @@ const getPublicSiteUrl = () => {
 
   if (configuredSiteUrl) {
     try {
-      return new URL(configuredSiteUrl).toString();
+      return new URL(configuredSiteUrl).href.replace(/\/$/, "");
     } catch {
       console.warn("Ignoring invalid VITE_SITE_URL for auth redirects.", {
         value: configuredSiteUrl,
