@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { MembershipProvider } from "@/contexts/MembershipContext";
 import { AnalyticsProvider } from "@/contexts/AnalyticsContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -42,6 +43,13 @@ import DigitalSmudging from "./pages/DigitalSmudging";
 import Offerings from "./pages/Offerings";
 import Journal from "./pages/Journal";
 import JournalEntry from "./pages/JournalEntry";
+import Membership from "./pages/Membership";
+import MembershipManage from "./pages/MembershipManage";
+import DigitalStore from "./pages/DigitalStore";
+import GiftPage from "./pages/GiftPage";
+import GiftConfirmation from "./pages/GiftConfirmation";
+import GiftClaim from "./pages/GiftClaim";
+import PurchaseHistory from "./pages/PurchaseHistory";
 import About from "./pages/About";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import Explore from "./pages/Explore";
@@ -109,6 +117,30 @@ function AnimatedRoutes() {
           <Route path="/offerings" element={<Offerings />} />
           <Route path="/journal" element={<Journal />} />
           <Route path="/journal/:slug" element={<JournalEntry />} />
+
+          {/* ── Membership & payments ─────────────────────────────── */}
+          <Route path="/membership" element={<Membership />} />
+          <Route
+            path="/membership/manage"
+            element={
+              <ProtectedRoute>
+                <MembershipManage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/store" element={<DigitalStore />} />
+          <Route path="/gift" element={<GiftPage />} />
+          <Route path="/gift/confirmation" element={<GiftConfirmation />} />
+          <Route path="/gift/claim" element={<GiftClaim />} />
+          <Route
+            path="/purchases"
+            element={
+              <ProtectedRoute>
+                <PurchaseHistory />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/about" element={<About />} />
           <Route path="/analytics" element={<AnalyticsDashboard />} />
           <Route path="/explore" element={<Explore />} />
@@ -125,6 +157,7 @@ function AnimatedRoutes() {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
+      <MembershipProvider>
       <AnalyticsProvider>
         <TooltipProvider>
           <Toaster />
@@ -133,6 +166,7 @@ const App = () => (
             <AnimatedRoutes />
           </BrowserRouter>
         </TooltipProvider>
+      </MembershipProvider>
       </AnalyticsProvider>
     </AuthProvider>
   </QueryClientProvider>

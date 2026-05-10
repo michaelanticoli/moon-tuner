@@ -45,6 +45,100 @@ export type DataVisibility = {
   rituals: 'private' | 'public';
 };
 
+// ─── Membership / Payments ────────────────────────────────────────────────────
+
+export type MembershipTier = 'free' | 'reflective' | 'insight' | 'practitioner';
+
+export type SubscriptionStatus =
+  | 'active'
+  | 'trialing'
+  | 'paused'
+  | 'past_due'
+  | 'canceled'
+  | 'incomplete';
+
+export type SubscriptionRow = {
+  id: string;
+  user_id: string;
+  tier: MembershipTier;
+  status: SubscriptionStatus;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  stripe_price_id: string | null;
+  current_period_start: string | null;
+  current_period_end: string | null;
+  cancel_at_period_end: boolean;
+  paused_at: string | null;
+  canceled_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PurchaseRow = {
+  id: string;
+  user_id: string | null;
+  product_type: 'report' | 'digital_good' | 'workbook' | 'ambient_pack' | 'bundle';
+  product_id: string;
+  product_label: string | null;
+  amount_cents: number;
+  currency: string;
+  stripe_session_id: string | null;
+  stripe_payment_intent_id: string | null;
+  status: 'pending' | 'completed' | 'refunded' | 'failed';
+  metadata: Record<string, unknown>;
+  fulfilled_at: string | null;
+  created_at: string;
+};
+
+export type DigitalProductRow = {
+  id: string;
+  label: string;
+  description: string | null;
+  product_type: 'workbook' | 'ambient_pack' | 'report_bundle' | 'seasonal' | 'reflection_collection';
+  amount_cents: number;
+  stripe_product_id: string | null;
+  download_url: string | null;
+  preview_url: string | null;
+  cover_image_url: string | null;
+  is_active: boolean;
+  is_limited: boolean;
+  available_until: string | null;
+  min_tier: MembershipTier;
+  metadata: Record<string, unknown>;
+  sort_order: number;
+  created_at: string;
+};
+
+export type GiftRow = {
+  id: string;
+  sender_user_id: string | null;
+  recipient_email: string;
+  recipient_user_id: string | null;
+  gift_type: 'membership_1month' | 'membership_3month' | 'membership_6month' | 'report' | 'digital_good';
+  product_id: string | null;
+  tier: MembershipTier | null;
+  message: string | null;
+  stripe_session_id: string | null;
+  status: 'pending' | 'paid' | 'claimed' | 'expired';
+  claim_code: string | null;
+  claimed_at: string | null;
+  expires_at: string | null;
+  created_at: string;
+};
+
+// Tier hierarchy — higher index = more access
+export const TIER_RANK: Record<MembershipTier, number> = {
+  free: 0,
+  reflective: 1,
+  insight: 2,
+  practitioner: 3,
+};
+
+/** Returns true if the user's tier meets or exceeds the required tier */
+export function hasAccess(userTier: MembershipTier, requiredTier: MembershipTier): boolean {
+  return TIER_RANK[userTier] >= TIER_RANK[requiredTier];
+}
+
 export type Database = {
   public: {
     Tables: {
@@ -204,6 +298,55 @@ export type Database = {
           description?: string | null;
           metadata?: Record<string, unknown>;
         };
+      };
+      subscriptions: {
+        Row: SubscriptionRow;
+        Insert: {
+          user_id: string;
+          tier?: MembershipTier;
+          status?: SubscriptionStatus;
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
+          stripe_price_id?: string | null;
+          current_period_start?: string | null;
+          current_period_end?: string | null;
+          cancel_at_period_end?: boolean;
+        };
+        Update: Partial<Omit<SubscriptionRow, 'id' | 'user_id' | 'created_at'>>;
+      };
+      purchases: {
+        Row: PurchaseRow;
+        Insert: {
+          user_id?: string | null;
+          product_type: PurchaseRow['product_type'];
+          product_id: string;
+          product_label?: string | null;
+          amount_cents: number;
+          currency?: string;
+          stripe_session_id?: string | null;
+          status?: PurchaseRow['status'];
+          metadata?: Record<string, unknown>;
+        };
+        Update: Partial<Omit<PurchaseRow, 'id' | 'created_at'>>;
+      };
+      digital_products: {
+        Row: DigitalProductRow;
+        Insert: Omit<DigitalProductRow, 'created_at'>;
+        Update: Partial<Omit<DigitalProductRow, 'id' | 'created_at'>>;
+      };
+      gifts: {
+        Row: GiftRow;
+        Insert: {
+          sender_user_id?: string | null;
+          recipient_email: string;
+          gift_type: GiftRow['gift_type'];
+          tier?: MembershipTier | null;
+          product_id?: string | null;
+          message?: string | null;
+          status?: GiftRow['status'];
+          expires_at?: string | null;
+        };
+        Update: Partial<Omit<GiftRow, 'id' | 'created_at'>>;
       };
     };
   };

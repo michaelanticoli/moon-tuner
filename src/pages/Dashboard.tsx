@@ -10,6 +10,8 @@ import { useLunarCalculations } from "@/hooks/useLunarCalculations";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { LunarAudioPlayer } from "@/components/LunarAudioPlayer";
 import { Timeline } from "@/components/Timeline";
+import { MembershipBadge } from "@/components/membership/MembershipBadge";
+import { useMembership } from "@/contexts/MembershipContext";
 import { ReflectiveSynthesisPanel } from "@/components/ai/ReflectiveSynthesisPanel";
 import { RecommendationPanel } from "@/components/ai/RecommendationPanel";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,6 +25,7 @@ import {
   Loader2,
   Trash2,
   Clock,
+  Layers,
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -42,6 +45,7 @@ interface SavedChart {
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
+  const { tier } = useMembership();
   const navigate = useNavigate();
   const [savedCharts, setSavedCharts] = useState<SavedChart[]>([]);
   const [loading, setLoading] = useState(true);
@@ -205,6 +209,34 @@ const Dashboard = () => {
 
             {activeTab === "overview" && (
               <>
+                {/* Membership status strip */}
+                <ScrollReveal delay={0.15}>
+                  <div className="flex items-center justify-between node-card border-border/30 mb-3 py-4 px-6">
+                    <div className="flex items-center gap-3">
+                      <Layers className="w-4 h-4 text-accent/60" />
+                      <span className="text-xs text-muted-foreground/50 font-sans uppercase tracking-widest">
+                        Your Layer
+                      </span>
+                      <MembershipBadge />
+                    </div>
+                    <Link
+                      to={tier === "free" ? "/membership" : "/membership/manage"}
+                      className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground/40 hover:text-foreground transition-colors"
+                    >
+                      {tier === "free" ? "Explore Membership" : "Manage"}
+                    </Link>
+                  </div>
+                  <div className="flex items-center justify-between node-card border-border/20 bg-transparent mb-6 py-3 px-6">
+                    <span className="text-xs text-muted-foreground/40 font-sans">
+                      Reports & purchases
+                    </span>
+                    <Link
+                      to="/purchases"
+                      className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground/30 hover:text-foreground transition-colors"
+                    >
+                      View History
+                    </Link>
+                  </div>
                 {/* Gentle Recommendations */}
                 <ScrollReveal delay={0.18}>
                   <RecommendationPanel lunarPhase={phaseName} />
