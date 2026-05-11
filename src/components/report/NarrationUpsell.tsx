@@ -31,30 +31,38 @@ export function NarrationUpsell({
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
 
-  // On mount: if redirected back from Stripe with narration_id, generate.
-  // OR if prepaid as add-on at main checkout (session_id + narration_addon=1), claim it.
+  // On mount: handle Stripe return OR a coupon code (?coupon=CODE).
   useEffect(() => {
     const narrationId = searchParams.get("narration_id");
     const narrationStatus = searchParams.get("narration_status");
     const sessionId = searchParams.get("session_id");
     const narrationAddon = searchParams.get("narration_addon");
+    const coupon = searchParams.get("coupon");
 
     const claimViaSession = sessionId && narrationAddon === "1";
     const claimViaNarrationId = narrationId && narrationStatus === "success";
+    const claimViaCoupon = !!coupon;
 
-    if (!claimViaSession && !claimViaNarrationId) return;
+    if (!claimViaSession && !claimViaNarrationId && !claimViaCoupon) return;
 
     setStatus("generating");
     (async () => {
       try {
-        const invokeBody = claimViaSession
-          ? { stripeSessionId: sessionId, reportType, reportLabel, sourceText, returnPath }
-          : { narrationId };
-        const { data, error } = await supabase.functions.invoke(
-          "generate-narration",
-          { body: invokeBody },
-        );
-        if (error) throw error;
+        let data: { audioUrl?: string } | null = null;
+        if (claimViaCoupon) {
+          const r = await supabase.functions.invoke("redeem-narration-coupon", {
+            body: { coupon, text: sourceText, label: reportLabel },
+          });
+          if (r.error) throw r.error;
+          data = r.data;
+        } else {
+          const invokeBody = claimViaSession
+            ? { stripeSessionId: sessionId, reportType, reportLabel, sourceText, returnPath }
+            : { narrationId };
+          const r = await supabase.functions.invoke("generate-narration", { body: invokeBody });
+          if (r.error) throw r.error;
+          data = r.data;
+        }
         if (data?.audioUrl) {
           setAudioUrl(data.audioUrl);
           setStatus("ready");
@@ -67,8 +75,8 @@ export function NarrationUpsell({
         searchParams.delete("narration_id");
         searchParams.delete("narration_status");
         searchParams.delete("narration_addon");
-        // keep session_id off URL too — it's been consumed
         searchParams.delete("session_id");
+        searchParams.delete("coupon");
         setSearchParams(searchParams, { replace: true });
       }
     })();

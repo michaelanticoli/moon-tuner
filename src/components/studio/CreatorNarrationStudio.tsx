@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mic, Loader2, Play, Pause, Download, Sparkles, Trash2 } from "lucide-react";
+import { Mic, Loader2, Play, Pause, Download, Sparkles, Trash2, Gift, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -199,6 +199,80 @@ export function CreatorNarrationStudio() {
           </div>
         </div>
       )}
+
+      <GuestCouponPanel />
     </section>
+  );
+}
+
+// ─── Guest Coupon Panel ───────────────────────────────────────────────────
+
+function GuestCouponPanel() {
+  const [coupon, setCoupon] = useState("MOON-GUEST");
+  const [reportPath, setReportPath] = useState("/lunar-reports");
+
+  const url = typeof window !== "undefined"
+    ? `${window.location.origin}${reportPath}${reportPath.includes("?") ? "&" : "?"}coupon=${encodeURIComponent(coupon)}`
+    : "";
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("Guest link copied.");
+    } catch {
+      toast.error("Couldn't copy — select and copy manually.");
+    }
+  };
+
+  return (
+    <div className="mt-8 pt-6 border-t border-border/40">
+      <div className="flex items-center gap-2 mb-3">
+        <Gift className="w-4 h-4 text-gold" />
+        <h3 className="text-sm font-light tracking-wide">
+          Guest coupon link
+          <span className="ml-2 text-[9px] uppercase tracking-[0.3em] text-muted-foreground">
+            Free narration for anyone with the URL
+          </span>
+        </h3>
+      </div>
+      <p className="text-xs text-muted-foreground mb-4 max-w-2xl">
+        Share this URL with a guest. When they open the report, the narration
+        add-on auto-claims via the coupon — no checkout. Default code{" "}
+        <code className="px-1 py-0.5 bg-muted/40 rounded text-[10px]">MOON-GUEST</code>{" "}
+        is built in. Add more in the <code>NARRATION_COUPONS</code> server secret
+        (comma-separated).
+      </p>
+
+      <div className="grid md:grid-cols-2 gap-3 mb-3">
+        <div>
+          <Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            Coupon code
+          </Label>
+          <Input
+            value={coupon}
+            onChange={(e) => setCoupon(e.target.value.toUpperCase())}
+            className="mt-1.5 bg-background"
+          />
+        </div>
+        <div>
+          <Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            Report path
+          </Label>
+          <Input
+            value={reportPath}
+            onChange={(e) => setReportPath(e.target.value)}
+            placeholder="/lunar-reports, /quantumelodic, /cazimi…"
+            className="mt-1.5 bg-background"
+          />
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <Input value={url} readOnly className="bg-background text-xs font-mono" />
+        <Button onClick={copy} variant="outline" size="sm" className="flex-shrink-0">
+          <Copy className="w-3.5 h-3.5" /> Copy
+        </Button>
+      </div>
+    </div>
   );
 }
