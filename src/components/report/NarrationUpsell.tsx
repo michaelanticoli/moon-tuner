@@ -192,16 +192,14 @@ export function NarrationUpsell({
                 <Mic className="w-4 h-4 mr-2" />
                 Add Narration · $5
               </Button>
-              {creator && (
-                <Button
-                  onClick={handleCreatorGenerate}
-                  variant="outline"
-                  className="px-8 py-6 h-auto rounded-full text-[10px] uppercase tracking-[0.3em] font-bold border-gold/40 text-gold hover:bg-gold/10"
-                >
-                  <Zap className="w-4 h-4 mr-2" />
-                  Generate Free (Admin)
-                </Button>
-              )}
+              <Button
+                onClick={handleCreatorGenerate}
+                variant="outline"
+                className="px-8 py-6 h-auto rounded-full text-[10px] uppercase tracking-[0.3em] font-bold border-gold/40 text-gold hover:bg-gold/10"
+              >
+                <Zap className="w-4 h-4 mr-2" />
+                {creator ? "Generate Free (Admin)" : "Generate Free (Guest)"}
+              </Button>
             </div>
           )}
 
