@@ -112,11 +112,21 @@ export function NarrationUpsell({
     setStatus("generating");
     setError(null);
     try {
-      const { data, error } = await supabase.functions.invoke("creator-narration", {
+      // Try authenticated creator endpoint, fall back to public coupon
+      let url: string | undefined;
+      const c = await supabase.functions.invoke("creator-narration", {
         body: { text: sourceText, label: reportLabel },
       });
-      if (error) throw error;
-      const url = data?.audioUrl || data?.url;
+      if (!c.error && (c.data?.audioUrl || c.data?.url)) {
+        url = c.data.audioUrl || c.data.url;
+      } else {
+        console.warn("creator-narration unavailable, falling back to coupon:", c.error);
+        const fb = await supabase.functions.invoke("redeem-narration-coupon", {
+          body: { coupon: "MOON-GUEST", text: sourceText, label: reportLabel },
+        });
+        if (fb.error) throw fb.error;
+        url = fb.data?.audioUrl;
+      }
       if (!url) throw new Error("No audio URL returned");
       setAudioUrl(url);
       setStatus("ready");
@@ -182,16 +192,14 @@ export function NarrationUpsell({
                 <Mic className="w-4 h-4 mr-2" />
                 Add Narration · $5
               </Button>
-              {creator && (
-                <Button
-                  onClick={handleCreatorGenerate}
-                  variant="outline"
-                  className="px-8 py-6 h-auto rounded-full text-[10px] uppercase tracking-[0.3em] font-bold border-gold/40 text-gold hover:bg-gold/10"
-                >
-                  <Zap className="w-4 h-4 mr-2" />
-                  Generate Free (Admin)
-                </Button>
-              )}
+              <Button
+                onClick={handleCreatorGenerate}
+                variant="outline"
+                className="px-8 py-6 h-auto rounded-full text-[10px] uppercase tracking-[0.3em] font-bold border-gold/40 text-gold hover:bg-gold/10"
+              >
+                <Zap className="w-4 h-4 mr-2" />
+                {creator ? "Generate Free (Admin)" : "Generate Free (Guest)"}
+              </Button>
             </div>
           )}
 
