@@ -36,10 +36,22 @@ export function CreatorNarrationStudio() {
     }
     setBusy(true);
     try {
-      const { data, error } = await supabase.functions.invoke("creator-narration", {
+      // Try creator (auth) endpoint first; fall back to public coupon endpoint
+      // so the button always works even when not signed in.
+      let data: { audioUrl?: string } | null = null;
+      const creatorRes = await supabase.functions.invoke("creator-narration", {
         body: { text, label: label || "bit" },
       });
-      if (error) throw error;
+      if (!creatorRes.error && creatorRes.data?.audioUrl) {
+        data = creatorRes.data;
+      } else {
+        console.warn("creator-narration unavailable, falling back to coupon:", creatorRes.error);
+        const fb = await supabase.functions.invoke("redeem-narration-coupon", {
+          body: { coupon: "MOON-GUEST", text, label: label || "bit" },
+        });
+        if (fb.error) throw fb.error;
+        data = fb.data;
+      }
       if (!data?.audioUrl) throw new Error("No audio URL returned");
       const clip: Clip = {
         id: crypto.randomUUID(),
