@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mic, Loader2, Play, Pause, Download, Sparkles, Trash2 } from "lucide-react";
+import { Mic, Loader2, Play, Pause, Download, Sparkles, Trash2, Gift, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
