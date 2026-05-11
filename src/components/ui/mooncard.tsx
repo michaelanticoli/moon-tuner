@@ -372,7 +372,7 @@ DataCard.displayName = "DataCard";
  * Product/offering card. Use for service listings, program previews,
  * and any context where a CTA action follows the description.
  */
-interface ModuleCardProps extends BaseCardProps {
+interface ModuleCardProps extends Omit<BaseCardProps, "title"> {
   /** Badge/tag in the top-right corner */
   badge?: string;
   /** Icon or symbol element */
