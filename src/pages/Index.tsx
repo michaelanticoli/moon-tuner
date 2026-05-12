@@ -6,6 +6,7 @@ import { TodaysDirective } from "@/components/dusk/TodaysDirective";
 import { HarmonicProfileTeaser } from "@/components/dusk/HarmonicProfileTeaser";
 import { LunarCapture } from "@/components/LunarCapture";
 import { SEOHead, websiteSchema } from "@/components/SEOHead";
+import { Link } from "react-router-dom";
 
 /**
  * Moontuner v2 — Cinematic Dusk redesign.
