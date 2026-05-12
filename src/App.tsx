@@ -88,8 +88,10 @@ function AnimatedRoutes() {
           <Route path="/phasecraft" element={<Method />} />
           <Route path="/philosophy" element={<Philosophy />} />
           <Route path="/lunar-system" element={<LunarSystem />} />
-          <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
-          <Route path="/free-guide" element={<FreeGuide />} />
+      <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
+      <Route path="/current-moon-phase" element={<MoonPhaseToday />} />
+      <Route path="/moon-cycle-today" element={<MoonPhaseToday />} />
+      <Route path="/free-guide" element={<FreeGuide />} />
           <Route path="/analytics" element={<AnalyticsDashboard />} />
 
           {/* ── Auth routes — always live (needed for email verification) ── */}

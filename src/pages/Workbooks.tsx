@@ -1,6 +1,7 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
+import { SEOHead } from "@/components/SEOHead";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { JourneyPreview } from "@/components/JourneyPreview";
 import { LeadMagnet } from "@/components/LeadMagnet";
@@ -269,6 +270,20 @@ const WorkbookCard = ({ workbook, isEclipse = false }: { workbook: typeof fullTo
 const Workbooks = () => {
   return (
     <PageTransition>
+      <SEOHead
+        title="Lunar Workbooks — Guided Practice for Every Moon Phase | Moontuner"
+        description="26 guided lunar workbooks covering every sign transition. Practice-based companionship for each phase of the moon cycle — from New Moon intention to Full Moon release."
+        canonical="/workbooks"
+        keywords={[
+          "lunar workbooks",
+          "moon phase journal",
+          "new moon workbook",
+          "full moon ritual",
+          "lunar cycle guide",
+          "intention setting workbook",
+          "moon phase practice",
+        ]}
+      />
       <div className="min-h-screen bg-background relative grain-overlay">
         <Navigation />
         
