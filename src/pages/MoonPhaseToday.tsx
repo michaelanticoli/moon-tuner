@@ -1,6 +1,6 @@
 import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { Navigation } from "@/components/Navigation";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
 import { SEOHead } from "@/components/SEOHead";
 
