@@ -151,6 +151,20 @@ const LunarReports = () => {
 
   return (
     <PageTransition>
+      <SEOHead
+        title="Personal Lunar Map — Natal Chart & 12-Month Power Days | Moontuner"
+        description="Generate your Personal Lunar Map: natal moon signature, 12-month power day grid, and timing windows. A living document for aligning with your natural rhythm."
+        canonical="/lunar-reports"
+        keywords={[
+          "personal lunar map",
+          "natal moon chart",
+          "lunar power days",
+          "moon sign calculator",
+          "lunar timing report",
+          "natal chart report",
+          "moon phase birthday",
+        ]}
+      />
       <div className="min-h-screen bg-background text-foreground selection:bg-gold selection:text-gold-foreground">
         <Navigation />
         

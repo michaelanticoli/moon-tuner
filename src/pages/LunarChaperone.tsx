@@ -92,6 +92,19 @@ const workbookSeries = [
 const LunarChaperone = () => {
   return (
     <PageTransition>
+      <SEOHead
+        title="Lunar Chaperone — Monthly Moon Guidance & Workbooks | Moontuner"
+        description="Continuous lunar companionship through every phase. Monthly guidance, workbooks, and timing intelligence — never walk the moon cycle alone again."
+        canonical="/lunar-chaperone"
+        keywords={[
+          "lunar chaperone",
+          "moon guidance",
+          "monthly moon cycle",
+          "lunar workbook subscription",
+          "moon phase companion",
+          "lunar timing guide",
+        ]}
+      />
       <div className="min-h-screen bg-background relative grain-overlay">
         <Navigation />
         
