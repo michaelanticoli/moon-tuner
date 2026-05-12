@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
+import { SEOHead } from "@/components/SEOHead";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { Activity, FileText, Sparkles, Download, ExternalLink, Table } from "lucide-react";
 import { Input } from "@/components/ui/input";
