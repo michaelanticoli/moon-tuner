@@ -5,6 +5,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Circle, Moon, Compass, Waves, Zap, Eye, Shield, Flame, Grid3x3, Sparkles, Anchor } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SEOHead } from "@/components/SEOHead";
 import phasecraftMethodGraphic from "@/assets/graphic-phasecraft-method.png";
 import waveDivider from "@/assets/graphic-wave-phases-divider.png";
 
@@ -158,6 +159,12 @@ const voidOfCourseProtocol = {
 const Method = () => {
   return (
     <PageTransition>
+      <SEOHead
+        title="Phasecraft — The Moontuner Method for Living with the Lunar Cycle"
+        description="Phasecraft is the practice of living in conscious relationship with cyclical time. Learn the 8-phase framework, the four arcs, and the tenets of lunar alignment."
+        canonical="/method"
+        keywords={["phasecraft", "lunar method", "moon phases", "8 phase framework", "lunar cycle", "cyclical productivity"]}
+      />
       <div className="min-h-screen bg-background relative grain-overlay">
         <Navigation />
         

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
 import { DuskNav } from "@/components/dusk/DuskNav";
 import { LunarCapture } from "@/components/LunarCapture";
@@ -11,12 +11,14 @@ import { SEOHead } from "@/components/SEOHead";
  * that this feature is in development. Doubles as an email capture moment.
  */
 export default function ComingSoon() {
+  const location = useLocation();
+
   return (
     <PageTransition>
       <SEOHead
         title="Coming Soon — Moontuner"
         description="This feature is part of an upcoming phase of Moontuner. Stay in the cycle to be notified when it launches."
-        canonical="/"
+        canonical={location.pathname}
       />
       <div className="dusk min-h-screen relative">
         <DuskNav />

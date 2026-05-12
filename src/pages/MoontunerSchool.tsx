@@ -21,13 +21,13 @@ const curriculum = [
 
 const phases = [
   { name: "New Moon", element: "VOID", glyph: "new" as const },
-  { name: "Crescent", element: "SPARK", glyph: "waxing-crescent" as const },
+  { name: "Waxing Crescent", element: "SPARK", glyph: "waxing-crescent" as const },
   { name: "First Quarter", element: "FIRE", glyph: "first-quarter" as const },
-  { name: "Gibbous", element: "AIR", glyph: "waxing-gibbous" as const },
+  { name: "Waxing Gibbous", element: "AIR", glyph: "waxing-gibbous" as const },
   { name: "Full Moon", element: "LIGHT", glyph: "full" as const },
-  { name: "Disseminating", element: "WATER", glyph: "waning-gibbous" as const },
+  { name: "Waning Gibbous", element: "WATER", glyph: "waning-gibbous" as const },
   { name: "Last Quarter", element: "EARTH", glyph: "last-quarter" as const },
-  { name: "Balsamic", element: "ETHER", glyph: "waning-crescent" as const },
+  { name: "Waning Crescent", element: "ETHER", glyph: "waning-crescent" as const },
 ];
 
 export default function MoontunerSchool() {
