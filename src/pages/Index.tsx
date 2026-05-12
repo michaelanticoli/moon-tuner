@@ -39,6 +39,34 @@ const Index = () => {
           <TodaysDirective />
           <HarmonicProfileTeaser />
 
+          {/* ── Live Moon Phase Tool ─────────────────────────── */}
+          <section className="relative py-16 overflow-hidden" aria-label="Live moon phase">
+            <div className="mx-auto max-w-[1100px] px-6 lg:px-12">
+              <div className="dusk-hairline mb-16" />
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                <div>
+                  <p className="dusk-eyebrow mb-3">
+                    <span className="inline-block w-6 h-px align-middle mr-3 bg-[hsl(var(--dusk-gold))]" />
+                    Live Tool
+                  </p>
+                  <h2 className="dusk-serif text-2xl dusk-ivory">
+                    See the Moon Phase <em className="italic dusk-gold">Right Now</em>
+                  </h2>
+                </div>
+                <Link
+                  to="/moon-phase-today"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-sm text-sm tracking-widest uppercase transition-colors hover:bg-[hsl(var(--dusk-gold))] hover:text-[hsl(var(--dusk-black))]"
+                  style={{
+                    border: "1px solid hsl(var(--dusk-gold))",
+                    color: "hsl(var(--dusk-gold))",
+                  }}
+                >
+                  Check Today's Phase →
+                </Link>
+              </div>
+            </div>
+          </section>
+
           {/* ── Reports — coming-soon teaser ─────────────────────────── */}
           <section
             className="relative py-24 lg:py-32 overflow-hidden"
