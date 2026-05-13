@@ -7,6 +7,7 @@ import { PhaseSignMatrix } from "@/components/PhaseSignMatrix";
 import { ZodiacBodyMap } from "@/components/ZodiacBodyMap";
 import { ArrowDown } from "lucide-react";
 import { DeepDiveSection } from "@/components/DeepDiveSection";
+import { SEOHead } from "@/components/SEOHead";
 import phasesGold from "@/assets/graphic-phases-gold.png";
 import waveDivider from "@/assets/graphic-wave-phases-divider.png";
 import phaseWaveforms from "@/assets/graphic-phase-waveforms.png";
@@ -14,6 +15,12 @@ import phaseWaveforms from "@/assets/graphic-phase-waveforms.png";
 const LunarSystem = () => {
   return (
     <PageTransition>
+      <SEOHead
+        title="The Lunar System — 96 Configurations, Phase-Sign Matrix & Live Status"
+        description="The complete lunar operating system. Explore the phase-sign matrix, zodiac body map, eclipse cycles, and live lunar status — the full framework behind Moontuner."
+        canonical="/lunar-system"
+        keywords={["lunar system", "moon phases zodiac", "phase sign matrix", "96 lunar configurations", "eclipse cycles"]}
+      />
       <div className="min-h-screen bg-background relative grain-overlay">
         <Navigation />
 

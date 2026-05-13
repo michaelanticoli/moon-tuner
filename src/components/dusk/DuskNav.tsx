@@ -11,10 +11,10 @@ type DuskLink = { label: string; href: string; external?: boolean };
 
 const LINKS: DuskLink[] = [
   { label: "Today", href: "/today" },
-  { label: "Profile", href: "/harmonic-profile" },
+  { label: "Harmonic Profile", href: "/harmonic-profile" },
   { label: "Explore", href: "/explore" },
   { label: "Journal", href: "/journal" },
-  { label: "About", href: "/manifesto" },
+  { label: "About", href: "/about" },
 ];
 
 export function DuskNav() {

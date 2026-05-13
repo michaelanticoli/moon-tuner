@@ -5,6 +5,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Moon, Waves, Eye, Heart, Compass, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SEOHead } from "@/components/SEOHead";
 import rideCoattailsPoster from "@/assets/ride-coattails-poster.png";
 
 const manifestoDeclarations = [
@@ -88,6 +89,12 @@ const moontunerPrinciples = [
 const Manifesto = () => {
   return (
     <PageTransition>
+      <SEOHead
+        title="The Moontuner Manifesto — Seven Declarations for Living with the Moon"
+        description="A declaration of principles for those who move with the Moon. Not rules to follow — truths to remember. The philosophical foundation of the Moontuner system."
+        canonical="/manifesto"
+        keywords={["moon manifesto", "lunar philosophy", "moontuner principles", "cyclical living", "lunar alignment"]}
+      />
       <div className="min-h-screen bg-background relative grain-overlay">
         <Navigation />
         
@@ -264,8 +271,8 @@ const Manifesto = () => {
                     Welcome to Moontuner
                   </span>
                 </div>
-                <a
-                  href="/lunar-system"
+                <Link
+                  to="/lunar-system"
                   className="block w-full max-w-[280px] mx-auto group"
                   aria-label="Ride the Coattails of the Moon"
                 >
@@ -275,7 +282,7 @@ const Manifesto = () => {
                     className="w-full h-auto rounded-lg border border-border/40 shadow-2xl shadow-black/60 transition-transform duration-500 group-hover:scale-[1.02]"
                     loading="lazy"
                   />
-                </a>
+                </Link>
               </div>
             </ScrollReveal>
           </section>

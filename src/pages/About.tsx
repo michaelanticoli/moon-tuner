@@ -541,7 +541,7 @@ const About = () => {
                   <Link to="/harmonic-profile" className="dusk-btn dusk-btn-primary">
                     Begin with Your Harmonic Profile
                   </Link>
-                  <Link to="/" className="dusk-btn dusk-btn-ghost">
+                  <Link to="/today" className="dusk-btn dusk-btn-ghost">
                     Today's Directive
                   </Link>
                 </div>

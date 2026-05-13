@@ -1,19 +1,21 @@
+import { Link } from "react-router-dom";
+
 const footerLinks = {
   explore: [
-    { label: "Chaperone", href: "/workbooks" },
+    { label: "Chaperone", href: "/lunar-chaperone" },
     { label: "Phasecraft", href: "/method" },
-    { label: "Reports", href: "/app" },
-    { label: "Cipher", href: "/the-moon" },
+    { label: "Reports", href: "/lunar-reports" },
+    { label: "Cipher", href: "/lunar-cipher" },
   ],
   resources: [
-    { label: "Journal", href: "/#journal" },
-    { label: "Tools", href: "/#tools" },
-    { label: "Pocket Guide", href: "/#pocket-guide" },
+    { label: "Journal", href: "/journal" },
+    { label: "Manifesto", href: "/manifesto" },
+    { label: "Free Guide", href: "/free-guide" },
   ],
   connect: [
     { label: "About", href: "/about" },
-    { label: "Contact", href: "/#contact" },
-    { label: "Newsletter", href: "/#newsletter" },
+    { label: "Contact", href: "/about" },
+    { label: "Newsletter", href: "/free-guide" },
   ],
 };
 
@@ -35,8 +37,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mb-6">
-              Integrated Lunar Operating System. 
-              Navigate the moonlit spectrum.
+              A timing system for people tired of forcing life out of rhythm.
             </p>
             <p className="text-xs text-muted-foreground/60">
               © {new Date().getFullYear()} Moontuner. All rights reserved.
@@ -51,12 +52,12 @@ export function Footer() {
             <ul className="space-y-4">
               {footerLinks.explore.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -70,12 +71,12 @@ export function Footer() {
             <ul className="space-y-4">
               {footerLinks.resources.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -89,12 +90,12 @@ export function Footer() {
             <ul className="space-y-4">
               {footerLinks.connect.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -127,12 +128,12 @@ export function Footer() {
               <span className="system-label">Photon Flux Active</span>
             </div>
             <div className="flex items-center gap-6">
-              <a href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/privacy" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
                 Privacy
-              </a>
-              <a href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+              </Link>
+              <Link to="/terms" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
                 Terms
-              </a>
+              </Link>
             </div>
           </div>
         </div>
