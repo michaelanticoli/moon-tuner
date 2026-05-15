@@ -37,11 +37,19 @@ Deno.serve(async (req) => {
   const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
   const GSC_KEY = Deno.env.get('GOOGLE_SEARCH_CONSOLE_API_KEY');
   const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-  const RECIPIENT = Deno.env.get('SEO_DIGEST_RECIPIENT')?.trim();
 
-  if (!LOVABLE_API_KEY || !GSC_KEY || !RESEND_API_KEY || !RECIPIENT) {
+  // Recipient is config, not a secret. Override per-request via { recipient } in POST body if needed.
+  let RECIPIENT = 'hello@moontuner.xyz';
+  try {
+    if (req.method === 'POST') {
+      const body = await req.clone().json().catch(() => ({}));
+      if (body?.recipient && typeof body.recipient === 'string') RECIPIENT = body.recipient.trim();
+    }
+  } catch { /* ignore */ }
+
+  if (!LOVABLE_API_KEY || !GSC_KEY || !RESEND_API_KEY) {
     return new Response(
-      JSON.stringify({ error: 'Missing one of LOVABLE_API_KEY, GOOGLE_SEARCH_CONSOLE_API_KEY, RESEND_API_KEY, SEO_DIGEST_RECIPIENT' }),
+      JSON.stringify({ error: 'Missing one of LOVABLE_API_KEY, GOOGLE_SEARCH_CONSOLE_API_KEY, RESEND_API_KEY' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     );
   }
