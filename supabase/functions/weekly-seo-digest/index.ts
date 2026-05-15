@@ -37,7 +37,7 @@ Deno.serve(async (req) => {
   const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
   const GSC_KEY = Deno.env.get('GOOGLE_SEARCH_CONSOLE_API_KEY');
   const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-  const RECIPIENT = Deno.env.get('SEO_DIGEST_RECIPIENT');
+  const RECIPIENT = Deno.env.get('SEO_DIGEST_RECIPIENT')?.trim();
 
   if (!LOVABLE_API_KEY || !GSC_KEY || !RESEND_API_KEY || !RECIPIENT) {
     return new Response(
