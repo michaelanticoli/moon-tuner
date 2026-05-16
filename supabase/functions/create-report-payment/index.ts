@@ -158,9 +158,12 @@ serve(async (req) => {
       : offer.cancel;
 
     const withNarration = body?.withNarration === true;
+    // bundledNarration: include narration entitlement without charging the $5 add-on
+    const bundledNarration = body?.bundledNarration === true;
 
     const metadata: Record<string, string> = { product: productKey, label: offer.label };
     if (withNarration) metadata.narration_addon = "true";
+    if (bundledNarration) metadata.narration_bundled = "true";
     if (typeof body?.birthDate === "string") metadata.birthDate = body.birthDate.slice(0, 32);
     if (typeof body?.birthTime === "string") metadata.birthTime = body.birthTime.slice(0, 16);
     if (typeof body?.birthLocation === "string") metadata.birthLocation = body.birthLocation.slice(0, 120);
@@ -177,7 +180,7 @@ serve(async (req) => {
         },
       },
     ];
-    if (withNarration) {
+    if (withNarration && !bundledNarration) {
       lineItems.push({
         quantity: 1,
         price_data: {

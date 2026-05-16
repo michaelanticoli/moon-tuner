@@ -46,7 +46,7 @@ const QuantumMelodic = () => {
     return sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
   });
   const [checkoutUnavailable, setCheckoutUnavailable] = useState(false);
-  const [withNarration, setWithNarration] = useState(false);
+  
 
   const {
     loading,
@@ -129,7 +129,8 @@ const QuantumMelodic = () => {
           birthName: birthDraft.name,
           successPath: "/quantumelodic?paid=true",
           cancelPath: "/quantumelodic",
-          withNarration,
+          withNarration: true,
+          bundledNarration: true,
         },
       });
 
@@ -355,7 +356,7 @@ const QuantumMelodic = () => {
                   <audio
                     controls
                     preload="none"
-                    src="/audio/sample-quantumelodic.mp3"
+                    src="/audio/moontuners-debut.mp3"
                     className="w-full mt-2"
                   >
                     Your browser does not support the audio element.
@@ -365,22 +366,16 @@ const QuantumMelodic = () => {
                   </p>
                 </div>
 
-                <label className="flex items-start gap-2.5 mb-4 cursor-pointer p-3 rounded-lg border border-gold/25 bg-gold/5 hover:bg-gold/10 transition-colors max-w-md">
-                  <input
-                    type="checkbox"
-                    checked={withNarration}
-                    onChange={(e) => setWithNarration(e.target.checked)}
-                    className="mt-0.5 accent-gold"
-                  />
+                <div className="flex items-start gap-2.5 mb-4 p-3 rounded-lg border border-gold/25 bg-gold/5 max-w-md">
                   <span className="text-xs text-foreground/90 leading-snug">
-                    <span className="font-medium text-gold">+ Add voice narration ($5)</span>
+                    <span className="font-medium text-gold">✓ Voice narration included</span>
                     <br />
-                    <span className="text-muted-foreground">Hear your full report read in Michael's cloned voice — delivered as MP3.</span>
+                    <span className="text-muted-foreground">Your full report read aloud in Michael's cloned voice — delivered as MP3, no add-on required.</span>
                   </span>
-                </label>
+                </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Button onClick={beginCheckout} size="lg" className="system-button">
-                    Unlock Your Astro-Harmonic Report — ${withNarration ? "52" : "47"}
+                    Unlock Your Astro-Harmonic Report — $47
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground mt-4">
