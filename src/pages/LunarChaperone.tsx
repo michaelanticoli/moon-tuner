@@ -128,18 +128,21 @@ const LunarChaperone = () => {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/workbooks">
+                  <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
                     <Button variant="gold" size="lg">
-                      Explore the 26-Workbook Series
+                      Enter the Chaperone Program
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
-                  </Link>
-                  <Link to="/free-guide">
+                  </a>
+                  <Link to="/workbooks">
                     <Button variant="outline" size="lg">
-                      Download Sample Workbook
+                      Preview the 26 Workbooks
                     </Button>
                   </Link>
                 </div>
+                <p className="text-xs text-muted-foreground/60 mt-4">
+                  The full Chaperone program lives on its dedicated platform · opens in a new tab
+                </p>
               </div>
             </ScrollReveal>
           </section>
@@ -329,12 +332,12 @@ const LunarChaperone = () => {
               </div>
               
               <div className="text-center">
-                <Link to="/workbooks">
+                <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
                   <Button variant="gold" size="lg">
-                    View All 26 Workbooks
+                    Get the Full Program on Lunar Chaperone
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
-                </Link>
+                </a>
               </div>
             </div>
           </section>
@@ -387,12 +390,12 @@ const LunarChaperone = () => {
                   Join the path walkers who transform cosmic entertainment into life transformation.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/workbooks">
+                  <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
                     <Button variant="gold" size="lg">
-                      Get the Complete Series
+                      Begin with the Chaperone
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
-                  </Link>
+                  </a>
                   <Link to="/method">
                     <Button variant="outline" size="lg">
                       Learn Phasecraft
