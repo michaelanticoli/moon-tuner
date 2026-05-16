@@ -63,7 +63,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 export default function Sessions() {
   const [bookingLoading, setBookingLoading] = useState(false);
-  const [chartWithNarration, setChartWithNarration] = useState(false);
+  
 
   const handleChartOverviewBooking = async () => {
     setBookingLoading(true);
