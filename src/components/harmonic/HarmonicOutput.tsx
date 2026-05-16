@@ -10,6 +10,8 @@ import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import type { HarmonicArchetype } from "@/data/harmonicArchetypes";
+import { QuantumSignaturePanel } from "@/components/harmonic/QuantumSignaturePanel";
+import { useSharedBirth } from "@/hooks/useSharedBirth";
 
 /** Duration (ms) of the archetype generation animation before showing the profile. */
 const GENERATION_DURATION_MS = 2600;
@@ -112,6 +114,7 @@ function FullProfile({
   archetype: HarmonicArchetype;
   onRestart: () => void;
 }) {
+  const { birth } = useSharedBirth();
   return (
     <motion.div
       key="output"
@@ -291,6 +294,32 @@ function FullProfile({
                 {archetype.timingPosture}
               </p>
             </div>
+          </ProfileSection>
+
+          {/* Separator */}
+          <div className="dusk-hairline" />
+
+          {/* ── Quantum Signature — real Swiss Ephemeris engine ── */}
+          <ProfileSection label="Beyond Reflection" delay={0.22}>
+            <p
+              className="text-[0.9375rem] leading-[1.7] mb-6 max-w-[560px]"
+              style={{ color: "hsl(var(--dusk-ivory) / 0.55)" }}
+            >
+              Your archetype above is reflective — drawn from how you answered.
+              Below is the empirical counterpart: your actual chart run through
+              the 24-mode canonical harmonic system.
+            </p>
+            <QuantumSignaturePanel
+              birth={{
+                date: birth.date,
+                time: birth.time,
+                location: birth.location,
+                name: birth.name,
+              }}
+              chartName={birth.name || archetype.title}
+              heading="Your Computed Harmonic Signature"
+              subheading="Real Swiss Ephemeris positions, mapped through 24 canonical modes. Includes downloadable MIDI."
+            />
           </ProfileSection>
 
           {/* Separator */}

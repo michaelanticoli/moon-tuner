@@ -32,6 +32,7 @@ import { renderChartImageBase64, renderReportPdfBase64 } from "@/lib/renderDeliv
 import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
 import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 import { NarrationUpsell } from "@/components/report/NarrationUpsell";
+import { QuantumSignaturePanel } from "@/components/harmonic/QuantumSignaturePanel";
 
 const QM_STORAGE_KEY = "qm_paid";
 const QM_BIRTH_DATA_KEY = "qm_birth_data";
@@ -884,6 +885,26 @@ const QuantumMelodic = () => {
                       </div>
                     </motion.section>
                   )}
+
+                  {/* ── Quantum Signature (live Swiss Ephemeris + 24-mode engine + MIDI) ── */}
+                  <motion.section
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.17 }}
+                    className="py-16 border-b border-border"
+                  >
+                    <QuantumSignaturePanel
+                      birth={{
+                        date: reading.birthData.date,
+                        time: reading.birthData.time,
+                        location: reading.birthData.location,
+                        name: reading.birthData.name,
+                      }}
+                      chartName={reading.birthData.name || "Cosmic Traveler"}
+                      heading="Quantum Signature — 24-Mode Reading"
+                      subheading="Computed live from your chart via the canonical Quantumelodics engine. Includes downloadable natal MIDI."
+                    />
+                  </motion.section>
 
                   {/* Harmonic Analysis */}
                   {harmonicAnalysis && (

@@ -4,31 +4,39 @@ import { supabase } from "@/integrations/supabase/client";
  * Client helpers for the quantum-api edge function, which proxies the
  * Quantumelodics unified API (Swiss Ephemeris + 24-mode harmonic system).
  *
- * Three-step flow:
- *   1. natalChart(birth)        -> chart
- *   2. harmonicAnalysis(chart)  -> analysis (modes, tension, BPM, timbres)
- *   3. generateMidi(analysis)   -> { midi_base64 }
+ * Flow:
+ *   1. quantumNatalChart(birth)       -> chart
+ *   2. quantumHarmonicAnalysis(chart) -> analysis (modes, tension, BPM, timbres)
+ *   3. quantumGenerateMidi(analysis)  -> { midi_base64 } (also: downloadMidi helper)
  */
 
 const FN = "quantum-api";
 
-export interface BirthData {
+export interface BirthInput {
   /** YYYY-MM-DD */
   date: string;
-  /** HH:MM in 24h */
+  /** HH:MM 24h */
   time: string;
-  latitude: number;
-  longitude: number;
-  /** IANA timezone, e.g. "America/New_York" */
-  timezone: string;
+  /** Either supply lat/lon directly, or a location string to geocode server-side */
+  location?: string;
+  latitude?: number;
+  longitude?: number;
+  /** IANA tz string or numeric UTC offset; falls back to longitude-derived */
+  timezone?: string | number;
 }
 
 export interface QuantumChart {
   sun_sign: string;
   moon_sign: string;
   rising_sign: string;
-  positions: Record<string, unknown>;
-  aspects: unknown[];
+  positions: Record<string, { name: string; lon: number; lat: number; distance: number }>;
+  aspects: Array<{
+    planet_a: string;
+    planet_b: string;
+    aspect: string;
+    angle: number;
+    orb: number;
+  }>;
 }
 
 export interface QuantumAnalysis {
@@ -56,27 +64,18 @@ async function call<T>(action: string, body?: unknown): Promise<T> {
   return data as T;
 }
 
-export async function quantumNatalChart(birth: BirthData) {
-  const r = await call<{ success: true; chart: QuantumChart }>(
-    "natal-chart",
-    birth,
-  );
+export async function quantumNatalChart(birth: BirthInput) {
+  const r = await call<{ success: true; chart: QuantumChart }>("natal-chart", birth);
   return r.chart;
 }
 
 export async function quantumHarmonicAnalysis(chart: QuantumChart) {
-  const r = await call<{ success: true; analysis: QuantumAnalysis }>(
-    "harmonic-analysis",
-    { chart },
-  );
+  const r = await call<{ success: true; analysis: QuantumAnalysis }>("harmonic-analysis", { chart });
   return r.analysis;
 }
 
-export async function quantumGenerateMidi(
-  analysis: QuantumAnalysis,
-  chartName = "natal_chart",
-) {
-  return call<{ success: true; midi_base64: string }>("generate-midi", {
+export async function quantumGenerateMidi(analysis: QuantumAnalysis, chartName = "natal_chart") {
+  return call<{ success: true; midi_base64: string; filename?: string }>("generate-midi", {
     analysis,
     chart_name: chartName,
   });
@@ -84,4 +83,21 @@ export async function quantumGenerateMidi(
 
 export async function quantumHealth() {
   return call<{ status: string; version?: string; service?: string }>("health");
+}
+
+/** Convenience: generate MIDI and trigger a browser download. */
+export async function downloadNatalMidi(analysis: QuantumAnalysis, name = "natal_chart") {
+  const r = await quantumGenerateMidi(analysis, name);
+  const bin = atob(r.midi_base64);
+  const buf = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+  const blob = new Blob([buf], { type: "audio/midi" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = (r.filename ?? `${name.replace(/\s+/g, "_")}_natal.mid`);
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
