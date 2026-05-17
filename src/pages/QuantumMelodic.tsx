@@ -990,9 +990,6 @@ const QuantumMelodic = () => {
                       reportLabel={`${reading.birthData.name || "Natal"} Astro-Harmonic Report`}
                       sourceText={[
                         interpretation.opening,
-                        interpretation.coreSignature,
-                        interpretation.harmonicAlignment,
-                        interpretation.resolutionGuidance,
                         interpretation.closing,
                       ].filter(Boolean).join("\n\n")}
                       returnPath="/quantum-melodic"
