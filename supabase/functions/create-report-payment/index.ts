@@ -6,7 +6,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 // Stripe product ID for the $5 voice narration add-on
-const NARRATION_ADDON_PRODUCT_ID = "prod_UTrOc6guGO6oxE";
+const NARRATION_ADDON_PRODUCT_ID = "prod_USlOaU9O2tUMAJ";
 
 type ProductKey =
   | "lunar-arc"
@@ -27,21 +27,21 @@ const PRODUCT_CATALOG: Record<
   }
 > = {
   "lunar-arc": {
-    productId: "prod_UEBc9uSaRZ43aU",
+    productId: "prod_UEBNsyZkZCCziz",
     amount: 1700,
     success: "/lunar-reports?paid=true",
     cancel: "/#report",
     label: "Lunar Arc Report",
   },
   "astro-harmonic": {
-    productId: "prod_UECWWxRmAEWGwV",
+    productId: "prod_UNhxQKLgv0Fyny",
     amount: 4700,
     success: "/quantumelodic?paid=true",
     cancel: "/quantumelodic",
     label: "Astro-Harmonic Natal Analysis",
   },
   phasecraft: {
-    productId: "prod_ULCS3phxieBPCX",
+    productId: "prod_UKEpEMBw5bn86v",
     amount: 1700,
     recurring: { interval: "month" },
     success: "/school",
@@ -49,14 +49,14 @@ const PRODUCT_CATALOG: Record<
     label: "Academy of Phasecraft",
   },
   "cipher-calendar": {
-    productId: "prod_ULBtSxOG8oH17X",
+    productId: "prod_UKEpa5HiLYpemF",
     amount: 2000,
     success: "/lunar-cipher",
     cancel: "/services",
     label: "Lunar Cipher 2026 Calendar",
   },
   "lunar-chaperone": {
-    productId: "prod_ULCXBTdFl9UvUj",
+    productId: "prod_UKEqBJxhXZTDk7",
     amount: 9700,
     success: "/lunar-chaperone",
     cancel: "/services",
