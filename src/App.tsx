@@ -61,6 +61,7 @@ import ComingSoon from "./pages/ComingSoon";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
+import { PhasecraftRoutes } from "@/phasecraft/PhasecraftRoutes";
 
 const queryClient = new QueryClient();
 
@@ -85,7 +86,7 @@ function AnimatedRoutes() {
           <Route path="/about" element={<About />} />
           <Route path="/the-moon" element={<Moon />} />
           <Route path="/method" element={<Method />} />
-          <Route path="/phasecraft" element={<Method />} />
+          <Route path="/phasecraft/*" element={<PhasecraftRoutes />} />
           <Route path="/philosophy" element={<Philosophy />} />
           <Route path="/lunar-system" element={<LunarSystem />} />
       <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
