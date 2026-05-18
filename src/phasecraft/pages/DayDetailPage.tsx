@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { DayCard } from '@/components/DayCard';
-import { useAppStore } from '@/store/useAppStore';
+import { DayCard } from '@/phasecraft/components/DayCard';
+import { useAppStore } from '@/phasecraft/store/useAppStore';
 import { Button } from '@/components/ui/button';
 
 export default function DayDetailPage() {

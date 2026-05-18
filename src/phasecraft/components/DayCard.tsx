@@ -1,4 +1,4 @@
-import { PhaseEntry } from '@/data/phases';
+import { PhaseEntry } from '@/phasecraft/data/phases';
 import { FavoriteButton } from './FavoriteButton';
 import { NotesEditor } from './NotesEditor';
 import { Button } from '@/components/ui/button';
@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { MoonPhaseIcon } from './icons/MoonPhaseIcon';
 import { ZodiacIcon } from './icons/ZodiacIcon';
-import { getPhaseData, getSignData, getCombinationInsight, getFlavorTagline } from '@/data/moontuner';
-import { getFactsForPhase } from '@/data/lunarScience';
+import { getPhaseData, getSignData, getCombinationInsight, getFlavorTagline } from '@/phasecraft/data/moontuner';
+import { getFactsForPhase } from '@/phasecraft/data/lunarScience';
 
 interface DayCardProps {
   entry: PhaseEntry;

@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
-import { SearchBar } from '@/components/SearchBar';
-import { Filters } from '@/components/Filters';
-import { ResultList } from '@/components/ResultList';
-import { useAppStore } from '@/store/useAppStore';
+import { SearchBar } from '@/phasecraft/components/SearchBar';
+import { Filters } from '@/phasecraft/components/Filters';
+import { ResultList } from '@/phasecraft/components/ResultList';
+import { useAppStore } from '@/phasecraft/store/useAppStore';
 
 export default function SearchPage() {
   const { favorites, getPhases } = useAppStore();

@@ -1,4 +1,4 @@
-import { PhaseEntry } from '@/data/phases';
+import { PhaseEntry } from '@/phasecraft/data/phases';
 import { cn } from '@/lib/utils';
 import { MoonPhaseIcon, MOON_PHASE_NAMES } from './icons/MoonPhaseIcon';
 import { ZodiacIcon, ZODIAC_NAMES } from './icons/ZodiacIcon';

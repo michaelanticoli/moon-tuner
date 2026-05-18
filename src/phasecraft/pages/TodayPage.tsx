@@ -1,7 +1,7 @@
-import { DayCard } from '@/components/DayCard';
-import { MoonPositionBadge } from '@/components/MoonPositionBadge';
-import { useAppStore } from '@/store/useAppStore';
-import { getMoonState, effectFromMoonState } from '@/lib/moon';
+import { DayCard } from '@/phasecraft/components/DayCard';
+import { MoonPositionBadge } from '@/phasecraft/components/MoonPositionBadge';
+import { useAppStore } from '@/phasecraft/store/useAppStore';
+import { getMoonState, effectFromMoonState } from '@/phasecraft/lib/moon';
 import { useEffect, useState } from 'react';
 
 export default function TodayPage() {

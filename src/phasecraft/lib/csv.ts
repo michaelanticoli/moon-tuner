@@ -1,4 +1,4 @@
-import { PhaseEntry } from '@/data/phases';
+import { PhaseEntry } from '@/phasecraft/data/phases';
 
 export function exportNotesCSV(
   phases: PhaseEntry[],

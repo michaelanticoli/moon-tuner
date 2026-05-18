@@ -1,4 +1,4 @@
-import { MoonState, formatDegree, phaseName } from '@/lib/moon';
+import { MoonState, formatDegree, phaseName } from '@/phasecraft/lib/moon';
 import { ZodiacIcon, ZODIAC_NAMES } from './icons/ZodiacIcon';
 import { MoonPhaseIcon } from './icons/MoonPhaseIcon';
 

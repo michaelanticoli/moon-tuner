@@ -1,8 +1,8 @@
-import { PhaseEntry } from '@/data/phases';
+import { PhaseEntry } from '@/phasecraft/data/phases';
 import { useNavigate } from 'react-router-dom';
 import { MoonPhaseIcon } from './icons/MoonPhaseIcon';
 import { ZodiacIcon } from './icons/ZodiacIcon';
-import { getPhaseData, getSignData } from '@/data/moontuner';
+import { getPhaseData, getSignData } from '@/phasecraft/data/moontuner';
 
 interface ResultListProps {
   results: PhaseEntry[];

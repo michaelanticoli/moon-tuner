@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { PhaseEntry, defaultPhases } from '@/data/phases';
+import { PhaseEntry, defaultPhases } from '@/phasecraft/data/phases';
 
 interface AppState {
   startDate: string;

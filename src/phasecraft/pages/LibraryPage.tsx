@@ -1,13 +1,13 @@
-import { useAppStore } from '@/store/useAppStore';
-import { ExportImportPanel } from '@/components/ExportImportPanel';
+import { useAppStore } from '@/phasecraft/store/useAppStore';
+import { ExportImportPanel } from '@/phasecraft/components/ExportImportPanel';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { Sun, Moon, Monitor } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { MoonPhaseIcon } from '@/components/icons/MoonPhaseIcon';
-import { ZodiacIcon } from '@/components/icons/ZodiacIcon';
-import { getPhaseData, getSignData } from '@/data/moontuner';
+import { MoonPhaseIcon } from '@/phasecraft/components/icons/MoonPhaseIcon';
+import { ZodiacIcon } from '@/phasecraft/components/icons/ZodiacIcon';
+import { getPhaseData, getSignData } from '@/phasecraft/data/moontuner';
 
 export default function LibraryPage() {
   const { startDate, setStartDate, favorites, notes, themeMode, setThemeMode, getPhases } =

@@ -1,6 +1,6 @@
-import { LUNAR_FACTS, CATEGORY_LABELS, type LunarFact } from '@/data/lunarScience';
+import { LUNAR_FACTS, CATEGORY_LABELS, type LunarFact } from '@/phasecraft/data/lunarScience';
 import { Card, CardContent } from '@/components/ui/card';
-import { MoonPhaseIcon, MOON_PHASE_NAMES } from '@/components/icons/MoonPhaseIcon';
+import { MoonPhaseIcon, MOON_PHASE_NAMES } from '@/phasecraft/components/icons/MoonPhaseIcon';
 
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as LunarFact['category'][];
 

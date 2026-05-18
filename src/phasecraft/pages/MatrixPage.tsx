@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { MatrixGrid } from '@/components/MatrixGrid';
-import { useAppStore } from '@/store/useAppStore';
-import { getCurrentDay } from '@/lib/date';
-import { PhaseEntry } from '@/data/phases';
+import { MatrixGrid } from '@/phasecraft/components/MatrixGrid';
+import { useAppStore } from '@/phasecraft/store/useAppStore';
+import { getCurrentDay } from '@/phasecraft/lib/date';
+import { PhaseEntry } from '@/phasecraft/data/phases';
 import {
   Sheet,
   SheetContent,
@@ -12,9 +12,9 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { MoonPhaseIcon } from '@/components/icons/MoonPhaseIcon';
-import { ZodiacIcon } from '@/components/icons/ZodiacIcon';
-import { getPhaseData, getSignData, getCombinationInsight, getFlavorTagline } from '@/data/moontuner';
+import { MoonPhaseIcon } from '@/phasecraft/components/icons/MoonPhaseIcon';
+import { ZodiacIcon } from '@/phasecraft/components/icons/ZodiacIcon';
+import { getPhaseData, getSignData, getCombinationInsight, getFlavorTagline } from '@/phasecraft/data/moontuner';
 
 export default function MatrixPage() {
   const { startDate, getPhases } = useAppStore();

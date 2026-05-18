@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { useAppStore } from '@/store/useAppStore';
-import { exportNotesCSV, parsePhaseCSV, downloadFile } from '@/lib/csv';
-import { validatePhases } from '@/data/validate';
+import { useAppStore } from '@/phasecraft/store/useAppStore';
+import { exportNotesCSV, parsePhaseCSV, downloadFile } from '@/phasecraft/lib/csv';
+import { validatePhases } from '@/phasecraft/data/validate';
 import { Download, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 

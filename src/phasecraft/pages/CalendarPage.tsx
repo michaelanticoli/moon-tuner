@@ -1,6 +1,6 @@
-import { CalendarGrid } from '@/components/CalendarGrid';
-import { useAppStore } from '@/store/useAppStore';
-import { getCurrentDay } from '@/lib/date';
+import { CalendarGrid } from '@/phasecraft/components/CalendarGrid';
+import { useAppStore } from '@/phasecraft/store/useAppStore';
+import { getCurrentDay } from '@/phasecraft/lib/date';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { Crosshair } from 'lucide-react';

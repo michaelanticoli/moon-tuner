@@ -1,4 +1,4 @@
-import { PhaseEntry } from '@/data/phases';
+import { PhaseEntry } from '@/phasecraft/data/phases';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { MoonPhaseIcon } from './icons/MoonPhaseIcon';
