@@ -20,21 +20,21 @@ type MembershipTier = "reflective" | "insight" | "practitioner";
 
 const TIER_CONFIG: Record<
   MembershipTier,
-  { label: string; priceEnvKey: string; successPath: string }
+  { label: string; priceId: string; successPath: string }
 > = {
   reflective: {
     label: "Reflective Membership",
-    priceEnvKey: "STRIPE_PRICE_REFLECTIVE",
+    priceId: "price_1TZAcZCbEehvrcXTW7sPmHhI",
     successPath: "/membership?welcome=reflective",
   },
   insight: {
-    label: "Premium Insight Layer",
-    priceEnvKey: "STRIPE_PRICE_INSIGHT",
+    label: "Insight Membership",
+    priceId: "price_1TZAfvCbEehvrcXTW5izADLT",
     successPath: "/membership?welcome=insight",
   },
   practitioner: {
-    label: "Practitioner Archive",
-    priceEnvKey: "STRIPE_PRICE_PRACTITIONER",
+    label: "Practitioner Membership",
+    priceId: "price_1TZAgfCbEehvrcXTlh5Yh8Mo",
     successPath: "/membership?welcome=practitioner",
   },
 };
@@ -62,10 +62,7 @@ serve(async (req) => {
     }
 
     const config = TIER_CONFIG[tier];
-    const priceId = Deno.env.get(config.priceEnvKey);
-    if (!priceId) {
-      return json({ error: `Stripe price not configured for tier: ${tier}` }, 500);
-    }
+    const priceId = config.priceId;
 
     // Look up existing Stripe customer ID if the user already has one
     const { data: sub } = await supabase

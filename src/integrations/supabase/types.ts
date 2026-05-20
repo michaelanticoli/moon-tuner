@@ -14,6 +14,114 @@ export type Database = {
   }
   public: {
     Tables: {
+      digital_products: {
+        Row: {
+          amount_cents: number
+          available_until: string | null
+          cover_image_url: string | null
+          created_at: string
+          description: string | null
+          download_url: string | null
+          id: string
+          is_active: boolean
+          is_limited: boolean
+          label: string
+          metadata: Json
+          min_tier: string
+          preview_url: string | null
+          product_type: string
+          sort_order: number
+          stripe_product_id: string | null
+        }
+        Insert: {
+          amount_cents: number
+          available_until?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          download_url?: string | null
+          id: string
+          is_active?: boolean
+          is_limited?: boolean
+          label: string
+          metadata?: Json
+          min_tier?: string
+          preview_url?: string | null
+          product_type: string
+          sort_order?: number
+          stripe_product_id?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          available_until?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          download_url?: string | null
+          id?: string
+          is_active?: boolean
+          is_limited?: boolean
+          label?: string
+          metadata?: Json
+          min_tier?: string
+          preview_url?: string | null
+          product_type?: string
+          sort_order?: number
+          stripe_product_id?: string | null
+        }
+        Relationships: []
+      }
+      gifts: {
+        Row: {
+          claim_code: string | null
+          claimed_at: string | null
+          created_at: string
+          expires_at: string | null
+          gift_type: string
+          id: string
+          message: string | null
+          product_id: string | null
+          recipient_email: string
+          recipient_user_id: string | null
+          sender_user_id: string | null
+          status: string
+          stripe_session_id: string | null
+          tier: string | null
+        }
+        Insert: {
+          claim_code?: string | null
+          claimed_at?: string | null
+          created_at?: string
+          expires_at?: string | null
+          gift_type: string
+          id?: string
+          message?: string | null
+          product_id?: string | null
+          recipient_email: string
+          recipient_user_id?: string | null
+          sender_user_id?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          tier?: string | null
+        }
+        Update: {
+          claim_code?: string | null
+          claimed_at?: string | null
+          created_at?: string
+          expires_at?: string | null
+          gift_type?: string
+          id?: string
+          message?: string | null
+          product_id?: string | null
+          recipient_email?: string
+          recipient_user_id?: string | null
+          sender_user_id?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          tier?: string | null
+        }
+        Relationships: []
+      }
       lunar_datapoints: {
         Row: {
           cardinal_values: string | null
@@ -167,6 +275,54 @@ export type Database = {
         }
         Relationships: []
       }
+      purchases: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          currency: string
+          fulfilled_at: string | null
+          id: string
+          metadata: Json
+          product_id: string
+          product_label: string | null
+          product_type: string
+          status: string
+          stripe_payment_intent_id: string | null
+          stripe_session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          currency?: string
+          fulfilled_at?: string | null
+          id?: string
+          metadata?: Json
+          product_id: string
+          product_label?: string | null
+          product_type: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          fulfilled_at?: string | null
+          id?: string
+          metadata?: Json
+          product_id?: string
+          product_label?: string | null
+          product_type?: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       report_narrations: {
         Row: {
           audio_url: string | null
@@ -214,41 +370,56 @@ export type Database = {
       }
       subscriptions: {
         Row: {
+          cancel_at_period_end: boolean
+          canceled_at: string | null
           created_at: string
           current_period_end: string | null
           current_period_start: string | null
           id: string
+          paused_at: string | null
           status: Database["public"]["Enums"]["subscription_status"]
           stripe_customer_id: string | null
           stripe_payment_intent_id: string | null
+          stripe_price_id: string | null
           stripe_subscription_id: string | null
           subscription_type: Database["public"]["Enums"]["subscription_type"]
+          tier: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          cancel_at_period_end?: boolean
+          canceled_at?: string | null
           created_at?: string
           current_period_end?: string | null
           current_period_start?: string | null
           id?: string
+          paused_at?: string | null
           status?: Database["public"]["Enums"]["subscription_status"]
           stripe_customer_id?: string | null
           stripe_payment_intent_id?: string | null
+          stripe_price_id?: string | null
           stripe_subscription_id?: string | null
           subscription_type: Database["public"]["Enums"]["subscription_type"]
+          tier?: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          cancel_at_period_end?: boolean
+          canceled_at?: string | null
           created_at?: string
           current_period_end?: string | null
           current_period_start?: string | null
           id?: string
+          paused_at?: string | null
           status?: Database["public"]["Enums"]["subscription_status"]
           stripe_customer_id?: string | null
           stripe_payment_intent_id?: string | null
+          stripe_price_id?: string | null
           stripe_subscription_id?: string | null
           subscription_type?: Database["public"]["Enums"]["subscription_type"]
+          tier?: string
           updated_at?: string
           user_id?: string
         }
@@ -295,7 +466,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_id_by_email: {
+        Args: { email_input: string }
+        Returns: {
+          id: string
+        }[]
+      }
     }
     Enums: {
       subscription_status:
@@ -304,6 +480,8 @@ export type Database = {
         | "past_due"
         | "trialing"
         | "inactive"
+        | "paused"
+        | "incomplete"
       subscription_type: "one_time" | "monthly"
     }
     CompositeTypes: {
@@ -438,6 +616,8 @@ export const Constants = {
         "past_due",
         "trialing",
         "inactive",
+        "paused",
+        "incomplete",
       ],
       subscription_type: ["one_time", "monthly"],
     },
