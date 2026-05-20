@@ -62,10 +62,7 @@ serve(async (req) => {
     }
 
     const config = TIER_CONFIG[tier];
-    const priceId = Deno.env.get(config.priceEnvKey);
-    if (!priceId) {
-      return json({ error: `Stripe price not configured for tier: ${tier}` }, 500);
-    }
+    const priceId = config.priceId;
 
     // Look up existing Stripe customer ID if the user already has one
     const { data: sub } = await supabase
