@@ -1,23 +1,9 @@
-import { createClient } from '@supabase/supabase-js';
+// Single source of truth for the Supabase client.
+// Re-exports the canonical client from src/integrations/supabase/client.ts
+// to prevent multiple GoTrueClient instances racing on the same auth-token
+// storage key (which silently drops sessions and forces users to re-sign-in).
+export { supabase } from '@/integrations/supabase/client';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey =
-  import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-const hasSupabaseConfig = Boolean(supabaseUrl && supabaseAnonKey);
-
-const fallbackUrl = 'https://placeholder.supabase.co';
-const fallbackAnonKey = 'placeholder-anon-key';
-
-if (!hasSupabaseConfig) {
-  console.warn(
-    'Supabase env vars are missing. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY (or VITE_SUPABASE_PUBLISHABLE_KEY).'
-  );
-}
-
-export const supabase = createClient(
-  hasSupabaseConfig ? supabaseUrl! : fallbackUrl,
-  hasSupabaseConfig ? supabaseAnonKey! : fallbackAnonKey
-);
 
 export type MemoryEntityType =
   | 'directive'
