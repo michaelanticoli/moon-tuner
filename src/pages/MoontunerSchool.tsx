@@ -44,7 +44,7 @@ export default function MoontunerSchool() {
               The Education System
             </span>
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-7xl font-light text-foreground mb-6 tracking-tight leading-[1.1]">
-              MOONtuner School
+              Moontuner School
             </h1>
             <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl leading-relaxed mb-4">
               A systematic approach to temporal navigation through 96 unique lunar-zodiac combinations. 

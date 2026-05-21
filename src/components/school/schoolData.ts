@@ -195,7 +195,7 @@ export const quizQuestions: QuizQuestion[] = [
     correctIndex: 1
   },
   {
-    question: "How many unique lunar-zodiac combinations exist in the MOONtuner system?",
+    question: "How many unique lunar-zodiac combinations exist in the Moontuner system?",
     options: ["48", "72", "96", "144"],
     correctIndex: 2
   },
@@ -230,7 +230,7 @@ export const workbookExercises: WorkbookExercise[] = [
   {
     id: 3,
     title: "Strategic Intention Setting",
-    prompt: "Select a specific goal or project. Using the MOONtuner matrix, determine the optimal phase-sign combination for initiation."
+    prompt: "Select a specific goal or project. Using the Moontuner matrix, determine the optimal phase-sign combination for initiation."
   },
   {
     id: 4,

@@ -58,7 +58,7 @@ export const AstroHarmonicSample = () => {
           <div className="px-8 sm:px-14 pt-12 pb-10 border-b" style={{ borderColor: "#D9D3C9" }}>
             <div className="flex justify-between items-start mb-10">
               <div className="text-[10px] tracking-[0.4em] uppercase" style={{ color: "#B89D6A", fontWeight: 200 }}>
-                MOONtuner
+                Moontuner
               </div>
               <div className="text-[9px] tracking-[0.3em] uppercase text-right leading-tight" style={{ color: "#A09890", fontWeight: 200 }}>
                 Astro-Harmonic

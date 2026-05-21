@@ -1,6 +1,6 @@
 /**
- * MOONtuner Qualitative Data
- * Rich personality-driven flavor profiles sourced from the MOONtuner Education System
+ * Moontuner Qualitative Data
+ * Rich personality-driven flavor profiles sourced from the Moontuner Education System
  * by Michael Moon Anticoli / Phasecraft Methodology
  *
  * Each pairing is a CHARACTER — a vibe, a person at a party, a flavor profile.

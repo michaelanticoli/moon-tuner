@@ -1289,7 +1289,7 @@ const QuantumMelodic = () => {
                     <p className="font-serif text-xl text-foreground/70 italic max-w-md mx-auto leading-relaxed">
                       Every chart is a score waiting to be heard. Yours has been playing since the moment you arrived.
                     </p>
-                    <p className="system-label mt-8 text-muted-foreground/40">MOONtuner {"\u00D7"} QuantumMelodic</p>
+                    <p className="system-label mt-8 text-muted-foreground/40">Moontuner {"\u00D7"} QuantumMelodic</p>
                   </motion.section>
 
                   <CrossGeneratorLinks exclude="/quantumelodic" />

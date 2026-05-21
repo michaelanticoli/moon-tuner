@@ -1,4 +1,4 @@
-# MOONtuner Report Templates — Implementation Guide
+# Moontuner Report Templates — Implementation Guide
 
 ## What you now have
 
