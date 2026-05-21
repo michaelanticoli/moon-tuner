@@ -118,21 +118,20 @@ export function useCosmicReading() {
 
       let chart: ChartData;
       try {
-        const chartResponse = await fetch(`${SUPABASE_URL}/functions/v1/calculate-chart`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+        const { data, error: fnError } = await supabase.functions.invoke('calculate-chart', {
+          body: {
             date: birthData.date,
             time: birthData.time,
             location: birthData.location,
-          }),
+          },
         });
 
-        if (!chartResponse.ok) {
-          throw new Error('Chart service unavailable');
+        if (fnError || !data) {
+          throw new Error(fnError?.message || 'Chart service unavailable');
         }
 
-        chart = await chartResponse.json();
+        chart = data as ChartData;
+
       } catch (chartErr) {
         console.warn('Chart edge function failed, using fallback:', chartErr);
         chart = buildFallbackChart(birthData);
