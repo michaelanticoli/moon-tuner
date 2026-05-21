@@ -391,25 +391,6 @@ const Auth = () => {
                 </div>
               </motion.div>
 
-              {/* Anonymous entry */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.35 }}
-                className="mt-8 text-center"
-              >
-                <button
-                  type="button"
-                  onClick={handleAnonymous}
-                  disabled={loading}
-                  className="text-xs text-muted-foreground/40 hover:text-muted-foreground/70 transition-colors leading-relaxed"
-                >
-                  Enter quietly, without a name
-                </button>
-                <p className="text-xs text-muted-foreground/30 mt-1">
-                  Temporary session — nothing is saved
-                </p>
-              </motion.div>
 
               {/* Legal */}
               <p className="text-center text-xs text-muted-foreground/30 mt-10 leading-relaxed">

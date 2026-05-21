@@ -67,10 +67,10 @@ const Index = () => {
             </div>
           </section>
 
-          {/* ── Reports — coming-soon teaser ─────────────────────────── */}
+          {/* ── Live Reports — fully generative ─────────────────────────── */}
           <section
             className="relative py-24 lg:py-32 overflow-hidden"
-            aria-label="Reports — coming soon"
+            aria-label="Personalized lunar reports"
           >
             <div className="mx-auto max-w-[1100px] px-6 lg:px-12">
               <div className="dusk-hairline mb-20" />
@@ -80,7 +80,7 @@ const Index = () => {
                 <div>
                   <p className="dusk-eyebrow mb-6">
                     <span className="inline-block w-6 h-px align-middle mr-3 bg-[hsl(var(--dusk-gold))]" />
-                    Coming Soon — Phase II
+                    Personalized Reports — Live
                   </p>
 
                   <h2 className="dusk-serif text-[clamp(2rem,4.2vw,3.4rem)] dusk-ivory mb-6">
@@ -92,35 +92,45 @@ const Index = () => {
                     style={{ color: "hsl(var(--dusk-ivory) / 0.62)" }}
                   >
                     A deep-read of your natal chart, current transits, and timing
-                    windows — delivered as a living document. Subscribe below to
-                    be notified when reports open.
+                    windows — generated on demand from live ephemeris data.
+                    Pick the report that fits your moment.
                   </p>
 
-                  <div
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-sm text-[0.7rem] tracking-[0.2em] uppercase"
-                    style={{
-                      border: "1px solid hsl(var(--dusk-ivory) / 0.12)",
-                      color: "hsl(var(--dusk-ivory) / 0.35)",
-                    }}
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ background: "hsl(var(--dusk-gold) / 0.45)" }}
-                    />
-                    In development
+                  <div className="flex flex-wrap gap-3">
+                    <Link
+                      to="/lunar-reports"
+                      className="inline-flex items-center gap-2 px-5 py-3 rounded-sm text-sm tracking-widest uppercase transition-colors hover:bg-[hsl(var(--dusk-gold))] hover:text-[hsl(var(--dusk-black))]"
+                      style={{
+                        border: "1px solid hsl(var(--dusk-gold))",
+                        color: "hsl(var(--dusk-gold))",
+                      }}
+                    >
+                      Open Lunar Reports →
+                    </Link>
+                    <Link
+                      to="/quantumelodic"
+                      className="inline-flex items-center gap-2 px-5 py-3 rounded-sm text-sm tracking-widest uppercase transition-colors hover:bg-[hsl(var(--dusk-ivory)/0.08)]"
+                      style={{
+                        border: "1px solid hsl(var(--dusk-ivory) / 0.2)",
+                        color: "hsl(var(--dusk-ivory) / 0.85)",
+                      }}
+                    >
+                      Astro-Harmonic Report →
+                    </Link>
                   </div>
                 </div>
 
-                {/* Right — preview cards */}
+                {/* Right — preview cards (all linked to live generators) */}
                 <div className="flex flex-col gap-4">
                   {[
-                    { label: "Natal Phase Report", desc: "Your birth moon mapped against the current cycle — revealing your natural timing architecture." },
-                    { label: "30-Day Timing Window", desc: "High-momentum, friction, and rest periods across your next lunar month." },
-                    { label: "Emotional Season Read", desc: "A synthesis of your chart's emotional signature and what this cycle is asking of you." },
+                    { label: "12-Month Lunar Arc", desc: "Your natal moon mapped against the next year of cycles — phase by phase.", to: "/lunar-reports" },
+                    { label: "Astro-Harmonic Symphony", desc: "Your birth chart rendered as a printable chart, written analysis, and original composition.", to: "/quantumelodic" },
+                    { label: "Cazimi Power-Day Grid", desc: "Your highest-momentum days plotted across the next lunar season.", to: "/cazimi" },
                   ].map((card) => (
-                    <div
+                    <Link
                       key={card.label}
-                      className="p-6 rounded-xl border relative overflow-hidden"
+                      to={card.to}
+                      className="p-6 rounded-xl border relative overflow-hidden block transition-colors hover:border-[hsl(var(--dusk-gold)/0.4)]"
                       style={{
                         background: "hsl(var(--dusk-black) / 0.6)",
                         borderColor: "hsl(var(--dusk-ivory) / 0.07)",
@@ -129,11 +139,11 @@ const Index = () => {
                       <div
                         className="absolute top-4 right-4 text-[0.55rem] tracking-[0.2em] uppercase px-2 py-1 rounded-sm"
                         style={{
-                          color: "hsl(var(--dusk-ivory) / 0.28)",
-                          background: "hsl(var(--dusk-ivory) / 0.05)",
+                          color: "hsl(var(--dusk-gold) / 0.8)",
+                          background: "hsl(var(--dusk-gold) / 0.08)",
                         }}
                       >
-                        Soon
+                        Live
                       </div>
                       <p className="dusk-eyebrow mb-2">{card.label}</p>
                       <p
@@ -142,7 +152,7 @@ const Index = () => {
                       >
                         {card.desc}
                       </p>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>

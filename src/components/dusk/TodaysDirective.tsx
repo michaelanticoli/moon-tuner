@@ -321,19 +321,16 @@ export function TodaysDirective() {
                   <Link to="/today" className="dusk-btn dusk-btn-primary">
                     Open Today's Page
                   </Link>
-                  <div
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-sm text-[0.7rem] tracking-[0.2em] uppercase"
+                  <Link
+                    to="/lunar-reports"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-sm text-[0.7rem] tracking-[0.2em] uppercase transition-colors hover:bg-[hsl(var(--dusk-gold))] hover:text-[hsl(var(--dusk-black))]"
                     style={{
-                      border: "1px solid hsl(var(--dusk-ivory) / 0.1)",
-                      color: "hsl(var(--dusk-ivory) / 0.32)",
+                      border: "1px solid hsl(var(--dusk-gold) / 0.5)",
+                      color: "hsl(var(--dusk-gold))",
                     }}
                   >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ background: "hsl(var(--dusk-gold) / 0.4)" }}
-                    />
-                    Reports — Coming Soon
-                  </div>
+                    Generate Your Lunar Report →
+                  </Link>
                   <DirectiveShareCard
                     phaseName={moon.astronomical.phaseName}
                     phaseKey={normalizedKey}
