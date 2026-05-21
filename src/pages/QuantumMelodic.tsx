@@ -41,11 +41,27 @@ const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const returnedFromCheckout = searchParams.get("paid") === "true" || !!searchParams.get("session_id");
+  // Dev/admin bypass: ?dev=true persists a localStorage flag that unlocks the report
+  // for testing without paying. Remove the flag by visiting ?dev=false.
+  const devBypass = (() => {
+    if (typeof window === "undefined") return false;
+    const param = searchParams.get("dev");
+    if (param === "true") {
+      localStorage.setItem("qm_dev_bypass", "true");
+      return true;
+    }
+    if (param === "false") {
+      localStorage.removeItem("qm_dev_bypass");
+      return false;
+    }
+    return localStorage.getItem("qm_dev_bypass") === "true";
+  })();
   const [hasPaidAccess, setHasPaidAccess] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
-    return sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
+    return devBypass || sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
   });
   const [checkoutUnavailable, setCheckoutUnavailable] = useState(false);
+
   
 
   const {
