@@ -272,7 +272,7 @@ export const NatalWheelCard = forwardRef<HTMLDivElement, Props>(
             marginTop: 26,
           }}
         >
-          MOONtuner · Astro-Harmonic Analysis
+          Moontuner · Astro-Harmonic Analysis
         </div>
       </div>
     );

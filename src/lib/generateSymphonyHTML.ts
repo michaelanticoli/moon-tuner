@@ -218,7 +218,7 @@ export function buildSymphonyHTML(
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>${name}'s Symphony Report — MOONtuner × QuantumMelodic</title>
+<title>${name}'s Symphony Report — Moontuner × QuantumMelodic</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=DM+Sans:wght@400;500&display=swap');
   *{margin:0;padding:0;box-sizing:border-box}
@@ -353,7 +353,7 @@ export function buildSymphonyHTML(
   </div>` : ''}
 
   ${interpClosing}
-  <div class="brand">MOONtuner × QuantumMelodic</div>
+  <div class="brand">Moontuner × QuantumMelodic</div>
 
 </div>
 </body>

@@ -10,7 +10,7 @@ export function SchoolIntro({ onStartLearning }: SchoolIntroProps) {
     <div className="space-y-12">
       <div>
         <h2 className="font-serif text-3xl lg:text-4xl font-light text-foreground mb-4">
-          The MOONtuner Method
+          The Moontuner Method
         </h2>
         <p className="text-muted-foreground text-lg leading-relaxed max-w-3xl">
           A systematic approach to temporal navigation through 96 unique lunar-zodiac combinations. 
@@ -23,7 +23,7 @@ export function SchoolIntro({ onStartLearning }: SchoolIntroProps) {
       <div className="bg-card border border-border p-8 lg:p-12">
         <h3 className="font-serif text-xl text-foreground mb-6">System Architecture</h3>
         <p className="text-muted-foreground mb-6">
-          The MOONtuner matrix operates on a fundamental principle:
+          The Moontuner matrix operates on a fundamental principle:
         </p>
         <ul className="space-y-3 text-muted-foreground">
           <li className="flex items-start gap-3">
@@ -101,7 +101,7 @@ export function SchoolIntro({ onStartLearning }: SchoolIntroProps) {
       <div className="bg-muted/30 border border-border p-8 lg:p-12">
         <h3 className="font-serif text-xl text-foreground mb-4">From Theory to Practice: The Lunar Chaperone</h3>
         <p className="text-muted-foreground mb-6">
-          The MOONtuner School teaches the foundational 96-combination system. The <strong className="text-foreground">Lunar Chaperone</strong> is 
+          The Moontuner School teaches the foundational 96-combination system. The <strong className="text-foreground">Lunar Chaperone</strong> is 
           where this knowledge becomes lived practice—a 26-workbook series designed for continuous lunar companionship.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">

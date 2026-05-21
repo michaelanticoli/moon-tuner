@@ -1,4 +1,4 @@
-// Cazimi engine — ported from the standalone Cazimi prototype into MOONtuner.
+// Cazimi engine — ported from the standalone Cazimi prototype into Moontuner.
 // A Cazimi is the moment a planet returns to the exact heart of the Sun
 // (conjunction within ~17' of arc). For each natal placement, we search the
 // next time the transiting Sun crosses that ecliptic longitude.

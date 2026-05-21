@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'app.lovable.4186859885d247f5882f7f671d299e8e',
-  appName: 'MOONtuner',
+  appName: 'Moontuner',
   webDir: 'dist',
   server: {
     url: 'https://41868598-85d2-47f5-882f-7f671d299e8e.lovableproject.com?forceHideBadge=true',

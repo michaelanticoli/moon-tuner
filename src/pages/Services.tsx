@@ -295,11 +295,11 @@ export default function Services() {
                   </div>
                   <div className="w-full h-px bg-border my-6" />
                   <p className="text-[14.5px] text-muted-foreground leading-[1.8] mb-7">
-                    The complete MOONtuner curriculum. Learn to read and work with the 8 lunar phases, 12 zodiac archetypes, and 96 unique phase-sign combinations. Structured learning with flashcards, assessments, and practical applications — at your own pace.
+                    The complete Moontuner curriculum. Learn to read and work with the 8 lunar phases, 12 zodiac archetypes, and 96 unique phase-sign combinations. Structured learning with flashcards, assessments, and practical applications — at your own pace.
                   </p>
                   <IncludedList
                     items={[
-                      "Full access to the MOONtuner School curriculum",
+                      "Full access to the Moontuner School curriculum",
                       "Phase foundations, cycles, and combinations mastery",
                       "Interactive flashcards and self-assessments",
                       "Workbook integration and practice exercises",
