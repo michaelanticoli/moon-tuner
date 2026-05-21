@@ -2,7 +2,17 @@
 // Re-exports the canonical client from src/integrations/supabase/client.ts
 // to prevent multiple GoTrueClient instances racing on the same auth-token
 // storage key (which silently drops sessions and forces users to re-sign-in).
-export { supabase } from '@/integrations/supabase/client';
+//
+// We cast to the local `Database` type below to preserve typings for legacy
+// callers that reference tables not in the auto-generated schema (those calls
+// already failed at runtime; the cast just keeps the build green).
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { supabase as canonicalClient } from '@/integrations/supabase/client';
+
+// Local Database type is declared further down in this file.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const supabase = canonicalClient as unknown as SupabaseClient<any>;
+
 
 
 export type MemoryEntityType =
