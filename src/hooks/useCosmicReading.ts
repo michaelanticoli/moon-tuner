@@ -1,9 +1,10 @@
 import { useState, useCallback } from 'react';
 import type { BirthData, ChartData, CosmicReading } from '@/types/astrology';
 import { chartToScore } from '@/utils/chartToScore';
+import { supabase } from '@/integrations/supabase/client';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const AUDIO_RENDER_TIMEOUT_MS = 15000;
+
 
 const signModes: Record<string, string> = {
   Aries: 'A Phrygian', Taurus: 'F Ionian', Gemini: 'G Mixolydian', Cancer: 'A Aeolian',
