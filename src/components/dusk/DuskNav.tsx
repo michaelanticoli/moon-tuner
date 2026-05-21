@@ -56,7 +56,7 @@ export function DuskNav() {
         <Link
           to="/"
           aria-label="Moontuner"
-          className="dusk-ivory hover:dusk-gold transition-colors uppercase"
+          className="dusk-ivory hover:dusk-gold transition-colors uppercase text-lg font-extralight shadow-xl opacity-95 rounded-xl"
           style={{
             fontFamily: '"Inter", system-ui, sans-serif',
             fontWeight: 200,
