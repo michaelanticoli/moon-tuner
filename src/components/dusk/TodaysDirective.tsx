@@ -347,7 +347,7 @@ export function TodaysDirective() {
 
         {/* Footer note */}
         <p
-          className="mt-10 text-[0.72rem] tracking-[0.24em] uppercase dusk-silver text-center"
+          className="mt-10 text-[0.72rem] tracking-[0.24em] uppercase dusk-silver text-center text-slate-950"
           style={{
             opacity: visible ? 1 : 0,
             transition: "opacity 1.1s cubic-bezier(0.2,0.8,0.2,1) 0.85s",
