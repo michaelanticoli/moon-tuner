@@ -33,9 +33,23 @@ import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
 import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 import { NarrationUpsell } from "@/components/report/NarrationUpsell";
 import { QuantumSignaturePanel } from "@/components/harmonic/QuantumSignaturePanel";
+import { toast } from "sonner";
 
 const QM_STORAGE_KEY = "qm_paid";
 const QM_BIRTH_DATA_KEY = "qm_birth_data";
+
+function sendToCheckout(url: string) {
+  try {
+    if (window.top && window.top !== window.self) {
+      window.top.location.href = url;
+      return;
+    }
+  } catch {
+    // Cross-origin previews may block top navigation; fall back to this window.
+  }
+
+  window.location.href = url;
+}
 
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
@@ -60,7 +74,7 @@ const QuantumMelodic = () => {
     if (typeof window === "undefined") return false;
     return devBypass || sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
   });
-  const [checkoutUnavailable, setCheckoutUnavailable] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   
 
@@ -126,6 +140,9 @@ const QuantumMelodic = () => {
   }, []);
 
   const beginCheckout = useCallback(async () => {
+    if (checkoutLoading) return;
+    setCheckoutLoading(true);
+
     const birthDraft: BirthData = {
       name: formData.name || "Cosmic Traveler",
       date: formData.date,
@@ -153,12 +170,13 @@ const QuantumMelodic = () => {
       if (fnError) throw fnError;
       if (!data?.url) throw new Error("Checkout link unavailable");
 
-      window.location.href = data.url as string;
+      sendToCheckout(data.url as string);
     } catch (checkoutError) {
       console.error("Astro-harmonic checkout failed:", checkoutError);
-      setCheckoutUnavailable(true);
+      toast.error("Could not start checkout. Please try again.");
+      setCheckoutLoading(false);
     }
-  }, [formData.date, formData.location, formData.name, formData.time, saveBirthDraft]);
+  }, [checkoutLoading, formData.date, formData.location, formData.name, formData.time, saveBirthDraft]);
 
   useEffect(() => {
     if (!returnedFromCheckout) return;
@@ -390,8 +408,8 @@ const QuantumMelodic = () => {
                   </span>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Button onClick={beginCheckout} size="lg" className="system-button">
-                    Unlock Your Astro-Harmonic Report — $47
+                  <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
+                    {checkoutLoading ? "Starting Checkout…" : "Unlock Your Astro-Harmonic Report — $47"}
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground mt-4">
@@ -416,14 +434,9 @@ const QuantumMelodic = () => {
                   One-time payment. Instant access. Yours forever — printable, shareable, and
                   generated from your exact birth chart.
                 </p>
-                <Button onClick={beginCheckout} size="lg" className="system-button">
-                  Unlock Your Astro-Harmonic Report
+                <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
+                  {checkoutLoading ? "Starting Checkout…" : "Unlock Your Astro-Harmonic Report — $47"}
                 </Button>
-                {checkoutUnavailable ? (
-                  <p className="text-xs text-destructive/80 mt-4">
-                    Checkout is temporarily unavailable. Please refresh and try again.
-                  </p>
-                ) : null}
               </div>
             </section>
           </main>
