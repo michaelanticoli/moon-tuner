@@ -502,8 +502,7 @@ function ProposalDocument({ proposal }: { proposal: ProposalOutput }) {
             Suggested Next Action
           </p>
           <p
-            className="text-base leading-relaxed text-foreground"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="text-base leading-relaxed text-foreground font-sans"
           >
             {proposal.nextAction}
           </p>
