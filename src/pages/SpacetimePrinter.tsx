@@ -107,7 +107,6 @@ export default function SpacetimePrinter() {
           </h1>
           <p
             className="text-muted-foreground leading-relaxed max-w-xl font-sans font-medium text-base"
-            style={{ fontFamily: "'Playfair Display', serif" }}
           >
             We do not make a plan. We submit a proposal. Intention-setting as
             collaborative participation with uncertainty — not command, not
