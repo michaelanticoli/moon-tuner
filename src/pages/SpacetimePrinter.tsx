@@ -539,8 +539,7 @@ function AnalysisSection({
         {label}
       </p>
       <p
-        className="text-base leading-relaxed"
-        style={{ fontFamily: "'Playfair Display', serif" }}
+        className="text-base leading-relaxed font-sans"
       >
         {body}
       </p>
