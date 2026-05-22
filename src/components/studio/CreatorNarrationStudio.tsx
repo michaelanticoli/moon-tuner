@@ -40,16 +40,19 @@ export function CreatorNarrationStudio() {
     }
     setBusy(true);
     try {
-      // Try creator (auth) endpoint first; fall back to public coupon endpoint
-      // so the button always works even when not signed in.
+      // Only signed-in creators hit the auth endpoint; everyone else uses the guest coupon.
       let data: { audioUrl?: string } | null = null;
-      const creatorRes = await supabase.functions.invoke("creator-narration", {
-        body: { text, label: label || "bit" },
-      });
-      if (!creatorRes.error && creatorRes.data?.audioUrl) {
-        data = creatorRes.data;
-      } else {
-        console.warn("creator-narration unavailable, falling back to coupon:", creatorRes.error);
+      if (creator && user) {
+        const creatorRes = await supabase.functions.invoke("creator-narration", {
+          body: { text, label: label || "bit" },
+        });
+        if (!creatorRes.error && creatorRes.data?.audioUrl) {
+          data = creatorRes.data;
+        } else if (creatorRes.error) {
+          console.warn("creator-narration unavailable, falling back to coupon:", creatorRes.error);
+        }
+      }
+      if (!data?.audioUrl) {
         const fb = await supabase.functions.invoke("redeem-narration-coupon", {
           body: { coupon: "MOON-GUEST", text, label: label || "bit" },
         });
