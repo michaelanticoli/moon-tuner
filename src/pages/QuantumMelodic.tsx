@@ -149,6 +149,10 @@ const QuantumMelodic = () => {
   }, []);
 
   const beginCheckout = useCallback(async () => {
+    if (checkoutLoading) return;
+    setCheckoutLoading(true);
+    const checkoutWindow = window.open("about:blank", "_blank", "noopener,noreferrer");
+
     const birthDraft: BirthData = {
       name: formData.name || "Cosmic Traveler",
       date: formData.date,
@@ -176,12 +180,14 @@ const QuantumMelodic = () => {
       if (fnError) throw fnError;
       if (!data?.url) throw new Error("Checkout link unavailable");
 
-      window.location.href = data.url as string;
+      sendToCheckout(data.url as string, checkoutWindow);
     } catch (checkoutError) {
       console.error("Astro-harmonic checkout failed:", checkoutError);
-      setCheckoutUnavailable(true);
+      closeCheckoutWindow(checkoutWindow);
+      toast.error("Could not start checkout. Please try again.");
+      setCheckoutLoading(false);
     }
-  }, [formData.date, formData.location, formData.name, formData.time, saveBirthDraft]);
+  }, [checkoutLoading, formData.date, formData.location, formData.name, formData.time, saveBirthDraft]);
 
   useEffect(() => {
     if (!returnedFromCheckout) return;
