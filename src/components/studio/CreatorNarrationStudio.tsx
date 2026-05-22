@@ -17,6 +17,8 @@ interface Clip {
 }
 
 export function CreatorNarrationStudio() {
+  const { user } = useAuth();
+  const creator = isCreator(user?.email);
   const [label, setLabel] = useState("");
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
