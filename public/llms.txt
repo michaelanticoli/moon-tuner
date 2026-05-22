@@ -1,0 +1,35 @@
+# Moontuner
+
+> A lunar alignment system for tracking intention, energy, and momentum through the Moon's cycles. Reflective, non-deterministic — align with natural rhythms, not predictions.
+
+Moontuner is a framework for energetic accountability and self-sovereignty built around the 8 lunar phases and 12 zodiac signs (96 configurations). It pairs an astronomical engine (live phase, sign, void-of-course, aspects) with reflective tooling: daily directives, a 14-day Phasecraft arc, the Chaperone workbook series, and the Lunar Cipher.
+
+## Pages
+
+- [Home](/): Today's Directive, Harmonic Profile, and the lunar framework overview.
+- [Today's Directive](/today): The current phase, sign, and reflective prompt for the day.
+- [Manifesto](/manifesto): Seven declarations for living with the Moon.
+- [About](/about): Background on the Moontuner project and its creator.
+- [The Lunar System](/lunar-system): The complete 96-configuration phase-sign matrix and live status.
+- [Method](/method): The Phasecraft methodology and four-arc framework.
+- [Philosophy](/philosophy): The non-deterministic, resonance-based philosophy behind the system.
+- [The Moon](/the-moon): Live lunar status and current phase data.
+- [Moon Phase Today](/moon-phase-today): Real-time moon phase, illumination percent, and next-phase countdown.
+- [Explore](/explore): Essays and SEO landings on emotional weather, cyclical productivity, and lunar living.
+- [Journal](/journal): Long-form reflections on phases, signs, and lunar practice.
+- [Free Lunar Guide](/free-guide): Downloadable PDF + EPUB introduction to lunar timing.
+
+## Optional
+
+- [Lunar Cipher](/lunar-cipher): 2026 ephemeris with VOC and phase timing.
+- [Lunar Reports](/lunar-reports): Personalized 12-month Lunar Arc and Natal Signature reports.
+- [Moontuner School](/school): The Cosmic Cycles knowledge base and assessment.
+- [Lunar Chaperone](/lunar-chaperone): 26-workbook continuous companionship system.
+- [Workbooks](/workbooks): The Chaperone workbook catalog.
+- [Sessions](/sessions): Live 1:1 tarot, astro-harmonic, and piano-etude sessions.
+- [Services](/services): Service tiers and booking.
+- [Offerings](/offerings): Full menu of digital and live offerings.
+- [Digital Smudging](/digital-smudging): Energetic reset practices.
+- [Quantumelodic](/quantumelodic): Vibrational, sound-based companion experiences.
+- [Terms](/terms): Terms of service.
+- [Privacy](/privacy): Privacy policy.

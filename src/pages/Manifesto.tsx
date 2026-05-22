@@ -90,8 +90,8 @@ const Manifesto = () => {
   return (
     <PageTransition>
       <SEOHead
-        title="The Moontuner Manifesto — Seven Declarations for Living with the Moon"
-        description="A declaration of principles for those who move with the Moon. Not rules to follow — truths to remember. The philosophical foundation of the Moontuner system."
+        title="Moontuner Manifesto — Seven Lunar Declarations"
+        description="Seven declarations for those who move with the Moon. The philosophical foundation of the Moontuner system."
         canonical="/manifesto"
         keywords={["moon manifesto", "lunar philosophy", "moontuner principles", "cyclical living", "lunar alignment"]}
       />
