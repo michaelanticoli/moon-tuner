@@ -151,7 +151,7 @@ const QuantumMelodic = () => {
   const beginCheckout = useCallback(async () => {
     if (checkoutLoading) return;
     setCheckoutLoading(true);
-    const checkoutWindow = window.open("about:blank", "_blank", "noopener,noreferrer");
+    const checkoutWindow = window.open("about:blank", "_blank");
 
     const birthDraft: BirthData = {
       name: formData.name || "Cosmic Traveler",
