@@ -17,8 +17,8 @@ const Index = () => {
   return (
     <PageTransition>
       <SEOHead
-        title="Moontuner | A Reflective Operating System for Emotionally Intelligent People"
-        description="Today's Directive, your Harmonic Profile, and a lunar framework for creative rhythm, emotional regulation, and intentional living. Not astrology — a reflective system."
+        title="Moontuner — Reflective Lunar OS for Daily Alignment"
+        description="Today's Directive, your Harmonic Profile, and a lunar framework for creative rhythm and intentional living."
         canonical="/"
         keywords={[
           "emotional regulation",
