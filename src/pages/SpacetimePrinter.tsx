@@ -483,8 +483,7 @@ function ProposalDocument({ proposal }: { proposal: ProposalOutput }) {
             {POSTURE_DESC[proposal.timingPosture]}
           </p>
           <p
-            className="text-base leading-relaxed"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="text-base leading-relaxed font-sans"
           >
             {proposal.timingRationale}
           </p>
