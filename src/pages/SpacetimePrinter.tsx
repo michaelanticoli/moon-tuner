@@ -483,8 +483,7 @@ function ProposalDocument({ proposal }: { proposal: ProposalOutput }) {
             {POSTURE_DESC[proposal.timingPosture]}
           </p>
           <p
-            className="text-base leading-relaxed"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="text-base leading-relaxed font-sans"
           >
             {proposal.timingRationale}
           </p>
@@ -503,8 +502,7 @@ function ProposalDocument({ proposal }: { proposal: ProposalOutput }) {
             Suggested Next Action
           </p>
           <p
-            className="text-base leading-relaxed text-foreground"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="text-base leading-relaxed text-foreground font-sans"
           >
             {proposal.nextAction}
           </p>
@@ -541,8 +539,7 @@ function AnalysisSection({
         {label}
       </p>
       <p
-        className="text-base leading-relaxed"
-        style={{ fontFamily: "'Playfair Display', serif" }}
+        className="text-base leading-relaxed font-sans"
       >
         {body}
       </p>
