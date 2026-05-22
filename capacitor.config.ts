@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.4186859885d247f5882f7f671d299e8e',
+  appId: 'xyz.moontuner.app',
   appName: 'Moontuner',
   webDir: 'dist',
   server: {
