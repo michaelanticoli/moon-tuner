@@ -38,12 +38,7 @@ import { toast } from "sonner";
 const QM_STORAGE_KEY = "qm_paid";
 const QM_BIRTH_DATA_KEY = "qm_birth_data";
 
-function sendToCheckout(url: string, checkoutWindow: Window | null) {
-  if (checkoutWindow && !checkoutWindow.closed) {
-    checkoutWindow.location.replace(url);
-    return;
-  }
-
+function sendToCheckout(url: string) {
   try {
     if (window.top && window.top !== window.self) {
       window.top.location.href = url;
@@ -54,10 +49,6 @@ function sendToCheckout(url: string, checkoutWindow: Window | null) {
   }
 
   window.location.href = url;
-}
-
-function closeCheckoutWindow(checkoutWindow: Window | null) {
-  if (checkoutWindow && !checkoutWindow.closed) checkoutWindow.close();
 }
 
 const QuantumMelodic = () => {
@@ -151,7 +142,6 @@ const QuantumMelodic = () => {
   const beginCheckout = useCallback(async () => {
     if (checkoutLoading) return;
     setCheckoutLoading(true);
-    const checkoutWindow = window.open("about:blank", "_blank");
 
     const birthDraft: BirthData = {
       name: formData.name || "Cosmic Traveler",
@@ -180,10 +170,9 @@ const QuantumMelodic = () => {
       if (fnError) throw fnError;
       if (!data?.url) throw new Error("Checkout link unavailable");
 
-      sendToCheckout(data.url as string, checkoutWindow);
+      sendToCheckout(data.url as string);
     } catch (checkoutError) {
       console.error("Astro-harmonic checkout failed:", checkoutError);
-      closeCheckoutWindow(checkoutWindow);
       toast.error("Could not start checkout. Please try again.");
       setCheckoutLoading(false);
     }
