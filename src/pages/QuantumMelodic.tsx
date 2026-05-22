@@ -33,9 +33,32 @@ import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
 import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 import { NarrationUpsell } from "@/components/report/NarrationUpsell";
 import { QuantumSignaturePanel } from "@/components/harmonic/QuantumSignaturePanel";
+import { toast } from "sonner";
 
 const QM_STORAGE_KEY = "qm_paid";
 const QM_BIRTH_DATA_KEY = "qm_birth_data";
+
+function sendToCheckout(url: string, checkoutWindow: Window | null) {
+  if (checkoutWindow && !checkoutWindow.closed) {
+    checkoutWindow.location.replace(url);
+    return;
+  }
+
+  try {
+    if (window.top && window.top !== window.self) {
+      window.top.location.href = url;
+      return;
+    }
+  } catch {
+    // Cross-origin previews may block top navigation; fall back to this window.
+  }
+
+  window.location.href = url;
+}
+
+function closeCheckoutWindow(checkoutWindow: Window | null) {
+  if (checkoutWindow && !checkoutWindow.closed) checkoutWindow.close();
+}
 
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
@@ -60,7 +83,7 @@ const QuantumMelodic = () => {
     if (typeof window === "undefined") return false;
     return devBypass || sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
   });
-  const [checkoutUnavailable, setCheckoutUnavailable] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   
 
