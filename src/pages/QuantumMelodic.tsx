@@ -419,8 +419,8 @@ const QuantumMelodic = () => {
                   </span>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Button onClick={beginCheckout} size="lg" className="system-button">
-                    Unlock Your Astro-Harmonic Report — $47
+                  <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
+                    {checkoutLoading ? "Starting Checkout…" : "Unlock Your Astro-Harmonic Report — $47"}
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground mt-4">
@@ -445,14 +445,9 @@ const QuantumMelodic = () => {
                   One-time payment. Instant access. Yours forever — printable, shareable, and
                   generated from your exact birth chart.
                 </p>
-                <Button onClick={beginCheckout} size="lg" className="system-button">
-                  Unlock Your Astro-Harmonic Report
+                <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
+                  {checkoutLoading ? "Starting Checkout…" : "Unlock Your Astro-Harmonic Report — $47"}
                 </Button>
-                {checkoutUnavailable ? (
-                  <p className="text-xs text-destructive/80 mt-4">
-                    Checkout is temporarily unavailable. Please refresh and try again.
-                  </p>
-                ) : null}
               </div>
             </section>
           </main>
