@@ -112,15 +112,19 @@ export function NarrationUpsell({
     setStatus("generating");
     setError(null);
     try {
-      // Try authenticated creator endpoint, fall back to public coupon
+      // Only signed-in creators can hit the authenticated endpoint; everyone else uses the guest coupon.
       let url: string | undefined;
-      const c = await supabase.functions.invoke("creator-narration", {
-        body: { text: sourceText, label: reportLabel },
-      });
-      if (!c.error && (c.data?.audioUrl || c.data?.url)) {
-        url = c.data.audioUrl || c.data.url;
-      } else {
-        console.warn("creator-narration unavailable, falling back to coupon:", c.error);
+      if (creator && user) {
+        const c = await supabase.functions.invoke("creator-narration", {
+          body: { text: sourceText, label: reportLabel },
+        });
+        if (!c.error && (c.data?.audioUrl || c.data?.url)) {
+          url = c.data.audioUrl || c.data.url;
+        } else if (c.error) {
+          console.warn("creator-narration unavailable, falling back to coupon:", c.error);
+        }
+      }
+      if (!url) {
         const fb = await supabase.functions.invoke("redeem-narration-coupon", {
           body: { coupon: "MOON-GUEST", text: sourceText, label: reportLabel },
         });
