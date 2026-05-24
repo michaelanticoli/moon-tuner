@@ -1,4 +1,4 @@
-// Total Tuner — single hub that assembles all four MOONtuner generators
+// Total Tuner — single hub that assembles all four Moontuner generators
 // (Astro-Harmonic Symphony, 12-Month Lunar Arc, Cazimi Punchcard, and the
 // personalized Cipher overlay) into one document. Users can browse each
 // section in-page or click "Open in dedicated generator" for the full

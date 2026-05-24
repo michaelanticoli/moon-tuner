@@ -25,7 +25,7 @@ export function PaywallGate({ isOpen, onClose, onUnlock }: PaywallGateProps) {
             Premium Content
           </DialogTitle>
           <DialogDescription>
-            Unlock the complete MOONtuner Education System to access all 96 lunar-zodiac combinations, 
+            Unlock the complete Moontuner Education System to access all 96 lunar-zodiac combinations, 
             interactive flashcards, workbook exercises, assessments, and progress tracking.
           </DialogDescription>
         </DialogHeader>

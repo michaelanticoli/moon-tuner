@@ -79,7 +79,7 @@ export function useCosmicDeliverables() {
       // 2a: ElevenLabs music (long-running, ~30-90s)
       const audioJob = supabase.functions
         .invoke("generate-cosmic-symphony", {
-          body: { reportId, prompt, durationMs: 120000 },
+          body: { reportId, prompt, durationMs: 140000 },
         })
         .then(({ data, error }) => {
           if (error || !data?.audioUrl) {

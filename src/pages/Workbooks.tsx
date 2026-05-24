@@ -503,16 +503,21 @@ const Workbooks = () => {
                   Download all 26 workbooks—24 archetypal cycles plus 2 eclipse portal specials—as a complete bundle.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button variant="gold" size="lg">
-                    Download Complete Series
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+                  <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
+                    <Button variant="gold" size="lg">
+                      Get the Complete Series
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </a>
                   <Link to="/lunar-chaperone">
                     <Button variant="outline" size="lg">
-                      Learn About the Campaign
+                      Learn About the Program
                     </Button>
                   </Link>
                 </div>
+                <p className="text-xs text-muted-foreground/60 mt-4">
+                  Full program hosted on Lunar Chaperone · opens in a new tab
+                </p>
               </div>
             </ScrollReveal>
           </section>

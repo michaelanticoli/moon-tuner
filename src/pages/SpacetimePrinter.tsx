@@ -106,8 +106,7 @@ export default function SpacetimePrinter() {
             Submit a Proposal.
           </h1>
           <p
-            className="text-muted-foreground leading-relaxed max-w-xl text-base"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="text-muted-foreground leading-relaxed max-w-xl font-sans font-medium text-base"
           >
             We do not make a plan. We submit a proposal. Intention-setting as
             collaborative participation with uncertainty — not command, not
@@ -484,8 +483,7 @@ function ProposalDocument({ proposal }: { proposal: ProposalOutput }) {
             {POSTURE_DESC[proposal.timingPosture]}
           </p>
           <p
-            className="text-base leading-relaxed"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="text-base leading-relaxed font-sans"
           >
             {proposal.timingRationale}
           </p>
@@ -504,8 +502,7 @@ function ProposalDocument({ proposal }: { proposal: ProposalOutput }) {
             Suggested Next Action
           </p>
           <p
-            className="text-base leading-relaxed text-foreground"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="text-base leading-relaxed text-foreground font-sans"
           >
             {proposal.nextAction}
           </p>
@@ -542,8 +539,7 @@ function AnalysisSection({
         {label}
       </p>
       <p
-        className="text-base leading-relaxed"
-        style={{ fontFamily: "'Playfair Display', serif" }}
+        className="text-base leading-relaxed font-sans"
       >
         {body}
       </p>

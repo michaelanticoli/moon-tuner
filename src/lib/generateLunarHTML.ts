@@ -84,7 +84,7 @@ export function openLunarHTMLReport(report: LunarReport, options: LunarHtmlOptio
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MOONtuner — Lunar Arc Report</title>
+<title>Moontuner — Lunar Arc Report</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap');
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -222,7 +222,7 @@ export function openLunarHTMLReport(report: LunarReport, options: LunarHtmlOptio
 <button class="print-btn" onclick="window.print()">⎙ Print / Save PDF</button>
 
 <section class="cover" id="cover">
-  <span class="cover-brand">MOONtuner</span>
+  <span class="cover-brand">Moontuner</span>
   <div class="cover-moon">${getMoonSVG(natal.phase)}</div>
   <h1>Personal Lunar<br><em>Arc Report</em></h1>
   <div class="cover-meta">
@@ -324,7 +324,7 @@ export function openLunarHTMLReport(report: LunarReport, options: LunarHtmlOptio
   <p>${escapeHtml(closing.body)}</p>
   <div class="closing-footer">
     <p>moontuner.xyz</p>
-    <p style="margin-top:0.5rem">© MOONtuner ${new Date().getFullYear()}</p>
+    <p style="margin-top:0.5rem">© Moontuner ${new Date().getFullYear()}</p>
     <p style="margin-top:0.3rem;color:#3a3530">Generated ${meta.generatedDate}</p>
   </div>
 </section>

@@ -1,5 +1,5 @@
 // Global floating launcher: jumps anyone (signed-in or not) into the
-// MOONtuner Studio intake — the single place to enter birth data once and
+// Moontuner Studio intake — the single place to enter birth data once and
 // then fire any of the 4 personalized generators. Drop into App so it's
 // reachable from every page.
 import { useState } from "react";
@@ -58,7 +58,7 @@ export function ReportLauncher() {
             </button>
 
             <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground mb-2">
-              MOONtuner Studio
+              Moontuner Studio
             </p>
             <h2 className="text-2xl md:text-3xl font-thin mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
               One chart. <span className="italic text-accent">Every report.</span>

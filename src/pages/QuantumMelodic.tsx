@@ -32,20 +32,51 @@ import { renderChartImageBase64, renderReportPdfBase64 } from "@/lib/renderDeliv
 import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
 import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 import { NarrationUpsell } from "@/components/report/NarrationUpsell";
+import { QuantumSignaturePanel } from "@/components/harmonic/QuantumSignaturePanel";
+import { toast } from "sonner";
 
 const QM_STORAGE_KEY = "qm_paid";
 const QM_BIRTH_DATA_KEY = "qm_birth_data";
+
+function sendToCheckout(url: string) {
+  try {
+    if (window.top && window.top !== window.self) {
+      window.top.location.href = url;
+      return;
+    }
+  } catch {
+    // Cross-origin previews may block top navigation; fall back to this window.
+  }
+
+  window.location.href = url;
+}
 
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const returnedFromCheckout = searchParams.get("paid") === "true" || !!searchParams.get("session_id");
+  // Dev/admin bypass: ?dev=true persists a localStorage flag that unlocks the report
+  // for testing without paying. Remove the flag by visiting ?dev=false.
+  const devBypass = (() => {
+    if (typeof window === "undefined") return false;
+    const param = searchParams.get("dev");
+    if (param === "true") {
+      localStorage.setItem("qm_dev_bypass", "true");
+      return true;
+    }
+    if (param === "false") {
+      localStorage.removeItem("qm_dev_bypass");
+      return false;
+    }
+    return localStorage.getItem("qm_dev_bypass") === "true";
+  })();
   const [hasPaidAccess, setHasPaidAccess] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
-    return sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
+    return devBypass || sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
   });
-  const [checkoutUnavailable, setCheckoutUnavailable] = useState(false);
-  const [withNarration, setWithNarration] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+
+  
 
   const {
     loading,
@@ -109,6 +140,9 @@ const QuantumMelodic = () => {
   }, []);
 
   const beginCheckout = useCallback(async () => {
+    if (checkoutLoading) return;
+    setCheckoutLoading(true);
+
     const birthDraft: BirthData = {
       name: formData.name || "Cosmic Traveler",
       date: formData.date,
@@ -128,19 +162,21 @@ const QuantumMelodic = () => {
           birthName: birthDraft.name,
           successPath: "/quantumelodic?paid=true",
           cancelPath: "/quantumelodic",
-          withNarration,
+          withNarration: true,
+          bundledNarration: true,
         },
       });
 
       if (fnError) throw fnError;
       if (!data?.url) throw new Error("Checkout link unavailable");
 
-      window.location.href = data.url as string;
+      sendToCheckout(data.url as string);
     } catch (checkoutError) {
       console.error("Astro-harmonic checkout failed:", checkoutError);
-      setCheckoutUnavailable(true);
+      toast.error("Could not start checkout. Please try again.");
+      setCheckoutLoading(false);
     }
-  }, [formData.date, formData.location, formData.name, formData.time, saveBirthDraft]);
+  }, [checkoutLoading, formData.date, formData.location, formData.name, formData.time, saveBirthDraft]);
 
   useEffect(() => {
     if (!returnedFromCheckout) return;
@@ -354,7 +390,7 @@ const QuantumMelodic = () => {
                   <audio
                     controls
                     preload="none"
-                    src="/audio/sample-quantumelodic.mp3"
+                    src="/audio/moontuners-debut.mp3"
                     className="w-full mt-2"
                   >
                     Your browser does not support the audio element.
@@ -364,22 +400,16 @@ const QuantumMelodic = () => {
                   </p>
                 </div>
 
-                <label className="flex items-start gap-2.5 mb-4 cursor-pointer p-3 rounded-lg border border-gold/25 bg-gold/5 hover:bg-gold/10 transition-colors max-w-md">
-                  <input
-                    type="checkbox"
-                    checked={withNarration}
-                    onChange={(e) => setWithNarration(e.target.checked)}
-                    className="mt-0.5 accent-gold"
-                  />
+                <div className="flex items-start gap-2.5 mb-4 p-3 rounded-lg border border-gold/25 bg-gold/5 max-w-md">
                   <span className="text-xs text-foreground/90 leading-snug">
-                    <span className="font-medium text-gold">+ Add voice narration ($5)</span>
+                    <span className="font-medium text-gold">✓ Voice narration included</span>
                     <br />
-                    <span className="text-muted-foreground">Hear your full report read in Michael's cloned voice — delivered as MP3.</span>
+                    <span className="text-muted-foreground">Your full report read aloud in Michael's cloned voice — delivered as MP3, no add-on required.</span>
                   </span>
-                </label>
+                </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Button onClick={beginCheckout} size="lg" className="system-button">
-                    Unlock Your Astro-Harmonic Report — ${withNarration ? "52" : "47"}
+                  <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
+                    {checkoutLoading ? "Starting Checkout…" : "Unlock Your Astro-Harmonic Report — $47"}
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground mt-4">
@@ -404,14 +434,9 @@ const QuantumMelodic = () => {
                   One-time payment. Instant access. Yours forever — printable, shareable, and
                   generated from your exact birth chart.
                 </p>
-                <Button onClick={beginCheckout} size="lg" className="system-button">
-                  Unlock Your Astro-Harmonic Report
+                <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
+                  {checkoutLoading ? "Starting Checkout…" : "Unlock Your Astro-Harmonic Report — $47"}
                 </Button>
-                {checkoutUnavailable ? (
-                  <p className="text-xs text-destructive/80 mt-4">
-                    Checkout is temporarily unavailable. Please refresh and try again.
-                  </p>
-                ) : null}
               </div>
             </section>
           </main>
@@ -885,6 +910,26 @@ const QuantumMelodic = () => {
                     </motion.section>
                   )}
 
+                  {/* ── Quantum Signature (live Swiss Ephemeris + 24-mode engine + MIDI) ── */}
+                  <motion.section
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.17 }}
+                    className="py-16 border-b border-border"
+                  >
+                    <QuantumSignaturePanel
+                      birth={{
+                        date: reading.birthData.date,
+                        time: reading.birthData.time,
+                        location: reading.birthData.location,
+                        name: reading.birthData.name,
+                      }}
+                      chartName={reading.birthData.name || "Cosmic Traveler"}
+                      heading="Quantum Signature — 24-Mode Reading"
+                      subheading="Computed live from your chart via the canonical Quantumelodics engine. Includes downloadable natal MIDI."
+                    />
+                  </motion.section>
+
                   {/* Harmonic Analysis */}
                   {harmonicAnalysis && (
                     <motion.section
@@ -974,9 +1019,6 @@ const QuantumMelodic = () => {
                       reportLabel={`${reading.birthData.name || "Natal"} Astro-Harmonic Report`}
                       sourceText={[
                         interpretation.opening,
-                        interpretation.coreSignature,
-                        interpretation.harmonicAlignment,
-                        interpretation.resolutionGuidance,
                         interpretation.closing,
                       ].filter(Boolean).join("\n\n")}
                       returnPath="/quantum-melodic"
@@ -1260,7 +1302,7 @@ const QuantumMelodic = () => {
                     <p className="font-serif text-xl text-foreground/70 italic max-w-md mx-auto leading-relaxed">
                       Every chart is a score waiting to be heard. Yours has been playing since the moment you arrived.
                     </p>
-                    <p className="system-label mt-8 text-muted-foreground/40">MOONtuner {"\u00D7"} QuantumMelodic</p>
+                    <p className="system-label mt-8 text-muted-foreground/40">Moontuner {"\u00D7"} QuantumMelodic</p>
                   </motion.section>
 
                   <CrossGeneratorLinks exclude="/quantumelodic" />

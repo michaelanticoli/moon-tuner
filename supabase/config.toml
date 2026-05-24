@@ -1,1 +1,4 @@
 project_id = "flrojnnbpankkrouthyz"
+
+[functions.quantum-api]
+verify_jwt = false

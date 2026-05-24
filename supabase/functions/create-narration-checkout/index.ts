@@ -11,7 +11,7 @@ const corsHeaders = {
 };
 
 const VOICE_ID = "bQjXuTZHN8ofphZ0QfAv"; // Michael Moon voice clone
-const PRICE_CENTS = 500; // $5
+const NARRATION_PRICE_ID = "price_1TTprKCbEehvrcXT91cX9Tl9"; // $5 one-time
 const ASTRO_HARMONIC_PROFILE_URL = "https://buy.stripe.com/5kQ00i5QCdHm8qngTfe7m04";
 
 Deno.serve(async (req) => {
@@ -62,19 +62,7 @@ Deno.serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       customer_email: email ?? undefined,
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: "Voice Narration Add-On",
-              description: `Michael Moon's voice narration for ${reportLabel ?? reportType}`,
-            },
-            unit_amount: PRICE_CENTS,
-          },
-          quantity: 1,
-        },
-      ],
+      line_items: [{ price: NARRATION_PRICE_ID, quantity: 1 }],
       success_url: successUrl,
       cancel_url: cancelUrl,
       metadata: { narration_id: narration.id },

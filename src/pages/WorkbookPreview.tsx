@@ -472,10 +472,15 @@ const WorkbookPreview = () => {
                 <p className="text-muted-foreground mb-6">
                   Subscribe to access all 24 archetypal lunar journeys plus 2 eclipse portal specials.
                 </p>
-                <Button variant="gold" size="lg">
-                  Subscribe for Full Access
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+                <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
+                  <Button variant="gold" size="lg">
+                    Subscribe for Full Access
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </a>
+                <p className="text-xs text-muted-foreground/60 mt-3">
+                  The full 26-workbook program lives on Lunar Chaperone · opens in a new tab
+                </p>
               </div>
             </ScrollReveal>
           </section>
