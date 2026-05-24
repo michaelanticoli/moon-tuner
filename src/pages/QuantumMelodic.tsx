@@ -37,6 +37,9 @@ import { toast } from "sonner";
 
 const QM_STORAGE_KEY = "qm_paid";
 const QM_BIRTH_DATA_KEY = "qm_birth_data";
+// Update this number manually as Founding Readings are claimed
+const FOUNDING_READINGS_CLAIMED = 3;
+const FOUNDING_READINGS_TOTAL = 50;
 
 function sendToCheckout(url: string) {
   try {
@@ -407,20 +410,52 @@ const QuantumMelodic = () => {
                     <span className="text-muted-foreground">Your full report read aloud in Michael's cloned voice — delivered as MP3, no add-on required.</span>
                   </span>
                 </div>
+
+                {/* Founding Reading block */}
+                <div className="mb-8 max-w-md rounded-xl border border-accent/30 bg-accent/5 p-5">
+                  <p className="text-xs system-label mb-2 text-accent">Founding Readings</p>
+                  <p className="text-sm text-foreground leading-relaxed mb-1">
+                    The first 50 Astro-Harmonic Reports are <span className="font-semibold">$47</span>. After the fiftieth, the price becomes <span className="font-semibold">$97</span>.
+                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed mb-3">
+                    You receive the same full reading either way. Founding pricing exists for the people willing to be early — the ones who help prove the work resonates.
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 bg-border rounded-full h-1.5 overflow-hidden">
+                      <div
+                        className="h-full bg-accent rounded-full"
+                        style={{ width: `${(FOUNDING_READINGS_CLAIMED / FOUNDING_READINGS_TOTAL) * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">
+                      {FOUNDING_READINGS_CLAIMED} of {FOUNDING_READINGS_TOTAL} claimed
+                    </span>
+                  </div>
+                </div>
+
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
-                    {checkoutLoading ? "Starting Checkout…" : "Unlock Your Astro-Harmonic Report — $47"}
+                    {checkoutLoading ? "Starting Checkout…" : "Claim Your Founding Reading — $47"}
                   </Button>
                 </div>
-                <p className="text-xs text-muted-foreground mt-4">
-                  After payment, return here to enter your birth data and generate your full report instantly.
-                  No account signup required.
+                <p className="text-xs text-muted-foreground/80 mt-3 max-w-md leading-relaxed">
+                  If the composition doesn't feel like yours, email me within 7 days. I'll refund you in full — and you keep the report. This work is meant to resonate. If it doesn't, you owe me nothing.
                 </p>
-                <p className="text-xs text-muted-foreground/70 mt-2">Find Yourself In The Frequencies</p>
               </div>
             </section>
 
             {/* Rich sample preview — shows the actual deliverable's look & feel */}
+
+            {/* About this work — credibility paragraph */}
+            <section className="py-16 border-b border-border">
+              <div className="container mx-auto px-6 lg:px-12 max-w-3xl">
+                <span className="system-label mb-4 block">About this work</span>
+                <p className="text-base text-foreground/90 leading-relaxed">
+                  I'm Michael — composer, astrologer, and the person who built every piece of this system. The Astro-Harmonic Report is years of work in music theory and chart interpretation, synthesized: every aspect translated to its musical interval, every planet given a voice and an instrument, every element rendered as frequency. The narration is read in my voice — cloned, so I can deliver thousands of readings without losing the human imprint. The composition is generated from your exact placements, never a template. What you receive is made by one person who believes your birth carried a sound worth hearing.
+                </p>
+              </div>
+            </section>
+
             <AstroHarmonicSample />
 
             {/* Closing CTA after the sample */}
@@ -435,8 +470,11 @@ const QuantumMelodic = () => {
                   generated from your exact birth chart.
                 </p>
                 <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
-                  {checkoutLoading ? "Starting Checkout…" : "Unlock Your Astro-Harmonic Report — $47"}
+                  {checkoutLoading ? "Starting Checkout…" : "Claim Your Founding Reading — $47"}
                 </Button>
+                <p className="text-xs text-muted-foreground/80 mt-4 max-w-md mx-auto leading-relaxed">
+                  If the composition doesn't feel like yours, email me within 7 days. I'll refund you in full — and you keep the report. This work is meant to resonate. If it doesn't, you owe me nothing.
+                </p>
               </div>
             </section>
           </main>
