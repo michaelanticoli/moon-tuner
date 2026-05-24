@@ -68,7 +68,9 @@ export default function CazimiPunchcard() {
     if (profile && resolvedLocation) {
       try {
         sessionStorage.setItem(CAZIMI_CACHE_KEY, JSON.stringify({ profile, resolvedLocation }));
-      } catch {}
+      } catch (_e) {
+        // ignore sessionStorage errors (e.g. private browsing quota)
+      }
     }
   }, [profile, resolvedLocation]);
 

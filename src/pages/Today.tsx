@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { useTodayData } from "@/hooks/useTodayData";
 import { useHaptic } from "@/hooks/useHaptic";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
+import { Footer } from "@/components/Footer";
 
 type PhaseKey =
   | "new" | "waxing-crescent" | "first-quarter" | "waxing-gibbous"
@@ -480,6 +481,7 @@ const Today = () => {
           </Reveal>
 
         </main>
+        <Footer />
       </div>
     </PageTransition>
   );

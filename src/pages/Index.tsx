@@ -17,18 +17,18 @@ const Index = () => {
   return (
     <PageTransition>
       <SEOHead
-        title="Moontuner | A Reflective Operating System for Emotionally Intelligent People"
-        description="Today's Directive, your Harmonic Profile, and a lunar framework for creative rhythm, emotional regulation, and intentional living. Not astrology — a reflective system."
+        title="Moon Phase Today | Moontuner — Live Lunar Calendar & Wellness Guide"
+        description="Check today's moon phase and align your energy, habits, and decisions with the current lunar cycle. Free moon phase tracker, harmonic profile, and guided workbooks."
         canonical="/"
         keywords={[
+          "moon phase today",
+          "current moon phase",
+          "moon cycle today",
+          "lunar alignment system",
           "emotional regulation",
           "intentional living",
-          "creative rhythm",
           "cyclical productivity",
-          "daily directive",
-          "lunar alignment system",
-          "emotional wellness",
-          "moon phases",
+          "lunar wellness",
         ]}
         jsonLd={websiteSchema()}
       />
@@ -67,10 +67,10 @@ const Index = () => {
             </div>
           </section>
 
-          {/* ── Reports — coming-soon teaser ─────────────────────────── */}
+          {/* ── Reports — live section ─────────────────────────── */}
           <section
             className="relative py-24 lg:py-32 overflow-hidden"
-            aria-label="Reports — coming soon"
+            aria-label="Personalized Lunar Reports"
           >
             <div className="mx-auto max-w-[1100px] px-6 lg:px-12">
               <div className="dusk-hairline mb-20" />
@@ -80,7 +80,7 @@ const Index = () => {
                 <div>
                   <p className="dusk-eyebrow mb-6">
                     <span className="inline-block w-6 h-px align-middle mr-3 bg-[hsl(var(--dusk-gold))]" />
-                    Coming Soon — Phase II
+                    Available Now
                   </p>
 
                   <h2 className="dusk-serif text-[clamp(2rem,4.2vw,3.4rem)] dusk-ivory mb-6">
@@ -92,23 +92,19 @@ const Index = () => {
                     style={{ color: "hsl(var(--dusk-ivory) / 0.62)" }}
                   >
                     A deep-read of your natal chart, current transits, and timing
-                    windows — delivered as a living document. Subscribe below to
-                    be notified when reports open.
+                    windows — delivered as a living document.
                   </p>
 
-                  <div
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-sm text-[0.7rem] tracking-[0.2em] uppercase"
+                  <Link
+                    to="/lunar-reports"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-sm text-sm tracking-widest uppercase transition-colors hover:bg-[hsl(var(--dusk-gold))] hover:text-[hsl(var(--dusk-black))]"
                     style={{
-                      border: "1px solid hsl(var(--dusk-ivory) / 0.12)",
-                      color: "hsl(var(--dusk-ivory) / 0.35)",
+                      border: "1px solid hsl(var(--dusk-gold))",
+                      color: "hsl(var(--dusk-gold))",
                     }}
                   >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ background: "hsl(var(--dusk-gold) / 0.45)" }}
-                    />
-                    In development
-                  </div>
+                    View Lunar Reports →
+                  </Link>
                 </div>
 
                 {/* Right — preview cards */}
@@ -126,15 +122,6 @@ const Index = () => {
                         borderColor: "hsl(var(--dusk-ivory) / 0.07)",
                       }}
                     >
-                      <div
-                        className="absolute top-4 right-4 text-[0.55rem] tracking-[0.2em] uppercase px-2 py-1 rounded-sm"
-                        style={{
-                          color: "hsl(var(--dusk-ivory) / 0.28)",
-                          background: "hsl(var(--dusk-ivory) / 0.05)",
-                        }}
-                      >
-                        Soon
-                      </div>
                       <p className="dusk-eyebrow mb-2">{card.label}</p>
                       <p
                         className="text-sm leading-[1.65]"

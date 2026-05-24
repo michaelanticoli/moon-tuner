@@ -271,10 +271,12 @@ const Workbooks = () => {
   return (
     <PageTransition>
       <SEOHead
-        title="Lunar Workbooks — Guided Practice for Every Moon Phase | Moontuner"
-        description="26 guided lunar workbooks covering every sign transition. Practice-based companionship for each phase of the moon cycle — from New Moon intention to Full Moon release."
+        title="Lunar Workbook — Moon Cycle Journal & Guided Practice for Every Phase | Moontuner"
+        description="26 guided lunar workbooks and moon cycle journals covering every sign transition. Practice-based companionship for each phase of the moon cycle — from New Moon intention to Full Moon release."
         canonical="/workbooks"
         keywords={[
+          "lunar workbook",
+          "moon cycle journal",
           "lunar workbooks",
           "moon phase journal",
           "new moon workbook",

@@ -34,8 +34,8 @@ function createPlanet(name: string, degree: number, isRetro = false) {
 function approximateNorthNode(jd: number): number {
   const T = (jd - 2451545.0) / 36525;
   // Mean longitude of the ascending node (Meeus, Ch. 47)
-  let omega = 125.0445479 - 1934.1362891 * T + 0.0020754 * T * T + T * T * T / 467441 - T * T * T * T / 60616000;
-  return ((omega % 360) + 360) % 360;
+  const omega = ((125.0445479 - 1934.1362891 * T + 0.0020754 * T * T + T * T * T / 467441 - T * T * T * T / 60616000) % 360 + 360) % 360;
+  return omega;
 }
 
 // Approximate Chiron position — very rough orbital model
@@ -102,7 +102,8 @@ serve(async (req) => {
       });
     }
 
-    let { date, time, latitude, longitude, timezone } = body;
+    const { date, time } = body;
+    let { latitude, longitude, timezone } = body;
 
     if (body.location && (latitude === undefined || longitude === undefined)) {
       const geo = await geocodeLocation(body.location);

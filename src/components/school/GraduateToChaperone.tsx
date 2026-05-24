@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BookOpen, ArrowRight, Moon, Star } from "lucide-react";
 
@@ -42,10 +43,10 @@ export function GraduateToChaperone() {
       </div>
 
       <Button size="lg" asChild>
-        <a href="/workbooks">
+        <Link to="/workbooks">
           Explore the Lunar Chaperone
           <ArrowRight className="w-4 h-4 ml-2" />
-        </a>
+        </Link>
       </Button>
     </div>
   );

@@ -5,6 +5,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { LunarLiveStatus } from "@/components/LunarLiveStatus";
 import { PhaseSignMatrix } from "@/components/PhaseSignMatrix";
 import { ZodiacBodyMap } from "@/components/ZodiacBodyMap";
+import { Link } from "react-router-dom";
 import { ArrowDown } from "lucide-react";
 import { DeepDiveSection } from "@/components/DeepDiveSection";
 import { SEOHead } from "@/components/SEOHead";
@@ -140,16 +141,16 @@ const LunarSystem = () => {
                   for the entire journey.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <a href="/workbooks" className="system-button">
+                  <Link to="/workbooks" className="system-button">
                     Explore Workbooks
-                  </a>
-                  <a
-                    href="/method"
+                  </Link>
+                  <Link
+                    to="/method"
                     className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors"
                   >
                     <span>Learn Phasecraft</span>
                     <span>→</span>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </ScrollReveal>

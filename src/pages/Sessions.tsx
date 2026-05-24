@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { ImageInlay } from "@/components/ImageInlay";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { ExternalLink, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -503,11 +504,11 @@ export default function Sessions() {
                 pattern clicks or a question opens up — there's a full body of work here to go deeper with. At your
                 pace, on your cycle.
               </p>
-              <a href="/">
+              <Link to="/">
                 <Button variant="hero-outline" size="lg" className="gap-2">
                   Explore the Full System
                 </Button>
-              </a>
+              </Link>
             </div>
           </section>
         </main>

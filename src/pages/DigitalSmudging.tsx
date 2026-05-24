@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/PageTransition";
 import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 import { SmudgingHero } from "@/components/smudging/SmudgingHero";
 import { SageScan } from "@/components/smudging/SageScan";
 import { CordCutting } from "@/components/smudging/CordCutting";
@@ -134,6 +135,7 @@ const DigitalSmudging = () => {
             {renderChamber()}
           </motion.div>
         </AnimatePresence>
+        <Footer />
       </div>
     </PageTransition>
   );
