@@ -54,7 +54,7 @@ const LunarReports = () => {
     if (!returningFromNarration) return null;
     try {
       const raw = sessionStorage.getItem(LUNAR_CACHE_KEY);
-      return raw ? JSON.parse(raw) as { report: LunarReport; chartData: ChartData | null; formData: any } : null;
+      return raw ? JSON.parse(raw) as { report: LunarReport; chartData: ChartData | null; formData: Record<string, string> } : null;
     } catch { return null; }
   })();
 
@@ -84,7 +84,9 @@ const LunarReports = () => {
     if (report) {
       try {
         sessionStorage.setItem(LUNAR_CACHE_KEY, JSON.stringify({ report, chartData, formData }));
-      } catch {}
+      } catch (_e) {
+        // ignore sessionStorage errors (e.g. private browsing quota)
+      }
     }
   }, [report, chartData, formData]);
 

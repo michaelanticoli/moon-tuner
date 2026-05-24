@@ -16,7 +16,11 @@ export async function renderScoreToAudioUrl(score: Score): Promise<string> {
         const freq = Tone.Frequency(note.pitch, 'midi').toFrequency();
         const vel = note.velocity / 127;
         transport.schedule((time) => {
-          try { (synth as Tone.PolySynth).triggerAttackRelease(freq, note.duration, time, vel); } catch {}
+          try {
+            (synth as Tone.PolySynth).triggerAttackRelease(freq, note.duration, time, vel);
+          } catch (_e) {
+            // ignore scheduling errors during offline rendering
+          }
         }, note.time);
       }
     }

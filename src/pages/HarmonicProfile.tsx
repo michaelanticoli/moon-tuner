@@ -16,6 +16,7 @@ import { AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
 import { DuskNav } from "@/components/dusk/DuskNav";
+import { Footer } from "@/components/Footer";
 import { HarmonicWelcome } from "@/components/harmonic/HarmonicWelcome";
 import { HarmonicPrompts } from "@/components/harmonic/HarmonicPrompts";
 import { HarmonicPattern } from "@/components/harmonic/HarmonicPattern";
@@ -138,6 +139,7 @@ const HarmonicProfile = () => {
             )}
           </AnimatePresence>
         </main>
+        <Footer />
       </div>
     </PageTransition>
   );

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import michaelPortrait from "@/assets/michael-portrait-2.jpeg";
 import { ImageInlay } from "@/components/ImageInlay";
 
@@ -81,9 +82,9 @@ export function StartSessionCTA() {
               </div>
             </div>
 
-            <a href="/services" className="system-button inline-flex">
+            <Link to="/services" className="system-button inline-flex">
               View All Sessions & Book
-            </a>
+            </Link>
           </div>
 
           {/* Right: tier cards */}

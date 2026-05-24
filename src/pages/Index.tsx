@@ -17,18 +17,20 @@ const Index = () => {
   return (
     <PageTransition>
       <SEOHead
+        title="Moon Phase Today | Moontuner — Live Lunar Calendar & Wellness Guide"
+        description="Check today's moon phase and align your energy, habits, and decisions with the current lunar cycle. Free moon phase tracker, harmonic profile, and guided workbooks."
         title="Moontuner — Reflective Lunar OS for Daily Alignment"
         description="Today's Directive, your Harmonic Profile, and a lunar framework for creative rhythm and intentional living."
         canonical="/"
         keywords={[
+          "moon phase today",
+          "current moon phase",
+          "moon cycle today",
+          "lunar alignment system",
           "emotional regulation",
           "intentional living",
-          "creative rhythm",
           "cyclical productivity",
-          "daily directive",
-          "lunar alignment system",
-          "emotional wellness",
-          "moon phases",
+          "lunar wellness",
         ]}
         jsonLd={websiteSchema()}
       />
@@ -67,6 +69,10 @@ const Index = () => {
             </div>
           </section>
 
+          {/* ── Reports — live section ─────────────────────────── */}
+          <section
+            className="relative py-24 lg:py-32 overflow-hidden"
+            aria-label="Personalized Lunar Reports"
           {/* ── Live Reports — fully generative ─────────────────────────── */}
           <section
             className="relative py-24 lg:py-32 overflow-hidden"
@@ -80,6 +86,7 @@ const Index = () => {
                 <div>
                   <p className="dusk-eyebrow mb-6">
                     <span className="inline-block w-6 h-px align-middle mr-3 bg-[hsl(var(--dusk-gold))]" />
+                    Available Now
                     Personalized Reports — Live
                   </p>
 
@@ -92,6 +99,19 @@ const Index = () => {
                     style={{ color: "hsl(var(--dusk-ivory) / 0.62)" }}
                   >
                     A deep-read of your natal chart, current transits, and timing
+                    windows — delivered as a living document.
+                  </p>
+
+                  <Link
+                    to="/lunar-reports"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-sm text-sm tracking-widest uppercase transition-colors hover:bg-[hsl(var(--dusk-gold))] hover:text-[hsl(var(--dusk-black))]"
+                    style={{
+                      border: "1px solid hsl(var(--dusk-gold))",
+                      color: "hsl(var(--dusk-gold))",
+                    }}
+                  >
+                    View Lunar Reports →
+                  </Link>
                     windows — generated on demand from live ephemeris data.
                     Pick the report that fits your moment.
                   </p>

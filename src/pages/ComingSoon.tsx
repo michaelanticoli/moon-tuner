@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
 import { DuskNav } from "@/components/dusk/DuskNav";
+import { Footer } from "@/components/Footer";
 import { LunarCapture } from "@/components/LunarCapture";
 import { SEOHead } from "@/components/SEOHead";
 
@@ -87,6 +88,7 @@ export default function ComingSoon() {
             ]}
           />
         </main>
+        <Footer />
       </div>
     </PageTransition>
   );

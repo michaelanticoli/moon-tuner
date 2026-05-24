@@ -1171,7 +1171,7 @@ const QuantumMelodic = () => {
                               <div className="flex items-center gap-5">
                                 <span className="w-8 flex justify-center text-muted-foreground">
                                   {isSigilName(planet.name) ? (
-                                    <Sigil name={planet.name as any} size={22} strokeWidth={1.3} />
+                                    <Sigil name={planet.name as Parameters<typeof Sigil>[0]["name"]} size={22} strokeWidth={1.3} />
                                   ) : (
                                     <span className="text-xs uppercase tracking-wider">{planet.name.slice(0,3)}</span>
                                   )}
