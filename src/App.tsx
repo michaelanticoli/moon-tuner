@@ -63,6 +63,7 @@ const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+// PhasecraftRoutes is a named export, so .then() is required by React.lazy
 const PhasecraftRoutes = lazy(() => import("@/phasecraft/PhasecraftRoutes").then(m => ({ default: m.PhasecraftRoutes })));
 
 const queryClient = new QueryClient();
@@ -74,7 +75,7 @@ function AnimatedRoutes() {
   return (
     <>
       <ScrollToTop />
-      <Suspense fallback={null}>
+      <Suspense fallback={<div style={{ minHeight: "100vh", background: "#07080c" }} />}>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           {/* ── Phase 1 — Core public routes ──────────────────────────── */}
