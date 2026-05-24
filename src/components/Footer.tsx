@@ -27,11 +27,16 @@ export function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <img
-                src="/moonkey-logo.png"
-                alt="Moontuner logo"
-                className="w-8 h-8 rounded-sm object-contain"
-              />
+              <picture>
+                <source srcSet="/moonkey-logo.webp" type="image/webp" />
+                <img
+                  src="/moonkey-logo.png"
+                  alt="Moontuner logo"
+                  className="w-8 h-8 rounded-sm object-contain"
+                  width="32"
+                  height="32"
+                />
+              </picture>
               <span className="font-sans text-sm font-medium tracking-[0.2em] text-foreground uppercase">
                 Moontuner
               </span>

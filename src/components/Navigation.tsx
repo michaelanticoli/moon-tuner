@@ -230,7 +230,10 @@ export function Navigation() {
         <nav className={`mn-nav${scrolled ? ' is-scrolled' : ''}`} aria-label="Main navigation">
           {/* Logo */}
           <Link to="/" className="mn-logo" aria-label="Moontuner home">
-            <img src="/moonkey-logo.png" alt="Moontuner logo" className="mn-logo-mark" />
+            <picture>
+              <source srcSet="/moonkey-logo.webp" type="image/webp" />
+              <img src="/moonkey-logo.png" alt="Moontuner logo" className="mn-logo-mark" width="42" height="42" />
+            </picture>
           </Link>
 
           {/* Desktop groups */}

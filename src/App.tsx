@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,56 +13,57 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { ReportLauncher } from "@/components/ReportLauncher";
 import { usePageTracking } from "@/hooks/usePageTracking";
 import { PHASE_2_ENABLED, PHASE_3_ENABLED } from "@/lib/featureFlags";
-import Index from "./pages/Index";
-import Method from "./pages/Method";
-import Manifesto from "./pages/Manifesto";
-import Philosophy from "./pages/Philosophy";
-import Workbooks from "./pages/Workbooks";
-import WorkbookPreview from "./pages/WorkbookPreview";
-import LunarChaperone from "./pages/LunarChaperone";
-import LunarSystem from "./pages/LunarSystem";
-import LunarCipher from "./pages/LunarCipher";
-import LunarReports from "./pages/LunarReports";
-import QuantumMelodic from "./pages/QuantumMelodic";
-import MoontunedApp from "./pages/App";
-import Moon from "./pages/Moon";
-import Auth from "./pages/Auth";
-import AuthResetPassword from "./pages/AuthResetPassword";
-import Dashboard from "./pages/Dashboard";
-import Settings from "./pages/Settings";
-import MoontunerSchool from "./pages/MoontunerSchool";
-import MoonTunerStarter from "./pages/MoonTunerStarter";
-import Sessions from "./pages/Sessions";
-import Services from "./pages/Services";
-import MoonPhaseToday from "./pages/MoonPhaseToday";
-import Studio from "./pages/Studio";
-import FreeGuide from "./pages/FreeGuide";
-import TotalTuner from "./pages/TotalTuner";
-import CazimiPunchcard from "./pages/CazimiPunchcard";
-import SpacetimePrinter from "./pages/SpacetimePrinter";
-import HarmonicProfile from "./pages/HarmonicProfile";
-import AuthCallback from "./pages/AuthCallback";
-import DigitalSmudging from "./pages/DigitalSmudging";
-import Offerings from "./pages/Offerings";
-import Journal from "./pages/Journal";
-import JournalEntry from "./pages/JournalEntry";
-import Membership from "./pages/Membership";
-import MembershipManage from "./pages/MembershipManage";
-import DigitalStore from "./pages/DigitalStore";
-import GiftPage from "./pages/GiftPage";
-import GiftConfirmation from "./pages/GiftConfirmation";
-import GiftClaim from "./pages/GiftClaim";
-import PurchaseHistory from "./pages/PurchaseHistory";
-import About from "./pages/About";
-import AnalyticsDashboard from "./pages/AnalyticsDashboard";
-import Explore from "./pages/Explore";
-import ExploreConcept from "./pages/ExploreConcept";
-import Today from "./pages/Today";
-import ComingSoon from "./pages/ComingSoon";
-import Terms from "./pages/Terms";
-import Privacy from "./pages/Privacy";
-import NotFound from "./pages/NotFound";
-import { PhasecraftRoutes } from "@/phasecraft/PhasecraftRoutes";
+
+const Index = lazy(() => import("./pages/Index"));
+const Method = lazy(() => import("./pages/Method"));
+const Manifesto = lazy(() => import("./pages/Manifesto"));
+const Philosophy = lazy(() => import("./pages/Philosophy"));
+const Workbooks = lazy(() => import("./pages/Workbooks"));
+const WorkbookPreview = lazy(() => import("./pages/WorkbookPreview"));
+const LunarChaperone = lazy(() => import("./pages/LunarChaperone"));
+const LunarSystem = lazy(() => import("./pages/LunarSystem"));
+const LunarCipher = lazy(() => import("./pages/LunarCipher"));
+const LunarReports = lazy(() => import("./pages/LunarReports"));
+const QuantumMelodic = lazy(() => import("./pages/QuantumMelodic"));
+const MoontunedApp = lazy(() => import("./pages/App"));
+const Moon = lazy(() => import("./pages/Moon"));
+const Auth = lazy(() => import("./pages/Auth"));
+const AuthResetPassword = lazy(() => import("./pages/AuthResetPassword"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Settings = lazy(() => import("./pages/Settings"));
+const MoontunerSchool = lazy(() => import("./pages/MoontunerSchool"));
+const MoonTunerStarter = lazy(() => import("./pages/MoonTunerStarter"));
+const Sessions = lazy(() => import("./pages/Sessions"));
+const Services = lazy(() => import("./pages/Services"));
+const MoonPhaseToday = lazy(() => import("./pages/MoonPhaseToday"));
+const Studio = lazy(() => import("./pages/Studio"));
+const FreeGuide = lazy(() => import("./pages/FreeGuide"));
+const TotalTuner = lazy(() => import("./pages/TotalTuner"));
+const CazimiPunchcard = lazy(() => import("./pages/CazimiPunchcard"));
+const SpacetimePrinter = lazy(() => import("./pages/SpacetimePrinter"));
+const HarmonicProfile = lazy(() => import("./pages/HarmonicProfile"));
+const AuthCallback = lazy(() => import("./pages/AuthCallback"));
+const DigitalSmudging = lazy(() => import("./pages/DigitalSmudging"));
+const Offerings = lazy(() => import("./pages/Offerings"));
+const Journal = lazy(() => import("./pages/Journal"));
+const JournalEntry = lazy(() => import("./pages/JournalEntry"));
+const Membership = lazy(() => import("./pages/Membership"));
+const MembershipManage = lazy(() => import("./pages/MembershipManage"));
+const DigitalStore = lazy(() => import("./pages/DigitalStore"));
+const GiftPage = lazy(() => import("./pages/GiftPage"));
+const GiftConfirmation = lazy(() => import("./pages/GiftConfirmation"));
+const GiftClaim = lazy(() => import("./pages/GiftClaim"));
+const PurchaseHistory = lazy(() => import("./pages/PurchaseHistory"));
+const About = lazy(() => import("./pages/About"));
+const AnalyticsDashboard = lazy(() => import("./pages/AnalyticsDashboard"));
+const Explore = lazy(() => import("./pages/Explore"));
+const ExploreConcept = lazy(() => import("./pages/ExploreConcept"));
+const Today = lazy(() => import("./pages/Today"));
+const ComingSoon = lazy(() => import("./pages/ComingSoon"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const PhasecraftRoutes = lazy(() => import("@/phasecraft/PhasecraftRoutes").then(m => ({ default: m.PhasecraftRoutes })));
 
 const queryClient = new QueryClient();
 
@@ -72,6 +74,7 @@ function AnimatedRoutes() {
   return (
     <>
       <ScrollToTop />
+      <Suspense fallback={null}>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           {/* ── Phase 1 — Core public routes ──────────────────────────── */}
@@ -179,6 +182,7 @@ function AnimatedRoutes() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
+      </Suspense>
       <ReportLauncher />
     </>
   );
