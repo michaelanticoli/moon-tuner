@@ -73,12 +73,17 @@ export function StartSessionCTA() {
                 />
               </div>
               <div className="w-28 h-36 rounded-xl border border-border/40 bg-card/50 flex items-center justify-center p-4">
-                <img
-                  src="/moonkey-logo.png"
-                  alt="Moontuner logo"
-                  className="w-16 h-16 rounded-lg object-contain"
-                  loading="lazy"
-                />
+                <picture>
+                  <source srcSet="/moonkey-logo.webp" type="image/webp" />
+                  <img
+                    src="/moonkey-logo.png"
+                    alt="Moontuner logo"
+                    className="w-16 h-16 rounded-lg object-contain"
+                    loading="lazy"
+                    width="64"
+                    height="64"
+                  />
+                </picture>
               </div>
             </div>
 
