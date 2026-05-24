@@ -7,6 +7,19 @@
   to = "/index.html"
   status = 200
 
+# HTML entry point must never be cached so browsers always receive the latest
+# build (which references new content-hashed JS/CSS bundles).
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# Hashed static assets (JS/CSS/images) are immutable — safe to cache for 1 year.
 [[headers]]
   for = "/assets/*"
   [headers.values]
