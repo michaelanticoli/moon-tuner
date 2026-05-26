@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Moon, Waves, Eye, Heart, Compass, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
-import rideCoattailsPoster from "@/assets/ride-coattails-poster.png";
+const rideCoattailsPoster = "/images/ride-coattails-poster.webp";
 
 const manifestoDeclarations = [
   {

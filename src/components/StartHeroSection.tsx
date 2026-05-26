@@ -1,7 +1,7 @@
 import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { LunarBackground } from "./LunarBackground";
 import { MoonPhaseGlyph, phaseNameToKey } from "./MoonPhaseGlyph";
-import michaelMoonPortrait from "@/assets/michael-moon-portrait.png";
+const michaelMoonPortrait = "/images/michael-moon-portrait.webp";
 
 export function StartHeroSection() {
   const moonPhase = useMoonPhase();
