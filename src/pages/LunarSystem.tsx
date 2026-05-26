@@ -9,9 +9,9 @@ import { Link } from "react-router-dom";
 import { ArrowDown } from "lucide-react";
 import { DeepDiveSection } from "@/components/DeepDiveSection";
 import { SEOHead } from "@/components/SEOHead";
-import phasesGold from "@/assets/graphic-phases-gold.png";
-import waveDivider from "@/assets/graphic-wave-phases-divider.png";
-import phaseWaveforms from "@/assets/graphic-phase-waveforms.png";
+const phasesGold = "/images/graphic-phases-gold.webp";
+const waveDivider = "/images/graphic-wave-phases-divider.webp";
+const phaseWaveforms = "/images/graphic-phase-waveforms.webp";
 
 const LunarSystem = () => {
   return (
