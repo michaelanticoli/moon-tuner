@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { getRedirectPathFromLocationState, sanitizeRedirectPath } from "@/lib/authRedirect";
+import { lovable } from "@/integrations/lovable";
 import { Moon, Mail, Lock, ArrowRight, Loader2, Sparkles } from "lucide-react";
 
 type AuthMode = "enter" | "begin" | "reset" | "magic";
