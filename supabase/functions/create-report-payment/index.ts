@@ -77,6 +77,11 @@ function json(data: unknown, status = 200) {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader?.startsWith("Bearer ")) {
+    return json({ error: "Unauthorized" }, 401);
+  }
+
   try {
     const secret = Deno.env.get("STRIPE_SECRET_KEY") || "";
     if (!secret) return json({ error: "Stripe is not configured (missing STRIPE_SECRET_KEY)" }, 500);

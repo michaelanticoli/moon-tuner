@@ -20,6 +20,11 @@ interface Payload {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader?.startsWith("Bearer ")) {
+    return json({ error: "Unauthorized" }, 401);
+  }
+
   try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
