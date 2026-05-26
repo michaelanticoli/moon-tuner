@@ -17,6 +17,11 @@ const ASTRO_HARMONIC_PROFILE_URL = "https://buy.stripe.com/5kQ00i5QCdHm8qngTfe7m
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader?.startsWith("Bearer ")) {
+    return json({ error: "Unauthorized" }, 401);
+  }
+
   try {
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") ?? "", {
       apiVersion: "2025-08-27.basil",
