@@ -317,6 +317,37 @@ const Auth = () => {
                   </motion.form>
                 </AnimatePresence>
 
+                {/* Google sign-in */}
+                <div className="mt-6">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    disabled={loading}
+                    onClick={async () => {
+                      setError(null);
+                      setLoading(true);
+                      try {
+                        const result = await lovable.auth.signInWithOAuth("google", {
+                          redirect_uri: window.location.origin + redirectPath,
+                        });
+                        if (result.redirected) return;
+                        if (result.error) {
+                          setError(result.error.message);
+                          setLoading(false);
+                          return;
+                        }
+                        navigate(redirectPath);
+                      } catch (err) {
+                        setError(err instanceof Error ? err.message : "Google sign-in failed.");
+                        setLoading(false);
+                      }
+                    }}
+                  >
+                    Continue with Google
+                  </Button>
+                </div>
+
                 {/* Secondary actions */}
                 <div className="mt-7 pt-6 border-t border-border/30 space-y-3">
                   {mode === "enter" && (
