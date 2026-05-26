@@ -115,6 +115,15 @@ serve(async (req) => {
       return bad(`Unknown action "${action}". Allowed: ${ALLOWED.join(", ")}`, 404);
     }
 
+    // Require a Supabase bearer token for all non-health endpoints so this
+    // function cannot be used as an open relay by arbitrary third parties.
+    if (action !== "health") {
+      const authHeader = req.headers.get("Authorization");
+      if (!authHeader?.startsWith("Bearer ")) {
+        return bad("Unauthorized", 401);
+      }
+    }
+
     if (action === "health") {
       const r = await fetch(`${QM_BASE}/health`, { method: "GET" });
       const text = await r.text();

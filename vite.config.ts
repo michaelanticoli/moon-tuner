@@ -41,6 +41,7 @@ export default defineConfig(({ mode }) => ({
           "vendor-charts": ["recharts"],
           "vendor-supabase": ["@supabase/supabase-js"],
           "vendor-tone": ["tone"],
+          "vendor-astronomy": ["astronomy-engine"],
         },
       },
     },

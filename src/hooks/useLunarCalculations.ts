@@ -151,7 +151,7 @@ export const generateLunarArc = (birthDate: Date): { natalPhase: string; arc: Ar
     if (diff < 0) diff += 1;
     const daysToReturn = diff * LUNAR_MONTH;
     const returnDate = new Date(targetMonth.getTime() + (daysToReturn * 24 * 60 * 60 * 1000));
-    const intensity = (85 + Math.random() * 15).toFixed(0);
+    const intensity = Math.round(85 + ((natalPhase * 100 + i * 7) % 15));
 
     generatedArc.push({
       month: months[returnDate.getMonth()],
