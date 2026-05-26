@@ -36,14 +36,6 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const [isOptedOut, setIsOptedOut] = useState(() => analytics.isOptedOut());
   const [userState, setUserState] = useState<UserState>(() => analytics.getUserState());
 
-  // Refresh userState periodically so consumers see up-to-date state
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setUserState(analytics.getUserState());
-    }, 10_000);
-    return () => clearInterval(interval);
-  }, [analytics]);
-
   // Flush on unmount
   useEffect(() => {
     return () => analytics.flush();
