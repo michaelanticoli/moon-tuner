@@ -2,3 +2,69 @@ project_id = "flrojnnbpankkrouthyz"
 
 [functions.quantum-api]
 verify_jwt = false
+
+[functions.create-report-payment]
+verify_jwt = false
+
+[functions.create-subscription-checkout]
+verify_jwt = false
+
+[functions.create-gift-checkout]
+verify_jwt = false
+
+[functions.create-narration-checkout]
+verify_jwt = false
+
+[functions.customer-portal]
+verify_jwt = false
+
+[functions.stripe-webhook]
+verify_jwt = false
+
+[functions.subscribe-email]
+verify_jwt = false
+
+[functions.send-starter-welcome]
+verify_jwt = false
+
+[functions.calculate-chart]
+verify_jwt = false
+
+[functions.lookup-natal-reports]
+verify_jwt = false
+
+[functions.generate-report]
+verify_jwt = false
+
+[functions.create-natal-report]
+verify_jwt = false
+
+[functions.interpret-natal-chart]
+verify_jwt = false
+
+[functions.generate-cosmic-symphony]
+verify_jwt = false
+
+[functions.generate-cycle-insight]
+verify_jwt = false
+
+[functions.generate-narration]
+verify_jwt = false
+
+[functions.creator-narration]
+verify_jwt = false
+
+[functions.redeem-narration-coupon]
+verify_jwt = false
+
+[functions.fetch-qm-data]
+verify_jwt = false
+
+[functions.recommend-next]
+verify_jwt = false
+
+[functions.synthesize-reflections]
+verify_jwt = false
+
+[functions.analyze-proposal]
+verify_jwt = false
