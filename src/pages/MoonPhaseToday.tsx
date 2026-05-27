@@ -1,8 +1,12 @@
+import React from "react";
 import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { Navigation } from "@/components/Navigation";
 import { Link } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
 import { useEffect } from "react";
+import LunarTransmission from '../components/LunarTransmission'
+
+// somewhere in the JSX, after your phase display:
 
 const ALL_PHASES = [
   {
@@ -351,7 +355,7 @@ export default function MoonPhaseToday() {
             </div>
           </div>
         </section>
-
+<LunarTransmission />
         {/* ── PHASE GUIDANCE ── */}
         <section className="px-6 py-20">
           <div className="max-w-2xl mx-auto">
