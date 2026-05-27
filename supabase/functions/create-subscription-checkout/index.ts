@@ -67,11 +67,11 @@ serve(async (req) => {
     }
 
     // Verify the authenticated user matches the requested userId
-    const anonSupabase = createClient(
+    const authSupabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_ANON_KEY") ?? "",
     );
-    const { data: { user }, error: authErr } = await anonSupabase.auth.getUser(
+    const { data: { user }, error: authErr } = await authSupabase.auth.getUser(
       authHeader.replace("Bearer ", ""),
     );
     if (authErr || !user || user.id !== userId) {

@@ -13,7 +13,8 @@ const corsHeaders = {
 const VOICE_ID = "bQjXuTZHN8ofphZ0QfAv";
 
 // In-memory rate limit: max 5 calls per coupon per hour per edge instance.
-// Resets on cold start. Provides a basic throttle against abuse.
+// Note: this limit applies per instance and resets on cold start. It provides
+// a throttle against single-instance abuse but is not a cluster-wide guarantee.
 const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
