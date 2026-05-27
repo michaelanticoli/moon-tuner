@@ -1,7 +1,7 @@
 // Public coupon-based narration: validates code, runs ElevenLabs TTS,
 // uploads MP3 to cosmic-reports, returns audio URL.
-// Coupons accepted: anything in NARRATION_COUPONS env (comma-separated)
-// plus a built-in default "MOON-GUEST".
+// Coupons accepted: anything in NARRATION_COUPONS env (comma-separated).
+// No default/hardcoded coupons — all valid coupons must be set via env.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -11,7 +11,24 @@ const corsHeaders = {
 };
 
 const VOICE_ID = "bQjXuTZHN8ofphZ0QfAv";
-const DEFAULT_COUPONS = ["MOON-GUEST"];
+
+// In-memory rate limit: max 5 calls per coupon per hour per edge instance.
+// Resets on cold start. Provides a basic throttle against abuse.
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(key: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(key);
+  if (!entry || now >= entry.resetAt) {
+    rateLimitMap.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT_MAX) return false;
+  entry.count += 1;
+  return true;
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -24,7 +41,7 @@ Deno.serve(async (req) => {
       .split(",")
       .map((s) => s.trim().toUpperCase())
       .filter(Boolean);
-    const validCoupons = new Set([...DEFAULT_COUPONS, ...envCoupons]);
+    const validCoupons = new Set(envCoupons);
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
@@ -40,6 +57,9 @@ Deno.serve(async (req) => {
 
     if (!coupon || !validCoupons.has(coupon)) {
       return json({ error: "Invalid or missing coupon code." }, 403);
+    }
+    if (!checkRateLimit(coupon)) {
+      return json({ error: "Rate limit exceeded. Please try again later." }, 429);
     }
     if (!text) return json({ error: "text required" }, 400);
     if (text.length > 5000) return json({ error: "text too long (max 5000 chars)" }, 400);

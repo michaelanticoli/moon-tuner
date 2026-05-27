@@ -42,6 +42,11 @@ const TIER_CONFIG: Record<
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader?.startsWith("Bearer ")) {
+    return json({ error: "Unauthorized" }, 401);
+  }
+
   try {
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") ?? "", {
       apiVersion: "2025-08-27.basil",
@@ -59,6 +64,18 @@ serve(async (req) => {
     }
     if (!userId) {
       return json({ error: "userId required" }, 400);
+    }
+
+    // Verify the authenticated user matches the requested userId
+    const anonSupabase = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+    );
+    const { data: { user }, error: authErr } = await anonSupabase.auth.getUser(
+      authHeader.replace("Bearer ", ""),
+    );
+    if (authErr || !user || user.id !== userId) {
+      return json({ error: "Forbidden" }, 403);
     }
 
     const config = TIER_CONFIG[tier];
