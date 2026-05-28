@@ -12,8 +12,7 @@ export const STRIPE_LINKS = {
   "harmonic-arcana":  "https://buy.stripe.com/3cI5kC3Iu7iY0XVfPbe7m0a",
   "song-doesnt-end":  "https://buy.stripe.com/28E6oG5QC5aQ9ur6eBe7m09",
   "quantumelodic-pro":"https://buy.stripe.com/14A28qgvggTybCz9qNe7m02",
-  // Inactive in Stripe — show "coming soon" instead of broken checkout
-  "lunar-chaperone":  null,
+  "lunar-chaperone":  "https://buy.stripe.com/7sY6oG2Eq6eU363eL7e7m08",
 } as const;
 
 export type StripeProductKey = keyof typeof STRIPE_LINKS;

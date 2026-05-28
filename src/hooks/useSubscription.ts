@@ -10,6 +10,7 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import type { MembershipTier, SubscriptionRow } from '@/lib/supabase';
 import { hasAccess } from '@/lib/supabase';
+import { toast } from 'sonner';
 
 export interface UseSubscriptionReturn {
   subscription: SubscriptionRow | null;
@@ -95,6 +96,7 @@ export function useSubscription(): UseSubscriptionReturn {
         if (data?.url) window.location.href = data.url;
       } catch (err) {
         console.error('Checkout error:', err);
+        toast.error('Membership checkout is temporarily unavailable. Please email hello@moontuner.xyz.');
         setRedirecting(false);
       }
     },
@@ -113,6 +115,7 @@ export function useSubscription(): UseSubscriptionReturn {
         if (data?.url) window.location.href = data.url;
       } catch (err) {
         console.error('Portal error:', err);
+        toast.error('Billing portal is temporarily unavailable. Please email hello@moontuner.xyz.');
         setRedirecting(false);
       }
     },

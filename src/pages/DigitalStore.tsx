@@ -11,6 +11,7 @@ import { supabase } from '@/lib/supabase';
 import type { DigitalProductRow, MembershipTier } from '@/lib/supabase';
 import { hasAccess } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
 const TYPE_LABELS: Record<DigitalProductRow['product_type'], string> = {
   workbook: 'Workbook',
@@ -74,6 +75,7 @@ export default function DigitalStore() {
       if (data?.url) window.location.href = data.url;
     } catch (err) {
       console.error('Store checkout error:', err);
+      toast.error('Checkout is temporarily unavailable. Please email hello@moontuner.xyz.');
     } finally {
       setCheckingOut(null);
     }

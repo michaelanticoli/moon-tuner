@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
 type GiftType =
   | 'membership_1month'
@@ -85,6 +86,7 @@ export default function GiftPage() {
     } catch (err) {
       console.error('Gift checkout error:', err);
       setError('Something went wrong. Please try again.');
+      toast.error('Gift checkout is temporarily unavailable. Please email hello@moontuner.xyz.');
     } finally {
       setLoading(false);
     }
