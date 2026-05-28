@@ -4,10 +4,10 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { supabase } from "@/integrations/supabase/client";
+import { openStripeCheckout, type StripeProductKey } from "@/lib/stripeLinks";
 import { toast } from "sonner";
 
-type CheckoutProduct = "lunar-arc" | "phasecraft" | "cipher-calendar" | "lunar-chaperone";
+type CheckoutProduct = Extract<StripeProductKey, "lunar-arc" | "phasecraft" | "cipher-calendar" | "lunar-chaperone">;
 
 const SQUARE_TAROT =
   "https://book.squareup.com/appointments/gxlg47soy9h2pg/location/LT09Q7KSGAF98/services/SWPXX34N2NRJTB6ZGFC7OEKR";
