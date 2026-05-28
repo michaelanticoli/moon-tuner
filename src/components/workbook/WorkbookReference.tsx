@@ -444,6 +444,10 @@ interface SoundFrequencyPanelProps {
   endPhaseData: PhaseCorrespondence | null | undefined;
 }
 
+// 528 Hz is the "Love / DNA repair" solfeggio frequency — used as the
+// universal toning fallback when no phase-specific solfeggio data is present.
+const DEFAULT_SOLFEGGIO_HZ = 528;
+
 const SoundFrequencyPanel = ({
   fromSign,
   toSign,
@@ -599,7 +603,7 @@ const SoundFrequencyPanel = ({
           <div className="p-3 bg-background/50 rounded-lg border border-border/30">
             <span className="system-label block mb-1">Toning</span>
             <p className="text-muted-foreground">
-              Hum or tone at {startPhaseData?.solfeggio ?? 528} Hz (use a singing bowl or tuner app)
+              Hum or tone at {startPhaseData?.solfeggio ?? DEFAULT_SOLFEGGIO_HZ} Hz (use a singing bowl or tuner app)
               during your {startPhase?.toLowerCase()} practice. Let the {fromMode?.mode ?? ""} mode
               of {fromSign} ground you in the origin energy before moving into {toSign}'s{" "}
               {toMode?.mode ?? ""} quality.

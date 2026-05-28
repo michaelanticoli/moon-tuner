@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
@@ -92,12 +92,12 @@ function startDrone(
   return { ctx, oscillators, gainNodes };
 }
 
-function stopDrone(drone: DroneNode) {
+function stopDrone(drone: DroneNode, timeoutRef?: React.MutableRefObject<ReturnType<typeof window.setTimeout> | null>) {
   const { ctx, oscillators, gainNodes } = drone;
   gainNodes.forEach((g) => {
     g.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5);
   });
-  window.setTimeout(() => {
+  const id = window.setTimeout(() => {
     oscillators.forEach((o) => {
       try {
         o.stop();
@@ -107,6 +107,9 @@ function stopDrone(drone: DroneNode) {
     });
     ctx.close();
   }, 1600);
+  if (timeoutRef) {
+    timeoutRef.current = id;
+  }
 }
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -120,6 +123,19 @@ const NatalHarmonicGenerator = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [copyMessage, setCopyMessage] = useState("");
   const droneRef = useRef<DroneNode | null>(null);
+  const stopTimeoutRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (stopTimeoutRef.current !== null) {
+        window.clearTimeout(stopTimeoutRef.current);
+      }
+      if (droneRef.current) {
+        stopDrone(droneRef.current, stopTimeoutRef);
+        droneRef.current = null;
+      }
+    };
+  }, []);
 
   const [formData, setFormData] = useState({
     birthDate: "",
@@ -198,11 +214,15 @@ const NatalHarmonicGenerator = () => {
     if (!displayData) return;
     if (isPlaying) {
       if (droneRef.current) {
-        stopDrone(droneRef.current);
+        stopDrone(droneRef.current, stopTimeoutRef);
         droneRef.current = null;
       }
       setIsPlaying(false);
     } else {
+      if (stopTimeoutRef.current !== null) {
+        window.clearTimeout(stopTimeoutRef.current);
+        stopTimeoutRef.current = null;
+      }
       droneRef.current = startDrone(
         displayData.rootFrequency,
         displayData.companionFrequency,
@@ -220,7 +240,7 @@ const NatalHarmonicGenerator = () => {
 
   const handleReset = useCallback(() => {
     if (droneRef.current) {
-      stopDrone(droneRef.current);
+      stopDrone(droneRef.current, stopTimeoutRef);
       droneRef.current = null;
     }
     setIsPlaying(false);

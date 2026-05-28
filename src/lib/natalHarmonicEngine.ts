@@ -142,14 +142,11 @@ export function buildCodexString(
   const intentionCode = intention.slice(0, 2).toUpperCase();
   const elementCode = qmReading.dominantElement.slice(0, 2).toUpperCase();
 
-  // Date-based checksum
-  const [year, month, day] = chartData.planets.length
-    ? [0, 0, 0]
-    : [0, 0, 0]; // planets hold no date; use sun degree as proxy
+  // Use sun degree as a compact date proxy for the checksum
   const sunDeg = Math.round(
     qmReading.planets.find((p) => p.position.name === "Sun")?.position.degree ?? 0
   );
-  const checksum = (sunDeg * 7 + (month || 1) + (day || 1))
+  const checksum = (sunDeg * 7 + 1)
     .toString(16)
     .toUpperCase()
     .slice(-4)
