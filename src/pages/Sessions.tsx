@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ExternalLink, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { openStripeCheckout } from "@/lib/stripeLinks";
 import { toast } from "sonner";
 
 const SQUARE_BOOKING_URL = "https://square.site/book/LT09Q7KSGAF98/moontuner";
