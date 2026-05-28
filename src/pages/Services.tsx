@@ -127,19 +127,11 @@ function IncludedList({ items, dotColor = "accent" }: { items: string[]; dotColo
 export default function Services() {
   const [checkoutLoading, setCheckoutLoading] = useState<CheckoutProduct | null>(null);
 
-  const startCheckout = async (product: CheckoutProduct) => {
+  const startCheckout = (product: CheckoutProduct) => {
     setCheckoutLoading(product);
-    try {
-      const { data, error } = await supabase.functions.invoke("create-report-payment", {
-        body: { product },
-      });
-      if (error) throw error;
-      const checkoutUrl = typeof data?.url === "string" ? data.url : null;
-      if (!checkoutUrl) throw new Error("No checkout URL returned");
-      window.location.href = checkoutUrl;
-    } catch (err) {
-      console.error("Checkout failed:", err);
-      toast.error("Could not start checkout. Please try again.");
+    const ok = openStripeCheckout(product);
+    if (!ok) {
+      toast.error("This offering is temporarily unavailable. Email hello@moontuner.xyz to be notified.");
       setCheckoutLoading(null);
     }
   };
