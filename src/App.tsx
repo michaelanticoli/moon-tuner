@@ -25,6 +25,7 @@ const LunarSystem = lazy(() => import("./pages/LunarSystem"));
 const LunarCipher = lazy(() => import("./pages/LunarCipher"));
 const LunarReports = lazy(() => import("./pages/LunarReports"));
 const QuantumMelodic = lazy(() => import("./pages/QuantumMelodic"));
+const NatalHarmonicGenerator = lazy(() => import("./pages/NatalHarmonicGenerator"));
 const MoontunedApp = lazy(() => import("./pages/App"));
 const Moon = lazy(() => import("./pages/Moon"));
 const Auth = lazy(() => import("./pages/Auth"));
@@ -180,6 +181,7 @@ function AnimatedRoutes() {
           {/* ── Phase 2/3 — School + advanced tools (gated) ──────────── */}
           <Route path="/school" element={PHASE_2_ENABLED ? <MoontunerSchool /> : <ComingSoon />} />
           <Route path="/quantumelodic" element={PHASE_2_ENABLED ? <QuantumMelodic /> : <ComingSoon />} />
+          <Route path="/natal-harmonic" element={PHASE_2_ENABLED ? <NatalHarmonicGenerator /> : <ComingSoon />} />
 
           {/* ── Phase 3 — Digital Smudging (gated) ───────────────────── */}
           <Route path="/digital-smudging" element={PHASE_3_ENABLED ? <DigitalSmudging /> : <ComingSoon />} />

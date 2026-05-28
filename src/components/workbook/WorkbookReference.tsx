@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Gem, Leaf, Star, Compass, Zap, Heart, BookOpen, 
-  Sparkles, Moon, FlaskConical, ScrollText, Clock
+  Sparkles, Moon, FlaskConical, ScrollText, Clock, Music2
 } from "lucide-react";
 import { 
   getZodiacCorrespondence, 
@@ -20,6 +20,7 @@ import {
 } from "@/data/chaperoneRituals";
 import { getLoreForSign, getMythsForPhase, lunarEphemera } from "@/data/chaperoneLore";
 import { ZodiacGlyph } from "@/components/ZodiacGlyph";
+import { elementInfo, aspectMusicalData, signMusicalModes } from "@/utils/harmonicWisdom";
 
 interface WorkbookReferenceProps {
   fromSign: string;
@@ -70,6 +71,10 @@ export const WorkbookReference = ({
           <TabsTrigger value="experiments" className="flex items-center gap-2 text-xs">
             <FlaskConical className="w-3 h-3" />
             Experiments
+          </TabsTrigger>
+          <TabsTrigger value="sound" className="flex items-center gap-2 text-xs">
+            <Music2 className="w-3 h-3" />
+            Sound
           </TabsTrigger>
         </TabsList>
 
@@ -278,6 +283,20 @@ export const WorkbookReference = ({
                 ))}
               </div>
             </TabsContent>
+
+            {/* Sound & Frequency Tab */}
+            <TabsContent value="sound" className="mt-6 space-y-6">
+              <SoundFrequencyPanel
+                fromSign={fromSign}
+                toSign={toSign}
+                startPhase={startPhase}
+                endPhase={endPhase}
+                fromZodiac={fromZodiac}
+                toZodiac={toZodiac}
+                startPhaseData={startPhaseData}
+                endPhaseData={endPhaseData}
+              />
+            </TabsContent>
           </motion.div>
         </AnimatePresence>
       </Tabs>
@@ -413,5 +432,202 @@ const RitualCard = ({ ritual }: { ritual: MoonRitual }) => (
     </div>
   </div>
 );
+
+interface SoundFrequencyPanelProps {
+  fromSign: string;
+  toSign: string;
+  startPhase: string;
+  endPhase: string;
+  fromZodiac: ZodiacCorrespondence | null | undefined;
+  toZodiac: ZodiacCorrespondence | null | undefined;
+  startPhaseData: PhaseCorrespondence | null | undefined;
+  endPhaseData: PhaseCorrespondence | null | undefined;
+}
+
+const SoundFrequencyPanel = ({
+  fromSign,
+  toSign,
+  startPhase,
+  endPhase,
+  fromZodiac,
+  toZodiac,
+  startPhaseData,
+  endPhaseData,
+}: SoundFrequencyPanelProps) => {
+  const fromMode = signMusicalModes[fromSign];
+  const toMode = signMusicalModes[toSign];
+  const fromElement = fromZodiac?.element ?? "";
+  const toElement = toZodiac?.element ?? "";
+  const fromElementInfo = elementInfo[fromElement];
+  const toElementInfo = elementInfo[toElement];
+
+  // Transition aspect: if the two signs are harmonious (same element family) or tense
+  const sameElement = fromElement === toElement;
+  const elementPairings: Record<string, string> = {
+    "Fire-Air": "Sextile", "Air-Fire": "Sextile",
+    "Earth-Water": "Sextile", "Water-Earth": "Sextile",
+    "Fire-Fire": "Trine", "Earth-Earth": "Trine",
+    "Air-Air": "Trine", "Water-Water": "Trine",
+    "Fire-Earth": "Square", "Earth-Fire": "Square",
+    "Air-Water": "Square", "Water-Air": "Square",
+    "Fire-Water": "Opposition", "Water-Fire": "Opposition",
+    "Earth-Air": "Opposition", "Air-Earth": "Opposition",
+  };
+  const transitionAspect =
+    elementPairings[`${fromElement}-${toElement}`] ?? (sameElement ? "Trine" : "Square");
+  const transitionMusic = aspectMusicalData[transitionAspect];
+
+  return (
+    <div className="space-y-6">
+      {/* Introduction */}
+      <div className="node-card">
+        <div className="flex items-center gap-2 mb-3">
+          <Music2 className="w-4 h-4 text-accent" />
+          <h4 className="font-serif text-lg text-foreground">Harmonic Signature of This Arc</h4>
+        </div>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Every lunar transition carries its own sonic character — a blend of the origin sign's
+          modal colour, the destination's tonal quality, and the solfeggio frequencies of the
+          phases bookending the journey. Use these frequencies as anchors for meditation, sound
+          baths, or toning practice.
+        </p>
+      </div>
+
+      {/* Solfeggio Frequencies */}
+      {(startPhaseData || endPhaseData) && (
+        <div className="node-card">
+          <span className="system-label text-gold block mb-4">Phase Solfeggio Frequencies</span>
+          <div className="grid grid-cols-2 gap-4">
+            {startPhaseData && (
+              <div className="p-4 bg-background/50 rounded-lg border border-border/30 text-center">
+                <span className="text-xs text-muted-foreground block mb-1">{startPhase}</span>
+                <span className="text-2xl font-mono text-accent font-bold">{startPhaseData.solfeggio} Hz</span>
+                <span className="text-xs text-muted-foreground block mt-1">{startPhaseData.chakra} Chakra</span>
+              </div>
+            )}
+            {endPhaseData && (
+              <div className="p-4 bg-background/50 rounded-lg border border-border/30 text-center">
+                <span className="text-xs text-muted-foreground block mb-1">{endPhase}</span>
+                <span className="text-2xl font-mono text-accent font-bold">{endPhaseData.solfeggio} Hz</span>
+                <span className="text-xs text-muted-foreground block mt-1">{endPhaseData.chakra} Chakra</span>
+              </div>
+            )}
+          </div>
+          {startPhaseData && endPhaseData && (
+            <p className="text-xs text-muted-foreground mt-4 italic">
+              The interval between {startPhaseData.solfeggio} Hz and {endPhaseData.solfeggio} Hz
+              spans {Math.abs(endPhaseData.solfeggio - startPhaseData.solfeggio)} Hz — a{" "}
+              {endPhaseData.solfeggio > startPhaseData.solfeggio ? "rising" : "descending"} arc
+              mirroring this cycle's movement from{" "}
+              {startPhaseData.energy.toLowerCase()} to {endPhaseData.energy.toLowerCase()} energy.
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Sign Modal Modes */}
+      <div className="grid md:grid-cols-2 gap-4">
+        {fromMode && (
+          <div className="node-card">
+            <span className="system-label block mb-2">{fromSign} — Origin Mode</span>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl font-mono text-accent">{fromMode.key}</span>
+              <div>
+                <p className="font-serif text-foreground">{fromMode.mode}</p>
+                <p className="text-xs text-muted-foreground">
+                  {fromElementInfo && <span>{fromElementInfo.note} · </span>}
+                  {fromElementInfo?.sound}
+                </p>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground italic">{fromMode.quality}</p>
+          </div>
+        )}
+        {toMode && (
+          <div className="node-card">
+            <span className="system-label block mb-2">{toSign} — Destination Mode</span>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl font-mono text-accent">{toMode.key}</span>
+              <div>
+                <p className="font-serif text-foreground">{toMode.mode}</p>
+                <p className="text-xs text-muted-foreground">
+                  {toElementInfo && <span>{toElementInfo.note} · </span>}
+                  {toElementInfo?.sound}
+                </p>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground italic">{toMode.quality}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Transition Interval */}
+      {transitionMusic && (
+        <div className="node-card bg-gradient-to-br from-card to-accent/5">
+          <div className="flex items-center gap-2 mb-3">
+            <Zap className="w-4 h-4 text-accent" />
+            <span className="system-label">Elemental Transition Interval</span>
+          </div>
+          <div className="flex items-start justify-between mb-3">
+            <div>
+              <p className="font-serif text-foreground">{transitionAspect}</p>
+              <p className="text-sm text-accent">{transitionMusic.type}</p>
+            </div>
+            <span className={`text-xs px-2 py-1 rounded-full ${
+              transitionMusic.isConsonant
+                ? "bg-emerald-500/20 text-emerald-300"
+                : "bg-orange-500/20 text-orange-300"
+            }`}>
+              {transitionMusic.isConsonant ? "Consonant" : "Tensioned"}
+            </span>
+          </div>
+          <p className="text-sm text-muted-foreground mb-2">{transitionMusic.feel}</p>
+          <p className="text-xs text-muted-foreground italic">
+            Sounds like {transitionMusic.music} — {transitionMusic.energy}
+          </p>
+          <p className="text-xs text-accent mt-3">Resolution: {transitionMusic.resolve}</p>
+        </div>
+      )}
+
+      {/* Suggested Sound Practice */}
+      <div className="node-card">
+        <div className="flex items-center gap-2 mb-4">
+          <Sparkles className="w-4 h-4 text-gold" />
+          <h4 className="font-serif text-lg text-foreground">Suggested Sound Practice</h4>
+        </div>
+        <div className="space-y-3 text-sm">
+          <div className="p-3 bg-background/50 rounded-lg border border-border/30">
+            <span className="system-label block mb-1">Toning</span>
+            <p className="text-muted-foreground">
+              Hum or tone at {startPhaseData?.solfeggio ?? 528} Hz (use a singing bowl or tuner app)
+              during your {startPhase?.toLowerCase()} practice. Let the {fromMode?.mode ?? ""} mode
+              of {fromSign} ground you in the origin energy before moving into {toSign}'s{" "}
+              {toMode?.mode ?? ""} quality.
+            </p>
+          </div>
+          <div className="p-3 bg-background/50 rounded-lg border border-border/30">
+            <span className="system-label block mb-1">Drone Meditation</span>
+            <p className="text-muted-foreground">
+              Use the Natal Harmonic Generator at{" "}
+              <span className="text-accent font-mono">/natal-harmonic</span> to generate a
+              personalized drone for this arc. Your birth chart's frequencies will carry the
+              specific harmonic signature of this {fromSign}→{toSign} journey.
+            </p>
+          </div>
+          <div className="p-3 bg-background/50 rounded-lg border border-border/30">
+            <span className="system-label block mb-1">Journaling with Sound</span>
+            <p className="text-muted-foreground">
+              While listening, ask: "What does {transitionMusic?.isConsonant ? "this harmony" : "this tension"} in
+              me want to resolve?" Let the{" "}
+              {transitionMusic?.isConsonant ? "ease" : "friction"} of a{" "}
+              {transitionMusic?.type ?? "harmonic interval"} between{" "}
+              {fromElement.toLowerCase()} and {toElement.toLowerCase()} guide your writing.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default WorkbookReference;
