@@ -66,20 +66,10 @@ export default function Sessions() {
   const [bookingLoading, setBookingLoading] = useState(false);
   
 
-  const handleChartOverviewBooking = async () => {
+  const handleChartOverviewBooking = () => {
     setBookingLoading(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("create-report-payment", {
-        body: { product: "astro-harmonic", withNarration: true, bundledNarration: true },
-      });
-      if (error) throw error;
-      if (data?.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error("No checkout URL returned");
-      }
-    } catch (err) {
-      console.error("Astro-harmonic booking failed:", err);
+    const ok = openStripeCheckout("astro-harmonic");
+    if (!ok) {
       toast.error("Could not start checkout. Please try again.");
       setBookingLoading(false);
     }
