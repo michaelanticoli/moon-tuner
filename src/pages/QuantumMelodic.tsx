@@ -23,6 +23,7 @@ import {
 } from "@/utils/harmonicWisdom";
 
 import { supabase } from "@/integrations/supabase/client";
+import { openStripeCheckout } from "@/lib/stripeLinks";
 import { AstroHarmonicSample } from "@/components/AstroHarmonicSample";
 import { NatalWheelCard } from "@/components/NatalWheelCard";
 import { Sigil, isSigilName } from "@/components/astro/AstroSigils";
