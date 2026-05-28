@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ExternalLink, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { openStripeCheckout } from "@/lib/stripeLinks";
 import { toast } from "sonner";
 
 const SQUARE_BOOKING_URL = "https://square.site/book/LT09Q7KSGAF98/moontuner";
@@ -66,20 +66,10 @@ export default function Sessions() {
   const [bookingLoading, setBookingLoading] = useState(false);
   
 
-  const handleChartOverviewBooking = async () => {
+  const handleChartOverviewBooking = () => {
     setBookingLoading(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("create-report-payment", {
-        body: { product: "astro-harmonic", withNarration: true, bundledNarration: true },
-      });
-      if (error) throw error;
-      if (data?.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error("No checkout URL returned");
-      }
-    } catch (err) {
-      console.error("Astro-harmonic booking failed:", err);
+    const ok = openStripeCheckout("astro-harmonic");
+    if (!ok) {
       toast.error("Could not start checkout. Please try again.");
       setBookingLoading(false);
     }

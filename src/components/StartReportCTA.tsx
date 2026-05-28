@@ -1,25 +1,17 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FileText } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { openStripeCheckout } from "@/lib/stripeLinks";
 import { toast } from "sonner";
 
 export function StartReportCTA() {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
 
-  const handlePurchase = async () => {
+  const handlePurchase = () => {
     setCheckoutLoading(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("create-report-payment", {
-        body: { product: "lunar-arc" },
-      });
-      if (error) throw error;
-      const checkoutUrl = typeof data?.url === "string" ? data.url : null;
-      if (!checkoutUrl) throw new Error("No checkout URL returned");
-      window.location.href = checkoutUrl;
-    } catch (err) {
-      console.error("Lunar Arc checkout failed:", err);
-      toast.error("Could not start checkout. Please try again.");
+    const ok = openStripeCheckout("lunar-arc");
+    if (!ok) {
+      toast.error("This product is temporarily unavailable.");
       setCheckoutLoading(false);
     }
   };

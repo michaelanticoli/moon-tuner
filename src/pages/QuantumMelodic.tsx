@@ -23,6 +23,7 @@ import {
 } from "@/utils/harmonicWisdom";
 
 import { supabase } from "@/integrations/supabase/client";
+import { openStripeCheckout } from "@/lib/stripeLinks";
 import { AstroHarmonicSample } from "@/components/AstroHarmonicSample";
 import { NatalWheelCard } from "@/components/NatalWheelCard";
 import { Sigil, isSigilName } from "@/components/astro/AstroSigils";
@@ -142,7 +143,7 @@ const QuantumMelodic = () => {
     });
   }, []);
 
-  const beginCheckout = useCallback(async () => {
+  const beginCheckout = useCallback(() => {
     if (checkoutLoading) return;
     setCheckoutLoading(true);
 
@@ -155,27 +156,8 @@ const QuantumMelodic = () => {
 
     saveBirthDraft(birthDraft);
 
-    try {
-      const { data, error: fnError } = await supabase.functions.invoke("create-report-payment", {
-        body: {
-          product: "astro-harmonic",
-          birthDate: birthDraft.date,
-          birthTime: birthDraft.time,
-          birthLocation: birthDraft.location,
-          birthName: birthDraft.name,
-          successPath: "/quantumelodic?paid=true",
-          cancelPath: "/quantumelodic",
-          withNarration: true,
-          bundledNarration: true,
-        },
-      });
-
-      if (fnError) throw fnError;
-      if (!data?.url) throw new Error("Checkout link unavailable");
-
-      sendToCheckout(data.url as string);
-    } catch (checkoutError) {
-      console.error("Astro-harmonic checkout failed:", checkoutError);
+    const ok = openStripeCheckout("astro-harmonic");
+    if (!ok) {
       toast.error("Could not start checkout. Please try again.");
       setCheckoutLoading(false);
     }
