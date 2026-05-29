@@ -298,3 +298,23 @@ export const getResolutionGuidance = (analysis: HarmonicAnalysis): string[] => {
   }
   return g.filter(Boolean);
 };
+
+/**
+ * Musical mode for each zodiac sign — used by the Natal Harmonic Generator
+ * and the Workbook Sound & Frequency tab to surface sign-specific tonal colour.
+ * Derived from the mode mappings in useCosmicReading.ts (signModes constant).
+ */
+export const signMusicalModes: Record<string, { mode: string; key: string; quality: string }> = {
+  Aries:       { mode: 'Phrygian',   key: 'A',   quality: "Bold, confrontational — the warrior's call" },
+  Taurus:      { mode: 'Ionian',     key: 'F',   quality: "Stable, grounded — the earth's steady pulse" },
+  Gemini:      { mode: 'Mixolydian', key: 'G',   quality: 'Playful, unresolved — the mind in motion' },
+  Cancer:      { mode: 'Aeolian',    key: 'A',   quality: 'Tender, introspective — emotional tides' },
+  Leo:         { mode: 'Lydian',     key: 'D',   quality: 'Radiant, expansive — the heart wide open' },
+  Virgo:       { mode: 'Dorian',     key: 'D',   quality: 'Precise, devotional — service through refinement' },
+  Libra:       { mode: 'Ionian',     key: 'B♭',  quality: 'Balanced, relational — harmony seeking harmony' },
+  Scorpio:     { mode: 'Locrian',    key: 'B',   quality: 'Intense, transformative — shadow into light' },
+  Sagittarius: { mode: 'Mixolydian', key: 'E',   quality: "Expansive, philosophical — the archer's song" },
+  Capricorn:   { mode: 'Dorian',     key: 'C',   quality: 'Disciplined, climbing — structure with soul' },
+  Aquarius:    { mode: 'Lydian',     key: 'F#',  quality: 'Visionary, electric — the future frequency' },
+  Pisces:      { mode: 'Phrygian',   key: 'E',   quality: "Mystical, dissolving — the ocean's song" },
+};
