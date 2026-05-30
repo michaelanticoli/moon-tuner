@@ -10,7 +10,14 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import type { MembershipTier, SubscriptionRow } from '@/lib/supabase';
 import { hasAccess } from '@/lib/supabase';
+import { openStripeCheckout, type StripeProductKey } from '@/lib/stripeLinks';
 import { toast } from 'sonner';
+
+const MEMBERSHIP_LINK_KEY: Record<Exclude<MembershipTier, 'free'>, StripeProductKey> = {
+  reflective: 'membership-reflective',
+  insight: 'membership-insight',
+  practitioner: 'membership-practitioner',
+};
 
 export interface UseSubscriptionReturn {
   subscription: SubscriptionRow | null;
