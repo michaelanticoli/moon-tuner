@@ -10,7 +10,14 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import type { MembershipTier, SubscriptionRow } from '@/lib/supabase';
 import { hasAccess } from '@/lib/supabase';
+import { openStripeCheckout, type StripeProductKey } from '@/lib/stripeLinks';
 import { toast } from 'sonner';
+
+const MEMBERSHIP_LINK_KEY: Record<Exclude<MembershipTier, 'free'>, StripeProductKey> = {
+  reflective: 'membership-reflective',
+  insight: 'membership-insight',
+  practitioner: 'membership-practitioner',
+};
 
 export interface UseSubscriptionReturn {
   subscription: SubscriptionRow | null;
@@ -85,22 +92,14 @@ export function useSubscription(): UseSubscriptionReturn {
 
   const startCheckout = useCallback(
     async (checkoutTier: Exclude<MembershipTier, 'free'>) => {
-      if (!user) return;
       setRedirecting(true);
-      try {
-        const { data, error } = await supabase.functions.invoke(
-          'create-subscription-checkout',
-          { body: { tier: checkoutTier, userId: user.id } }
-        );
-        if (error) throw error;
-        if (data?.url) window.location.href = data.url;
-      } catch (err) {
-        console.error('Checkout error:', err);
+      const ok = openStripeCheckout(MEMBERSHIP_LINK_KEY[checkoutTier]);
+      if (!ok) {
         toast.error('Membership checkout is temporarily unavailable. Please email hello@moontuner.xyz.');
         setRedirecting(false);
       }
     },
-    [user]
+    []
   );
 
   const openBillingPortal = useCallback(

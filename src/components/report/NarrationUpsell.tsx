@@ -86,21 +86,12 @@ export function NarrationUpsell({
     setStatus("checkout");
     setError(null);
     try {
-      const { data, error } = await supabase.functions.invoke(
-        "create-narration-checkout",
-        {
-          body: {
-            reportType,
-            reportLabel,
-            sourceText,
-            returnPath,
-          },
-        },
-      );
-      if (error) throw error;
-      if (data?.url) {
-        window.location.href = data.url;
-      } else throw new Error("No checkout URL");
+      // Direct Stripe Payment Link — bulletproof, no edge function involved.
+      // After payment, Stripe redirects back to the report page; the existing
+      // ?session_id=&narration_addon=1 handler above generates the audio.
+      const { openStripeCheckout } = await import("@/lib/stripeLinks");
+      const ok = openStripeCheckout("narration-addon");
+      if (!ok) throw new Error("Narration add-on is temporarily unavailable.");
     } catch (e) {
       console.error(e);
       setError(e instanceof Error ? e.message : "Checkout failed");
