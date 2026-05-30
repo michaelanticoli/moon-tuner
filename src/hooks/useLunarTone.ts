@@ -53,9 +53,9 @@ export function useLunarTone() {
     if (ctx && session) teardownSession(session, ctx);
   }, [teardownSession]);
 
-  const startTone = useCallback(({ baseFrequency, volume: initialVolume = 0.3 }: LunarToneOptions) => {
+  const startTone = useCallback(async ({ baseFrequency, volume: initialVolume = 0.3 }: LunarToneOptions) => {
     const ctx = initAudio();
-    if (ctx.state === 'suspended') ctx.resume();
+    if (ctx.state === 'suspended') await ctx.resume();
 
     // Tear down any previous session (captured locally so the new one is safe)
     const previous = sessionRef.current;
