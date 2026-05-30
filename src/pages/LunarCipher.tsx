@@ -4,11 +4,17 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
+import { Button } from "@/components/ui/button";
+import { RefreshCw, X, ChevronLeft, Save, Check, Loader2 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { useNavigate } from "react-router-dom";
 import { CipherCalendar } from "@/components/cipher/CipherCalendar";
 import { CipherDayDetail } from "@/components/cipher/CipherDayDetail";
 import { getDailyReadingsMap, getDailyReading, type DailyReading } from "@/data/parseDailyReadings";
 import { getICSEventIndex, getEventsForDate, type DayEvents } from "@/data/parseICS";
-import { RefreshCw, ChevronLeft } from "lucide-react";
+const calendarSketch = "/images/graphic-calendar-sketch.webp";
+const lunarCalendarRetro = "/images/graphic-lunar-calendar-retro.webp";
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -17,12 +23,14 @@ const LunarCipher = () => {
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [syncing, setSyncing] = useState(false);
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [readings, setReadings] = useState<Map<string, DailyReading>>(new Map());
   const [icsIndex, setIcsIndex] = useState<Map<string, DayEvents>>(new Map());
 
   const currentYear = 2026;
 
-  // Load daily readings + ICS events on mount
   useEffect(() => {
     getDailyReadingsMap().then(setReadings);
     getICSEventIndex().then(setIcsIndex);
@@ -62,9 +70,15 @@ const LunarCipher = () => {
               animate={{ opacity: 1, y: 0 }}
               className="flex flex-col md:flex-row gap-8 md:gap-12 items-start mb-16 md:mb-20"
             >
-              <div className="w-24 h-24 md:w-32 md:h-32 rounded-xl shadow-2xl shadow-accent/20 border border-border bg-card flex items-center justify-center">
-                <MoonPhaseGlyph phase="full" size={48} className="text-accent md:hidden" />
-                <MoonPhaseGlyph phase="full" size={64} className="text-accent hidden md:block" />
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-xl shadow-2xl shadow-accent/20 border border-border bg-card flex items-center justify-center relative overflow-hidden">
+                <img
+                  src={lunarCalendarRetro}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover opacity-20"
+                />
+                <MoonPhaseGlyph phase="full" size={48} className="text-accent md:hidden relative" />
+                <MoonPhaseGlyph phase="full" size={64} className="text-accent hidden md:block relative" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center space-x-4 mb-4">
@@ -142,22 +156,32 @@ const LunarCipher = () => {
                 />
               )}
             </AnimatePresence>
+
+            {view === 'months' && (
+              <div className="mt-24 flex justify-center">
+                <img
+                  src={calendarSketch}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-full max-w-2xl opacity-25"
+                  loading="lazy"
+                />
+              </div>
+            )}
           </div>
         </main>
 
-        {/* Day Detail Modal */}
-        <AnimatePresence>
-          {selectedDay !== null && selectedMonth !== null && (
-            <CipherDayDetail
-              year={currentYear}
-              month={selectedMonth}
-              day={selectedDay}
-              reading={currentReading}
-              dayEvents={currentDayEvents}
-              onClose={() => setSelectedDay(null)}
-            />
-          )}
-        </AnimatePresence>
+        {/* Day Detail Panel */}
+        {selectedDay !== null && selectedMonth !== null && (
+          <CipherDayDetail
+            year={currentYear}
+            month={selectedMonth}
+            day={selectedDay}
+            reading={currentReading}
+            dayEvents={currentDayEvents}
+            onClose={() => setSelectedDay(null)}
+          />
+        )}
 
         <Footer />
       </div>

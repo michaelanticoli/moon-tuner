@@ -19,7 +19,15 @@ function getMoonSVG(phase: string): string {
   return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">${svgs[key] || svgs['new-moon']}</svg>`;
 }
 
-export function openLunarHTMLReport(report: LunarReport): void {
+interface LunarHtmlOptions {
+  autoPrint?: boolean;
+}
+
+/**
+ * Opens the branded lunar report in a new tab.
+ * Returns true when the popup was opened successfully and false when the browser blocked it.
+ */
+export function openLunarHTMLReport(report: LunarReport, options: LunarHtmlOptions = {}): boolean {
   const { natal, powerDays, arcPractice, peakSummary, closing, meta } = report;
 
   const arcCardsHTML = powerDays.map((day, i) => `
@@ -76,7 +84,7 @@ export function openLunarHTMLReport(report: LunarReport): void {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MOONtuner — Lunar Arc Report</title>
+<title>Moontuner — Lunar Arc Report</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap');
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -214,7 +222,7 @@ export function openLunarHTMLReport(report: LunarReport): void {
 <button class="print-btn" onclick="window.print()">⎙ Print / Save PDF</button>
 
 <section class="cover" id="cover">
-  <span class="cover-brand">MOONtuner</span>
+  <span class="cover-brand">Moontuner</span>
   <div class="cover-moon">${getMoonSVG(natal.phase)}</div>
   <h1>Personal Lunar<br><em>Arc Report</em></h1>
   <div class="cover-meta">
@@ -316,7 +324,7 @@ export function openLunarHTMLReport(report: LunarReport): void {
   <p>${escapeHtml(closing.body)}</p>
   <div class="closing-footer">
     <p>moontuner.xyz</p>
-    <p style="margin-top:0.5rem">© MOONtuner ${new Date().getFullYear()}</p>
+    <p style="margin-top:0.5rem">© Moontuner ${new Date().getFullYear()}</p>
     <p style="margin-top:0.3rem;color:#3a3530">Generated ${meta.generatedDate}</p>
   </div>
 </section>
@@ -344,6 +352,15 @@ const sio = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.3 });
 sections.forEach(id => { const el = document.getElementById(id); if(el) sio.observe(el); });
+
+${options.autoPrint ? `
+window.addEventListener('load', () => {
+  window.setTimeout(() => {
+    window.focus();
+    window.print();
+  }, 400);
+});
+` : ''}
 </script>
 
 </body>
@@ -351,5 +368,7 @@ sections.forEach(id => { const el = document.getElementById(id); if(el) sio.obse
 
   const blob = new Blob([html], { type: 'text/html' });
   const url = URL.createObjectURL(blob);
-  window.open(url, '_blank');
+  const popup = window.open(url, '_blank');
+  window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  return Boolean(popup);
 }

@@ -1,6 +1,8 @@
 // Lunar calculation utilities for Moontuner
 // Based on synodic month calculations
 
+import { useMemo } from 'react';
+
 export const LUNAR_MONTH = 29.53058867;
 export const REF_DATE = new Date('2000-01-06T12:24:00Z').getTime();
 
@@ -11,6 +13,24 @@ export const getPhase = (date: Date): number => {
   const phase = cycles % 1;
   return phase < 0 ? phase + 1 : phase;
 };
+
+// Hook for easy access to current lunar data
+export function useLunarCalculations(date?: Date) {
+  return useMemo(() => {
+    const targetDate = date || new Date();
+    const phase = getPhase(targetDate);
+    const phaseName = getPhaseName(phase);
+    const insight = getDetailedInsight(phase);
+
+    return {
+      phase,
+      phaseName,
+      phaseKey: getPhaseKey(phase),
+      insight,
+      date: targetDate,
+    };
+  }, [date]);
+}
 
 export const getPhaseName = (p: number): string => {
   if (p < 0.03 || p > 0.97) return 'New Moon';
@@ -131,7 +151,7 @@ export const generateLunarArc = (birthDate: Date): { natalPhase: string; arc: Ar
     if (diff < 0) diff += 1;
     const daysToReturn = diff * LUNAR_MONTH;
     const returnDate = new Date(targetMonth.getTime() + (daysToReturn * 24 * 60 * 60 * 1000));
-    const intensity = (85 + Math.random() * 15).toFixed(0);
+    const intensity = Math.round(85 + ((natalPhase * 100 + i * 7) % 15));
 
     generatedArc.push({
       month: months[returnDate.getMonth()],

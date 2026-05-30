@@ -1,9 +1,10 @@
 import React from "react";
 import { useMoonPhase } from "@/hooks/useMoonPhase";
 import { Navigation } from "@/components/Navigation";
-import { Link } from "react-router-dom";
+import { Footer } from "@/components/Footer";
+import { Link, useLocation } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
-import { useEffect } from "react";
+import { SEOHead } from "@/components/SEOHead";
 import LunarTransmission from '../components/LunarTransmission'
 
 // somewhere in the JSX, after your phase display:
@@ -230,6 +231,7 @@ function MoonSVG({
 
 export default function MoonPhaseToday() {
   const moon = useMoonPhase();
+  const location = useLocation();
   const today = new Date();
   const guidance =
     PHASE_GUIDANCE[moon.astronomical.phaseName] ||
@@ -253,16 +255,60 @@ export default function MoonPhaseToday() {
     day: "numeric",
   });
 
-  // Set page title + meta via effect (no helmet library needed)
-  useEffect(() => {
-    document.title = "Moon Phase Today — Live Lunar Phase Tracker | Moontuner";
-    const desc = document.querySelector('meta[name="description"]');
-    if (desc) desc.setAttribute("content", "What is the moon phase today? See the current moon phase live — phase name, illumination percentage, cycle day, and what today's lunar energy means for your focus and practice.");
-    return () => { document.title = "Moontuner"; };
-  }, []);
+  const path = location.pathname;
+  const isCycle = path === "/moon-cycle-today";
+  const isCurrent = path === "/current-moon-phase";
+
+  const pageMeta = isCycle
+    ? {
+        title: "Moon Cycle Today — Live Lunar Phase Tracker | Moontuner",
+        description:
+          "What is the moon cycle today? See the current lunar cycle live — phase name, illumination, cycle day, and what today's moon energy means for your rhythm and practice.",
+        canonical: "/moon-cycle-today",
+        keywords: [
+          "moon cycle today",
+          "current moon cycle",
+          "lunar cycle tracker",
+          "what is the moon cycle today",
+          "moon phase cycle",
+          "lunar phase today",
+          "moon illumination",
+        ],
+      }
+    : isCurrent
+    ? {
+        title: "Current Moon Phase — Live Lunar Tracker | Moontuner",
+        description:
+          "What is the current moon phase? See the live moon phase now — illumination percentage, cycle day, sign, and what the current lunar energy means for your focus.",
+        canonical: "/current-moon-phase",
+        keywords: [
+          "current moon phase",
+          "what is the current moon phase",
+          "moon phase now",
+          "live moon phase",
+          "current lunar phase",
+          "moon illumination today",
+          "lunar cycle today",
+        ],
+      }
+    : {
+        title: "Moon Phase Today — Live Lunar Phase Tracker | Moontuner",
+        description:
+          "What is the moon phase today? See the current moon phase live — phase name, illumination percentage, cycle day, and what today's lunar energy means for your focus and practice.",
+        canonical: "/moon-phase-today",
+        keywords: [
+          "moon phase today",
+          "current moon phase",
+          "lunar phase tracker",
+          "what is the moon phase today",
+          "lunar cycle",
+          "moon illumination",
+        ],
+      };
 
   return (
     <PageTransition>
+      <SEOHead {...pageMeta} />
       <Navigation />
 
       <main className="min-h-screen bg-background text-foreground">
@@ -355,6 +401,55 @@ export default function MoonPhaseToday() {
             </div>
           </div>
         </section>
+
+        {/* ── SEO CONTEXT ── */}
+        <section className="px-6 py-12 bg-card/30">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="font-serif text-xl sm:text-2xl font-light mb-4 text-center">
+              What Is the{" "}
+              <em className="italic text-[hsl(var(--gold))]">Moon Phase Today?</em>
+            </h2>
+            <p className="text-muted-foreground text-[0.95rem] leading-[1.85] mb-4">
+              The moon phase today is determined by where the Moon sits in its
+              29.5-day orbit around Earth. As the Moon moves, the angle between
+              the Sun, Earth, and Moon changes — and so does the percentage of
+              the lunar surface illuminated as seen from here. The phase you see
+              above is calculated from live astronomical data and updates every day.
+            </p>
+            <p className="text-muted-foreground text-[0.95rem] leading-[1.85] mb-4">
+              Each of the eight moon phases carries a distinct quality of energy and
+              attention. The <strong className="text-foreground">New Moon</strong> is
+              the moment of reset and intention — the optimal window for planting new
+              directions. The <strong className="text-foreground">Waxing Crescent</strong>{" "}
+              through <strong className="text-foreground">Waxing Gibbous</strong> phases
+              build momentum toward the{" "}
+              <strong className="text-foreground">Full Moon</strong>, when illumination
+              peaks and whatever you have been building becomes visible. The waning
+              half of the cycle — from{" "}
+              <strong className="text-foreground">Waning Gibbous</strong> to{" "}
+              <strong className="text-foreground">Waning Crescent</strong> — supports
+              release, reflection, and restoration.
+            </p>
+            <p className="text-muted-foreground text-[0.95rem] leading-[1.85] mb-4">
+              Understanding the current moon phase is more than a calendrical curiosity.
+              Research and traditional frameworks alike suggest that aligning your
+              work, rest, and creative output with the natural lunar rhythm can reduce
+              friction and improve decision quality. When you know today's moon cycle,
+              you can time your efforts with the current energetic weather rather than
+              pushing against it.
+            </p>
+            <p className="text-muted-foreground text-[0.95rem] leading-[1.85]">
+              The Moontuner system uses the current moon phase as a foundation for
+              your daily directive — a single, actionable orientation for the day
+              based on where the cycle is now. Scroll down for today's phase
+              intelligence, or explore the full eight-phase framework below.
+            </p>
+          </div>
+        </section>
+
+        <div className="max-w-5xl mx-auto px-6">
+          <hr className="border-border/40" />
+        </div>
 <LunarTransmission />
         {/* ── PHASE GUIDANCE ── */}
         <section className="px-6 py-20">
@@ -482,12 +577,8 @@ export default function MoonPhaseToday() {
           </div>
         </section>
 
-        {/* ── FOOTER STRIP ── */}
-        <footer className="border-t border-border/30 px-6 py-8 text-center">
-          <p className="text-muted-foreground/40 text-xs tracking-widest">
-            © {today.getFullYear()} Moontuner · moontuner.xyz
-          </p>
-        </footer>
+        {/* ── FOOTER ── */}
+        <Footer />
       </main>
     </PageTransition>
   );

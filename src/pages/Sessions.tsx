@@ -1,11 +1,14 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
+import { ImageInlay } from "@/components/ImageInlay";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ExternalLink, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { openStripeCheckout } from "@/lib/stripeLinks";
+import { toast } from "sonner";
 
-const STRIPE_BOOKING_URL = "https://buy.stripe.com/5kQ00i5QCdHm8qngTfe7m04";
 const SQUARE_BOOKING_URL = "https://square.site/book/LT09Q7KSGAF98/moontuner";
 
 // ─── IMAGE PATHS ─────────────────────────────────────────────────────────────
@@ -59,48 +62,37 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-// ─── GRADIENT-MASKED PHOTO COMPONENT ─────────────────────────────────────────
-// fade: "left" | "right" | "both" | "bottom" | "top-bottom"
-function GhostPhoto({
-  src,
-  alt,
-  fade = "both",
-  className = "",
-  style = {},
-}: {
-  src: string;
-  alt: string;
-  fade?: "left" | "right" | "both" | "bottom" | "top-bottom";
-  className?: string;
-  style?: React.CSSProperties;
-}) {
-  const masks: Record<string, string> = {
-    left: "linear-gradient(to left, black 45%, transparent 100%)",
-    right: "linear-gradient(to right, black 45%, transparent 100%)",
-    both: "linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%)",
-    bottom: "linear-gradient(to bottom, black 55%, transparent 100%)",
-    "top-bottom": "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
-  };
-  const maskValue = masks[fade];
-
-  return (
-    <img
-      src={src}
-      alt={alt}
-      className={className}
-      style={{
-        WebkitMaskImage: maskValue,
-        maskImage: maskValue,
-        ...style,
-      }}
-    />
-  );
-}
-
 export default function Sessions() {
+  const [bookingLoading, setBookingLoading] = useState(false);
+  
+
+  const handleChartOverviewBooking = () => {
+    setBookingLoading(true);
+    const ok = openStripeCheckout("astro-harmonic");
+    if (!ok) {
+      toast.error("Could not start checkout. Please try again.");
+      setBookingLoading(false);
+    }
+  };
+
   return (
     <PageTransition>
       <div className="min-h-screen bg-background relative">
+        {/* Page-wide soft background — Michael at the turntable with tarot spread */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none select-none fixed inset-0 z-0"
+          style={{
+            backgroundImage: "url('/images/michael-turntable-tarot.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+            backgroundRepeat: "no-repeat",
+            opacity: 0.07,
+            maskImage: "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 80%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 80%)",
+          }}
+        />
         <Navigation />
 
         <main>
@@ -114,13 +106,13 @@ export default function Sessions() {
             <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
 
             {/* Michael — hero portrait, right-anchored, fades left */}
-            <div className="absolute right-0 top-0 h-full w-[55%] lg:w-[45%] pointer-events-none select-none hidden sm:block">
-              <GhostPhoto
-                src="/images/michael-pool-moon.jpg"
-                alt="Michael Anticoli"
+            <div className="absolute right-0 top-0 h-full w-[60%] lg:w-[52%] pointer-events-none select-none hidden sm:block">
+              <ImageInlay
+                src="/images/michael-turntable-tarot.png"
+                alt="Michael Anticoli at the turntable with a tarot spread"
                 fade="left"
-                className="h-full w-full object-cover object-center"
-                style={{ opacity: 0.72 }}
+                className="h-full w-full object-contain object-right"
+                style={{ opacity: 0.85 }}
               />
               {/* Second pass: dark vignette at very bottom so text doesn't clash */}
               <div
@@ -159,29 +151,40 @@ export default function Sessions() {
           ══════════════════════════════════════════════════════════════════ */}
           <section className="py-20 px-6 lg:px-12 relative overflow-hidden">
             {/* Photo — left anchor, fades right into the section */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[110%] w-[38%] pointer-events-none select-none hidden lg:block">
-              <GhostPhoto
-                src="/images/michael-turntable.png"
-                alt="Michael with tarot cards"
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[115%] w-[44%] pointer-events-none select-none hidden md:block">
+              <ImageInlay
+                src="/images/tarot-music-cards.jpg"
+                alt="Astrological tarot cards with sheet music — jewel-toned spread"
                 fade="right"
-                className="h-full w-full object-cover object-center"
+                className="h-full w-full object-cover object-left"
                 style={{ opacity: 0.55 }}
+              />
+              {/* Extra readability scrim so right-side copy stays legible */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to right, transparent 0%, transparent 35%, hsl(var(--background) / 0.85) 70%, hsl(var(--background)) 100%)",
+                }}
               />
             </div>
 
             <div className="container mx-auto max-w-4xl relative z-10">
-              <span className="system-label mb-3 block">Tier 1</span>
-              <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
-                Tarot Reading
-              </h2>
-              <p className="font-serif italic text-lg text-muted-foreground mb-8">
-                The cards don't predict your future. They clarify your present.
-              </p>
-              <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-2xl mb-12">
-                Michael brings a holistic, conversation-led approach to every reading. Tarot is the entry point, but
-                nothing is off limits — astrology, numerology, life patterns, timing, all of it is fair game if it
-                serves you. You come with a question or a season of life. You leave with clarity.
-              </p>
+              {/* Right-anchored content: image breathes on the left, copy reads on the right */}
+              <div className="md:ml-auto md:w-[58%] lg:w-[55%]">
+                <span className="system-label mb-3 block">Tier 1</span>
+                <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
+                  Tarot Reading
+                </h2>
+                <p className="font-serif italic text-lg text-foreground/90 mb-8">
+                  The cards don't predict your future. They clarify your present.
+                </p>
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-12">
+                  Michael brings a holistic, conversation-led approach to every reading. Tarot is the entry point, but
+                  nothing is off limits — astrology, numerology, life patterns, timing, all of it is fair game if it
+                  serves you. You come with a question or a season of life. You leave with clarity.
+                </p>
+              </div>
 
               <div className="grid sm:grid-cols-2 gap-5 mb-8 lg:ml-0">
                 {/* Single Draw */}
@@ -228,7 +231,7 @@ export default function Sessions() {
           <section className="py-20 px-6 lg:px-12 bg-muted/10 relative overflow-hidden">
             {/* Studio photo — right anchor, fades left */}
             <div className="absolute right-0 top-0 h-full w-[44%] pointer-events-none select-none hidden lg:block">
-              <GhostPhoto
+              <ImageInlay
                 src="/images/michael-studio.png"
                 alt="Michael at the astro-harmonic studio"
                 fade="left"
@@ -247,10 +250,10 @@ export default function Sessions() {
             <div className="container mx-auto max-w-4xl relative z-10">
               <span className="system-label mb-3 block">Tier 2</span>
               <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground mb-3 leading-tight">
-                Astro-Harmonic Natal Analysis
+                Astro-Harmonic Natal Analysis Report
               </h2>
               <p className="font-serif italic text-lg text-muted-foreground mb-8">
-                Your birth chart is a frequency. This session makes it audible.
+                Your birth chart is a frequency. This process makes it audible.
               </p>
               <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-2xl mb-12">
                 This is not a standard chart reading. Michael analyzes your birth chart through both classical
@@ -267,15 +270,35 @@ export default function Sessions() {
                   </div>
                   <p className="font-sans text-xs text-muted-foreground mb-4">Immediate Generation</p>
                   <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
-                    Your natal chart translated into musical structure. Every planetary position, every angle, every
-                    harmonic relationship mapped to its corresponding frequency and interval. The result is a complete
-                    sonic portrait of the chart you were born into — generated algorithmically, yours permanently.
+                    A PDF report of your natal chart translated into musical structure. Every planetary position, every
+                    angle, every harmonic relationship mapped to its corresponding frequency and interval. The result is
+                    a complete sonic portrait of the chart you were born into — generated algorithmically, yours
+                    permanently. Paired with an mp3 download of your astro-harmonic sonic composition.
                   </p>
-                  <a href={STRIPE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-                    <Button variant="gold-outline" size="sm" className="w-full gap-2 text-xs tracking-wide">
-                      Book a Session <ExternalLink className="w-3 h-3" />
-                    </Button>
-                  </a>
+                  <div className="flex items-start gap-2.5 mb-4 p-3 rounded-lg border border-gold/25 bg-gold/5">
+                    <span className="text-xs text-foreground/90 leading-snug">
+                      <span className="font-medium text-gold">✓ Voice narration included</span>
+                      <br />
+                      <span className="text-muted-foreground">Your report read aloud in Michael's cloned voice — delivered as MP3, no add-on required.</span>
+                    </span>
+                  </div>
+                  <Button
+                    onClick={handleChartOverviewBooking}
+                    disabled={bookingLoading}
+                    variant="gold-outline"
+                    size="sm"
+                    className="w-full gap-2 text-xs tracking-wide"
+                  >
+                    {bookingLoading ? (
+                      <>
+                        <Loader2 className="w-3 h-3 animate-spin" /> Starting checkout…
+                      </>
+                    ) : (
+                      <>
+                        Generate Your Report & Song · $47 <ExternalLink className="w-3 h-3" />
+                      </>
+                    )}
+                  </Button>
                 </div>
 
                 {/* Cosmic Calibration */}
@@ -326,8 +349,8 @@ export default function Sessions() {
 
           {/* ── Atmospheric divider ── */}
           <div className="relative w-full h-48 sm:h-64 overflow-hidden pointer-events-none select-none">
-            <GhostPhoto
-              src="/images/michael-moon-silhouette.jpg"
+            <ImageInlay
+              src="/images/moontunerImage1.png"
               alt=""
               fade="top-bottom"
               className="absolute inset-0 w-full h-full object-cover object-center"
@@ -449,8 +472,8 @@ export default function Sessions() {
           <section className="py-16 px-6 lg:px-12 border-t border-border/20 relative overflow-hidden">
             {/* Background atmospheric: Michael with product spread */}
             <div className="absolute inset-0 pointer-events-none select-none hidden md:block">
-              <GhostPhoto
-                src="/images/michael-products.jpg"
+              <ImageInlay
+                src="/images/moontuner-inlay.jpg"
                 alt=""
                 fade="both"
                 className="absolute right-0 top-1/2 -translate-y-1/2 h-full w-[50%] object-cover object-left"
@@ -465,11 +488,11 @@ export default function Sessions() {
                 pattern clicks or a question opens up — there's a full body of work here to go deeper with. At your
                 pace, on your cycle.
               </p>
-              <a href="/">
+              <Link to="/">
                 <Button variant="hero-outline" size="lg" className="gap-2">
                   Explore the Full System
                 </Button>
-              </a>
+              </Link>
             </div>
           </section>
         </main>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
@@ -7,28 +7,95 @@ import { PageTransition } from "@/components/PageTransition";
 import { LunarBackground } from "@/components/LunarBackground";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Activity, Sparkles, Music, Waves, Zap, Download, FileText, ExternalLink } from "lucide-react";
+import { Activity, Sparkles, Music, Waves, Zap, Download, FileText } from "lucide-react";
 import { useCosmicReading } from "@/hooks/useCosmicReading";
 import { useQuantumMelodicData } from "@/hooks/useQuantumMelodicData";
 import type { BirthData } from "@/types/astrology";
 import type { QuantumMelodicReading } from "@/types/quantumMelodic";
 import {
-  elementInfo, aspectMusicalData, houseWisdom,
-  calculateHarmonicAnalysis, getResolutionGuidance, getOrbPrecision,
+  elementInfo,
+  aspectMusicalData,
+  houseWisdom,
+  calculateHarmonicAnalysis,
+  getResolutionGuidance,
+  getOrbPrecision,
+  deriveCanonicalSignals,
 } from "@/utils/harmonicWisdom";
-import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
+
+import { supabase } from "@/integrations/supabase/client";
+import { openStripeCheckout } from "@/lib/stripeLinks";
+import { AstroHarmonicSample } from "@/components/AstroHarmonicSample";
+import { NatalWheelCard } from "@/components/NatalWheelCard";
+import { Sigil, isSigilName } from "@/components/astro/AstroSigils";
+import { InteractiveNatalChart } from "@/components/InteractiveNatalChart";
+import { useCosmicDeliverables } from "@/hooks/useCosmicDeliverables";
+import { renderChartImageBase64, renderReportPdfBase64 } from "@/lib/renderDeliverables";
+import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
+import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
+import { NarrationUpsell } from "@/components/report/NarrationUpsell";
+import { QuantumSignaturePanel } from "@/components/harmonic/QuantumSignaturePanel";
+import { toast } from "sonner";
+
+const QM_STORAGE_KEY = "qm_paid";
+const QM_BIRTH_DATA_KEY = "qm_birth_data";
+// Update this number manually as Founding Readings are claimed
+const FOUNDING_READINGS_CLAIMED = 3;
+const FOUNDING_READINGS_TOTAL = 50;
+
+function sendToCheckout(url: string) {
+  try {
+    if (window.top && window.top !== window.self) {
+      window.top.location.href = url;
+      return;
+    }
+  } catch {
+    // Cross-origin previews may block top navigation; fall back to this window.
+  }
+
+  window.location.href = url;
+}
 
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const isPaid = searchParams.get("paid") === "true";
+  const returnedFromCheckout = searchParams.get("paid") === "true" || !!searchParams.get("session_id");
+  // Dev/admin bypass: ?dev=true persists a localStorage flag that unlocks the report
+  // for testing without paying. Remove the flag by visiting ?dev=false.
+  const devBypass = (() => {
+    if (typeof window === "undefined") return false;
+    const param = searchParams.get("dev");
+    if (param === "true") {
+      localStorage.setItem("qm_dev_bypass", "true");
+      return true;
+    }
+    if (param === "false") {
+      localStorage.removeItem("qm_dev_bypass");
+      return false;
+    }
+    return localStorage.getItem("qm_dev_bypass") === "true";
+  })();
+  const [hasPaidAccess, setHasPaidAccess] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return devBypass || sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
+  });
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
-  useEffect(() => {
-    if (!isPaid) navigate("/services", { replace: true });
-  }, [isPaid, navigate]);
+  
 
-  const { loading, error, reading, audioUrl, progress, stage, generateReading, reset } = useCosmicReading();
-  const { fetchData, dataReady, buildReading, loading: qmLoading } = useQuantumMelodicData();
+  const {
+    loading,
+    error,
+    reading,
+    audioUrl,
+    audioLoading,
+    audioError,
+    progress,
+    stage,
+    generateReading,
+    generateAudio,
+    reset,
+  } = useCosmicReading();
+  const { fetchData, error: qmError, buildReading } = useQuantumMelodicData();
   const [step, setStep] = useState<"input" | "generating" | "result">("input");
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -36,27 +103,85 @@ const QuantumMelodic = () => {
   const [duration, setDuration] = useState(0);
   const [qmReading, setQmReading] = useState<QuantumMelodicReading | null>(null);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    date: "1990-01-01",
-    time: "12:00",
-    location: "",
+  interface ChartInterpretation {
+    opening: string;
+    coreSignature: string;
+    harmonicAlignment: string;
+    resolutionGuidance: string;
+    closing: string;
+  }
+  const [interpretation, setInterpretation] = useState<ChartInterpretation | null>(null);
+  const [interpretationLoading, setInterpretationLoading] = useState(false);
+  const [interpretationError, setInterpretationError] = useState<string | null>(null);
+
+  const [formData, setFormData] = useState(() => {
+    const b = readSharedBirth();
+    return {
+      name: b.name || "",
+      email: "",
+      date: b.date || "1990-01-01",
+      time: b.time || "12:00",
+      location: b.location || "",
+    };
   });
+  const wheelCardRef = useRef<HTMLDivElement | null>(null);
+  const { state: deliverables, start: startDeliverables, reset: resetDeliverables } = useCosmicDeliverables();
+
+  const persistPaidAccess = useCallback(() => {
+    if (typeof window === "undefined") return;
+    sessionStorage.setItem(QM_STORAGE_KEY, "true");
+  }, []);
+
+  const saveBirthDraft = useCallback((birthData: BirthData) => {
+    if (typeof window === "undefined") return;
+    sessionStorage.setItem(QM_BIRTH_DATA_KEY, JSON.stringify(birthData));
+    writeSharedBirth({
+      name: birthData.name,
+      date: birthData.date,
+      time: birthData.time,
+      location: birthData.location,
+    });
+  }, []);
+
+  const beginCheckout = useCallback(() => {
+    if (checkoutLoading) return;
+    setCheckoutLoading(true);
+
+    const birthDraft: BirthData = {
+      name: formData.name || "Cosmic Traveler",
+      date: formData.date,
+      time: formData.time,
+      location: formData.location,
+    };
+
+    saveBirthDraft(birthDraft);
+
+    const ok = openStripeCheckout("astro-harmonic");
+    if (!ok) {
+      toast.error("Could not start checkout. Please try again.");
+      setCheckoutLoading(false);
+    }
+  }, [checkoutLoading, formData.date, formData.location, formData.name, formData.time, saveBirthDraft]);
+
+  useEffect(() => {
+    if (!returnedFromCheckout) return;
+    persistPaidAccess();
+    setHasPaidAccess(true);
+  }, [persistPaidAccess, returnedFromCheckout]);
 
   useEffect(() => {
     try {
-      const raw = sessionStorage.getItem("qm_birth_data");
-      if (raw) setFormData(prev => ({ ...prev, ...JSON.parse(raw) }));
-    } catch {}
+      const raw = sessionStorage.getItem(QM_BIRTH_DATA_KEY);
+      if (raw) setFormData((prev) => ({ ...prev, ...JSON.parse(raw) }));
+    } catch {
+      sessionStorage.removeItem(QM_BIRTH_DATA_KEY);
+    }
   }, []);
 
-  useEffect(() => {
-    if (isPaid) fetchData();
-  }, [isPaid, fetchData]);
-
   const handleGenerate = async () => {
-    if (!formData.date || !formData.location) return;
+    if (!formData.date || !formData.location || !formData.email) return;
     setStep("generating");
+    resetDeliverables();
 
     try {
       const birthData: BirthData = {
@@ -66,45 +191,141 @@ const QuantumMelodic = () => {
         location: formData.location,
       };
 
+      saveBirthDraft(birthData);
+
+      await fetchData();
       const result = await generateReading(birthData);
 
+      let enriched: QuantumMelodicReading | null = null;
       if (result?.chartData?.planets) {
-        const enriched = buildReading(result.chartData.planets);
+        enriched = buildReading(result.chartData.planets);
         setQmReading(enriched);
       }
 
       setStep("result");
+
+      // Fire LLM-grounded interpretation in parallel (uses QM metasystem fields)
+      let interpretationPromise: Promise<ChartInterpretation | null> = Promise.resolve(null);
+      if (enriched && result) {
+        const harmonic = calculateHarmonicAnalysis(enriched.aspects, enriched.planets);
+        const canonicalSignals = deriveCanonicalSignals(enriched, result.chartData.ascendant);
+        setInterpretation(null);
+        setInterpretationError(null);
+        setInterpretationLoading(true);
+        interpretationPromise = supabase.functions
+          .invoke("interpret-natal-chart", {
+            body: {
+              name: birthData.name,
+              sunSign: result.chartData.sunSign,
+              moonSign: result.chartData.moonSign,
+              ascendant: result.chartData.ascendant,
+              qmReading: enriched,
+              harmonic,
+              canonical: canonicalSignals,
+            },
+          })
+          .then(({ data, error }) => {
+            if (error || !data?.interpretation) {
+              setInterpretationError("Could not generate written interpretation.");
+              setInterpretationLoading(false);
+              return null;
+            }
+            setInterpretation(data.interpretation as ChartInterpretation);
+            setInterpretationLoading(false);
+            return data.interpretation as ChartInterpretation;
+          })
+          .catch((e) => {
+            console.error("interpretation error", e);
+            setInterpretationError("Could not generate written interpretation.");
+            setInterpretationLoading(false);
+            return null;
+          });
+      }
+
+      // Kick off all three deliverables (MP3, PDF, chart PNG) in parallel.
+      // Wait a tick so the off-screen wheel card has rendered.
+      if (result) {
+        setTimeout(() => {
+          startDeliverables({
+            email: formData.email,
+            birthData,
+            chart: result.chartData,
+            qmReading: enriched,
+            renderChartImageBase64: async () => {
+              if (!wheelCardRef.current) throw new Error("wheel card not mounted");
+              return renderChartImageBase64(wheelCardRef.current);
+            },
+            renderPdfBase64: async () => {
+              const harmonic = enriched ? calculateHarmonicAnalysis(enriched.aspects, enriched.planets) : null;
+              const guide = harmonic ? getResolutionGuidance(harmonic) : [];
+              const interp = await interpretationPromise;
+              return renderReportPdfBase64(
+                birthData.name || "Cosmic Traveler",
+                result,
+                enriched,
+                harmonic,
+                guide,
+                interp,
+              );
+            },
+          });
+        }, 400);
+      }
     } catch {
       setStep("input");
     }
   };
 
   useEffect(() => {
-    if (!audioUrl) return;
+    const url = deliverables.audioUrl;
+    if (!url) return;
     const audio = new Audio();
-    audio.src = audioUrl;
+    audio.src = url;
+    audio.crossOrigin = "anonymous";
     audioRef.current = audio;
     const onMeta = () => setDuration(audio.duration || 0);
     const onTime = () => setCurrentTime(audio.currentTime || 0);
-    const onEnd = () => { setIsPlaying(false); setCurrentTime(0); };
+    const onEnd = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
     audio.addEventListener("loadedmetadata", onMeta);
     audio.addEventListener("timeupdate", onTime);
     audio.addEventListener("ended", onEnd);
-    return () => { audio.pause(); audio.removeEventListener("loadedmetadata", onMeta); audio.removeEventListener("timeupdate", onTime); audio.removeEventListener("ended", onEnd); audioRef.current = null; };
-  }, [audioUrl]);
+    return () => {
+      audio.pause();
+      audio.removeEventListener("loadedmetadata", onMeta);
+      audio.removeEventListener("timeupdate", onTime);
+      audio.removeEventListener("ended", onEnd);
+      audioRef.current = null;
+    };
+  }, [deliverables.audioUrl]);
 
   const togglePlay = async () => {
     if (!audioRef.current) return;
-    if (isPlaying) { audioRef.current.pause(); setIsPlaying(false); }
-    else { await audioRef.current.play(); setIsPlaying(true); }
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      await audioRef.current.play();
+      setIsPlaying(true);
+    }
   };
 
-  const formatTime = (t: number) => `${Math.floor(t / 60)}:${Math.floor(t % 60).toString().padStart(2, "0")}`;
+  const formatTime = (t: number) =>
+    `${Math.floor(t / 60)}:${Math.floor(t % 60)
+      .toString()
+      .padStart(2, "0")}`;
 
   const harmonicAnalysis = useMemo(() => {
     if (!qmReading) return null;
     return calculateHarmonicAnalysis(qmReading.aspects, qmReading.planets);
   }, [qmReading]);
+
+  const canonical = useMemo(() => {
+    if (!qmReading) return null;
+    return deriveCanonicalSignals(qmReading, reading?.chartData?.ascendant ?? null);
+  }, [qmReading, reading?.chartData?.ascendant]);
 
   const guidance = useMemo(() => {
     if (!harmonicAnalysis) return [];
@@ -114,10 +335,136 @@ const QuantumMelodic = () => {
   const degreeFmt = (deg: number) => {
     const d = Math.floor(deg % 30);
     const m = Math.round((deg % 1) * 60);
-    return `${d}\u00B0${m.toString().padStart(2, '0')}\u2032`;
+    return `${d}\u00B0${m.toString().padStart(2, "0")}\u2032`;
   };
 
-  if (!isPaid) return null;
+  if (!hasPaidAccess) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen bg-background text-foreground selection:bg-accent/30 selection:text-accent-foreground">
+          <Navigation />
+          <main className="pt-24">
+            <section className="relative min-h-[70vh] flex items-center overflow-hidden border-b border-border">
+              <LunarBackground />
+              <div className="relative z-10 container mx-auto px-6 lg:px-12 max-w-5xl py-16">
+                <span className="system-label mb-6 block">Astro-Harmonic Natal Analysis</span>
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extralight leading-[1.05] mb-6">
+                  Your birth chart,
+                  <br />
+                  <span className="font-serif italic font-normal">rendered as music.</span>
+                </h1>
+                <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mb-10">
+                  Every chart carries a tonal signature — a unique arrangement of intervals, tensions, and resolutions.
+                  This report translates yours into a written analysis, a printable chart, and an original
+                  composition generated from your exact placements.
+                </p>
+
+                {/* Embedded sample player — preview a real Quantumelodic composition */}
+                <div className="mb-10 max-w-2xl rounded-2xl border border-border bg-card/40 backdrop-blur-sm p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-full bg-accent/10 flex items-center justify-center">
+                      <Music className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">Listen — a sample composition</p>
+                      <p className="text-xs text-muted-foreground">
+                        Generated from a real natal chart. Yours will be unique to your placements.
+                      </p>
+                    </div>
+                  </div>
+                  <audio
+                    controls
+                    preload="none"
+                    src="/audio/moontuners-debut.mp3"
+                    className="w-full mt-2"
+                  >
+                    Your browser does not support the audio element.
+                  </audio>
+                  <p className="text-[10px] text-muted-foreground/60 mt-3 tracking-wide">
+                    Two-minute reference track · MP3 · streamable in-browser
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-2.5 mb-4 p-3 rounded-lg border border-gold/25 bg-gold/5 max-w-md">
+                  <span className="text-xs text-foreground/90 leading-snug">
+                    <span className="font-medium text-gold">✓ Voice narration included</span>
+                    <br />
+                    <span className="text-muted-foreground">Your full report read aloud in Michael's cloned voice — delivered as MP3, no add-on required.</span>
+                  </span>
+                </div>
+
+                {/* Founding Reading block */}
+                <div className="mb-8 max-w-md rounded-xl border border-accent/30 bg-accent/5 p-5">
+                  <p className="text-xs system-label mb-2 text-accent">Founding Readings</p>
+                  <p className="text-sm text-foreground leading-relaxed mb-1">
+                    The first 50 Astro-Harmonic Reports are <span className="font-semibold">$47</span>. After the fiftieth, the price becomes <span className="font-semibold">$97</span>.
+                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed mb-3">
+                    You receive the same full reading either way. Founding pricing exists for the people willing to be early — the ones who help prove the work resonates.
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 bg-border rounded-full h-1.5 overflow-hidden">
+                      <div
+                        className="h-full bg-accent rounded-full"
+                        style={{ width: `${(FOUNDING_READINGS_CLAIMED / FOUNDING_READINGS_TOTAL) * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">
+                      {FOUNDING_READINGS_CLAIMED} of {FOUNDING_READINGS_TOTAL} claimed
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
+                    {checkoutLoading ? "Starting Checkout…" : "Claim Your Founding Reading — $47"}
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground/80 mt-3 max-w-md leading-relaxed">
+                  If the composition doesn't feel like yours, email me within 7 days. I'll refund you in full — and you keep the report. This work is meant to resonate. If it doesn't, you owe me nothing.
+                </p>
+              </div>
+            </section>
+
+            {/* Rich sample preview — shows the actual deliverable's look & feel */}
+
+            {/* About this work — credibility paragraph */}
+            <section className="py-16 border-b border-border">
+              <div className="container mx-auto px-6 lg:px-12 max-w-3xl">
+                <span className="system-label mb-4 block">About this work</span>
+                <p className="text-base text-foreground/90 leading-relaxed">
+                  I'm Michael — composer, astrologer, and the person who built every piece of this system. The Astro-Harmonic Report is years of work in music theory and chart interpretation, synthesized: every aspect translated to its musical interval, every planet given a voice and an instrument, every element rendered as frequency. The narration is read in my voice — cloned, so I can deliver thousands of readings without losing the human imprint. The composition is generated from your exact placements, never a template. What you receive is made by one person who believes your birth carried a sound worth hearing.
+                </p>
+              </div>
+            </section>
+
+            <AstroHarmonicSample />
+
+            {/* Closing CTA after the sample */}
+            <section className="py-20 border-t border-border">
+              <div className="container mx-auto px-6 lg:px-12 max-w-3xl text-center">
+                <span className="system-label mb-4 block text-accent">Ready when you are</span>
+                <h2 className="font-display text-3xl sm:text-4xl font-extralight mb-6">
+                  Generate <span className="font-serif italic">your own.</span>
+                </h2>
+                <p className="text-base text-muted-foreground leading-relaxed mb-8 max-w-xl mx-auto">
+                  One-time payment. Instant access. Yours forever — printable, shareable, and
+                  generated from your exact birth chart.
+                </p>
+                <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
+                  {checkoutLoading ? "Starting Checkout…" : "Claim Your Founding Reading — $47"}
+                </Button>
+                <p className="text-xs text-muted-foreground/80 mt-4 max-w-md mx-auto leading-relaxed">
+                  If the composition doesn't feel like yours, email me within 7 days. I'll refund you in full — and you keep the report. This work is meant to resonate. If it doesn't, you owe me nothing.
+                </p>
+              </div>
+            </section>
+          </main>
+          <Footer />
+        </div>
+      </PageTransition>
+    );
+  }
 
   return (
     <PageTransition>
@@ -126,7 +473,6 @@ const QuantumMelodic = () => {
 
         <main className="pt-24">
           <AnimatePresence mode="wait">
-
             {/* ────────────────────────────────────────── */}
             {/* INPUT STEP — Full-screen hero feel         */}
             {/* ────────────────────────────────────────── */}
@@ -144,7 +490,8 @@ const QuantumMelodic = () => {
                     {/* Headline */}
                     <div className="opacity-0 animate-fade-in-up delay-100 mb-6">
                       <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-extralight text-foreground leading-[1.05]">
-                        Your Birth Chart<br />
+                        Your Birth Chart
+                        <br />
                         <span className="font-serif italic font-normal">Translated Into Sound.</span>
                       </h1>
                     </div>
@@ -152,8 +499,8 @@ const QuantumMelodic = () => {
                     {/* Subhead */}
                     <div className="opacity-0 animate-fade-in-up delay-200 mb-12 max-w-lg">
                       <p className="text-lg text-muted-foreground leading-relaxed">
-                        Every planetary position carries a frequency. Every aspect creates an interval.
-                        Your chart is already a composition — we make it audible.
+                        Every planetary position carries a frequency. Every aspect creates an interval. Your chart is
+                        already a composition — we make it audible.
                       </p>
                     </div>
 
@@ -202,6 +549,16 @@ const QuantumMelodic = () => {
                         />
                       </div>
                       <div>
+                        <label className="system-label block mb-3">Email</label>
+                        <Input
+                          type="email"
+                          placeholder="So you can come back to your composition"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className="bg-transparent border-0 border-b border-border rounded-none py-4 text-foreground focus-visible:ring-0 focus-visible:border-accent placeholder:text-muted-foreground/40"
+                        />
+                      </div>
+                      <div>
                         <label className="system-label block mb-3">Birth Date</label>
                         <Input
                           type="date"
@@ -235,7 +592,7 @@ const QuantumMelodic = () => {
                       <div className="pt-4">
                         <button
                           onClick={handleGenerate}
-                          disabled={loading || !formData.date || !formData.location}
+                          disabled={loading || !formData.date || !formData.location || !formData.email}
                           className="system-button w-full justify-center disabled:opacity-30 disabled:cursor-not-allowed"
                         >
                           Generate My Symphony
@@ -251,30 +608,50 @@ const QuantumMelodic = () => {
             {/* GENERATING STEP                            */}
             {/* ────────────────────────────────────────── */}
             {step === "generating" && (
-              <motion.div key="generating" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="min-h-[80vh] flex flex-col items-center justify-center px-6 relative">
+              <motion.div
+                key="generating"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="min-h-[80vh] flex flex-col items-center justify-center px-6 relative"
+              >
                 <LunarBackground />
                 <div className="relative z-10 text-center">
                   <div className="w-24 h-24 border border-border rounded-full mx-auto mb-10 flex items-center justify-center relative">
-                    <div className="absolute inset-0 border-t border-accent rounded-full animate-spin" style={{ animationDuration: '3s' }} />
+                    <div
+                      className="absolute inset-0 border-t border-accent rounded-full animate-spin"
+                      style={{ animationDuration: "3s" }}
+                    />
                     <Activity className="text-accent w-6 h-6 animate-pulse" />
                   </div>
                   <h3 className="font-serif text-2xl text-foreground mb-3 italic">
                     {stage === "geocoding" && "Locating coordinates\u2026"}
                     {stage === "calculating" && "Computing planetary positions\u2026"}
-                    {stage === "generating" && "Synthesizing your composition\u2026"}
+                    {stage === "generating" && "Rendering audio layer\u2026"}
                     {(stage === "idle" || stage === "complete") && "Preparing\u2026"}
                   </h3>
-                  <p className="system-label animate-pulse mb-10">
-                    Moshier DE404 Ephemeris \u00B7 Tone.js Synthesis
-                  </p>
+                  <p className="system-label animate-pulse mb-10">Moshier DE404 Ephemeris \u00B7 Harmonic Mapping</p>
                   <div className="w-48 h-px bg-border rounded-full overflow-hidden mx-auto">
-                    <motion.div className="h-full bg-accent rounded-full" initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }} />
+                    <motion.div
+                      className="h-full bg-accent rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${progress}%` }}
+                      transition={{ duration: 0.3 }}
+                    />
                   </div>
                   <span className="system-label mt-3 block">{progress}%</span>
                   {error && (
                     <div className="mt-10">
                       <p className="text-destructive text-sm mb-4">{error}</p>
-                      <button onClick={() => { reset(); setStep("input"); }} className="system-button">Try Again</button>
+                      <button
+                        onClick={() => {
+                          reset();
+                          setStep("input");
+                        }}
+                        className="system-button"
+                      >
+                        Try Again
+                      </button>
                     </div>
                   )}
                 </div>
@@ -285,8 +662,21 @@ const QuantumMelodic = () => {
             {/* RESULT STEP — Report                       */}
             {/* ────────────────────────────────────────── */}
             {step === "result" && reading && (
+              <>
+                {/* Off-screen wheel card for html2canvas capture */}
+                <div style={{ position: "fixed", left: -99999, top: 0, pointerEvents: "none" }} aria-hidden="true">
+                  <div ref={wheelCardRef}>
+                    <NatalWheelCard
+                      chart={reading.chartData}
+                      name={reading.birthData.name || "Cosmic Traveler"}
+                      birthLine={`${reading.birthData.date} · ${reading.birthData.time} · ${reading.birthData.location}`}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+            {step === "result" && reading && (
               <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-
                 {/* Report Header */}
                 <section className="py-20 border-b border-border">
                   <div className="container mx-auto px-6 lg:px-12 max-w-5xl">
@@ -294,16 +684,17 @@ const QuantumMelodic = () => {
                       <div>
                         <span className="system-label mb-4 block">Composition Complete</span>
                         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-extralight text-foreground leading-[1.05] mb-4">
-                          {reading.birthData.name ? `${reading.birthData.name}\u2019s` : 'Your'}<br />
+                          {reading.birthData.name ? `${reading.birthData.name}\u2019s` : "Your"}
+                          <br />
                           <span className="font-serif italic font-normal">Symphony</span>
                         </h1>
                         <div className="flex flex-wrap gap-x-8 gap-y-2 mt-6">
                           {[
-                            { label: 'Sun', value: reading.chartData.sunSign },
-                            { label: 'Moon', value: reading.chartData.moonSign },
-                            { label: 'Rising', value: reading.chartData.ascendant },
-                            { label: 'Mode', value: reading.musicalMode },
-                          ].map(item => (
+                            { label: "Sun", value: reading.chartData.sunSign },
+                            { label: "Moon", value: reading.chartData.moonSign },
+                            { label: "Rising", value: reading.chartData.ascendant },
+                            { label: "Mode", value: reading.musicalMode },
+                          ].map((item) => (
                             <div key={item.label} className="flex items-center gap-2">
                               <span className="system-label">{item.label}</span>
                               <span className="w-4 h-px bg-border" />
@@ -311,41 +702,88 @@ const QuantumMelodic = () => {
                             </div>
                           ))}
                         </div>
-                        {reading.chartData.source === 'approximate-fallback' && (
-                          <p className="system-label text-muted-foreground/50 mt-4 normal-case italic tracking-normal">Approximate positions — ephemeris service was briefly unavailable</p>
+                        {reading.chartData.source === "approximate-fallback" && (
+                          <p className="system-label text-muted-foreground/50 mt-4 normal-case italic tracking-normal">
+                            Approximate positions — ephemeris service was briefly unavailable
+                          </p>
                         )}
                       </div>
                       <div className="flex flex-wrap gap-3 shrink-0">
-                        {audioUrl && (
-                          <button
-                            onClick={() => {
-                              const a = document.createElement('a');
-                              a.href = audioUrl;
-                              a.download = `${(reading.birthData.name || 'cosmic').replace(/\s+/g, '_')}_symphony.wav`;
-                              document.body.appendChild(a);
-                              a.click();
-                              document.body.removeChild(a);
-                            }}
-                            className="system-button text-xs gap-2"
-                          >
-                            <Download className="w-3.5 h-3.5" /> Download MP3
-                          </button>
-                        )}
+                        <a
+                          href={deliverables.audioUrl || "#"}
+                          download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_symphony.mp3`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-disabled={deliverables.audioStatus !== "ready"}
+                          onClick={(e) => {
+                            if (deliverables.audioStatus !== "ready") e.preventDefault();
+                          }}
+                          className={`system-button text-xs gap-2 ${
+                            deliverables.audioStatus !== "ready" ? "opacity-40 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <Music className="w-3.5 h-3.5" />
+                          {deliverables.audioStatus === "ready"
+                            ? "Download MP3"
+                            : deliverables.audioStatus === "generating"
+                            ? "Composing…"
+                            : deliverables.audioStatus === "failed"
+                            ? "Audio failed"
+                            : "Audio pending"}
+                        </a>
+                        <a
+                          href={deliverables.pdfUrl || "#"}
+                          download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_report.pdf`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-disabled={deliverables.pdfStatus !== "ready"}
+                          onClick={(e) => {
+                            if (deliverables.pdfStatus !== "ready") e.preventDefault();
+                          }}
+                          className={`system-button text-xs gap-2 ${
+                            deliverables.pdfStatus !== "ready" ? "opacity-40 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <FileText className="w-3.5 h-3.5" />
+                          {deliverables.pdfStatus === "ready"
+                            ? "Download PDF"
+                            : deliverables.pdfStatus === "generating"
+                            ? "Rendering…"
+                            : deliverables.pdfStatus === "failed"
+                            ? "PDF failed"
+                            : "PDF pending"}
+                        </a>
+                        <a
+                          href={deliverables.chartImageUrl || "#"}
+                          download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_chart.png`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-disabled={deliverables.chartStatus !== "ready"}
+                          onClick={(e) => {
+                            if (deliverables.chartStatus !== "ready") e.preventDefault();
+                          }}
+                          className={`system-button text-xs gap-2 ${
+                            deliverables.chartStatus !== "ready" ? "opacity-40 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          {deliverables.chartStatus === "ready"
+                            ? "Download Chart"
+                            : deliverables.chartStatus === "generating"
+                            ? "Capturing…"
+                            : deliverables.chartStatus === "failed"
+                            ? "Chart failed"
+                            : "Chart pending"}
+                        </a>
                         <button
                           onClick={() => {
-                            // Generate and open an interactive HTML report in a new tab
-                            const planets = reading.chartData.planets;
-                            const name = reading.birthData.name || 'Cosmic Traveler';
-                            const html = buildSymphonyHTML(name, reading, qmReading, harmonicAnalysis, guidance);
-                            const blob = new Blob([html], { type: 'text/html' });
-                            const url = URL.createObjectURL(blob);
-                            window.open(url, '_blank');
+                            reset();
+                            resetDeliverables();
+                            setQmReading(null);
+                            setStep("input");
                           }}
-                          className="system-button text-xs gap-2"
+                          className="system-button text-xs shrink-0"
                         >
-                          <ExternalLink className="w-3.5 h-3.5" /> Interactive Report
-                        </button>
-                        <button onClick={() => { reset(); setQmReading(null); setStep("input"); }} className="system-button text-xs shrink-0">
                           New Reading
                         </button>
                       </div>
@@ -354,59 +792,133 @@ const QuantumMelodic = () => {
                 </section>
 
                 <div className="container mx-auto px-6 lg:px-12 max-w-5xl space-y-0">
-
                   {/* Audio Player */}
-                  {audioUrl && (
-                    <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="py-16 border-b border-border">
-                      <span className="system-label mb-6 block">Audio Synthesis</span>
+                  {(deliverables.audioUrl || deliverables.audioStatus === "generating" || deliverables.audioStatus === "failed") && (
+                    <motion.section
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                      className="py-16 border-b border-border"
+                    >
+                      <span className="system-label mb-6 block">Your Cosmic Composition</span>
                       <div className="node-card">
                         <div className="flex items-center justify-between mb-8">
                           <div>
-                            <h3 className="font-serif text-xl text-foreground italic">Your Cosmic Composition</h3>
+                            <h3 className="font-serif text-xl text-foreground italic">A Two-Minute Symphony Tuned to Your Chart</h3>
                             <p className="system-label mt-1">
-                              {reading.chartData.planets.filter(p => p.name !== 'Ascendant').length} planetary voices \u00B7 Tone.js synthesis
+                              ElevenLabs Music · Composed from your Sun, Moon, Rising & {qmReading?.aspects.length ?? 0} aspects
                             </p>
                           </div>
-                          <button
-                            onClick={togglePlay}
-                            className="w-14 h-14 rounded-full border border-border flex items-center justify-center hover:border-accent/50 transition-all duration-500 group"
-                          >
-                            {isPlaying ? (
-                              <svg className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" /></svg>
-                            ) : (
-                              <svg className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                            )}
-                          </button>
+                          {deliverables.audioUrl && (
+                            <button
+                              onClick={togglePlay}
+                              className="w-14 h-14 rounded-full border border-border flex items-center justify-center hover:border-accent/50 transition-all duration-500 group"
+                            >
+                              {isPlaying ? (
+                                <svg className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                                </svg>
+                              ) : (
+                                <svg
+                                  className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors ml-0.5"
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M8 5v14l11-7z" />
+                                </svg>
+                              )}
+                            </button>
+                          )}
                         </div>
-                        <div
-                          className="w-full h-px bg-border overflow-hidden cursor-pointer mb-3"
-                          onClick={(e) => {
-                            if (!audioRef.current || !duration) return;
-                            const rect = (e.target as HTMLElement).getBoundingClientRect();
-                            audioRef.current.currentTime = ((e.clientX - rect.left) / rect.width) * duration;
-                          }}
-                        >
-                          <div className="h-full bg-accent transition-all" style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }} />
-                        </div>
-                        <div className="flex justify-between system-label">
-                          <span>{formatTime(currentTime)}</span>
-                          <span>-{formatTime(Math.max(0, duration - currentTime))}</span>
-                        </div>
+                        {deliverables.audioUrl ? (
+                          <>
+                            <div
+                              className="w-full h-px bg-border overflow-hidden cursor-pointer mb-3"
+                              onClick={(e) => {
+                                if (!audioRef.current || !duration) return;
+                                const rect = (e.target as HTMLElement).getBoundingClientRect();
+                                audioRef.current.currentTime = ((e.clientX - rect.left) / rect.width) * duration;
+                              }}
+                            >
+                              <div
+                                className="h-full bg-accent transition-all"
+                                style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }}
+                              />
+                            </div>
+                            <div className="flex justify-between system-label mb-5">
+                              <span>{formatTime(currentTime)}</span>
+                              <span>-{formatTime(Math.max(0, duration - currentTime))}</span>
+                            </div>
+                            {/* Native HTML5 player — stream + download hybrid */}
+                            <div className="pt-5 border-t border-border/40">
+                              <span className="system-label block mb-3">Stream or download directly</span>
+                              <audio
+                                controls
+                                controlsList="nodownload"
+                                preload="metadata"
+                                src={deliverables.audioUrl}
+                                className="w-full"
+                              >
+                                Your browser does not support the audio element.
+                              </audio>
+                              <a
+                                href={deliverables.audioUrl}
+                                download={`${(reading.birthData.name || "cosmic").replace(/\s+/g, "_")}_symphony.mp3`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="system-label inline-flex items-center gap-2 mt-3 text-accent hover:opacity-70 transition-opacity"
+                              >
+                                <Download className="w-3 h-3" /> Save MP3 to your device
+                              </a>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="rounded-2xl border border-border/60 bg-background/40 p-5">
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              {deliverables.audioStatus === "generating"
+                                ? "ElevenLabs is composing your two-minute signature piece. This typically takes 30–90 seconds. Your report below is fully readable while you wait."
+                                : "Your composition couldn't be generated this time. The report and chart are still yours — try regenerating in a moment."}
+                            </p>
+                          </div>
+                        )}
                       </div>
+                    </motion.section>
+                  )}
+
+                  {/* Interactive Natal Chart */}
+                  {qmReading && reading.chartData && (
+                    <motion.section
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                      className="py-16 border-b border-border"
+                    >
+                      <span className="system-label mb-2 block">Your Natal Chart</span>
+                      <h2 className="font-serif text-3xl text-foreground mb-8">A living instrument.</h2>
+                      <InteractiveNatalChart chart={reading.chartData} qmReading={qmReading} />
                     </motion.section>
                   )}
 
                   {/* Harmonic Signature */}
                   {qmReading && (
-                    <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="py-16 border-b border-border">
+                    <motion.section
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.15 }}
+                      className="py-16 border-b border-border"
+                    >
                       <span className="system-label mb-8 block">Harmonic Signature</span>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-lg overflow-hidden">
                         {[
-                          { label: 'Key', value: qmReading.overallKey },
-                          { label: 'Tempo', value: `${qmReading.overallTempo}`, unit: 'BPM' },
-                          { label: 'Element', value: qmReading.dominantElement, sub: elementInfo[qmReading.dominantElement]?.symbol },
-                          { label: 'Modality', value: qmReading.dominantModality },
-                        ].map(item => (
+                          { label: "Key", value: qmReading.overallKey },
+                          { label: "Tempo", value: `${qmReading.overallTempo}`, unit: "BPM" },
+                          {
+                            label: "Element",
+                            value: qmReading.dominantElement,
+                            sub: elementInfo[qmReading.dominantElement]?.symbol,
+                          },
+                          { label: "Modality", value: qmReading.dominantModality },
+                        ].map((item) => (
                           <div key={item.label} className="bg-card p-6 text-center">
                             <span className="system-label block mb-3">{item.label}</span>
                             <span className="font-serif text-2xl text-foreground">{item.value}</span>
@@ -418,62 +930,279 @@ const QuantumMelodic = () => {
                     </motion.section>
                   )}
 
+                  {/* ── Quantum Signature (live Swiss Ephemeris + 24-mode engine + MIDI) ── */}
+                  <motion.section
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.17 }}
+                    className="py-16 border-b border-border"
+                  >
+                    <QuantumSignaturePanel
+                      birth={{
+                        date: reading.birthData.date,
+                        time: reading.birthData.time,
+                        location: reading.birthData.location,
+                        name: reading.birthData.name,
+                      }}
+                      chartName={reading.birthData.name || "Cosmic Traveler"}
+                      heading="Quantum Signature — 24-Mode Reading"
+                      subheading="Computed live from your chart via the canonical Quantumelodics engine. Includes downloadable natal MIDI."
+                    />
+                  </motion.section>
+
                   {/* Harmonic Analysis */}
                   {harmonicAnalysis && (
-                    <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="py-16 border-b border-border">
+                    <motion.section
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="py-16 border-b border-border"
+                    >
                       <span className="system-label mb-8 block">Harmonic Analysis</span>
+                      {qmError && (
+                        <div className="mb-8 rounded-2xl border border-accent/20 bg-accent/5 px-5 py-4">
+                          <p className="text-sm text-foreground/80 leading-relaxed">{qmError}</p>
+                        </div>
+                      )}
                       <div className="grid md:grid-cols-3 gap-8">
                         {[
-                          { label: 'Consonance', value: harmonicAnalysis.consonance, desc: 'Harmonic flow and natural ease' },
-                          { label: 'Tension', value: harmonicAnalysis.tension, desc: 'Creative friction and evolutionary pressure' },
-                          { label: 'Complexity', value: harmonicAnalysis.complexity, desc: 'Richness and orchestral density' },
-                        ].map(meter => (
+                          {
+                            label: "Consonance",
+                            value: harmonicAnalysis.consonance,
+                            desc: "Harmonic flow and natural ease",
+                          },
+                          {
+                            label: "Tension",
+                            value: harmonicAnalysis.tension,
+                            desc: "Creative friction and evolutionary pressure",
+                          },
+                          {
+                            label: "Complexity",
+                            value: harmonicAnalysis.complexity,
+                            desc: "Richness and orchestral density",
+                          },
+                        ].map((meter) => (
                           <div key={meter.label} className="space-y-3">
                             <div className="flex justify-between items-baseline">
                               <span className="text-foreground text-sm font-medium">{meter.label}</span>
                               <span className="text-accent font-mono text-sm">{Math.round(meter.value)}%</span>
                             </div>
                             <div className="w-full h-px bg-border overflow-hidden">
-                              <motion.div className="h-full bg-accent" initial={{ width: 0 }} animate={{ width: `${meter.value}%` }} transition={{ duration: 1.2, delay: 0.3 }} />
+                              <motion.div
+                                className="h-full bg-accent"
+                                initial={{ width: 0 }}
+                                animate={{ width: `${meter.value}%` }}
+                                transition={{ duration: 1.2, delay: 0.3 }}
+                              />
                             </div>
                             <p className="text-muted-foreground text-xs">{meter.desc}</p>
                           </div>
                         ))}
                       </div>
 
-                      {guidance.length > 0 && (
-                        <div className="mt-10 node-card">
-                          <span className="system-label block mb-4">Resolution Guidance</span>
-                          <div className="space-y-4">
-                            {guidance.map((g, i) => (
-                              <p key={i} className="text-sm text-foreground/80 leading-relaxed flex gap-3">
-                                <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-2" />
-                                {g}
-                              </p>
-                            ))}
+                      <div className="mt-10 node-card">
+                        <span className="system-label block mb-4">Resolution Guidance</span>
+                        {interpretationLoading && !interpretation && (
+                          <p className="text-sm text-muted-foreground italic">Composing your tailored interpretation from the QuantumMelodic metasystem…</p>
+                        )}
+                        {interpretationError && !interpretation && (
+                          <p className="text-sm text-destructive">{interpretationError}</p>
+                        )}
+                        {interpretation ? (
+                          <div className="space-y-4 text-sm text-foreground/85 leading-relaxed whitespace-pre-line">
+                            {interpretation.harmonicAlignment && (
+                              <p>{interpretation.harmonicAlignment}</p>
+                            )}
+                            {interpretation.resolutionGuidance && (
+                              <p>{interpretation.resolutionGuidance}</p>
+                            )}
                           </div>
-                        </div>
-                      )}
+                        ) : (
+                          guidance.length > 0 && (
+                            <div className="space-y-4">
+                              {guidance.map((g, i) => (
+                                <p key={i} className="text-sm text-foreground/80 leading-relaxed flex gap-3">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-2" />
+                                  {g}
+                                </p>
+                              ))}
+                            </div>
+                          )
+                        )}
+                      </div>
                     </motion.section>
                   )}
 
-                  {/* Planetary Positions */}
-                  <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="py-16 border-b border-border">
+                  {interpretation && reading && (
+                    <NarrationUpsell
+                      reportType="natal"
+                      reportLabel={`${reading.birthData.name || "Natal"} Astro-Harmonic Report`}
+                      sourceText={[
+                        interpretation.opening,
+                        interpretation.closing,
+                      ].filter(Boolean).join("\n\n")}
+                      returnPath="/quantum-melodic"
+                    />
+                  )}
+
+                  {/* Canonical Chart Signatures — derived from real placements */}
+                  {canonical && (
+                    <motion.section
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.22 }}
+                      className="py-16 border-b border-border"
+                    >
+                      <span className="system-label mb-2 block">Canonical Signatures</span>
+                      <p className="text-xs text-muted-foreground mb-8 max-w-2xl">
+                        Derived directly from your placements — not generated, observed.
+                      </p>
+
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {/* Lunar phase at birth */}
+                        <div className="node-card">
+                          <span className="system-label block mb-2">Lunar Phase at Birth</span>
+                          <p className="font-serif text-2xl text-foreground mb-1">{canonical.lunarPhaseAtBirth.name}</p>
+                          <p className="text-xs text-muted-foreground mb-3">Sun–Moon separation: {canonical.lunarPhaseAtBirth.angle}°</p>
+                          <p className="text-sm text-foreground/80 leading-relaxed italic">
+                            Musically: {canonical.lunarPhaseAtBirth.musical}.
+                          </p>
+                        </div>
+
+                        {/* Sect & chart ruler */}
+                        <div className="node-card">
+                          <span className="system-label block mb-2">Sect &amp; Chart Ruler</span>
+                          <p className="font-serif text-xl text-foreground mb-1">
+                            {canonical.sect} chart
+                            {canonical.chartRuler && <span className="text-muted-foreground"> · ruled by {canonical.chartRuler}</span>}
+                          </p>
+                          <p className="text-sm text-foreground/80 leading-relaxed mt-2">
+                            {canonical.sect === 'Diurnal'
+                              ? 'Born under the Sun above the horizon — the score plays in the open air, public-facing register.'
+                              : 'Born under the Sun below the horizon — the score plays in the chamber-music register, intimate and inward.'}
+                          </p>
+                        </div>
+
+                        {/* Element bars */}
+                        <div className="node-card">
+                          <span className="system-label block mb-3">Elemental Distribution</span>
+                          <div className="space-y-2">
+                            {(['Fire','Earth','Air','Water'] as const).map(el => (
+                              <div key={el} className="flex items-center gap-3">
+                                <span className="text-xs text-muted-foreground w-12">{el}</span>
+                                <div className="flex-1 h-px bg-border overflow-hidden">
+                                  <div className="h-full bg-accent" style={{ width: `${canonical.elementBalance[el]}%` }} />
+                                </div>
+                                <span className="text-xs font-mono text-accent w-10 text-right">{canonical.elementBalance[el]}%</span>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-3">
+                            Yang (Fire+Air): {canonical.polarity.Yang}% · Yin (Earth+Water): {canonical.polarity.Yin}%
+                          </p>
+                        </div>
+
+                        {/* Modality bars */}
+                        <div className="node-card">
+                          <span className="system-label block mb-3">Modality Distribution</span>
+                          <div className="space-y-2">
+                            {(['Cardinal','Fixed','Mutable'] as const).map(md => (
+                              <div key={md} className="flex items-center gap-3">
+                                <span className="text-xs text-muted-foreground w-16">{md}</span>
+                                <div className="flex-1 h-px bg-border overflow-hidden">
+                                  <div className="h-full bg-accent" style={{ width: `${canonical.modalityBalance[md]}%` }} />
+                                </div>
+                                <span className="text-xs font-mono text-accent w-10 text-right">{canonical.modalityBalance[md]}%</span>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-3 italic">
+                            {canonical.modalityBalance.Cardinal >= 50 && 'Cardinal-led: a chart of downbeats and openings.'}
+                            {canonical.modalityBalance.Fixed >= 50 && 'Fixed-led: a chart of sustained tones and held intent.'}
+                            {canonical.modalityBalance.Mutable >= 50 && 'Mutable-led: a chart of modulation and bridge passages.'}
+                          </p>
+                        </div>
+
+                        {/* Hemisphere emphasis */}
+                        <div className="node-card">
+                          <span className="system-label block mb-3">Hemisphere Emphasis</span>
+                          <div className="grid grid-cols-2 gap-3 text-sm">
+                            <div><span className="text-muted-foreground">East · </span><span className="text-foreground">{canonical.hemispheres.Eastern}%</span></div>
+                            <div><span className="text-muted-foreground">West · </span><span className="text-foreground">{canonical.hemispheres.Western}%</span></div>
+                            <div><span className="text-muted-foreground">North · </span><span className="text-foreground">{canonical.hemispheres.Northern}%</span></div>
+                            <div><span className="text-muted-foreground">South · </span><span className="text-foreground">{canonical.hemispheres.Southern}%</span></div>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-3 italic">
+                            {canonical.hemispheres.Eastern > canonical.hemispheres.Western
+                              ? 'Self-directed register — the soloist initiates the phrase.'
+                              : 'Other-directed register — the ensemble responds to the surrounding voices.'}
+                          </p>
+                        </div>
+
+                        {/* Lead voice + retrogrades + stellium */}
+                        <div className="node-card">
+                          <span className="system-label block mb-3">Voice Leading</span>
+                          {canonical.mostAspectedPlanet && (
+                            <p className="text-sm text-foreground/85 mb-2">
+                              <span className="text-muted-foreground">Lead voice: </span>
+                              <span className="font-serif text-base">{canonical.mostAspectedPlanet.name}</span>
+                              <span className="text-xs text-muted-foreground"> ({canonical.mostAspectedPlanet.count} aspects)</span>
+                            </p>
+                          )}
+                          {canonical.retrogradeCount > 0 && (
+                            <p className="text-sm text-foreground/85 mb-2">
+                              <span className="text-muted-foreground">Inward-listening: </span>
+                              {canonical.retrogradeCount} retrograde {canonical.retrogradeCount === 1 ? 'planet' : 'planets'}
+                            </p>
+                          )}
+                          {canonical.stellium && (
+                            <p className="text-sm text-foreground/85">
+                              <span className="text-muted-foreground">Stellium in </span>
+                              <span className="font-serif">{canonical.stellium.sign}</span>
+                              <span className="text-xs text-muted-foreground"> ({canonical.stellium.planets.join(', ')})</span>
+                            </p>
+                          )}
+                          {!canonical.stellium && canonical.retrogradeCount === 0 && (
+                            <p className="text-xs text-muted-foreground italic">No stellium · no retrogrades — a forward-facing, distributed score.</p>
+                          )}
+                        </div>
+                      </div>
+                    </motion.section>
+                  )}
+                  <motion.section
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.25 }}
+                    className="py-16 border-b border-border"
+                  >
                     <span className="system-label mb-8 block">Planetary Positions</span>
                     <div className="space-y-px">
                       {reading.chartData.planets.map((planet) => {
-                        const qmPlanet = qmReading?.planets.find(p => p.position.name === planet.name);
+                        const qmPlanet = qmReading?.planets.find((p) => p.position.name === planet.name);
                         const house = qmPlanet?.houseNumber;
                         const hw = house ? houseWisdom[house] : null;
 
                         return (
-                          <div key={planet.name} className="bg-card border-b border-border/50 p-6 first:rounded-t-lg last:rounded-b-lg last:border-b-0 hover:bg-muted/30 transition-colors duration-500">
+                          <div
+                            key={planet.name}
+                            className="bg-card border-b border-border/50 p-6 first:rounded-t-lg last:rounded-b-lg last:border-b-0 hover:bg-muted/30 transition-colors duration-500"
+                          >
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-5">
-                                <span className="text-xl w-8 text-center text-muted-foreground">{planet.symbol}</span>
+                                <span className="w-8 flex justify-center text-muted-foreground">
+                                  {isSigilName(planet.name) ? (
+                                    <Sigil name={planet.name as Parameters<typeof Sigil>[0]["name"]} size={22} strokeWidth={1.3} />
+                                  ) : (
+                                    <span className="text-xs uppercase tracking-wider">{planet.name.slice(0,3)}</span>
+                                  )}
+                                </span>
                                 <div>
                                   <span className="text-foreground text-sm font-medium">{planet.name}</span>
-                                  {planet.isRetrograde && <span className="text-accent text-[10px] ml-2 font-bold uppercase tracking-wider">Rx</span>}
+                                  {planet.isRetrograde && (
+                                    <span className="text-accent text-[10px] ml-2 font-bold uppercase tracking-wider">
+                                      Rx
+                                    </span>
+                                  )}
                                   {qmPlanet?.qmData?.instrument && (
                                     <span className="system-label block mt-0.5">{qmPlanet.qmData.instrument}</span>
                                   )}
@@ -483,12 +1212,17 @@ const QuantumMelodic = () => {
                                 <span className="text-foreground text-sm">{planet.sign}</span>
                                 <span className="text-muted-foreground text-xs ml-2">{degreeFmt(planet.degree)}</span>
                                 {house && (
-                                  <span className="system-label block mt-0.5">House {house}{hw ? ` \u2022 ${hw.area}` : ''}</span>
+                                  <span className="system-label block mt-0.5">
+                                    House {house}
+                                    {hw ? ` \u2022 ${hw.area}` : ""}
+                                  </span>
                                 )}
                               </div>
                             </div>
                             {qmPlanet?.qmData?.sonic_character && (
-                              <p className="text-xs text-muted-foreground/60 mt-3 pl-[3.25rem] italic leading-relaxed">{qmPlanet.qmData.sonic_character}</p>
+                              <p className="text-xs text-muted-foreground/60 mt-3 pl-[3.25rem] italic leading-relaxed">
+                                {qmPlanet.qmData.sonic_character}
+                              </p>
                             )}
                           </div>
                         );
@@ -498,22 +1232,37 @@ const QuantumMelodic = () => {
 
                   {/* Aspects */}
                   {qmReading && qmReading.aspects.length > 0 && (
-                    <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="py-16 border-b border-border">
+                    <motion.section
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="py-16 border-b border-border"
+                    >
                       <span className="system-label mb-8 block">Aspects \u2014 Harmonic Intervals</span>
                       <div className="space-y-px">
                         {qmReading.aspects.map((aspect, i) => {
                           const orbInfo = getOrbPrecision(aspect.orb);
                           const musicData = aspectMusicalData[aspect.aspectType.name];
                           return (
-                            <div key={i} className="bg-card border-b border-border/50 p-5 first:rounded-t-lg last:rounded-b-lg last:border-b-0">
+                            <div
+                              key={i}
+                              className="bg-card border-b border-border/50 p-5 first:rounded-t-lg last:rounded-b-lg last:border-b-0"
+                            >
                               <div className="flex items-center justify-between mb-1">
                                 <div className="flex items-center gap-3">
-                                  <span className="text-base" style={{ color: aspect.aspectType.color }}>{aspect.aspectType.symbol}</span>
+                                  <span className="text-base" style={{ color: aspect.aspectType.color }}>
+                                    {aspect.aspectType.symbol}
+                                  </span>
                                   <span className="text-foreground text-sm">
-                                    {aspect.planet1} <span className="text-muted-foreground">{aspect.aspectType.name}</span> {aspect.planet2}
+                                    {aspect.planet1}{" "}
+                                    <span className="text-muted-foreground">{aspect.aspectType.name}</span>{" "}
+                                    {aspect.planet2}
                                   </span>
                                 </div>
-                                <span className="system-label">{orbInfo.label} ({aspect.orb.toFixed(1)}{'\u00B0'})</span>
+                                <span className="system-label">
+                                  {orbInfo.label} ({aspect.orb.toFixed(1)}
+                                  {"\u00B0"})
+                                </span>
                               </div>
                               <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-muted-foreground/60 pl-7 mt-1">
                                 <span>{aspect.aspectType.harmonic_interval}</span>
@@ -529,7 +1278,12 @@ const QuantumMelodic = () => {
 
                   {/* Elemental Balance */}
                   {harmonicAnalysis && (
-                    <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="py-16 border-b border-border">
+                    <motion.section
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.35 }}
+                      className="py-16 border-b border-border"
+                    >
                       <span className="system-label mb-8 block">Elemental Balance</span>
                       <div className="grid grid-cols-4 gap-px bg-border rounded-lg overflow-hidden">
                         {Object.entries(harmonicAnalysis.elements).map(([element, count]) => {
@@ -538,10 +1292,17 @@ const QuantumMelodic = () => {
                           const pct = total > 0 ? Math.round((count / total) * 100) : 0;
                           return (
                             <div key={element} className="bg-card p-6 text-center">
-                              <span className="text-xl block mb-2 text-muted-foreground">{info?.symbol || element[0]}</span>
+                              <span className="text-xl block mb-2 text-muted-foreground">
+                                {info?.symbol || element[0]}
+                              </span>
                               <span className="text-foreground text-sm font-medium block">{element}</span>
                               <div className="w-full h-px bg-border overflow-hidden mt-4 mb-2 mx-auto max-w-[4rem]">
-                                <motion.div className="h-full bg-accent" initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.8, delay: 0.4 }} />
+                                <motion.div
+                                  className="h-full bg-accent"
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${pct}%` }}
+                                  transition={{ duration: 0.8, delay: 0.4 }}
+                                />
                               </div>
                               <span className="system-label">{pct}%</span>
                             </div>
@@ -552,14 +1313,19 @@ const QuantumMelodic = () => {
                   )}
 
                   {/* Closing */}
-                  <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="py-24 text-center">
+                  <motion.section
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="py-24 text-center"
+                  >
                     <p className="font-serif text-xl text-foreground/70 italic max-w-md mx-auto leading-relaxed">
                       Every chart is a score waiting to be heard. Yours has been playing since the moment you arrived.
                     </p>
-                    <p className="system-label mt-8 text-muted-foreground/40">
-                      MOONtuner {'\u00D7'} QuantumMelodic
-                    </p>
+                    <p className="system-label mt-8 text-muted-foreground/40">Moontuner {"\u00D7"} QuantumMelodic</p>
                   </motion.section>
+
+                  <CrossGeneratorLinks exclude="/quantumelodic" />
                 </div>
               </motion.div>
             )}

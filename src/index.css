@@ -9,6 +9,12 @@
 @import "@fontsource/dm-sans/600.css";
 @import "@fontsource/inter/200.css";
 @import "@fontsource/inter/300.css";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource/work-sans/300.css";
+@import "@fontsource/work-sans/400.css";
+@import "@fontsource/work-sans/500.css";
+@import "@fontsource/work-sans/600.css";
 
 @tailwind base;
 @tailwind components;
@@ -349,4 +355,765 @@
 
 .system-button:hover {
   @apply bg-foreground text-background;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   CINEMATIC DUSK — Redesign token layer (homepage v2)
+   Scope: opt-in via `.dusk` class. Coexists with legacy tokens.
+   ───────────────────────────────────────────────────────────────── */
+
+:root {
+  --dusk-black: 240 6% 4%;
+  --dusk-ivory: 38 33% 91%;
+  --dusk-silver: 40 5% 53%;
+  --dusk-gold: 38 47% 59%;
+  --dusk-line: 38 10% 16%;
+  --dusk-mute: 38 8% 38%;
+
+  --font-editorial: "Instrument Serif", "Playfair Display", Georgia, serif;
+  --font-ui: "Work Sans", system-ui, -apple-system, sans-serif;
+}
+
+.dusk {
+  background: hsl(var(--dusk-black));
+  color: hsl(var(--dusk-ivory));
+  font-family: var(--font-ui);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.01em;
+}
+
+.dusk-serif {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+
+.dusk-eyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: hsl(var(--dusk-silver));
+}
+
+.dusk-mute    { color: hsl(var(--dusk-mute)); }
+.dusk-silver  { color: hsl(var(--dusk-silver)); }
+.dusk-gold    { color: hsl(var(--dusk-gold)); }
+.dusk-ivory   { color: hsl(var(--dusk-ivory)); }
+
+.dusk-hairline { height: 1px; background: hsl(var(--dusk-line)); width: 100%; }
+
+.dusk-atmosphere {
+  background:
+    radial-gradient(60% 50% at 78% 22%, hsl(var(--dusk-gold) / 0.08) 0%, transparent 60%),
+    radial-gradient(70% 60% at 18% 88%, hsl(var(--dusk-ivory) / 0.04) 0%, transparent 65%),
+    hsl(var(--dusk-black));
+}
+
+@keyframes dusk-drift {
+  0%, 100% { transform: translate3d(0,0,0) scale(1); opacity: 0.55; }
+  50%      { transform: translate3d(0,-12px,0) scale(1.015); opacity: 0.72; }
+}
+.dusk-drift { animation: dusk-drift 18s ease-in-out infinite; }
+
+@keyframes dusk-breath {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 1; }
+}
+.dusk-breath { animation: dusk-breath 6s ease-in-out infinite; }
+
+@keyframes dusk-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.dusk-rise { animation: dusk-rise 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+.dusk-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.95rem 1.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.dusk-btn-primary {
+  background: hsl(var(--dusk-ivory));
+  color: hsl(var(--dusk-black));
+  border: 1px solid hsl(var(--dusk-ivory));
+}
+.dusk-btn-primary:hover {
+  background: hsl(var(--dusk-gold));
+  border-color: hsl(var(--dusk-gold));
+  color: hsl(var(--dusk-black));
+}
+.dusk-btn-ghost {
+  background: transparent;
+  color: hsl(var(--dusk-ivory));
+  border: 1px solid hsl(var(--dusk-ivory) / 0.25);
+}
+.dusk-btn-ghost:hover {
+  border-color: hsl(var(--dusk-ivory) / 0.7);
+  background: hsl(var(--dusk-ivory) / 0.04);
+}
+
+.dusk-surface {
+  background: linear-gradient(180deg,
+    hsl(var(--dusk-ivory) / 0.028) 0%,
+    hsl(var(--dusk-ivory) / 0.008) 100%);
+  border: 1px solid hsl(var(--dusk-ivory) / 0.08);
+  border-radius: 1.25rem;
+  backdrop-filter: blur(12px);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   DIGITAL SMUDGING — Theme token layer
+   Scope: opt-in via `.theme-smudging` class.
+   Emotional character: warm release, ritual clearing, amber candlelight.
+   ───────────────────────────────────────────────────────────────── */
+
+:root {
+  --smudge-dusk:       22 12% 8%;
+  --smudge-ember:      25 65% 55%;
+  --smudge-ash:        22 8% 38%;
+  --smudge-sage:       140 20% 55%;
+  --smudge-sage-light: 140 18% 70%;
+  --smudge-warm:       38 25% 88%;
+}
+
+.theme-smudging {
+  --background:         hsl(var(--smudge-dusk));
+  --foreground:         hsl(var(--smudge-warm));
+  --card:               22 10% 12%;
+  --card-foreground:    38 25% 88%;
+  --border:             22 12% 18%;
+  --muted:              22 10% 16%;
+  --muted-foreground:   hsl(var(--smudge-ash));
+  --accent:             hsl(var(--smudge-ember));
+  --accent-foreground:  22 12% 8%;
+  --primary:            38 25% 88%;
+  --primary-foreground: 22 12% 8%;
+}
+
+.theme-smudging .dusk-atmosphere {
+  background:
+    radial-gradient(55% 45% at 72% 25%, hsl(var(--smudge-ember) / 0.10) 0%, transparent 65%),
+    radial-gradient(65% 55% at 22% 82%, hsl(var(--smudge-warm) / 0.04) 0%, transparent 70%),
+    hsl(var(--smudge-dusk));
+}
+
+.theme-smudging .dusk-btn-primary {
+  background:    hsl(var(--smudge-ember));
+  border-color:  hsl(var(--smudge-ember));
+  color:         hsl(var(--smudge-dusk));
+}
+.theme-smudging .dusk-btn-primary:hover {
+  background:    hsl(var(--smudge-warm));
+  border-color:  hsl(var(--smudge-warm));
+}
+
+.theme-smudging .dusk-btn-ghost {
+  color:         hsl(var(--smudge-warm));
+  border-color:  hsl(var(--smudge-warm) / 0.25);
+}
+.theme-smudging .dusk-btn-ghost:hover {
+  border-color:  hsl(var(--smudge-warm) / 0.6);
+  background:    hsl(var(--smudge-warm) / 0.05);
+}
+
+.theme-smudging .node-card {
+  background:   hsl(22 10% 12%);
+  border-color: hsl(22 12% 18%);
+}
+.theme-smudging .node-card:hover {
+  border-color: hsl(var(--smudge-ember) / 0.45);
+  box-shadow:   0 0 28px hsl(var(--smudge-ember) / 0.08);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SPACETIME PRINTER — Theme token layer
+   Scope: opt-in via `.theme-spacetime` class.
+   Emotional character: paper precision, ink clarity, grid signal.
+   ───────────────────────────────────────────────────────────────── */
+
+:root {
+  --space-paper:  40 20% 97%;
+  --space-ink:    220 25% 12%;
+  --space-rule:   220 12% 78%;
+  --space-grid:   210 15% 92%;
+  --space-signal: 210 90% 50%;
+  --space-mid:    220 15% 45%;
+}
+
+.theme-spacetime {
+  --background:         hsl(var(--space-paper));
+  --foreground:         hsl(var(--space-ink));
+  --card:               220 15% 99%;
+  --card-foreground:    220 25% 12%;
+  --border:             220 12% 85%;
+  --muted:              220 12% 94%;
+  --muted-foreground:   hsl(var(--space-mid));
+  --accent:             hsl(var(--space-signal));
+  --accent-foreground:  220 15% 99%;
+  --primary:            220 25% 12%;
+  --primary-foreground: 40 20% 97%;
+}
+
+.theme-spacetime body,
+.theme-spacetime .dusk {
+  background: hsl(var(--space-paper));
+  color:      hsl(var(--space-ink));
+}
+
+.theme-spacetime .dusk-atmosphere {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      hsl(var(--space-rule) / 0.3) 39px,
+      hsl(var(--space-rule) / 0.3) 40px
+    ),
+    hsl(var(--space-paper));
+}
+
+.theme-spacetime .dusk-hairline {
+  background: hsl(var(--space-rule));
+}
+
+.theme-spacetime .dusk-eyebrow {
+  color: hsl(var(--space-mid));
+}
+
+.theme-spacetime .dusk-serif {
+  color:   hsl(var(--space-ink));
+}
+
+.theme-spacetime .dusk-btn-primary {
+  background:    hsl(var(--space-ink));
+  border-color:  hsl(var(--space-ink));
+  color:         hsl(var(--space-paper));
+  border-radius: 0.25rem;
+}
+.theme-spacetime .dusk-btn-primary:hover {
+  background:    hsl(var(--space-signal));
+  border-color:  hsl(var(--space-signal));
+}
+
+.theme-spacetime .dusk-btn-ghost {
+  color:         hsl(var(--space-ink));
+  border-color:  hsl(var(--space-rule));
+  border-radius: 0.25rem;
+}
+.theme-spacetime .dusk-btn-ghost:hover {
+  border-color:  hsl(var(--space-ink) / 0.4);
+  background:    hsl(var(--space-ink) / 0.04);
+}
+
+.theme-spacetime .node-card {
+  background:    hsl(220 15% 99%);
+  border-color:  hsl(var(--space-rule));
+  border-radius: 0.25rem;
+}
+.theme-spacetime .node-card:hover {
+  border-color:  hsl(var(--space-signal) / 0.5);
+  box-shadow:    0 0 20px hsl(var(--space-signal) / 0.08);
+}
+
+/* Text gradient for signal blue */
+.text-gradient-signal {
+  background: linear-gradient(135deg, hsl(var(--space-signal)) 0%, hsl(210 80% 65%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   GLOBAL TYPOGRAPHY UTILITIES — Extended system
+   ───────────────────────────────────────────────────────────────── */
+
+/* Display scale — hero / landing headings */
+.type-display {
+  font-family: var(--font-display);
+  font-weight: 200;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+/* Headline scale — section titles */
+.type-headline {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+
+/* Serif italic — accent / pull-quote style */
+.type-serif-italic {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+/* Body copy */
+.type-body {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+/* Caption / footnote */
+.type-caption {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Numeric / data display */
+.type-data {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: hsl(var(--foreground));
+}
+
+/* Button label */
+.type-button {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   TODAY PAGE — Mobile-first daily home surface
+   Cinematic personal observatory feel.
+   Mobile scroll: contemplative, frictionless, breathable.
+   ───────────────────────────────────────────────────────────────── */
+
+.today-page {
+  /* Smooth momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  /* Contain overscroll within this container; allow natural scroll within the page */
+  overscroll-behavior-y: contain;
+}
+
+/* Grain texture overlay — identical opacity to grain-overlay */
+.today-grain {
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ambient orb — phase-keyed radial glow at top-right */
+.today-orb {
+  position: fixed;
+  top: -15vmax;
+  right: -10vmax;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: today-orb-breathe 18s ease-in-out infinite;
+}
+
+@keyframes today-orb-breathe {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50%       { opacity: 0.85; transform: scale(1.04); }
+}
+
+/* ── Nav bar ──────────────────────────────────────────────────── */
+
+.today-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: hsl(var(--dusk-black) / 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid hsl(var(--dusk-line) / 0.4);
+}
+
+/* ── Shared touch-safe sizing ─────────────────────────────────── */
+
+/* WCAG 2.5.5 — minimum touch target size (44×44 px) */
+.today-touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.today-nav-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid hsl(var(--dusk-line));
+  color: hsl(var(--dusk-ivory));
+  transition: border-color 0.3s ease, background 0.3s ease;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.today-nav-back:hover,
+.today-nav-back:focus-visible {
+  border-color: hsl(var(--dusk-ivory) / 0.5);
+  background: hsl(var(--dusk-ivory) / 0.05);
+}
+
+.today-nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.today-phase-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.today-phase-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: today-orb-breathe 4s ease-in-out infinite;
+}
+
+/* ── Scroll container ─────────────────────────────────────────── */
+
+.today-main {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;     /* Single-column mobile column, centered on wide screens */
+  margin: 0 auto;
+  padding: 0 1.25rem 6rem;
+}
+
+/* ── Hero greeting ────────────────────────────────────────────── */
+
+.today-hero {
+  padding-top: 3.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.today-headline {
+  font-size: clamp(4rem, 18vw, 6rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
+}
+
+.today-subhead {
+  font-size: 1.125rem;
+  line-height: 1.4;
+  margin-top: 0.75rem;
+}
+
+/* ── Section spacing ──────────────────────────────────────────── */
+
+.today-section {
+  margin-bottom: 1.25rem;
+}
+
+/* ── Card ─────────────────────────────────────────────────────── */
+
+.today-card {
+  padding: 1.5rem 1.5rem 1.5rem 1.875rem; /* Extra left for accent rule */
+  border-radius: 1rem;
+  border: 1px solid hsl(var(--dusk-line) / 0.6);
+  background: linear-gradient(
+    160deg,
+    hsl(var(--dusk-ivory) / 0.035) 0%,
+    hsl(var(--dusk-ivory) / 0.010) 100%
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* Active press feedback */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Typography inside cards ──────────────────────────────────── */
+
+.today-eyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: hsl(var(--dusk-silver));
+}
+
+.today-card-label {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: hsl(var(--dusk-silver));
+  margin-bottom: 1rem;
+}
+
+.today-card-body {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  color: hsl(var(--dusk-ivory) / 0.78);
+}
+
+.today-quote {
+  font-family: var(--font-editorial);
+  font-size: 1.15rem;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: hsl(var(--dusk-ivory) / 0.9);
+}
+
+.today-data-headline {
+  font-size: 1.375rem;
+  line-height: 1.15;
+  color: hsl(var(--dusk-ivory));
+  margin-bottom: 0.25rem;
+}
+
+.today-data-meta {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: hsl(var(--dusk-ivory) / 0.5);
+  letter-spacing: 0.02em;
+}
+
+.today-divider {
+  height: 1px;
+  background: hsl(var(--dusk-line) / 0.6);
+  width: 100%;
+}
+
+/* ── Lunar state layout ───────────────────────────────────────── */
+
+.today-lunar-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.today-glyph-ring {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  animation: today-orb-breathe 6s ease-in-out infinite;
+}
+
+.today-phase-quality {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.today-next-phase {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Timing posture layout ────────────────────────────────────── */
+
+.today-timing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.today-timing-item {
+  font-family: var(--font-ui);
+  font-size: 0.825rem;
+  color: hsl(var(--dusk-ivory) / 0.65);
+  line-height: 1.55;
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.01em;
+}
+
+/* ── Ritual card layout ───────────────────────────────────────── */
+
+.today-ritual-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.today-ritual-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.today-ritual-num {
+  font-family: var(--font-editorial);
+  font-size: 1.125rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────── */
+
+.today-action-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.125rem;
+  border-radius: 999px;
+  border: 1px solid;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.2,0.8,0.2,1);
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.today-expand-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid;
+  color: hsl(var(--dusk-ivory) / 0.5);
+  background: transparent;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  min-width: 44px;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.today-complete-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.625rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2,0.8,0.2,1);
+  min-width: 44px;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.today-complete-msg {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* ── Deep links row ───────────────────────────────────────────── */
+
+.today-links-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.today-deep-link {
+  display: block;
+  padding: 1.125rem 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.today-deep-link:active {
+  transform: scale(0.97);
+}
+
+/* ── Footer note ──────────────────────────────────────────────── */
+
+.today-footer {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   GLOBAL MOBILE SCROLL PHILOSOPHY
+   Contemplative · frictionless · cinematic
+   ───────────────────────────────────────────────────────────────── */
+
+/* Smooth momentum scroll on all scrollable containers */
+html {
+  scroll-behavior: smooth;
+  /* Prevent layout shifts from scrollbar on wider screens */
+  scrollbar-gutter: stable;
+}
+
+/* Breathing room between sections */
+.section-breath {
+  padding-top: clamp(4rem, 10vw, 7rem);
+  padding-bottom: clamp(4rem, 10vw, 7rem);
+}
+
+/* Contain overscroll so the page doesn't bounce the entire OS chrome */
+body {
+  overscroll-behavior-y: contain;
+}
+
+/* Fade-reveal for scroll-based appearance — applies to .today-section children */
+@keyframes today-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Touch action: allow vertical scroll but prevent browser interference */
+.touch-pan-y {
+  touch-action: pan-y;
 }

@@ -1,11 +1,19 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FileText } from "lucide-react";
+import { openStripeCheckout } from "@/lib/stripeLinks";
+import { toast } from "sonner";
 
 export function StartReportCTA() {
-  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/4gMcN4asS9AS0Qf0bT2Ji01";
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   const handlePurchase = () => {
-    window.location.href = STRIPE_PAYMENT_LINK;
+    setCheckoutLoading(true);
+    const ok = openStripeCheckout("lunar-arc");
+    if (!ok) {
+      toast.error("This product is temporarily unavailable.");
+      setCheckoutLoading(false);
+    }
   };
 
   return (
@@ -58,9 +66,10 @@ export function StartReportCTA() {
 
               <Button
                 onClick={handlePurchase}
+                disabled={checkoutLoading}
                 className="w-full h-12 bg-foreground text-background hover:bg-accent hover:text-accent-foreground font-bold text-[11px] uppercase tracking-[0.3em] rounded-full transition-all duration-300"
               >
-                Get My Report · $17
+                {checkoutLoading ? "Starting Checkout…" : "Get My Report · $17"}
               </Button>
               <p className="text-[10px] text-muted-foreground text-center">
                 Secure checkout via Stripe. After payment you are routed directly to the generator.

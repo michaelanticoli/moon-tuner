@@ -40,7 +40,7 @@ export function SchoolProgress() {
   };
 
   const handleReset = () => {
-    localStorage.removeItem('moontuner-workbook');
+    localStorage.removeItem('mt_workbook');
     window.location.reload();
   };
 

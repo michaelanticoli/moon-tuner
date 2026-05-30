@@ -5,6 +5,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Circle, Merge, Split, Equal, Moon, Compass, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SEOHead } from "@/components/SEOHead";
 
 // Areas where Manifesto and Phasecraft MERGE (same truth, different expression)
 const mergedAreas = [
@@ -103,6 +104,12 @@ const autonomousAreas = {
 const Philosophy = () => {
   return (
     <PageTransition>
+      <SEOHead
+        title="Philosophy — Where the Moontuner Manifesto Meets Phasecraft"
+        description="The architecture of alignment. How the Moontuner Manifesto and Phasecraft relate — where they merge, where they differ, and the sovereign ground of each."
+        canonical="/philosophy"
+        keywords={["moontuner philosophy", "phasecraft", "lunar framework", "manifesto", "cyclical time"]}
+      />
       <div className="min-h-screen bg-background relative grain-overlay">
         <Navigation />
         

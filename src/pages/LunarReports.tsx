@@ -4,12 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
+import { SEOHead } from "@/components/SEOHead";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { Activity, FileText, Sparkles, Download, ExternalLink, Table } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { generateReport, type LunarReport } from "@/lib/lunarReportEngine";
-import { generateLunarPDF } from "@/lib/generateLunarPDF";
 import { openLunarHTMLReport } from "@/lib/generateLunarHTML";
 import { downloadNatalCSV } from "@/lib/generateNatalCSV";
 import type { ChartData } from "@/types/astrology";
@@ -18,72 +18,126 @@ import { PowerDayGrid } from "@/components/report/PowerDayGrid";
 import { PeakSummaryPanel } from "@/components/report/PeakSummaryPanel";
 import { ArcPracticeSection } from "@/components/report/ArcPracticeSection";
 import { ReportClosing } from "@/components/report/ReportClosing";
+import { CrossGeneratorLinks } from "@/components/CrossGeneratorLinks";
+import { LunarArcPromo } from "@/components/report/LunarArcPromo";
+import { NarrationUpsell } from "@/components/report/NarrationUpsell";
+import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
+
+function buildLunarNarrationText(report: LunarReport): string {
+  const name = report.meta.querentName || "Friend";
+  const peaks = report.powerDays
+    .filter((d) => d.isPeak)
+    .slice(0, 6)
+    .map((d) => `${d.month}: ${d.keyword}`)
+    .join(", ");
+  return [
+    `${name}, this is your Personal Lunar Arc.`,
+    `You were born under a ${report.natal.phase} signature, at ${report.natal.angle} degrees of the lunar cycle.`,
+    `Across the next twelve months, twelve power days mark your highest-leverage windows.`,
+    `Your peak resonance windows include: ${peaks}.`,
+    `Each of these moments is a doorway. Walk through them with intention, and the year arranges itself around your natural rhythm.`,
+    `This is your timing. Move with it.`,
+  ].join(" ");
+}
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SIMULATED_LOADING_DELAY_MS = 600;
+
+const LUNAR_CACHE_KEY = "moontuner_lunar_report_cache_v1";
 
 const LunarReports = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const isPaid = searchParams.get("paid") === "true";
+  const returningFromNarration = searchParams.get("narration_status") === "success";
 
-  useEffect(() => {
-    if (!isPaid) {
-      navigate("/#report", { replace: true });
-    }
-  }, [isPaid, navigate]);
+  const cached = (() => {
+    if (!returningFromNarration) return null;
+    try {
+      const raw = sessionStorage.getItem(LUNAR_CACHE_KEY);
+      return raw ? JSON.parse(raw) as { report: LunarReport; chartData: ChartData | null; formData: Record<string, string> } : null;
+    } catch { return null; }
+  })();
 
-  const [step, setStep] = useState<'input' | 'generating' | 'result'>('input');
-  const [formData, setFormData] = useState({
-    name: '',
-    date: '',
-    time: '12:00',
-    location: '',
+  const [step, setStep] = useState<'input' | 'generating' | 'result'>(cached ? 'result' : 'input');
+  const [formData, setFormDataRaw] = useState(() => {
+    if (cached?.formData) return cached.formData;
+    const b = readSharedBirth();
+    return {
+      name: b.name || '',
+      date: b.date || '',
+      time: b.time || '12:00',
+      location: b.location || '',
+    };
   });
-  const [report, setReport] = useState<LunarReport | null>(null);
-  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const setFormData = (next: typeof formData | ((p: typeof formData) => typeof formData)) => {
+    setFormDataRaw((prev) => {
+      const value = typeof next === 'function' ? (next as (p: typeof formData) => typeof formData)(prev) : next;
+      writeSharedBirth({ name: value.name, date: value.date, time: value.time, location: value.location });
+      return value;
+    });
+  };
+  const [report, setReport] = useState<LunarReport | null>(cached?.report ?? null);
+  const [chartData, setChartData] = useState<ChartData | null>(cached?.chartData ?? null);
+
+  // Persist report to sessionStorage when it changes (so narration redirect can restore it)
+  useEffect(() => {
+    if (report) {
+      try {
+        sessionStorage.setItem(LUNAR_CACHE_KEY, JSON.stringify({ report, chartData, formData }));
+      } catch (_e) {
+        // ignore sessionStorage errors (e.g. private browsing quota)
+      }
+    }
+  }, [report, chartData, formData]);
 
   const handleCalculate = async () => {
     if (!formData.date) return;
     setStep('generating');
 
-    // Run lunar report and chart calculation concurrently
-    const reportPromise = new Promise<LunarReport>((resolve) => {
-      setTimeout(() => {
-        resolve(generateReport(formData.date, formData.time, formData.location, formData.name));
-      }, 100);
-    });
-
-    const chartPromise = fetch(`${SUPABASE_URL}/functions/v1/calculate-chart`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        date: formData.date,
-        time: formData.time,
-        location: formData.location,
-      }),
-    })
-      .then(res => res.ok ? res.json() : Promise.reject('Chart unavailable'))
-      .catch(err => {
-        console.warn('Chart calculation failed, using fallback:', err);
-        return null;
+    try {
+      const reportPromise = new Promise<LunarReport>((resolve) => {
+        setTimeout(() => {
+          resolve(generateReport(formData.date, formData.time, formData.location, formData.name));
+        }, 100);
       });
 
-    const [r, chart] = await Promise.all([reportPromise, chartPromise]);
-    setReport(r);
-    setChartData(chart);
+      const chartPromise = fetch(`${SUPABASE_URL}/functions/v1/calculate-chart`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          date: formData.date,
+          time: formData.time,
+          location: formData.location,
+        }),
+      })
+        .then(res => res.ok ? res.json() : Promise.reject('Chart unavailable'))
+        .catch(err => {
+          console.warn('Chart calculation failed, using fallback:', err);
+          return null;
+        });
 
-    // Simulate a brief loading feel
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setStep('result');
+      const [r, chart] = await Promise.all([reportPromise, chartPromise]);
+      setReport(r);
+      setChartData(chart);
+      await new Promise(resolve => setTimeout(resolve, SIMULATED_LOADING_DELAY_MS));
+      setStep('result');
+    } catch (err) {
+      console.error('Lunar report generation failed:', err);
+      alert('We could not generate your lunar report just now. Please try again.');
+      setStep('input');
+    }
   };
 
   const handleDownloadPDF = () => {
     if (!report) return;
     try {
-      generateLunarPDF(report);
+      const opened = openLunarHTMLReport(report, { autoPrint: true });
+      if (!opened) {
+        throw new Error('Print window was blocked');
+      }
     } catch (err) {
       console.error('PDF generation error:', err);
-      alert('PDF download failed. Please try the Interactive Report instead.');
+      alert('PDF export was blocked. Please allow popups and try again, or use the Interactive Report.');
     }
   };
 
@@ -99,6 +153,20 @@ const LunarReports = () => {
 
   return (
     <PageTransition>
+      <SEOHead
+        title="Personal Lunar Map — Natal Chart & 12-Month Power Days | Moontuner"
+        description="Generate your Personal Lunar Map: natal moon signature, 12-month power day grid, and timing windows. A living document for aligning with your natural rhythm."
+        canonical="/lunar-reports"
+        keywords={[
+          "personal lunar map",
+          "natal moon chart",
+          "lunar power days",
+          "moon sign calculator",
+          "lunar timing report",
+          "natal chart report",
+          "moon phase birthday",
+        ]}
+      />
       <div className="min-h-screen bg-background text-foreground selection:bg-gold selection:text-gold-foreground">
         <Navigation />
         
@@ -108,6 +176,7 @@ const LunarReports = () => {
               <AnimatePresence mode="wait">
                 {step === 'input' && (
                   <motion.div key="input" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+                    <LunarArcPromo />
                     <div className="flex flex-col md:flex-row gap-12 items-start mb-16">
                       <div className="w-32 h-32 rounded-[2rem] shadow-2xl shadow-gold/20 border border-border bg-card flex items-center justify-center">
                         <MoonPhaseGlyph phase="waxing-gibbous" size={64} className="text-gold" />
@@ -227,6 +296,13 @@ const LunarReports = () => {
                     <PowerDayGrid report={report} />
                     <ArcPracticeSection report={report} />
                     <ReportClosing report={report} />
+                    <NarrationUpsell
+                      reportType="lunar-arc"
+                      reportLabel={`${report.meta.querentName || "Lunar Arc"} Report`}
+                      sourceText={buildLunarNarrationText(report)}
+                      returnPath="/lunar-reports?paid=true"
+                    />
+                    <CrossGeneratorLinks exclude="/lunar-reports" />
                   </motion.div>
                 )}
               </AnimatePresence>

@@ -1,6 +1,7 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
+import { SEOHead } from "@/components/SEOHead";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { JourneyPreview } from "@/components/JourneyPreview";
 import { LeadMagnet } from "@/components/LeadMagnet";
@@ -269,6 +270,22 @@ const WorkbookCard = ({ workbook, isEclipse = false }: { workbook: typeof fullTo
 const Workbooks = () => {
   return (
     <PageTransition>
+      <SEOHead
+        title="Lunar Workbook — Moon Cycle Journal & Guided Practice for Every Phase | Moontuner"
+        description="26 guided lunar workbooks and moon cycle journals covering every sign transition. Practice-based companionship for each phase of the moon cycle — from New Moon intention to Full Moon release."
+        canonical="/workbooks"
+        keywords={[
+          "lunar workbook",
+          "moon cycle journal",
+          "lunar workbooks",
+          "moon phase journal",
+          "new moon workbook",
+          "full moon ritual",
+          "lunar cycle guide",
+          "intention setting workbook",
+          "moon phase practice",
+        ]}
+      />
       <div className="min-h-screen bg-background relative grain-overlay">
         <Navigation />
         
@@ -486,16 +503,21 @@ const Workbooks = () => {
                   Download all 26 workbooks—24 archetypal cycles plus 2 eclipse portal specials—as a complete bundle.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button variant="gold" size="lg">
-                    Download Complete Series
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+                  <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
+                    <Button variant="gold" size="lg">
+                      Get the Complete Series
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </a>
                   <Link to="/lunar-chaperone">
                     <Button variant="outline" size="lg">
-                      Learn About the Campaign
+                      Learn About the Program
                     </Button>
                   </Link>
                 </div>
+                <p className="text-xs text-muted-foreground/60 mt-4">
+                  Full program hosted on Lunar Chaperone · opens in a new tab
+                </p>
               </div>
             </ScrollReveal>
           </section>

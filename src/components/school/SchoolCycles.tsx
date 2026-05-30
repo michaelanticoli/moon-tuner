@@ -78,17 +78,18 @@ export function SchoolCycles() {
           const count = grouped[cat]?.length || 0;
           if (count === 0) return null;
           const info = DATAPOINT_CATEGORIES[cat];
+          const CatIcon = info.icon;
           return (
             <button
               key={cat}
               onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-              className={`text-[10px] uppercase tracking-widest px-3 py-1.5 border transition-colors ${
+              className={`text-[10px] uppercase tracking-widest px-3 py-1.5 border transition-colors inline-flex items-center gap-1.5 ${
                 activeCategory === cat
                   ? "border-accent text-accent bg-accent/10"
                   : "border-border text-muted-foreground hover:border-accent/30"
               }`}
             >
-              {info.icon} {info.label} ({count})
+              <CatIcon className="w-3 h-3" /> {info.label} ({count})
             </button>
           );
         })}
@@ -100,13 +101,14 @@ export function SchoolCycles() {
           const datapoints = grouped[cat] || [];
           if (datapoints.length === 0) return null;
           const info = DATAPOINT_CATEGORIES[cat];
+          const CatIcon = info.icon;
 
           return (
             <section key={cat}>
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="font-serif text-xl text-foreground flex items-center gap-2">
-                    <span>{info.icon}</span> {info.label}
+                    <CatIcon className="w-4 h-4 text-accent" /> {info.label}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">{info.description}</p>
                 </div>

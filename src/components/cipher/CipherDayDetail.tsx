@@ -7,6 +7,10 @@ import { DailyReading } from "@/data/parseDailyReadings";
 import { DayEvents } from "@/data/parseICS";
 import { fetchDatapoints, generateCycleInsight, type LunarDatapoint } from "@/data/lunarDatapoints";
 import { CycleInsightCard } from "@/components/CycleInsightCard";
+import { NatalOverlayBadges } from "@/components/cipher/NatalOverlayBadges";
+import { LifeLandmarksBanner } from "@/components/cipher/LifeLandmarksBanner";
+import { NinetySixArcCard } from "@/components/cipher/NinetySixArcCard";
+import { useNavigate } from "react-router-dom";
 
 interface CipherDayDetailProps {
   year: number;
@@ -114,6 +118,7 @@ function CycleContextSection({ phaseData, dayEvents }: { phaseData: any; dayEven
 }
 
 export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose }: CipherDayDetailProps) {
+  const navigate = useNavigate();
   const date = new Date(year, month, day);
   const phaseData = getMoonPhase2026(date);
   const signData = getMoonSign2026(date);
@@ -164,6 +169,12 @@ export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose 
             </h2>
           </div>
         </div>
+
+        {/* Personal landmarks (birthday, lunar return, eclipse-on-natal, etc.) */}
+        <LifeLandmarksBanner date={date} dayEvents={dayEvents} />
+
+        {/* 96-Arc cell — where today lives in the full Lunar System */}
+        <NinetySixArcCard phaseName={phaseData.phaseName} signName={signData.sign} />
 
         {/* Astronomical Status Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
@@ -389,6 +400,15 @@ export function CipherDayDetail({ year, month, day, reading, dayEvents, onClose 
             <CycleContextSection phaseData={phaseData} dayEvents={dayEvents} />
           </div>
         )}
+
+        {/* Light natal overlay — Sun/Moon transits to natal Sun/Moon/ASC */}
+        <NatalOverlayBadges
+          date={date}
+          onPromptBirth={() => {
+            onClose();
+            navigate("/studio");
+          }}
+        />
       </motion.div>
     </div>
   );

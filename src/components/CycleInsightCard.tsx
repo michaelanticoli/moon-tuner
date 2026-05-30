@@ -9,11 +9,12 @@ interface CycleInsightCardProps {
 export function CycleInsightCard({ datapoint, compact }: CycleInsightCardProps) {
   const catInfo = DATAPOINT_CATEGORIES[datapoint.category as keyof typeof DATAPOINT_CATEGORIES] 
     || DATAPOINT_CATEGORIES.general;
+  const CatIcon = catInfo.icon;
 
   return (
     <div className="bg-card border border-border p-4 md:p-5 hover:border-accent/30 transition-colors group">
       <div className="flex items-start gap-3">
-        <span className="text-lg mt-0.5 shrink-0">{catInfo.icon}</span>
+        <CatIcon className="w-4 h-4 mt-1 shrink-0 text-accent" />
         <div className="min-w-0 flex-1">
           {!compact && (
             <span className="text-[9px] uppercase tracking-[0.3em] text-accent font-medium block mb-1.5">

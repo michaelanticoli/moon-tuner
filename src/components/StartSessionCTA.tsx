@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import michaelPortrait from "@/assets/michael-portrait-2.jpeg";
-import moontunerLogo from "@/assets/moontuner-logo.png";
+import { ImageInlay } from "@/components/ImageInlay";
 
 export function StartSessionCTA() {
   const tiers = [
@@ -10,34 +11,55 @@ export function StartSessionCTA() {
       href: "/services",
     },
     {
-      label: "Astro-Harmonic Analysis",
+      label: "Cosmic Calibration",
       from: "$197",
       desc: "Your birth chart read, interpreted, and translated into sound — with an algorithmic composition included.",
       href: "/services",
     },
     {
       label: "Original Piano Étude",
-      from: "$800",
+      from: "$777",
       desc: "A hand-penned solo piano piece composed from your chart, recorded and delivered within 2 weeks.",
       href: "/services",
     },
   ];
 
   return (
-    <section id="session" className="py-24 border-t border-border/30">
+    <section id="session" className="relative py-24 border-t border-border/30 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-accent/[0.03] via-transparent to-transparent pointer-events-none" />
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[115%] w-[34%] pointer-events-none select-none hidden xl:block">
+        <ImageInlay
+          src="/images/tarot.jpeg"
+          alt=""
+          fade="right"
+          className="h-full w-full object-cover object-center"
+          style={{ opacity: 0.2 }}
+        />
+      </div>
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[26rem] w-[26rem] pointer-events-none select-none hidden lg:block">
+        <ImageInlay
+          src="/images/Moontuner Dial.png"
+          alt=""
+          fade="left"
+          className="h-full w-full object-contain object-center"
+          style={{ opacity: 0.14 }}
+        />
+      </div>
+
       <div className="container mx-auto px-6 lg:px-12 max-w-5xl">
         <span className="system-label block mb-10">1:1 Sessions</span>
 
-        <div className="flex flex-col lg:flex-row gap-12 items-start">
+        <div className="relative z-10 flex flex-col lg:flex-row gap-12 items-start">
           {/* Left: copy + portraits */}
           <div className="flex-1">
             <h2 className="font-serif text-4xl lg:text-5xl font-light text-foreground mb-6 leading-tight">
-              Work with someone<br />
+              Work with someone
+              <br />
               <span className="italic">who reads the chart.</span>
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mb-8 max-w-md">
-              Tarot, birth chart analysis, and harmonic composition. 
-              Clear, practical, and grounded in your actual situation.
+              Tarot, birth chart analysis, and harmonic composition. Clear, practical, and grounded in your actual
+              situation.
             </p>
 
             {/* Portrait + logo */}
@@ -45,27 +67,29 @@ export function StartSessionCTA() {
               <div className="w-28 h-36 rounded-xl overflow-hidden border border-border/40">
                 <img
                   src={michaelPortrait}
-                  alt="Michael Moon"
+                  alt="Michael Moontuner"
                   className="w-full h-full object-cover object-top"
                   loading="lazy"
                 />
               </div>
               <div className="w-28 h-36 rounded-xl border border-border/40 bg-card/50 flex items-center justify-center p-4">
-                <img
-                  src={moontunerLogo}
-                  alt="Moontuner"
-                  className="w-16 h-16 object-contain brightness-0 invert opacity-80"
-                  loading="lazy"
-                />
+                <picture>
+                  <source srcSet="/moonkey-logo.webp" type="image/webp" />
+                  <img
+                    src="/moonkey-logo.png"
+                    alt="Moontuner logo"
+                    className="w-16 h-16 rounded-lg object-contain"
+                    loading="lazy"
+                    width="64"
+                    height="64"
+                  />
+                </picture>
               </div>
             </div>
 
-            <a
-              href="/services"
-              className="system-button inline-flex"
-            >
+            <Link to="/services" className="system-button inline-flex">
               View All Sessions & Book
-            </a>
+            </Link>
           </div>
 
           {/* Right: tier cards */}
