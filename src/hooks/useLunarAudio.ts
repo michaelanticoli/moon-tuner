@@ -118,11 +118,11 @@ export function useLunarAudio() {
     return impulse;
   }, []);
 
-  const startPhaseAudio = useCallback((phaseName?: string) => {
+  const startPhaseAudio = useCallback(async (phaseName?: string) => {
     const ctx = initAudio();
 
     if (ctx.state === 'suspended') {
-      ctx.resume();
+      await ctx.resume();
     }
 
     // Stop existing audio
@@ -226,7 +226,17 @@ export function useLunarAudio() {
     const ctx = audioContextRef.current;
     if (!ctx) return;
 
+    // Capture current nodes and clear the ref immediately so any new session
+    // started right after this call is never torn down by the timeout below.
     const nodes = nodesRef.current;
+    nodesRef.current = {
+      oscillators: [],
+      gains: [],
+      masterGain: null,
+      lfo: null,
+      filter: null,
+      convolver: null,
+    };
 
     // Fade out
     if (nodes.masterGain) {
@@ -257,15 +267,6 @@ export function useLunarAudio() {
       nodes.filter?.disconnect();
       nodes.convolver?.disconnect();
       nodes.masterGain?.disconnect();
-
-      nodesRef.current = {
-        oscillators: [],
-        gains: [],
-        masterGain: null,
-        lfo: null,
-        filter: null,
-        convolver: null,
-      };
     }, 1500);
 
     setIsPlaying(false);
