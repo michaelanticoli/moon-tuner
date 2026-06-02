@@ -12,11 +12,8 @@ export const STRIPE_LINKS = {
   "astro-harmonic":    "https://buy.stripe.com/aFa3cucB09AS7eD6Ah2Ji09",
   "cipher-calendar":   "https://buy.stripe.com/4gM7sKfNc00i0Qf9Mt2Ji0b",
   "phasecraft":        "https://buy.stripe.com/00waEW44ufZg8iH8Ip2Ji0c",
-  // Not yet recreated in moontuner account — still on legacy Quantumelodies account
-  "harmonic-arcana":   "https://buy.stripe.com/3cI5kC3Iu7iY0XVfPbe7m0a",
-  "song-doesnt-end":   "https://buy.stripe.com/28E6oG5QC5aQ9ur6eBe7m09",
-  "quantumelodic-pro": "https://buy.stripe.com/14A28qgvggTybCz9qNe7m02",
   "lunar-chaperone":   "https://buy.stripe.com/eVq4gy8kKaEWfL9e2J2Ji0d",
+
 
 
   // Recurring memberships
