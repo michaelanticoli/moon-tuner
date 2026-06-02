@@ -8,7 +8,8 @@
 export const STRIPE_LINKS = {
   // One-time digital products
   "lunar-arc":         "https://buy.stripe.com/5kQbJ0en87iYfSPfPbe7m03",
-  "astro-harmonic":    "https://buy.stripe.com/5kQ00i5QCdHm8qngTfe7m04",
+  // Astro-Harmonic — moontuner Stripe account, redirects to /quantumelodic?paid=true
+  "astro-harmonic":    "https://buy.stripe.com/aFa3cucB09AS7eD6Ah2Ji09",
   "cipher-calendar":   "https://buy.stripe.com/6oU3cugvg9r6bCzauRe7m06",
   "phasecraft":        "https://buy.stripe.com/eVqbJ03Iu46M6if1Yle7m07",
   "harmonic-arcana":   "https://buy.stripe.com/3cI5kC3Iu7iY0XVfPbe7m0a",
