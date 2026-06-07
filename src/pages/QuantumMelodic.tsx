@@ -179,7 +179,10 @@ const QuantumMelodic = () => {
   }, []);
 
   const handleGenerate = async () => {
-    if (!formData.date || !formData.location || !formData.email) return;
+    if (!formData.date || !formData.location || !formData.email) {
+      toast.error("Please fill in your email, birth date, and location.");
+      return;
+    }
     setStep("generating");
     resetDeliverables();
 
@@ -271,10 +274,24 @@ const QuantumMelodic = () => {
           });
         }, 400);
       }
-    } catch {
+    } catch (err) {
+      console.error("Generation failed:", err);
+      toast.error(err instanceof Error ? err.message : "We hit a snag generating your reading. Please try again.");
       setStep("input");
     }
   };
+
+  // Surface deliverable failures so users aren't left wondering
+  useEffect(() => {
+    if (deliverables.audioStatus === "failed") {
+      toast.error("Audio composition failed. Your written report is still ready below.");
+    }
+  }, [deliverables.audioStatus]);
+  useEffect(() => {
+    if (deliverables.pdfStatus === "failed") {
+      toast.error("PDF export failed — you can still read the full report on this page.");
+    }
+  }, [deliverables.pdfStatus]);
 
   useEffect(() => {
     const url = deliverables.audioUrl;
@@ -704,7 +721,7 @@ const QuantumMelodic = () => {
                         </div>
                         {reading.chartData.source === "approximate-fallback" && (
                           <p className="system-label text-muted-foreground/50 mt-4 normal-case italic tracking-normal">
-                            Approximate positions — ephemeris service was briefly unavailable
+                            Using approximate positions — refresh to recalculate with the full ephemeris.
                           </p>
                         )}
                       </div>
