@@ -179,7 +179,10 @@ const QuantumMelodic = () => {
   }, []);
 
   const handleGenerate = async () => {
-    if (!formData.date || !formData.location || !formData.email) return;
+    if (!formData.date || !formData.location || !formData.email) {
+      toast.error("Please fill in your email, birth date, and location.");
+      return;
+    }
     setStep("generating");
     resetDeliverables();
 
