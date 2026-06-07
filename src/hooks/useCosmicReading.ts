@@ -117,7 +117,7 @@ export function useCosmicReading() {
       setProgress(25);
 
       let chart: ChartData;
-      try {
+      const invokeChart = async () => {
         const { data, error: fnError } = await supabase.functions.invoke('calculate-chart', {
           body: {
             date: birthData.date,
@@ -125,16 +125,24 @@ export function useCosmicReading() {
             location: birthData.location,
           },
         });
-
-        if (fnError || !data) {
-          throw new Error(fnError?.message || 'Chart service unavailable');
+        if (fnError) throw new Error(fnError.message || 'Chart service unavailable');
+        if (!data || (data as { error?: string }).error) {
+          throw new Error((data as { error?: string })?.error || 'Empty chart response');
         }
+        return data as ChartData;
+      };
 
-        chart = data as ChartData;
-
-      } catch (chartErr) {
-        console.warn('Chart edge function failed, using fallback:', chartErr);
-        chart = buildFallbackChart(birthData);
+      try {
+        chart = await invokeChart();
+      } catch (firstErr) {
+        console.warn('Chart calc failed, retrying once:', firstErr);
+        try {
+          await new Promise((r) => setTimeout(r, 800));
+          chart = await invokeChart();
+        } catch (secondErr) {
+          console.error('Chart calc failed twice, using approximation:', secondErr);
+          chart = buildFallbackChart(birthData);
+        }
       }
 
       // Validate chart has required fields
