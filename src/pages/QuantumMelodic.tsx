@@ -704,7 +704,7 @@ const QuantumMelodic = () => {
                         </div>
                         {reading.chartData.source === "approximate-fallback" && (
                           <p className="system-label text-muted-foreground/50 mt-4 normal-case italic tracking-normal">
-                            Approximate positions — ephemeris service was briefly unavailable
+                            Using approximate positions — refresh to recalculate with the full ephemeris.
                           </p>
                         )}
                       </div>
