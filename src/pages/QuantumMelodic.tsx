@@ -274,10 +274,24 @@ const QuantumMelodic = () => {
           });
         }, 400);
       }
-    } catch {
+    } catch (err) {
+      console.error("Generation failed:", err);
+      toast.error(err instanceof Error ? err.message : "We hit a snag generating your reading. Please try again.");
       setStep("input");
     }
   };
+
+  // Surface deliverable failures so users aren't left wondering
+  useEffect(() => {
+    if (deliverables.audioStatus === "failed") {
+      toast.error("Audio composition failed. Your written report is still ready below.");
+    }
+  }, [deliverables.audioStatus]);
+  useEffect(() => {
+    if (deliverables.pdfStatus === "failed") {
+      toast.error("PDF export failed — you can still read the full report on this page.");
+    }
+  }, [deliverables.pdfStatus]);
 
   useEffect(() => {
     const url = deliverables.audioUrl;
