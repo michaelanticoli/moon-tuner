@@ -1,10 +1,20 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+function validateEmail(input: unknown): string {
+  if (!input || typeof input !== "string") throw new Error("Email is required");
+  const trimmed = input.trim().toLowerCase();
+  if (trimmed.length < 5 || trimmed.length > 254) throw new Error("Invalid email format");
+  if (!EMAIL_REGEX.test(trimmed)) throw new Error("Invalid email format");
+  return trimmed;
+}
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT_MAX = 3;
@@ -113,19 +123,44 @@ serve(async (req) => {
   }
 
   try {
-    // Rate limit by IP to prevent email spam abuse
-    const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-    if (isRateLimited(clientIP)) {
-      logStep("Rate limited", { ip: clientIP });
+    // Require an authenticated caller and ensure they own the email
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Authentication required" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401 }
+      );
+    }
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Unauthorized" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401 }
+      );
+    }
+
+    // Rate limit by user ID (more reliable than IP)
+    if (isRateLimited(user.id)) {
+      logStep("Rate limited", { user: user.id });
       return new Response(
         JSON.stringify({ success: false, error: "Too many requests. Please try again later." }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 429 }
       );
     }
 
-    const { email } = await req.json();
-    if (!email || typeof email !== "string") {
-      throw new Error("Email is required");
+    const body = await req.json().catch(() => ({}));
+    const trimmedEmail = validateEmail(body.email);
+
+    if (user.email && trimmedEmail !== user.email.toLowerCase()) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Email does not match authenticated user" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 403 }
+      );
     }
 
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
@@ -133,7 +168,6 @@ serve(async (req) => {
       throw new Error("RESEND_API_KEY not configured");
     }
 
-    const trimmedEmail = email.trim().toLowerCase();
     logStep("Sending welcome email via Resend", { to: trimmedEmail });
 
     const response = await fetch("https://api.resend.com/emails", {
