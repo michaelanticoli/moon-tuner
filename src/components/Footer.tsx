@@ -133,6 +133,14 @@ export function Footer() {
               <span className="system-label">Photon Flux Active</span>
             </div>
             <div className="flex items-center gap-6">
+              <a
+                href="https://buymeacoffee.com/michaelantq"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Support the Work
+              </a>
               <Link to="/privacy" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
                 Privacy
               </Link>
