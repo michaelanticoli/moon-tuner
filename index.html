@@ -89,6 +89,21 @@
     <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx" data-cookieconsent="ignore"></script>
-    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+    <script>
+      (function(){
+        function loadStripe(){
+          if (window.__stripeBtnLoaded) return; window.__stripeBtnLoaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://js.stripe.com/v3/buy-button.js';
+          document.body.appendChild(s);
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadStripe, { timeout: 5000 });
+        } else {
+          window.addEventListener('load', function(){ setTimeout(loadStripe, 2500); });
+        }
+      })();
+    </script>
   </body>
 </html>
