@@ -2,13 +2,41 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NHVQ8PTR');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager — deferred to idle to keep critical path light -->
+    <script data-cookieconsent="ignore">
+      (function(){
+        window.dataLayer = window.dataLayer || [];
+        function loadGTM(){
+          if (window.__gtmLoaded) return; window.__gtmLoaded = true;
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-NHVQ8PTR');
+        }
+        function loadGtag(){
+          if (window.__gtagLoaded) return; window.__gtagLoaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-979NQVQL5Z';
+          s.setAttribute('data-cookieconsent','ignore');
+          document.head.appendChild(s);
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', 'G-979NQVQL5Z');
+        }
+        function loadAnalytics(){ loadGTM(); loadGtag(); }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadAnalytics, { timeout: 4000 });
+        } else {
+          window.addEventListener('load', function(){ setTimeout(loadAnalytics, 2000); });
+        }
+        ['scroll','keydown','mousemove','touchstart'].forEach(function(ev){
+          window.addEventListener(ev, loadAnalytics, { once: true, passive: true });
+        });
+      })();
+    </script>
     <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="2b53c2c0-9429-44cd-9a07-1f1b05cf165f" data-blockingmode="manual" type="text/javascript" async></script>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
