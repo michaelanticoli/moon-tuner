@@ -26,3 +26,14 @@ window.addEventListener("unhandledrejection", (e) => {
 createRoot(document.getElementById("root")!).render(<App />);
 
 initNative();
+
+// Register the service worker after the page is loaded so it never competes
+// with the critical render path. Only runs in production builds.
+if ("serviceWorker" in navigator && import.meta.env.PROD) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .catch((err) => console.warn("[sw] registration failed", err));
+  });
+}
+
