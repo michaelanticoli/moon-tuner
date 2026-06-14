@@ -64,34 +64,34 @@ export function DuskHero() {
         <div className="max-w-[760px]">
           <p className="dusk-eyebrow mb-8 dusk-rise">
             <span className="inline-block w-6 h-px align-middle mr-3 bg-[hsl(var(--dusk-gold))]" />
-            Moontuner — A Timing System
+            Moontuner — Your Free Lunar Timing Record
           </p>
 
           <h1
             className="dusk-serif text-[clamp(2.6rem,6.5vw,5.6rem)] dusk-ivory mb-8 dusk-rise"
             style={{ animationDelay: "0.12s" }}
           >
-            A timing system for people <em className="italic dusk-gold">tired of forcing life</em> out of rhythm.
+            Stop forcing life through bad timing. <em className="italic dusk-gold">Start tuning the moment you're in.</em>
           </h1>
 
           <p
             className="text-[1.0625rem] lg:text-[1.125rem] leading-[1.7] max-w-[560px] dusk-mute mb-12 dusk-rise"
             style={{ animationDelay: "0.24s", color: "hsl(var(--dusk-ivory) / 0.7)" }}
           >
-            Personalized lunar guidance, identity mapping, and reflective tools
-            designed to help you move with better timing instead of harder force.
+            MOONtuner turns the live lunar field into daily guidance, personal pattern recognition,
+            and tools that help you choose when to move, pause, release, and begin again.
           </p>
 
           <div
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 dusk-rise"
             style={{ animationDelay: "0.36s" }}
           >
-            <Link to="/harmonic-profile" className="dusk-btn dusk-btn-primary">
-              Generate Your Harmonic Profile
+            <Link to="/auth?mode=begin&redirect=/dashboard" className="dusk-btn dusk-btn-primary">
+              Start Free
             </Link>
-            <a href="#todays-directive" className="dusk-btn dusk-btn-ghost">
-              View Today's Directive
-            </a>
+            <Link to="/harmonic-profile" className="dusk-btn dusk-btn-ghost">
+              Preview the Tools
+            </Link>
           </div>
 
           {/* Quiet meta line */}
@@ -101,7 +101,7 @@ export function DuskHero() {
           >
             <div className="dusk-hairline max-w-[80px]" />
             <span className="text-[0.7rem] tracking-[0.28em] uppercase dusk-silver">
-              Behavioral guidance through timing & self-awareness
+              Free record · daily directive · harmonic profile · lunar reports
             </span>
           </div>
         </div>
