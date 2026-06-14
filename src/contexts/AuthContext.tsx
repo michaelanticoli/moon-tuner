@@ -26,7 +26,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const ensureUserProfile = async (currentSession: Session | null) => {
   if (!currentSession?.user || currentSession.user.is_anonymous) return;
 
-  const { error } = await supabase.rpc('ensure_user_profile');
+  const { error } = await supabase
+    .from('profiles')
+    .upsert(
+      {
+        user_id: currentSession.user.id,
+        email: currentSession.user.email ?? 'unknown@example.invalid',
+      },
+      { onConflict: 'user_id' }
+    );
+
   if (error) {
     console.warn('Unable to prepare user profile after sign-in.', error.message);
   }
