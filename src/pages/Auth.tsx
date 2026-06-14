@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link, useLocation, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { getRedirectPathFromLocationState, sanitizeRedirectPath } from "@/lib/authRedirect";
+import { buildAuthCallbackUrl, getRedirectPathFromLocationState, sanitizeRedirectPath } from "@/lib/authRedirect";
 import { lovable } from "@/integrations/lovable";
 import { Moon, Mail, Lock, ArrowRight, Loader2, Sparkles } from "lucide-react";
 
@@ -46,6 +46,15 @@ const Auth = () => {
     searchParams.get("redirect") ?? getRedirectPathFromLocationState(location.state)
   );
 
+  useEffect(() => {
+    const requestedMode = searchParams.get("mode");
+    if (["enter", "begin", "reset", "magic"].includes(requestedMode ?? "")) {
+      setMode(requestedMode as AuthMode);
+      setError(null);
+      setMessage(null);
+    }
+  }, [searchParams]);
+
   const switchMode = (next: AuthMode) => {
     setMode(next);
     setError(null);
@@ -77,7 +86,7 @@ const Auth = () => {
           navigate(redirectPath);
         } else if (requiresEmailVerification) {
           setMessage(
-            "Account created. Check your inbox (and spam) for a verification link. If it doesn't arrive, use 'Resend verification email' below."
+            "Account created. Check your inbox for the verification link, then you'll land inside your MOONtuner record."
           );
         } else {
           console.warn("Signup completed without session and without explicit verification requirement.", {
@@ -152,21 +161,21 @@ const Auth = () => {
 
   const headings: Record<AuthMode, string> = {
     enter:  "Continue Your Record",
-    begin:  "Begin Reflection",
+      begin:  "Start Free",
     reset:  "Recover Your Signal",
     magic:  "Enter the Archive",
   };
 
   const subheadings: Record<AuthMode, string> = {
     enter:  "Return to where you left off.",
-    begin:  "Initialize your profile. Save your signal.",
+      begin:  "Create a free record in under a minute. No payment, no pressure — just a place to start tuning.",
     reset:  "We'll send a thread to guide you back.",
     magic:  "Receive a link — no password required.",
   };
 
   const ctaLabels: Record<AuthMode, string> = {
     enter:  "Continue Your Record",
-    begin:  "Save Your Signal",
+      begin:  "Create Free Account",
     reset:  "Send Recovery Thread",
     magic:  "Send Magic Link",
   };
@@ -329,7 +338,7 @@ const Auth = () => {
                       setLoading(true);
                       try {
                         const result = await lovable.auth.signInWithOAuth("google", {
-                          redirect_uri: window.location.origin + redirectPath,
+                          redirect_uri: buildAuthCallbackUrl(redirectPath),
                         });
                         if (result.redirected) return;
                         if (result.error) {
@@ -374,7 +383,7 @@ const Auth = () => {
                           onClick={() => switchMode("begin")}
                           className="text-accent hover:text-accent/80 transition-colors"
                         >
-                          Begin Reflection
+                          Start Free
                         </button>
                       </p>
                     </>
