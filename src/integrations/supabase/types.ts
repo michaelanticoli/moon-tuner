@@ -247,29 +247,47 @@ export type Database = {
       }
       profiles: {
         Row: {
+          birth_date: string | null
+          birth_location: string | null
+          birth_time: string | null
           convertkit_subscriber_id: string | null
           created_at: string
+          data_visibility: Json
+          display_name: string | null
           email: string
           full_name: string | null
           id: string
+          private_mode: boolean
           updated_at: string
           user_id: string
         }
         Insert: {
+          birth_date?: string | null
+          birth_location?: string | null
+          birth_time?: string | null
           convertkit_subscriber_id?: string | null
           created_at?: string
+          data_visibility?: Json
+          display_name?: string | null
           email: string
           full_name?: string | null
           id?: string
+          private_mode?: boolean
           updated_at?: string
           user_id: string
         }
         Update: {
+          birth_date?: string | null
+          birth_location?: string | null
+          birth_time?: string | null
           convertkit_subscriber_id?: string | null
           created_at?: string
+          data_visibility?: Json
+          display_name?: string | null
           email?: string
           full_name?: string | null
           id?: string
+          private_mode?: boolean
           updated_at?: string
           user_id?: string
         }
@@ -466,6 +484,30 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      ensure_user_profile: {
+        Args: never
+        Returns: {
+          birth_date: string | null
+          birth_location: string | null
+          birth_time: string | null
+          convertkit_subscriber_id: string | null
+          created_at: string
+          data_visibility: Json
+          display_name: string | null
+          email: string
+          full_name: string | null
+          id: string
+          private_mode: boolean
+          updated_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "profiles"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       get_user_id_by_email: {
         Args: { email_input: string }
         Returns: {
