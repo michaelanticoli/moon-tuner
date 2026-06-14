@@ -23,6 +23,24 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const ensureUserProfile = async (currentSession: Session | null) => {
+  if (!currentSession?.user || currentSession.user.is_anonymous) return;
+
+  const { error } = await supabase
+    .from('profiles')
+    .upsert(
+      {
+        user_id: currentSession.user.id,
+        email: currentSession.user.email ?? 'unknown@example.invalid',
+      },
+      { onConflict: 'user_id' }
+    );
+
+  if (error) {
+    console.warn('Unable to prepare user profile after sign-in.', error.message);
+  }
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -34,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      void ensureUserProfile(session);
       setLoading(false);
     });
 
@@ -41,6 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        void ensureUserProfile(session);
         setLoading(false);
       }
     );
@@ -58,6 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         emailRedirectTo: buildAuthCallbackUrl(redirectPath),
       },
     });
+    if (data.session) await ensureUserProfile(data.session);
     return {
       error,
       signedIn: Boolean(data.session),
@@ -77,10 +98,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+    if (!error) await ensureUserProfile(data.session);
     return { error };
   };
 
