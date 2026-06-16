@@ -173,9 +173,44 @@ function ShareModal({
   ...props
 }: DirectiveShareCardProps & { onClose: () => void }) {
   const [copied, setCopied] = useState(false);
+  const [busy, setBusy] = useState<null | "download" | "share">(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
+  const shareUrl = "https://moontuner.xyz";
   const shareText = `Today's Directive: ${props.directiveState}. ${props.guidance} — moontuner.xyz`;
+
+  const renderCardBlob = useCallback(async (): Promise<Blob | null> => {
+    if (!cardRef.current) return null;
+    const canvas = await html2canvas(cardRef.current, {
+      backgroundColor: "#140f0c",
+      scale: 2,
+      useCORS: true,
+      logging: false,
+    });
+    return await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob((b) => resolve(b), "image/png", 0.95)
+    );
+  }, []);
+
+  const handleDownload = useCallback(async () => {
+    try {
+      setBusy("download");
+      const blob = await renderCardBlob();
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `moontuner-directive-${props.date.replace(/\s+/g, "-")}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (err) {
+      console.error("Download failed", err);
+    } finally {
+      setBusy(null);
+    }
+  }, [renderCardBlob, props.date]);
 
   const handleCopyText = useCallback(async () => {
     try {
@@ -190,15 +225,37 @@ function ShareModal({
   const handleNativeShare = useCallback(async () => {
     if (!navigator.share) return;
     try {
-      await navigator.share({
-        title: `Today's Directive: ${props.directiveState}`,
-        text: props.guidance,
-        url: "https://moontuner.xyz",
-      });
+      setBusy("share");
+      // Try to share the image as a file if supported
+      const blob = await renderCardBlob();
+      const file = blob
+        ? new File([blob], `moontuner-directive.png`, { type: "image/png" })
+        : null;
+
+      // @ts-ignore - canShare not on all TS lib targets
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: `Today's Directive: ${props.directiveState}`,
+          text: shareText,
+          url: shareUrl,
+        });
+      } else {
+        await navigator.share({
+          title: `Today's Directive: ${props.directiveState}`,
+          text: shareText,
+          url: shareUrl,
+        });
+      }
     } catch {
-      // User cancelled or share failed
+      // user cancelled
+    } finally {
+      setBusy(null);
     }
-  }, [props.directiveState, props.guidance]);
+  }, [renderCardBlob, props.directiveState, shareText]);
+
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`;
 
   const hasNativeShare =
     typeof navigator !== "undefined" && !!navigator.share;
