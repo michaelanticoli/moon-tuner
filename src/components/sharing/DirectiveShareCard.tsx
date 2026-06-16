@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Share2, X, Copy, Check } from "lucide-react";
+import { Share2, X, Copy, Check, Download, Twitter, Facebook, Loader2 } from "lucide-react";
+import html2canvas from "html2canvas";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 
 interface DirectiveShareCardProps {
