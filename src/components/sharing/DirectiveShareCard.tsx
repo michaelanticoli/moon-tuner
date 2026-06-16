@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Share2, X, Copy, Check } from "lucide-react";
+import { Share2, X, Copy, Check, Download, Twitter, Facebook, Loader2 } from "lucide-react";
+import html2canvas from "html2canvas";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 
 interface DirectiveShareCardProps {
@@ -172,9 +173,44 @@ function ShareModal({
   ...props
 }: DirectiveShareCardProps & { onClose: () => void }) {
   const [copied, setCopied] = useState(false);
+  const [busy, setBusy] = useState<null | "download" | "share">(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
+  const shareUrl = "https://moontuner.xyz";
   const shareText = `Today's Directive: ${props.directiveState}. ${props.guidance} — moontuner.xyz`;
+
+  const renderCardBlob = useCallback(async (): Promise<Blob | null> => {
+    if (!cardRef.current) return null;
+    const canvas = await html2canvas(cardRef.current, {
+      backgroundColor: "#140f0c",
+      scale: 2,
+      useCORS: true,
+      logging: false,
+    });
+    return await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob((b) => resolve(b), "image/png", 0.95)
+    );
+  }, []);
+
+  const handleDownload = useCallback(async () => {
+    try {
+      setBusy("download");
+      const blob = await renderCardBlob();
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `moontuner-directive-${props.date.replace(/\s+/g, "-")}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (err) {
+      console.error("Download failed", err);
+    } finally {
+      setBusy(null);
+    }
+  }, [renderCardBlob, props.date]);
 
   const handleCopyText = useCallback(async () => {
     try {
@@ -189,15 +225,37 @@ function ShareModal({
   const handleNativeShare = useCallback(async () => {
     if (!navigator.share) return;
     try {
-      await navigator.share({
-        title: `Today's Directive: ${props.directiveState}`,
-        text: props.guidance,
-        url: "https://moontuner.xyz",
-      });
+      setBusy("share");
+      // Try to share the image as a file if supported
+      const blob = await renderCardBlob();
+      const file = blob
+        ? new File([blob], `moontuner-directive.png`, { type: "image/png" })
+        : null;
+
+      // @ts-ignore - canShare not on all TS lib targets
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: `Today's Directive: ${props.directiveState}`,
+          text: shareText,
+          url: shareUrl,
+        });
+      } else {
+        await navigator.share({
+          title: `Today's Directive: ${props.directiveState}`,
+          text: shareText,
+          url: shareUrl,
+        });
+      }
     } catch {
-      // User cancelled or share failed
+      // user cancelled
+    } finally {
+      setBusy(null);
     }
-  }, [props.directiveState, props.guidance]);
+  }, [renderCardBlob, props.directiveState, shareText]);
+
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`;
 
   const hasNativeShare =
     typeof navigator !== "undefined" && !!navigator.share;
@@ -250,56 +308,98 @@ function ShareModal({
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2.5">
           <button
-            onClick={handleCopyText}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg border text-sm transition-all duration-200 font-sans text-left"
+            onClick={handleDownload}
+            disabled={busy === "download"}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all duration-200 font-sans text-left disabled:opacity-60"
             style={{
-              background: "hsl(22 12% 11%)",
-              borderColor: "hsl(22 12% 20%)",
-              color: "hsl(40 18% 72%)",
+              background: "hsl(38 90% 58%)",
+              color: "hsl(22 12% 7%)",
+              fontWeight: 500,
             }}
           >
-            {copied ? (
-              <Check
-                className="w-4 h-4 shrink-0"
-                style={{ color: "hsl(38 90% 58%)" }}
-              />
+            {busy === "download" ? (
+              <Loader2 className="w-4 h-4 shrink-0 animate-spin" />
             ) : (
-              <Copy
-                className="w-4 h-4 shrink-0"
-                style={{ color: "hsl(40 12% 44%)" }}
-              />
+              <Download className="w-4 h-4 shrink-0" />
             )}
-            <span>
-              {copied ? "Copied to clipboard" : "Copy directive text"}
-            </span>
+            <span>{busy === "download" ? "Rendering…" : "Download image (PNG)"}</span>
           </button>
 
           {hasNativeShare && (
             <button
               onClick={handleNativeShare}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg border text-sm transition-all duration-200 font-sans text-left"
+              disabled={busy === "share"}
+              className="flex items-center gap-3 px-4 py-3 rounded-lg border text-sm transition-all duration-200 font-sans text-left disabled:opacity-60"
+              style={{
+                background: "hsl(22 12% 11%)",
+                borderColor: "hsl(38 90% 58% / 0.4)",
+                color: "hsl(40 18% 88%)",
+              }}
+            >
+              {busy === "share" ? (
+                <Loader2 className="w-4 h-4 shrink-0 animate-spin" style={{ color: "hsl(38 90% 58%)" }} />
+              ) : (
+                <Share2 className="w-4 h-4 shrink-0" style={{ color: "hsl(38 90% 58%)" }} />
+              )}
+              <span>{busy === "share" ? "Preparing…" : "Share to apps (Messages, Instagram…)"}</span>
+            </button>
+          )}
+
+          <div className="grid grid-cols-3 gap-2.5">
+            <a
+              href={twitterUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border text-xs transition-all duration-200 font-sans"
               style={{
                 background: "hsl(22 12% 11%)",
                 borderColor: "hsl(22 12% 20%)",
                 color: "hsl(40 18% 72%)",
               }}
             >
-              <Share2
-                className="w-4 h-4 shrink-0"
-                style={{ color: "hsl(40 12% 44%)" }}
-              />
-              <span>Share via&hellip;</span>
+              <Twitter className="w-3.5 h-3.5" />
+              <span>X</span>
+            </a>
+            <a
+              href={facebookUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border text-xs transition-all duration-200 font-sans"
+              style={{
+                background: "hsl(22 12% 11%)",
+                borderColor: "hsl(22 12% 20%)",
+                color: "hsl(40 18% 72%)",
+              }}
+            >
+              <Facebook className="w-3.5 h-3.5" />
+              <span>Facebook</span>
+            </a>
+            <button
+              onClick={handleCopyText}
+              className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border text-xs transition-all duration-200 font-sans"
+              style={{
+                background: "hsl(22 12% 11%)",
+                borderColor: "hsl(22 12% 20%)",
+                color: "hsl(40 18% 72%)",
+              }}
+            >
+              {copied ? (
+                <Check className="w-3.5 h-3.5" style={{ color: "hsl(38 90% 58%)" }} />
+              ) : (
+                <Copy className="w-3.5 h-3.5" />
+              )}
+              <span>{copied ? "Copied" : "Copy"}</span>
             </button>
-          )}
+          </div>
         </div>
 
         <p
           className="mt-5 text-[0.6rem] leading-relaxed text-center"
           style={{ color: "hsl(40 12% 30%)" }}
         >
-          Sharing today&rsquo;s directive at moontuner.xyz
+          Download to post anywhere · moontuner.xyz
         </p>
       </motion.div>
     </motion.div>
