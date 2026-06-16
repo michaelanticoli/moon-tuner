@@ -308,56 +308,98 @@ function ShareModal({
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2.5">
           <button
-            onClick={handleCopyText}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg border text-sm transition-all duration-200 font-sans text-left"
+            onClick={handleDownload}
+            disabled={busy === "download"}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all duration-200 font-sans text-left disabled:opacity-60"
             style={{
-              background: "hsl(22 12% 11%)",
-              borderColor: "hsl(22 12% 20%)",
-              color: "hsl(40 18% 72%)",
+              background: "hsl(38 90% 58%)",
+              color: "hsl(22 12% 7%)",
+              fontWeight: 500,
             }}
           >
-            {copied ? (
-              <Check
-                className="w-4 h-4 shrink-0"
-                style={{ color: "hsl(38 90% 58%)" }}
-              />
+            {busy === "download" ? (
+              <Loader2 className="w-4 h-4 shrink-0 animate-spin" />
             ) : (
-              <Copy
-                className="w-4 h-4 shrink-0"
-                style={{ color: "hsl(40 12% 44%)" }}
-              />
+              <Download className="w-4 h-4 shrink-0" />
             )}
-            <span>
-              {copied ? "Copied to clipboard" : "Copy directive text"}
-            </span>
+            <span>{busy === "download" ? "Rendering…" : "Download image (PNG)"}</span>
           </button>
 
           {hasNativeShare && (
             <button
               onClick={handleNativeShare}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg border text-sm transition-all duration-200 font-sans text-left"
+              disabled={busy === "share"}
+              className="flex items-center gap-3 px-4 py-3 rounded-lg border text-sm transition-all duration-200 font-sans text-left disabled:opacity-60"
+              style={{
+                background: "hsl(22 12% 11%)",
+                borderColor: "hsl(38 90% 58% / 0.4)",
+                color: "hsl(40 18% 88%)",
+              }}
+            >
+              {busy === "share" ? (
+                <Loader2 className="w-4 h-4 shrink-0 animate-spin" style={{ color: "hsl(38 90% 58%)" }} />
+              ) : (
+                <Share2 className="w-4 h-4 shrink-0" style={{ color: "hsl(38 90% 58%)" }} />
+              )}
+              <span>{busy === "share" ? "Preparing…" : "Share to apps (Messages, Instagram…)"}</span>
+            </button>
+          )}
+
+          <div className="grid grid-cols-3 gap-2.5">
+            <a
+              href={twitterUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border text-xs transition-all duration-200 font-sans"
               style={{
                 background: "hsl(22 12% 11%)",
                 borderColor: "hsl(22 12% 20%)",
                 color: "hsl(40 18% 72%)",
               }}
             >
-              <Share2
-                className="w-4 h-4 shrink-0"
-                style={{ color: "hsl(40 12% 44%)" }}
-              />
-              <span>Share via&hellip;</span>
+              <Twitter className="w-3.5 h-3.5" />
+              <span>X</span>
+            </a>
+            <a
+              href={facebookUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border text-xs transition-all duration-200 font-sans"
+              style={{
+                background: "hsl(22 12% 11%)",
+                borderColor: "hsl(22 12% 20%)",
+                color: "hsl(40 18% 72%)",
+              }}
+            >
+              <Facebook className="w-3.5 h-3.5" />
+              <span>Facebook</span>
+            </a>
+            <button
+              onClick={handleCopyText}
+              className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border text-xs transition-all duration-200 font-sans"
+              style={{
+                background: "hsl(22 12% 11%)",
+                borderColor: "hsl(22 12% 20%)",
+                color: "hsl(40 18% 72%)",
+              }}
+            >
+              {copied ? (
+                <Check className="w-3.5 h-3.5" style={{ color: "hsl(38 90% 58%)" }} />
+              ) : (
+                <Copy className="w-3.5 h-3.5" />
+              )}
+              <span>{copied ? "Copied" : "Copy"}</span>
             </button>
-          )}
+          </div>
         </div>
 
         <p
           className="mt-5 text-[0.6rem] leading-relaxed text-center"
           style={{ color: "hsl(40 12% 30%)" }}
         >
-          Sharing today&rsquo;s directive at moontuner.xyz
+          Download to post anywhere · moontuner.xyz
         </p>
       </motion.div>
     </motion.div>
