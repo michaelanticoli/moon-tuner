@@ -16,6 +16,9 @@ interface ImageInlayProps {
   fade?: ImageInlayFade;
   className?: string;
   style?: CSSProperties;
+  width?: number | string;
+  height?: number | string;
+  loading?: "lazy" | "eager";
 }
 
 export function ImageInlay({
@@ -24,6 +27,9 @@ export function ImageInlay({
   fade = "both",
   className = "",
   style = {},
+  width,
+  height,
+  loading,
 }: ImageInlayProps) {
   const maskImage = masks[fade];
 
@@ -32,6 +38,9 @@ export function ImageInlay({
       src={src}
       alt={alt}
       className={className}
+      width={width}
+      height={height}
+      loading={loading}
       style={{
         WebkitMaskImage: maskImage,
         maskImage,

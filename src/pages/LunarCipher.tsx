@@ -76,6 +76,8 @@ const LunarCipher = () => {
                   alt=""
                   aria-hidden="true"
                   className="absolute inset-0 w-full h-full object-cover opacity-20"
+                  width="555"
+                  height="723"
                 />
                 <MoonPhaseGlyph phase="full" size={48} className="text-accent md:hidden relative" />
                 <MoonPhaseGlyph phase="full" size={64} className="text-accent hidden md:block relative" />
@@ -165,6 +167,8 @@ const LunarCipher = () => {
                   aria-hidden="true"
                   className="w-full max-w-2xl opacity-25"
                   loading="lazy"
+                  width="429"
+                  height="606"
                 />
               </div>
             )}

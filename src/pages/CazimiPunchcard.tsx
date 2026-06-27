@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Download, ArrowLeft } from "lucide-react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
@@ -116,6 +114,10 @@ export default function CazimiPunchcard() {
     const prevW = el.style.width;
     el.style.width = "1024px";
     await new Promise((r) => setTimeout(r, 250));
+    const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+      import("html2canvas"),
+      import("jspdf"),
+    ]);
     try {
       const canvas = await html2canvas(el, {
         backgroundColor: "#ffffff",

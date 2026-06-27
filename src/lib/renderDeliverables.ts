@@ -1,7 +1,7 @@
 // Client-side renderers for the chart PNG and the PDF report.
 // Both return base64 strings (no data: prefix) ready for upload.
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+// html2canvas and jsPDF are large libraries only needed on-demand, so they
+// are loaded via dynamic import to keep the initial bundle light.
 import type { CosmicReading } from "@/types/astrology";
 import type { QuantumMelodicReading } from "@/types/quantumMelodic";
 import { buildSymphonyHTML } from "@/lib/generateSymphonyHTML";
@@ -15,6 +15,7 @@ interface HarmonicAnalysis {
 
 // Capture the off-screen NatalWheelCard as a high-res PNG.
 export async function renderChartImageBase64(node: HTMLElement): Promise<string> {
+  const { default: html2canvas } = await import("html2canvas");
   const canvas = await html2canvas(node, {
     backgroundColor: "#F9F7F4",
     scale: 2,
@@ -100,6 +101,11 @@ export async function renderReportPdfBase64(
 
   // Wait for fonts/styles to settle
   await new Promise((r) => setTimeout(r, 400));
+
+  const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+    import("html2canvas"),
+    import("jspdf"),
+  ]);
 
   try {
     const canvas = await html2canvas(container, {
