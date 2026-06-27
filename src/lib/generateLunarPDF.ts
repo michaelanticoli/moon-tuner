@@ -1,7 +1,7 @@
-import jsPDF from 'jspdf';
 import type { LunarReport } from '@/lib/lunarReportEngine';
 
-export const generateLunarPDF = (report: LunarReport): void => {
+export const generateLunarPDF = async (report: LunarReport): Promise<void> => {
+  const { default: jsPDF } = await import('jspdf');
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();

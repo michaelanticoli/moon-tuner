@@ -121,6 +121,8 @@ export function Footer() {
               alt="ElevenLabs Grants"
               className="w-[250px] max-w-full"
               loading="lazy"
+              width="250"
+              height="60"
             />
           </a>
         </div>

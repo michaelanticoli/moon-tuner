@@ -34,6 +34,8 @@ export function StartSessionCTA() {
           fade="right"
           className="h-full w-full object-cover object-center"
           style={{ opacity: 0.2 }}
+          width="1200"
+          height="896"
         />
       </div>
       <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[26rem] w-[26rem] pointer-events-none select-none hidden lg:block">
@@ -43,6 +45,8 @@ export function StartSessionCTA() {
           fade="left"
           className="h-full w-full object-contain object-center"
           style={{ opacity: 0.14 }}
+          width="1024"
+          height="1024"
         />
       </div>
 
@@ -70,6 +74,8 @@ export function StartSessionCTA() {
                   alt="Michael Moontuner"
                   className="w-full h-full object-cover object-top"
                   loading="lazy"
+                  width="683"
+                  height="1024"
                 />
               </div>
               <div className="w-28 h-36 rounded-xl border border-border/40 bg-card/50 flex items-center justify-center p-4">

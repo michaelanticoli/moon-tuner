@@ -1,7 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Share2, X, Copy, Check, Download, Twitter, Facebook, Loader2 } from "lucide-react";
-import html2canvas from "html2canvas";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 
 interface DirectiveShareCardProps {
@@ -181,6 +180,7 @@ function ShareModal({
 
   const renderCardBlob = useCallback(async (): Promise<Blob | null> => {
     if (!cardRef.current) return null;
+    const { default: html2canvas } = await import("html2canvas");
     const canvas = await html2canvas(cardRef.current, {
       backgroundColor: "#140f0c",
       scale: 2,

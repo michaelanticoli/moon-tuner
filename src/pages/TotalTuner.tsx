@@ -3,11 +3,10 @@
 // personalized Cipher overlay) into one document. Users can browse each
 // section in-page or click "Open in dedicated generator" for the full
 // experience. The "Export Total Tuner PDF" button bundles the on-page
-// summary into a single multi-page PDF using html2canvas + jsPDF.
+// summary into a single multi-page PDF using html2canvas + jsPDF (loaded
+// on-demand to keep the initial bundle light).
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
@@ -60,6 +59,10 @@ export default function TotalTuner() {
   const exportPDF = async () => {
     if (!reportRef.current) return;
     setExporting(true);
+    const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+      import("html2canvas"),
+      import("jspdf"),
+    ]);
     try {
       const el = reportRef.current;
       const canvas = await html2canvas(el, { scale: 2, backgroundColor: "#0a0a0a", useCORS: true });

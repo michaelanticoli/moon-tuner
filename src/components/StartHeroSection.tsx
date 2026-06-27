@@ -16,6 +16,9 @@ export function StartHeroSection() {
         alt="Michael Moontuner holding the Moon"
         className="hidden lg:block absolute bottom-0 right-0 z-[5] pointer-events-none select-none h-[78vh] max-h-[820px] w-auto object-contain object-bottom opacity-90 drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
         loading="eager"
+        fetchPriority="high"
+        width="549"
+        height="630"
       />
       <div className="relative z-10 container mx-auto px-6 lg:px-12 max-w-4xl">
         {/* Live phase badge */}

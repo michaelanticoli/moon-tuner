@@ -113,6 +113,8 @@ export default function Sessions() {
                 fade="left"
                 className="h-full w-full object-contain object-right"
                 style={{ opacity: 0.85 }}
+                width="1575"
+                height="1920"
               />
               {/* Second pass: dark vignette at very bottom so text doesn't clash */}
               <div
@@ -158,6 +160,8 @@ export default function Sessions() {
                 fade="right"
                 className="h-full w-full object-cover object-left"
                 style={{ opacity: 0.55 }}
+                width="896"
+                height="1600"
               />
               {/* Extra readability scrim so right-side copy stays legible */}
               <div
@@ -237,6 +241,8 @@ export default function Sessions() {
                 fade="left"
                 className="h-full w-full object-cover object-center"
                 style={{ opacity: 0.5 }}
+                width="2752"
+                height="1536"
               />
               {/* Bottom fade to keep section floor clean */}
               <div
@@ -355,6 +361,8 @@ export default function Sessions() {
               fade="top-bottom"
               className="absolute inset-0 w-full h-full object-cover object-center"
               style={{ opacity: 0.65 }}
+              width="750"
+              height="750"
             />
             {/* Subtle overlay to keep tonal consistency */}
             <div className="absolute inset-0 bg-background/20 mix-blend-multiply" />
@@ -478,6 +486,8 @@ export default function Sessions() {
                 fade="both"
                 className="absolute right-0 top-1/2 -translate-y-1/2 h-full w-[50%] object-cover object-left"
                 style={{ opacity: 0.28 }}
+                width="896"
+                height="1600"
               />
             </div>
 
