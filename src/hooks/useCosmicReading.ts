@@ -124,10 +124,13 @@ export function useCosmicReading() {
         }
       }
       // These fields may be missing from older edge-function responses; derive them
-      // from the planet list rather than defaulting to arbitrary signs.
-      if (!chart.sunSign) chart.sunSign = chart.planets.find(p => p.name === 'Sun')!.sign;
-      if (!chart.moonSign) chart.moonSign = chart.planets.find(p => p.name === 'Moon')!.sign;
-      if (!chart.ascendant) chart.ascendant = chart.planets.find(p => p.name === 'Ascendant')!.sign;
+      // from the planet list. The required-body check above guarantees these are found.
+      const sunPlanet = chart.planets.find(p => p.name === 'Sun')!;
+      const moonPlanet = chart.planets.find(p => p.name === 'Moon')!;
+      const ascPlanet = chart.planets.find(p => p.name === 'Ascendant')!;
+      if (!chart.sunSign) chart.sunSign = sunPlanet.sign;
+      if (!chart.moonSign) chart.moonSign = moonPlanet.sign;
+      if (!chart.ascendant) chart.ascendant = ascPlanet.sign;
 
       setProgress(50);
       setStage('complete');

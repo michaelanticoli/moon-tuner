@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         # --legacy-peer-deps is required because several dependencies in this project
-        # have unresolved peer-dependency conflicts that don't affect runtime behaviour.
+        # have unresolved peer-dependency conflicts that don't affect runtime behavior.
         run: npm ci --legacy-peer-deps
 
       - name: Lint
