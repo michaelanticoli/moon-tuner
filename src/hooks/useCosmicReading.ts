@@ -12,48 +12,6 @@ const signModes: Record<string, string> = {
   Sagittarius: 'E Mixolydian', Capricorn: 'C Dorian', Aquarius: 'F# Lydian', Pisces: 'E Phrygian',
 };
 
-// Fallback chart for when the edge function is unavailable
-function buildFallbackChart(birthData: BirthData): ChartData {
-  // Simple deterministic fallback based on birth date
-  const [year, month, day] = birthData.date.split('-').map(Number);
-  const [hour] = birthData.time.split(':').map(Number);
-
-  const signNames = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
-  const symbols: Record<string, string> = { Sun: '\u2609', Moon: '\u263D', Mercury: '\u263F', Venus: '\u2640', Mars: '\u2642', Jupiter: '\u2643', Saturn: '\u2644', Uranus: '\u2645', Neptune: '\u2646', Pluto: '\u2647', Ascendant: 'Asc' };
-
-  // Rough sun sign from month/day
-  const sunDegree = ((month - 1) * 30 + day) % 360;
-  const moonOffset = ((day * 13 + hour * 0.5 + year % 100) * 12.2) % 360;
-
-  const makePlanet = (name: string, degreeOffset: number) => {
-    const degree = ((sunDegree + degreeOffset) % 360 + 360) % 360;
-    const signNumber = Math.floor(degree / 30) + 1;
-    return { name, symbol: symbols[name] || '?', degree, sign: signNames[signNumber - 1], signNumber, isRetrograde: false };
-  };
-
-  const planets = [
-    makePlanet('Sun', 0),
-    makePlanet('Moon', moonOffset),
-    makePlanet('Mercury', (day * 3.7) % 60 - 30),
-    makePlanet('Venus', (day * 5.1 + month * 12) % 90 - 45),
-    makePlanet('Mars', (year % 100) * 3.6),
-    makePlanet('Jupiter', (year % 12) * 30),
-    makePlanet('Saturn', ((year - 1960) % 29) * 12.4),
-    makePlanet('Uranus', ((year - 1940) % 84) * 4.3),
-    makePlanet('Neptune', ((year - 1940) % 165) * 2.2),
-    makePlanet('Pluto', ((year - 1940) % 248) * 1.45),
-    makePlanet('Ascendant', (hour * 15 + (month * 30)) % 360),
-  ];
-
-  return {
-    planets,
-    sunSign: planets[0].sign,
-    moonSign: planets[1].sign,
-    ascendant: planets[10].sign,
-    source: 'approximate-fallback',
-  };
-}
-
 export function useCosmicReading() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -136,22 +94,40 @@ export function useCosmicReading() {
         chart = await invokeChart();
       } catch (firstErr) {
         console.warn('Chart calc failed, retrying once:', firstErr);
-        try {
-          await new Promise((r) => setTimeout(r, 800));
-          chart = await invokeChart();
-        } catch (secondErr) {
-          console.error('Chart calc failed twice, using approximation:', secondErr);
-          chart = buildFallbackChart(birthData);
-        }
+        await new Promise((r) => setTimeout(r, 800));
+        // Second attempt — let this throw so the error surfaces to the user
+        // rather than silently returning an approximate chart.
+        chart = await invokeChart();
       }
 
-      // Validate chart has required fields
-      if (!chart.planets || chart.planets.length === 0) {
-        chart = buildFallbackChart(birthData);
+      // Validate chart payload integrity: require at least 10 planets, valid
+      // degree values, and the three required placements (Sun, Moon, Ascendant).
+      // A truncated or corrupt response must not be silently used.
+      const MIN_PLANETS = 10;
+      if (!chart.planets || chart.planets.length < MIN_PLANETS) {
+        throw new Error(
+          `Chart service returned incomplete data (${chart.planets?.length ?? 0} planets). Please try again.`
+        );
       }
-      if (!chart.sunSign) chart.sunSign = chart.planets.find(p => p.name === 'Sun')?.sign || 'Leo';
-      if (!chart.moonSign) chart.moonSign = chart.planets.find(p => p.name === 'Moon')?.sign || 'Cancer';
-      if (!chart.ascendant) chart.ascendant = chart.planets.find(p => p.name === 'Ascendant')?.sign || 'Aries';
+      const invalidPlanet = chart.planets.find(
+        (p) => typeof p.degree !== 'number' || p.degree < 0 || p.degree >= 360 || !p.sign
+      );
+      if (invalidPlanet) {
+        throw new Error(
+          `Chart service returned an invalid placement for ${invalidPlanet.name}. Please try again.`
+        );
+      }
+      const REQUIRED_BODIES = ['Sun', 'Moon', 'Ascendant'] as const;
+      for (const name of REQUIRED_BODIES) {
+        if (!chart.planets.find(p => p.name === name)) {
+          throw new Error(`Chart service did not return a ${name} placement. Please try again.`);
+        }
+      }
+      // These fields may be missing from older edge-function responses; derive them
+      // from the planet list rather than defaulting to arbitrary signs.
+      if (!chart.sunSign) chart.sunSign = chart.planets.find(p => p.name === 'Sun')!.sign;
+      if (!chart.moonSign) chart.moonSign = chart.planets.find(p => p.name === 'Moon')!.sign;
+      if (!chart.ascendant) chart.ascendant = chart.planets.find(p => p.name === 'Ascendant')!.sign;
 
       setProgress(50);
       setStage('complete');

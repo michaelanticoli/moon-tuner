@@ -59,10 +59,78 @@ async function geocodeLocation(location: string) {
   );
   if (!response.ok) throw new Error("Unable to process location");
   const results = await response.json();
-  if (results.length === 0) return { latitude: 40.7128, longitude: -74.006, timezone: -5 };
+  if (results.length === 0) throw new Error(`Location not found: "${sanitized}"`);
   const latitude = parseFloat(results[0].lat);
   const longitude = parseFloat(results[0].lon);
-  return { latitude, longitude, timezone: Math.round(longitude / 15) };
+  return { latitude, longitude };
+}
+
+/**
+ * Resolve the UTC offset for a specific local date/time at a given lat/lon.
+ * Uses the free timeapi.io service to obtain the IANA timezone name, then
+ * derives the historical UTC offset via Intl.DateTimeFormat so that DST
+ * and regional exceptions (e.g. India +5:30, China +8) are handled correctly.
+ * Falls back to the approximate longitude-based offset only if the API call fails.
+ *
+ * Note: This approach uses an iterative approximation. At DST transition boundaries
+ * (e.g. 2:30 AM on a spring-forward night where the local time is ambiguous or
+ * non-existent), the computed offset may be off by one hour. A full tzdata library
+ * would be required for exact handling of those edge cases.
+ */
+async function resolveTimezoneOffset(
+  latitude: number,
+  longitude: number,
+  year: number,
+  month: number,
+  day: number,
+  localHour: number,
+  localMinute: number,
+): Promise<number> {
+  try {
+    const res = await fetch(
+      `https://timeapi.io/api/TimeZone/coordinate?latitude=${latitude}&longitude=${longitude}`,
+      { signal: AbortSignal.timeout(2000) },
+    );
+    if (!res.ok) throw new Error(`timeapi.io status ${res.status}`);
+    const json = await res.json();
+    const ianaTimezone: string | undefined = json?.timeZone;
+    if (!ianaTimezone) throw new Error("No timeZone field in response");
+
+    // Strategy: create a UTC reference instant whose clock digits match the local
+    // time we want to convert, format it in the target IANA timezone, and read off
+    // what the local clock shows at that UTC moment. The difference between the
+    // formatted local clock and the UTC digits we seeded gives the UTC offset.
+    //
+    // Example — birth at 12:00 in UTC+5 (India):
+    //   refUtc = Date.UTC(…, 12, 0)     ← 12:00 UTC
+    //   formatted in Asia/Kolkata       → 17:00 local
+    //   offset = 17 - 12 = +5           ← correct UTC offset
+    //   utcHour = localHour - offset = 12 - 5 = 7 ✓
+    const refUtc = new Date(Date.UTC(year, month - 1, day, localHour, localMinute, 0));
+    const fmt = new Intl.DateTimeFormat("en-US", {
+      timeZone: ianaTimezone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    const parts = fmt.formatToParts(refUtc).reduce<Record<string, number>>((acc, p) => {
+      if (p.type !== "literal") acc[p.type] = parseInt(p.value, 10);
+      return acc;
+    }, {});
+    const tzHour = parts.hour ?? localHour;
+    const tzMin = parts.minute ?? localMinute;
+    // offset = (timezone clock shown) - (UTC digits we seeded) = UTC offset in hours
+    let offset = (tzHour - localHour) + (tzMin - localMinute) / 60;
+    if (offset > 12) offset -= 24;
+    if (offset < -12) offset += 24;
+    return offset;
+  } catch (e) {
+    console.warn("Timezone API failed, falling back to longitude approximation:", e);
+    return Math.round(longitude / 15);
+  }
 }
 
 function calculateAscendant(
@@ -107,13 +175,13 @@ serve(async (req) => {
     }
 
     const { date, time } = body;
-    let { latitude, longitude, timezone } = body;
+    let { latitude, longitude } = body;
+    let timezone: number | undefined = body.timezone;
 
     if (body.location && (latitude === undefined || longitude === undefined)) {
       const geo = await geocodeLocation(body.location);
       latitude = geo.latitude;
       longitude = geo.longitude;
-      timezone = geo.timezone;
     }
 
     if (latitude === undefined || longitude === undefined) {
@@ -121,10 +189,15 @@ serve(async (req) => {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    if (timezone === undefined) timezone = Math.round(longitude / 15);
 
     const [year, month, day] = date.split("-").map(Number);
     const [hour, minute] = time.split(":").map(Number);
+
+    // Resolve timezone: use caller-supplied offset, or look it up from coordinates.
+    if (timezone === undefined) {
+      timezone = await resolveTimezoneOffset(latitude, longitude, year, month, day, hour, minute);
+    }
+
     const utcHour = hour - timezone;
     const dateObj = new Date(Date.UTC(year, month - 1, day, utcHour, minute, 0));
 

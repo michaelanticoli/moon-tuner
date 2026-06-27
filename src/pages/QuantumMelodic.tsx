@@ -1058,7 +1058,7 @@ const QuantumMelodic = () => {
                         interpretation.opening,
                         interpretation.closing,
                       ].filter(Boolean).join("\n\n")}
-                      returnPath="/quantum-melodic"
+                      returnPath="/quantumelodic"
                     />
                   )}
 
