@@ -108,11 +108,9 @@ export function DuskLiveStatus() {
               </div>
               <p className="dusk-ivory text-[1rem] flex items-center gap-2 leading-snug">
                 {showGlyph && (
-                  <ZodiacGlyph
-                    sign={meta.signKey as any}
-                    size="md"
-                    style={{ color: tint }}
-                  />
+                  <span style={{ color: tint, display: "inline-flex" }}>
+                    <ZodiacGlyph sign={meta.signKey as any} size="md" />
+                  </span>
                 )}
                 <span>{value}</span>
               </p>
@@ -155,7 +153,9 @@ export function DuskLiveStatus() {
               }}
             >
               <div className="flex items-center gap-3 mb-2">
-                <ZodiacGlyph sign={meta.signKey as any} size="xl" style={{ color: tint }} />
+                <span style={{ color: tint, display: "inline-flex" }}>
+                  <ZodiacGlyph sign={meta.signKey as any} size="xl" />
+                </span>
                 <div>
                   <p className="dusk-ivory font-medium" style={{ color: tint }}>
                     {signName}
