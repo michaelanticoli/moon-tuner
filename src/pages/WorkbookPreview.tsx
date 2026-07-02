@@ -472,7 +472,7 @@ const WorkbookPreview = () => {
                 <p className="text-muted-foreground mb-6">
                   Subscribe to access all 24 archetypal lunar journeys plus 2 eclipse portal specials.
                 </p>
-                <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://moontuner-chaperone.vercel.app/" target="_blank" rel="noopener noreferrer">
                   <Button variant="gold" size="lg">
                     Subscribe for Full Access
                     <ArrowRight className="w-4 h-4 ml-2" />
