@@ -7,7 +7,7 @@ import { LunarCapture } from "@/components/LunarCapture";
 import { SEOHead, websiteSchema } from "@/components/SEOHead";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
-import { LunarLiveStatus } from "@/components/LunarLiveStatus";
+import { DuskLiveStatus } from "@/components/dusk/DuskLiveStatus";
 
 /**
  * Moontuner — "Spiral" landing page.
@@ -294,7 +294,7 @@ const SpiralLanding = () => {
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={0.08}>
-                <LunarLiveStatus />
+                <DuskLiveStatus />
               </ScrollReveal>
             </div>
           </section>
