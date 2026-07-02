@@ -128,7 +128,7 @@ const LunarChaperone = () => {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
+                  <a href="https://moontuner-chaperone.vercel.app/" target="_blank" rel="noopener noreferrer">
                     <Button variant="gold" size="lg">
                       Enter the Chaperone Program
                       <ArrowRight className="ml-2 w-4 h-4" />
@@ -332,7 +332,7 @@ const LunarChaperone = () => {
               </div>
               
               <div className="text-center">
-                <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://moontuner-chaperone.vercel.app/" target="_blank" rel="noopener noreferrer">
                   <Button variant="gold" size="lg">
                     Get the Full Program on Lunar Chaperone
                     <ArrowRight className="ml-2 w-4 h-4" />
@@ -390,7 +390,7 @@ const LunarChaperone = () => {
                   Join the path walkers who transform cosmic entertainment into life transformation.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
+                  <a href="https://moontuner-chaperone.vercel.app/" target="_blank" rel="noopener noreferrer">
                     <Button variant="gold" size="lg">
                       Begin with the Chaperone
                       <ArrowRight className="ml-2 w-4 h-4" />
