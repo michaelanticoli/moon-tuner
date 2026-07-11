@@ -1,36 +1,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { SMUDGING_PATTERN_BY_ID } from "./content";
 
 interface CordCuttingProps {
   items: string[];
   onComplete: () => void;
 }
-
-const LABEL_MAP: Record<string, string> = {
-  notifications: "Notification overflow",
-  feeds: "Mindless scrolling",
-  subscriptions: "Forgotten subscriptions",
-  inbox: "Inbox weight",
-  tabs: "Phantom tabs",
-  apps: "Dormant apps",
-  comparison: "Comparison traps",
-  reactivity: "Habitual checking",
-  news: "Passive news loops",
-  drafts: "Unfinished drafts",
-};
-
-const RELEASE_PHRASES: Record<string, string> = {
-  notifications: "I release the obligation to respond immediately.",
-  feeds: "I release the habit of filling silence with scrolling.",
-  subscriptions: "I release what no longer earns a place in my life.",
-  inbox: "I release the anxiety of unread counts.",
-  tabs: "I release the illusion that keeping it open means acting on it.",
-  apps: "I release what has gathered dust quietly.",
-  comparison: "I release the spaces that make me feel less than.",
-  reactivity: "I release the reflex to reach without reason.",
-  news: "I release the loop that creates urgency without clarity.",
-  drafts: "I release what has lingered unfinished for too long.",
-};
 
 export function CordCutting({ items, onComplete }: CordCuttingProps) {
   const [released, setReleased] = useState<Set<string>>(new Set());
@@ -72,7 +47,7 @@ export function CordCutting({ items, onComplete }: CordCuttingProps) {
           className="text-xs uppercase tracking-eyebrow mb-5"
           style={{ color: "hsl(25 65% 55%)", letterSpacing: "0.32em" }}
         >
-          Chamber II — Cord Cutting
+          Chamber III — Cord Cutting
         </p>
         <h2
           className="text-4xl md:text-5xl font-light mb-5 leading-tighter"
@@ -96,8 +71,9 @@ export function CordCutting({ items, onComplete }: CordCuttingProps) {
           {items.map((id, index) => {
             const isReleased = released.has(id);
             const isCutting = cutting === id;
-            const label = LABEL_MAP[id] ?? id;
-            const phrase = RELEASE_PHRASES[id] ?? "I release this with intention.";
+            const pattern = SMUDGING_PATTERN_BY_ID[id];
+            const label = pattern?.label ?? id;
+            const phrase = pattern?.releasePhrase ?? "I release this with intention.";
 
             return (
               <motion.div

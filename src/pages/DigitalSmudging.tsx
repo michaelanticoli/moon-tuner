@@ -5,6 +5,7 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { SmudgingHero } from "@/components/smudging/SmudgingHero";
 import { SageScan } from "@/components/smudging/SageScan";
+import { LifeGyreChamber } from "@/components/smudging/LifeGyreChamber";
 import { CordCutting } from "@/components/smudging/CordCutting";
 import { TheVoid } from "@/components/smudging/TheVoid";
 import { Wards } from "@/components/smudging/Wards";
@@ -20,16 +21,23 @@ function ProgressDots({ step, total }: { step: number; total: number }) {
       animate={{ opacity: 1 }}
       transition={{ duration: 1.5 }}
       className="fixed top-24 left-0 right-0 z-20 flex justify-center gap-2.5 pointer-events-none"
+      role="progressbar"
+      aria-label="Digital Smudging progress"
+      aria-valuemin={1}
+      aria-valuemax={total}
+      aria-valuenow={step}
+      aria-valuetext={`Chamber ${step} of ${total}`}
     >
       {Array.from({ length: total }).map((_, i) => (
         <div
           key={i}
           className="rounded-full transition-all duration-700"
+          aria-hidden="true"
           style={{
-            width: i < step ? 16 : 6,
+            width: i === step - 1 ? 18 : i < step - 1 ? 10 : 6,
             height: 3,
             background:
-              i < step
+              i < step - 1
                 ? "hsl(25 65% 55% / 0.7)"
                 : i === step - 1
                 ? "hsl(25 65% 55% / 0.9)"
@@ -47,12 +55,13 @@ const DigitalSmudging = () => {
   const [wards, setWards] = useState<string[]>([]);
 
   const advance = useCallback((nextStep: number) => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
     setStep(nextStep);
   }, []);
 
-  // 5 active chambers (steps 1–5), step 0 is the hero
-  const TOTAL_CHAMBERS = 5;
+  // Six active chambers; step 0 is the threshold/hero.
+  const TOTAL_CHAMBERS = 6;
 
   const renderChamber = () => {
     switch (step) {
@@ -69,20 +78,22 @@ const DigitalSmudging = () => {
           />
         );
       case 2:
-        return <CordCutting key="cords" items={items} onComplete={() => advance(3)} />;
+        return <LifeGyreChamber key="gyre" items={items} onComplete={() => advance(3)} />;
       case 3:
-        return <TheVoid key="void" onComplete={() => advance(4)} />;
+        return <CordCutting key="cords" items={items} onComplete={() => advance(4)} />;
       case 4:
+        return <TheVoid key="void" onComplete={() => advance(5)} />;
+      case 5:
         return (
           <Wards
             key="wards"
             onComplete={(w) => {
               setWards(w);
-              advance(5);
+              advance(6);
             }}
           />
         );
-      case 5:
+      case 6:
         return (
           <LunarSync
             key="sync"
@@ -104,10 +115,11 @@ const DigitalSmudging = () => {
     <PageTransition>
       <SEOHead
         title="Digital Smudging — Clear Digital Overwhelm & Reclaim Your Attention | Moontuner"
-        description="Digital Smudging is a structured clearing ritual for digital overwhelm. Scan, release, and reset your digital environment — then set intentional boundaries for what follows."
+        description="Digital Smudging is a six-chamber attention ritual. Name the noise, move through the Life Gyre, release its cords, rest in the void, and establish intentional boundaries."
         canonical="/digital-smudging"
         keywords={[
           "digital smudging",
+          "life gyre",
           "digital overwhelm",
           "screen time anxiety",
           "digital detox alternative",

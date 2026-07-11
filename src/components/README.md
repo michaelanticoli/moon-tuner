@@ -1,6 +1,6 @@
 # Digital Smudging × Life Gyre integration
 
-This package inserts the interactive Life Gyre into the existing Moontuner Digital Smudging ritual.
+The interactive Life Gyre is integrated into the Moontuner Digital Smudging ritual at `src/pages/DigitalSmudging.tsx`.
 
 ## Revised ritual architecture
 
@@ -16,20 +16,13 @@ The key change is conceptual as much as technical: the user-selected items from 
 
 ## Files
 
-- `DigitalSmudging.tsx` — revised page orchestration with six active chambers.
+- `../pages/DigitalSmudging.tsx` — page orchestration with six active chambers.
 - `components/smudging/LifeGyre.tsx` — Three.js particle engine with a clarity callback.
 - `components/smudging/LifeGyreChamber.tsx` — ritual wrapper, threshold logic, copy, and completion state.
 - `components/smudging/life-gyre.css` — particle-field styling.
 - `components/smudging/life-gyre-chamber.css` — chamber layout and transition styling.
 
-## Install
-
-```bash
-npm install three framer-motion
-npm install -D @types/three
-```
-
-Copy the files into the matching paths in your project. The supplied imports assume the same `@/components/...` alias already used in the original page.
+Three.js and its TypeScript definitions are declared in the root package manifest.
 
 ## Completion rule
 
@@ -44,6 +37,9 @@ Change `CLEAR_THRESHOLD` and `HOLD_DURATION_MS` in `LifeGyreChamber.tsx` to tune
 
 The Life Gyre does not permanently delete the selected burdens. Cleared space gradually closes again. This preserves the framework's central truth: the practice is not erasure, but changing the conditions under which attention meets obligation.
 
-## Recommended next build
+## Accessibility and resilience
 
-Add a lightweight Web Audio bowl layer whose tone responds to press duration and cursor velocity. Keep it opt-in and initialize audio only after a direct user gesture.
+- Pointer, touch, Enter, and Space input are supported.
+- Reduced-motion devices render a smaller field.
+- Low-power and coarse-pointer devices use fewer particles.
+- If WebGL is unavailable, the chamber presents an explicit continuation path.

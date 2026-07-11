@@ -13,6 +13,20 @@
   touch-action: none;
 }
 
+.life-gyre:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--gyre-accent) 80%, white 20%);
+  outline-offset: -5px;
+}
+
+.life-gyre--unavailable {
+  cursor: default;
+}
+
+.life-gyre--unavailable .life-gyre__cursor,
+.life-gyre--unavailable .life-gyre__pulse {
+  display: none;
+}
+
 .life-gyre canvas {
   position: absolute;
   inset: 0;

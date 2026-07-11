@@ -305,7 +305,7 @@ export function TheVoid({ onComplete }: TheVoidProps) {
                 className="text-xs uppercase tracking-eyebrow"
                 style={{ color: "hsl(25 65% 55%)", letterSpacing: "0.32em" }}
               >
-                Chamber III — The Void
+                Chamber IV — The Void
               </p>
               <h2
                 className="text-4xl md:text-5xl font-light leading-tighter"

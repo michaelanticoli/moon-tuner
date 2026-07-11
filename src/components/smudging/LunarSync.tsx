@@ -1,25 +1,13 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useMoonPhase } from "@/hooks/useMoonPhase";
+import { getSmudgingPatternLabel } from "./content";
 
 interface LunarSyncProps {
   items: string[];
   wards: string[];
   onRestart: () => void;
 }
-
-const LABEL_MAP: Record<string, string> = {
-  notifications: "Notification overflow",
-  feeds: "Mindless scrolling",
-  subscriptions: "Forgotten subscriptions",
-  inbox: "Inbox weight",
-  tabs: "Phantom tabs",
-  apps: "Dormant apps",
-  comparison: "Comparison traps",
-  reactivity: "Habitual checking",
-  news: "Passive news loops",
-  drafts: "Unfinished drafts",
-};
 
 const PHASE_RETURN_GUIDANCE: Record<string, string> = {
   "New Moon": "Return at the Full Moon — when the light is highest and patterns surface clearly.",
@@ -143,7 +131,7 @@ export function LunarSync({ items, wards, onRestart }: LunarSyncProps) {
             className="text-xs uppercase tracking-eyebrow mb-5"
             style={{ color: "hsl(140 20% 55%)", letterSpacing: "0.32em" }}
           >
-            Chamber V — Lunar Sync
+            Chamber VI — Lunar Sync
           </p>
           <h2
             className="text-4xl md:text-5xl font-light mb-4 leading-tighter"
@@ -225,7 +213,7 @@ export function LunarSync({ items, wards, onRestart }: LunarSyncProps) {
                     textDecoration: "line-through",
                   }}
                 >
-                  {LABEL_MAP[id] ?? id}
+                  {getSmudgingPatternLabel(id)}
                 </span>
               ))}
             </div>
