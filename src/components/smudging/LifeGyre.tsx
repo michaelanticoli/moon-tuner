@@ -15,6 +15,7 @@ export type LifeGyreProps = {
   showInterface?: boolean;
   thoughts?: string[];
   onClarityChange?: (clarity: number) => void;
+  onUnavailable?: () => void;
   interactive?: boolean;
 };
 
@@ -64,6 +65,7 @@ export function LifeGyre({
   showInterface = true,
   thoughts = DEFAULT_THOUGHTS,
   onClarityChange,
+  onUnavailable,
   interactive = true,
 }: LifeGyreProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
@@ -74,29 +76,39 @@ export function LifeGyre({
     const host = hostRef.current;
     if (!host) return;
 
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const effectiveParticleCount = reducedMotion ? Math.min(particleCount, 900) : particleCount;
+
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(background);
 
     const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 100);
     camera.position.set(0, 0, 7.6);
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: false,
-      alpha: false,
-      powerPreference: "high-performance",
-    });
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: false,
+        alpha: false,
+        powerPreference: "high-performance",
+      });
+    } catch {
+      host.classList.add("life-gyre--unavailable");
+      onUnavailable?.();
+      return;
+    }
     const pixelRatio = Math.min(window.devicePixelRatio, 1.75);
     renderer.setPixelRatio(pixelRatio);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     host.prepend(renderer.domElement);
 
-    const positions = new Float32Array(particleCount * 3);
-    const base = new Float32Array(particleCount * 3);
-    const velocity = new Float32Array(particleCount * 3);
-    const phases = new Float32Array(particleCount);
-    const weights = new Float32Array(particleCount);
+    const positions = new Float32Array(effectiveParticleCount * 3);
+    const base = new Float32Array(effectiveParticleCount * 3);
+    const velocity = new Float32Array(effectiveParticleCount * 3);
+    const phases = new Float32Array(effectiveParticleCount);
+    const weights = new Float32Array(effectiveParticleCount);
 
-    for (let i = 0; i < particleCount; i++) {
+    for (let i = 0; i < effectiveParticleCount; i++) {
       const i3 = i * 3;
       const radius = Math.pow(Math.random(), 0.6) * 5.2 + 0.12;
       const angle = Math.random() * Math.PI * 2;
@@ -223,11 +235,43 @@ export function LifeGyre({
       pointerDown = false;
       setIsSmudging(false);
     };
+    const onFocus = () => {
+      pointerWorld.set(0, 0, 0);
+      pointerInside = true;
+    };
+    const onBlur = () => {
+      pointerInside = false;
+      pointerDown = false;
+      setIsSmudging(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!interactive || (event.key !== " " && event.key !== "Enter")) return;
+      event.preventDefault();
+      if (event.repeat) return;
+      pointerWorld.set(0, 0, 0);
+      pointerInside = true;
+      pointerDown = true;
+      setIsSmudging(true);
+      addSmudgePoint(3.5);
+      host.classList.remove("life-gyre--pulse");
+      void host.offsetWidth;
+      host.classList.add("life-gyre--pulse");
+    };
+    const onKeyUp = (event: KeyboardEvent) => {
+      if (event.key !== " " && event.key !== "Enter") return;
+      event.preventDefault();
+      pointerDown = false;
+      setIsSmudging(false);
+    };
 
     host.addEventListener("pointermove", onPointerMove);
     host.addEventListener("pointerenter", onPointerEnter);
     host.addEventListener("pointerleave", onPointerLeave);
     host.addEventListener("pointerdown", onPointerDown);
+    host.addEventListener("focus", onFocus);
+    host.addEventListener("blur", onBlur);
+    host.addEventListener("keydown", onKeyDown);
+    host.addEventListener("keyup", onKeyUp);
     window.addEventListener("pointerup", onPointerUp);
 
     const resize = () => {
@@ -242,7 +286,6 @@ export function LifeGyre({
     observer.observe(host);
     resize();
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const clock = new THREE.Clock();
     let frame = 0;
 
@@ -253,13 +296,15 @@ export function LifeGyre({
       const attr = geometry.getAttribute("position") as THREE.BufferAttribute;
       const array = attr.array as Float32Array;
 
+      if (pointerDown) addSmudgePoint(1.8);
+
       for (let s = smudgeTrail.length - 1; s >= 0; s--) {
         if (now - smudgeTrail[s].born > clarityDuration) smudgeTrail.splice(s, 1);
       }
 
       let displaced = 0;
 
-      for (let i = 0; i < particleCount; i++) {
+      for (let i = 0; i < effectiveParticleCount; i++) {
         const i3 = i * 3;
         const bx = base[i3];
         const by = base[i3 + 1];
@@ -271,9 +316,9 @@ export function LifeGyre({
         const breathing = 1 + Math.sin(t * 0.72 + phase + radius) * 0.05;
         const turbulence = Math.sin(t * 1.9 + phase + radius * 2.25) * 0.18;
 
-        let tx = Math.cos(angle) * radius * breathing;
-        let ty = by + turbulence + Math.sin(angle * 2 + phase) * 0.1;
-        let tz = Math.sin(angle) * radius * 0.7 * breathing;
+        const tx = Math.cos(angle) * radius * breathing;
+        const ty = by + turbulence + Math.sin(angle * 2 + phase) * 0.1;
+        const tz = Math.sin(angle) * radius * 0.7 * breathing;
 
         let forceX = 0;
         let forceY = 0;
@@ -324,7 +369,7 @@ export function LifeGyre({
 
       if (now - lastUiUpdate > 0.18) {
         const trailScore = Math.min(1, smudgeTrail.length / 90);
-        const displacementScore = Math.min(1, displaced / (particleCount * 0.24));
+        const displacementScore = Math.min(1, displaced / (effectiveParticleCount * 0.24));
         const nextClarity = Math.round((trailScore * 0.62 + displacementScore * 0.38) * 100);
         setClarity(nextClarity);
         onClarityChange?.(nextClarity);
@@ -345,6 +390,10 @@ export function LifeGyre({
       host.removeEventListener("pointerenter", onPointerEnter);
       host.removeEventListener("pointerleave", onPointerLeave);
       host.removeEventListener("pointerdown", onPointerDown);
+      host.removeEventListener("focus", onFocus);
+      host.removeEventListener("blur", onBlur);
+      host.removeEventListener("keydown", onKeyDown);
+      host.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("pointerup", onPointerUp);
       geometry.dispose();
       material.dispose();
@@ -361,6 +410,7 @@ export function LifeGyre({
     speed,
     interactive,
     onClarityChange,
+    onUnavailable,
   ]);
 
   return (
@@ -368,8 +418,8 @@ export function LifeGyre({
       ref={hostRef}
       className={`life-gyre ${isSmudging ? "is-smudging" : ""} ${!interactive ? "life-gyre--passive" : ""} ${className}`.trim()}
       style={{ "--gyre-accent": accentColor } as React.CSSProperties}
-      aria-label="Life Gyre: an interactive visualization of modern cognitive overload"
-      aria-disabled={!interactive}
+      aria-label="Life Gyre interactive field. Move the pointer to clear space. Press and hold, or hold Space, to create a stronger resonance."
+      tabIndex={interactive ? 0 : -1}
     >
       <div className="life-gyre__landscape" aria-hidden="true" />
       <div className="life-gyre__vignette" aria-hidden="true" />

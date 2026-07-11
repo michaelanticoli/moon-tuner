@@ -75,7 +75,7 @@ export function Wards({ onComplete }: WardsProps) {
           className="text-xs uppercase tracking-eyebrow mb-5"
           style={{ color: "hsl(140 20% 55%)", letterSpacing: "0.32em" }}
         >
-          Chamber IV — Wards
+          Chamber V — Wards
         </p>
         <h2
           className="text-4xl md:text-5xl font-light mb-5 leading-tighter"
