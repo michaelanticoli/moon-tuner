@@ -86,7 +86,7 @@ const Auth = () => {
           navigate(redirectPath);
         } else if (requiresEmailVerification) {
           setMessage(
-            "Account created. Check your inbox for the verification link, then you'll land inside your MOONtuner record."
+            "Account created. If you see a verification email, open it once; otherwise you can sign in now with this email and password."
           );
         } else {
           console.warn("Signup completed without session and without explicit verification requirement.", {
@@ -136,9 +136,7 @@ const Auth = () => {
       if (error) {
         setError(error.message);
       } else {
-        setMessage(
-          "Verification email resend requested. If Supabase Auth email settings are configured correctly, it should arrive shortly."
-        );
+          setMessage("Verification email resend requested. Check your inbox and spam folder.");
       }
     } catch {
       setError("Something shifted unexpectedly. Please try again.");
