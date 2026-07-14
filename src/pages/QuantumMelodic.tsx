@@ -174,6 +174,10 @@ const QuantumMelodic = () => {
   }, [persistPaidAccess, returnedFromCheckout]);
 
   useEffect(() => {
+    if (creatorAccess) setHasPaidAccess(true);
+  }, [creatorAccess]);
+
+  useEffect(() => {
     try {
       const raw = sessionStorage.getItem(QM_BIRTH_DATA_KEY);
       if (raw) setFormData((prev) => ({ ...prev, ...JSON.parse(raw) }));
