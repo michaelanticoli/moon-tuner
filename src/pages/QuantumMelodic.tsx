@@ -37,6 +37,7 @@ import { QuantumSignaturePanel } from "@/components/harmonic/QuantumSignaturePan
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { isCreator } from "@/lib/creatorAccess";
+import { useAdminAccess } from "@/hooks/useAdminAccess";
 
 const QM_STORAGE_KEY = "qm_paid";
 const QM_BIRTH_DATA_KEY = "qm_birth_data";
@@ -61,7 +62,8 @@ const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const creatorAccess = isCreator(user?.email);
+  const { isAdmin } = useAdminAccess();
+  const creatorAccess = isAdmin || isCreator(user?.email);
   const returnedFromCheckout = searchParams.get("paid") === "true" || !!searchParams.get("session_id");
   // Dev/admin bypass: ?dev=true persists a localStorage flag that unlocks the report
   // for testing without paying. Remove the flag by visiting ?dev=false.
