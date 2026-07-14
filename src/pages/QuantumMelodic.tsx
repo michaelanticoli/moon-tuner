@@ -60,6 +60,8 @@ function sendToCheckout(url: string) {
 const QuantumMelodic = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const creatorAccess = isCreator(user?.email);
   const returnedFromCheckout = searchParams.get("paid") === "true" || !!searchParams.get("session_id");
   // Dev/admin bypass: ?dev=true persists a localStorage flag that unlocks the report
   // for testing without paying. Remove the flag by visiting ?dev=false.
@@ -78,7 +80,7 @@ const QuantumMelodic = () => {
   })();
   const [hasPaidAccess, setHasPaidAccess] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
-    return devBypass || sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
+    return creatorAccess || devBypass || sessionStorage.getItem("qm_paid") === "true" || returnedFromCheckout;
   });
   const [checkoutLoading, setCheckoutLoading] = useState(false);
 
