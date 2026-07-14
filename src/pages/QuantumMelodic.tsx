@@ -35,6 +35,8 @@ import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 import { NarrationUpsell } from "@/components/report/NarrationUpsell";
 import { QuantumSignaturePanel } from "@/components/harmonic/QuantumSignaturePanel";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
+import { isCreator } from "@/lib/creatorAccess";
 
 const QM_STORAGE_KEY = "qm_paid";
 const QM_BIRTH_DATA_KEY = "qm_birth_data";
