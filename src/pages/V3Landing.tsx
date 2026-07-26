@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { DuskNav } from "@/components/dusk/DuskNav";
 import { SEOHead, websiteSchema } from "@/components/SEOHead";
 import { Play, Pause, ArrowRight } from "lucide-react";
+import sampleTrack from "@/assets/sample-chart.mp3.asset.json";
 
 /**
  * V3 Landing — "Hear your chart. Know yourself."
@@ -24,8 +25,8 @@ const INSTRUMENT_GLOSSARY: Array<{ body: string; instrument: string; note: strin
 const V3Landing = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
-  // Placeholder — replace src with a Lovable asset URL once the sample track is uploaded.
-  const SAMPLE_SRC: string | null = null;
+  // Sample track hosted on Lovable CDN.
+  const SAMPLE_SRC: string | null = sampleTrack.url;
 
   const togglePlay = () => {
     if (!SAMPLE_SRC) return;
