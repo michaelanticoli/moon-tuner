@@ -46,6 +46,8 @@ const CazimiPunchcard = lazy(() => import("./pages/CazimiPunchcard"));
 const SpacetimePrinter = lazy(() => import("./pages/SpacetimePrinter"));
 const HarmonicProfile = lazy(() => import("./pages/HarmonicProfile"));
 const AuthCallback = lazy(() => import("./pages/AuthCallback"));
+const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
+
 const DigitalSmudging = lazy(() => import("./pages/DigitalSmudging"));
 const Offerings = lazy(() => import("./pages/Offerings"));
 const Journal = lazy(() => import("./pages/Journal"));
@@ -116,6 +118,8 @@ function AnimatedRoutes() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/auth/reset-password" element={<AuthResetPassword />} />
+          <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+
           <Route
             path="/dashboard"
             element={
