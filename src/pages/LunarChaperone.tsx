@@ -1,412 +1,352 @@
+import { useMemo, useState, useEffect, useCallback } from "react";
+import { useSearchParams, Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { SEOHead } from "@/components/SEOHead";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { JourneyPreview } from "@/components/JourneyPreview";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check, X, Moon, Zap, Heart, Shield, Clock, Users } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowRight, ArrowLeft, Lock } from "lucide-react";
+import { useMembership } from "@/contexts/MembershipContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import {
+  WORKBOOKS, SIGNS, ELEMENT_HEX, getWorkbook,
+  resolveWorkbook, resolveEclipseWorkbook, type Workbook,
+} from "@/data/chaperoneCanon";
 
-const campaignProblems = [
-  {
-    title: "The 3-Day Drop-Off",
-    description: "Why most people lose motivation 3 days after setting new moon intentions. Peak inspiration fades into silence.",
-    icon: Clock
-  },
-  {
-    title: "Screenshot Syndrome",
-    description: "Saving astrology content but never knowing how to apply it. Consumption without integration.",
-    icon: X
-  },
-  {
-    title: "When Big Astrology Goes Silent",
-    description: "Popular accounts disappear between moon phases. You're left alone in the in-between days.",
-    icon: Users
-  }
-];
+const gradFor = (w: Workbook) =>
+  `linear-gradient(90deg, ${ELEMENT_HEX[SIGNS[w.start].element]}, ${ELEMENT_HEX[SIGNS[w.end].element]})`;
+const isFreeToView = (w: Workbook, currentN: string) => w.n === currentN;
 
-const chaperonePromises = [
-  {
-    title: "Never Walk Alone Again",
-    description: "Continuous companionship through the entire lunar journey. Every day, every phase, every challenge.",
-    icon: Heart
-  },
-  {
-    title: "Integration Over Inspiration",
-    description: "We don't just inspire—we guide you through practical application. Theory becomes lived experience.",
-    icon: Zap
-  },
-  {
-    title: "The In-Between Days",
-    description: "The days between new and full moons are where real transformation happens. We're there for all of them.",
-    icon: Moon
-  }
-];
-
-const workbookSeries = [
-  {
-    number: 1,
-    title: "Grounded Ambition to Illuminated Depth",
-    journey: "Capricorn NM → Cancer FM",
-    body: "Knees/Bones → Stomach/Womb",
-    essence: "Structure seeds intentions that bloom into emotional fullness"
-  },
-  {
-    number: 2,
-    title: "Emotional Fullness to Innovative Spark",
-    journey: "Cancer FM → Aquarius NM",
-    body: "Stomach/Womb → Ankles/Nervous System",
-    essence: "Nurturing release opens space for revolutionary vision"
-  },
-  {
-    number: 3,
-    title: "Innovative Spark to Courageous Heart",
-    journey: "Aquarius NM → Leo FM",
-    body: "Ankles/Nervous System → Heart/Spine",
-    essence: "Collective ideas seed intentions that bloom into radiant expression"
-  },
-  {
-    number: 4,
-    title: "Courageous Heart to Sacred Service",
-    journey: "Leo FM → Pisces NM",
-    body: "Heart/Spine → Feet/Etheric Body",
-    essence: "Creative release opens space for spiritual surrender"
-  },
-  {
-    number: 5,
-    title: "Sacred Service to Precise Harvest",
-    journey: "Pisces NM → Virgo FM",
-    body: "Feet/Etheric Body → Digestive System",
-    essence: "Mystical seeds bloom into discerning integration"
-  },
-  {
-    number: 6,
-    title: "Precise Harvest to Bold Beginning",
-    journey: "Virgo FM → Aries NM",
-    body: "Digestive System → Head/Face",
-    essence: "Analytical release ignites courageous new initiation"
-  }
-];
+// ── Per-workbook 6-section content, all derived from the two signs ──────────
+function buildSections(w: Workbook) {
+  const S = SIGNS[w.start], E = SIGNS[w.end];
+  const lc = (s: string) => s.toLowerCase();
+  return {
+    context: [
+      { label: "Lunar mechanics", value: `${w.startPhase === "New" ? "New Moon" : "Full Moon"} → ${w.endPhase === "New" ? "New Moon" : "Full Moon"}`, sub: "Cycle threshold" },
+      { label: "Somatic axis", value: `${S.body} → ${E.body}`, sub: "Body translation" },
+      { label: "Elemental shift", value: `${S.element} → ${E.element}`, sub: "Energetic movement" },
+      { label: "Modality", value: `${S.modality} → ${E.modality}`, sub: "Mode of motion" },
+    ],
+    mapping: [
+      { q: `Where is your ${S.name} ${lc(S.drive)} — “${S.self}” — running the show right now?`, key: "map_over" },
+      { q: `Where is ${E.name} ${lc(E.drive)} trying to emerge, and what blocks it?`, key: "map_under" },
+      { q: `“${S.self}” is becoming “${E.self}.” Name one place that turn is already underway.`, key: "map_turn" },
+    ],
+    tracks: [
+      { l: S.drive, r: E.drive, note: `${lc(S.element)} wants; ${lc(E.element)} weighs the cost.` },
+      { l: S.self, r: E.self, note: `“${S.self},” becoming “${E.self}.”` },
+    ],
+    protocols: [
+      { num: "01", title: `Meeting ${S.name} in the ${lc(S.body)}`, sub: `${S.element} · witness`,
+        body: `Find the ${S.name} pattern where it lives — ${lc(S.body)}. Make accurate contact before amplifying anything.` },
+      { num: "02", title: `The passage — ${S.element} to ${E.element}`, sub: `${lc(S.body)} → ${lc(E.body)}`,
+        body: `Sound the charge as it travels from the ${lc(S.body)} toward the ${lc(E.body)}. Move from feeling into statement.` },
+      { num: "03", title: `Embodying ${E.name} through the ${lc(E.body)}`, sub: `${E.element} · ${w.waxing ? "illuminate" : "compost"}`,
+        body: `Bring it down into ${lc(E.body)}. ${w.waxing ? "Let it reach full, visible expression." : "Let it settle and compost toward the dark."}` },
+    ],
+    logs: [
+      { label: "Breath rate", key: "log_breath", ph: "— bpm" },
+      { label: "Primary state", key: "log_state", ph: "dormant / clear" },
+      { label: `${S.name} charge`, key: "log_source", ph: `in the ${lc(S.body)}` },
+      { label: `${E.name} access`, key: "log_dest", ph: `in the ${lc(E.body)}` },
+    ],
+    integ: [
+      { q: w.waxing ? `You built from ${S.name} toward ${E.name}. What reached the light this cycle?` : `You released from ${S.name} toward ${E.name}. What are you ready to let go into the dark?`, key: "integ_change" },
+    ],
+  };
+}
 
 const LunarChaperone = () => {
+  const [params, setParams] = useSearchParams();
+  const { tier } = useMembership();
+  const isMember = tier !== "free";
+  const { user } = useAuth();                  // for cross-device journaling
+
+  const sky = useMemo(() => resolveWorkbook(new Date()), []);
+  const currentN = sky.workbook.n;
+  const eclipse = useMemo(() => resolveEclipseWorkbook(new Date().getFullYear()), []);
+
+  const selected = params.get("wb");
+  const active = selected ? getWorkbook(selected) : undefined;
+  const open = (n: string) => setParams({ wb: n });
+  const backToLibrary = () => setParams({});
+  useEffect(() => { if (active) window.scrollTo({ top: 0 }); }, [active]);
+
+  const canView = active ? isMember || isFreeToView(active, currentN) : true;
+
+  // ── Journaling: Supabase when signed in, localStorage fallback ────────────
+  const [entries, setEntries] = useState<Record<string, string>>({});
+  useEffect(() => {
+    if (!active || !canView) return;
+    let cancelled = false;
+    (async () => {
+      if (user) {
+        const { data } = await supabase
+          .from("chaperone_entries")
+          .select("field,value")
+          .eq("user_id", user.id)
+          .eq("workbook", active.n);
+        if (!cancelled && data) {
+          const m: Record<string, string> = {};
+          data.forEach((r: any) => { m[r.field] = r.value; });
+          setEntries(m);
+        }
+      } else {
+        try {
+          const raw = localStorage.getItem(`chaperone_${active.n}`);
+          if (!cancelled) setEntries(raw ? JSON.parse(raw) : {});
+        } catch { /* ignore */ }
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [active, user, canView]);
+
+  const saveField = useCallback((field: string, value: string) => {
+    if (!active) return;
+    setEntries((prev) => {
+      const next = { ...prev, [field]: value };
+      if (user) {
+        supabase.from("chaperone_entries").upsert(
+          { user_id: user.id, workbook: active.n, field, value },
+          { onConflict: "user_id,workbook,field" }
+        ).then(() => {});
+      } else {
+        try { localStorage.setItem(`chaperone_${active.n}`, JSON.stringify(next)); } catch { /* ignore */ }
+      }
+      return next;
+    });
+  }, [active, user]);
+
+  const sections = active ? buildSections(active) : null;
+
   return (
     <PageTransition>
       <SEOHead
-        title="Lunar Chaperone — Monthly Moon Guidance & Workbooks | Moontuner"
-        description="Continuous lunar companionship through every phase. Monthly guidance, workbooks, and timing intelligence — never walk the moon cycle alone again."
-        canonical="/lunar-chaperone"
-        keywords={[
-          "lunar chaperone",
-          "moon guidance",
-          "monthly moon cycle",
-          "lunar workbook subscription",
-          "moon phase companion",
-          "lunar timing guide",
-        ]}
+        title="The Lunar Chaperone — 24 Half-Moon Workbooks | Moontuner"
+        description="A companion for the whole lunar year. Twenty-four half-moon workbooks in one continuous loop — the tool knows today's sky and opens you to the cycle you're living now."
+        canonical="/chaperone"
+        keywords={["lunar chaperone","moon workbook","lunar cycle practice","half moon workbook","moon phase companion"]}
       />
       <div className="min-h-screen bg-background relative grain-overlay">
         <Navigation />
-        
         <main className="pt-24 lg:pt-32">
-          {/* Hero Section */}
-          <section className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
-            <ScrollReveal>
-              <div className="max-w-4xl mx-auto text-center">
-                <div className="flex items-center justify-center gap-3 mb-8">
-                  <div className="status-dot" />
-                  <span className="system-label">Continuous Lunar Guidance</span>
-                </div>
-                
-                <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl text-foreground mb-8 leading-[1.05]">
-                  Your Trusted <br />
-                  <span className="italic text-accent">Lunar Chaperone</span>
-                </h1>
-                
-                <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-12">
-                  Stop chasing peaks. Start walking the path. 26 workbooks for every archetypal lunar journey—with you every single day.
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
-                    <Button variant="gold" size="lg">
-                      Enter the Chaperone Program
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </Button>
-                  </a>
-                  <Link to="/workbooks">
-                    <Button variant="outline" size="lg">
-                      Preview the 26 Workbooks
-                    </Button>
-                  </Link>
-                </div>
-                <p className="text-xs text-muted-foreground/60 mt-4">
-                  The full Chaperone program lives on its dedicated platform · opens in a new tab
-                </p>
-              </div>
-            </ScrollReveal>
-          </section>
 
-          {/* Peak Chasers vs Path Walkers */}
-          <section className="border-y border-border/30 bg-card/20">
-            <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
-              <div className="max-w-5xl mx-auto">
+          {!active && (
+            <>
+              <section className="container mx-auto px-6 lg:px-12 py-12 lg:py-20">
                 <ScrollReveal>
-                  <div className="text-center mb-16">
-                    <span className="system-label block mb-6">The Distinction</span>
-                    <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-foreground mb-6">
-                      Peak Chasers vs <span className="italic">Path Walkers</span>
-                    </h2>
+                  <div className="max-w-4xl mx-auto text-center">
+                    <div className="flex items-center justify-center gap-3 mb-8">
+                      <div className="status-dot" />
+                      <span className="system-label">Live now · the sky's current cycle</span>
+                    </div>
+                    <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl text-foreground mb-6 leading-[1.05]">
+                      The Lunar <span className="italic text-accent">Chaperone</span>
+                    </h1>
+                    <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-10">
+                      Twenty-four half-moon workbooks, one continuous loop. Astrology you live — not a fate you hide behind.
+                    </p>
+                    <div className="node-card border-accent/30 max-w-2xl mx-auto text-left">
+                      <div className="h-1.5 rounded-full mb-5" style={{ background: gradFor(sky.workbook) }} />
+                      <span className="system-label text-accent">You are here · WB {currentN}</span>
+                      <h2 className="font-serif text-2xl lg:text-3xl text-foreground mt-3 mb-2">
+                        {sky.workbook.lead} <span className="italic text-accent">{sky.workbook.accent}</span>
+                      </h2>
+                      <p className="text-xs uppercase tracking-wider text-muted-foreground/70 mb-4">{sky.workbook.journey}</p>
+                      <p className="text-muted-foreground leading-relaxed mb-6">{sky.workbook.blurb}</p>
+                      <Button variant="gold" size="lg" onClick={() => open(currentN)}>
+                        Open this cycle — free <ArrowRight className="ml-2 w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 </ScrollReveal>
-                
-                <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-                  {/* Peak Chasers */}
-                  <ScrollReveal delay={0.1}>
-                    <div className="node-card border-destructive/30">
-                      <div className="flex items-center gap-3 mb-6">
-                        <X className="w-6 h-6 text-destructive" />
-                        <span className="system-label text-destructive">Peak Chasers</span>
-                      </div>
-                      <ul className="space-y-4 text-muted-foreground">
-                        <li className="flex items-start gap-3">
-                          <X className="w-4 h-4 text-destructive mt-1 shrink-0" />
-                          <span>Only engage at new and full moons</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <X className="w-4 h-4 text-destructive mt-1 shrink-0" />
-                          <span>Screenshot inspiration, never implement</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <X className="w-4 h-4 text-destructive mt-1 shrink-0" />
-                          <span>Abandon intentions by day 3</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <X className="w-4 h-4 text-destructive mt-1 shrink-0" />
-                          <span>Consume cosmic entertainment</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <X className="w-4 h-4 text-destructive mt-1 shrink-0" />
-                          <span>Wait for the next lunation to "start fresh"</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </ScrollReveal>
-                  
-                  {/* Path Walkers */}
-                  <ScrollReveal delay={0.2}>
-                    <div className="node-card border-accent/30">
-                      <div className="flex items-center gap-3 mb-6">
-                        <Check className="w-6 h-6 text-accent" />
-                        <span className="system-label text-accent">Path Walkers</span>
-                      </div>
-                      <ul className="space-y-4 text-muted-foreground">
-                        <li className="flex items-start gap-3">
-                          <Check className="w-4 h-4 text-accent mt-1 shrink-0" />
-                          <span>Practice through every phase, every day</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <Check className="w-4 h-4 text-accent mt-1 shrink-0" />
-                          <span>Transform insights into lived experience</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <Check className="w-4 h-4 text-accent mt-1 shrink-0" />
-                          <span>Push through resistance with support</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <Check className="w-4 h-4 text-accent mt-1 shrink-0" />
-                          <span>Pursue life transformation</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <Check className="w-4 h-4 text-accent mt-1 shrink-0" />
-                          <span>Build momentum across complete cycles</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </ScrollReveal>
-                </div>
-              </div>
-            </div>
-          </section>
+              </section>
 
-          {/* The Problem */}
-          <section className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
-            <div className="max-w-5xl mx-auto">
-              <ScrollReveal>
-                <div className="text-center mb-16">
-                  <span className="system-label block mb-6">The Problem</span>
-                  <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-foreground mb-6">
-                    The Astrology <span className="italic">Abandonment Cycle</span>
-                  </h2>
-                  <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                    Peak inspiration followed by silence. Lost momentum. No guidance in the spaces that matter most.
-                  </p>
-                </div>
-              </ScrollReveal>
-              
-              <div className="grid md:grid-cols-3 gap-8">
-                {campaignProblems.map((problem, index) => {
-                  const Icon = problem.icon;
-                  return (
-                    <ScrollReveal key={problem.title} delay={index * 0.1}>
-                      <div className="node-card h-full">
-                        <Icon className="w-8 h-8 text-destructive/60 mb-6" />
-                        <h3 className="font-serif text-xl text-foreground mb-4">{problem.title}</h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed">{problem.description}</p>
-                      </div>
-                    </ScrollReveal>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-
-          {/* The Solution */}
-          <section className="bg-card/20 border-y border-border/30">
-            <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
-              <div className="max-w-5xl mx-auto">
+              <section className="container mx-auto px-6 lg:px-12 py-12 lg:py-20 border-t border-border/30">
                 <ScrollReveal>
-                  <div className="text-center mb-16">
-                    <span className="system-label block mb-6 text-accent">The Solution</span>
-                    <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-foreground mb-6">
-                      Continuous <span className="italic">Companionship</span>
+                  <div className="text-center mb-14">
+                    <span className="system-label block mb-4">The full loop</span>
+                    <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-foreground mb-4">
+                      Twenty-four <span className="italic">half-moons</span>
                     </h2>
-                    <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                      A chaperone guides without controlling. Accompanies without dictating. Present for every step.
+                    <p className="text-muted-foreground max-w-2xl mx-auto">
+                      Every full moon sits opposite its new moon. The loop never drifts — and it never ends.
+                      {!isMember && " Open the current cycle free; unlock the whole year with membership."}
                     </p>
                   </div>
                 </ScrollReveal>
-                
-                <div className="grid md:grid-cols-3 gap-8">
-                  {chaperonePromises.map((promise, index) => {
-                    const Icon = promise.icon;
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                  {WORKBOOKS.map((w, i) => {
+                    const locked = !isMember && !isFreeToView(w, currentN);
                     return (
-                      <ScrollReveal key={promise.title} delay={index * 0.1}>
-                        <div className="node-card h-full border-accent/20">
-                          <Icon className="w-8 h-8 text-accent mb-6" />
-                          <h3 className="font-serif text-xl text-foreground mb-4">{promise.title}</h3>
-                          <p className="text-muted-foreground text-sm leading-relaxed">{promise.description}</p>
-                        </div>
+                      <ScrollReveal key={w.n} delay={(i % 3) * 0.05}>
+                        <button onClick={() => open(w.n)} className="node-card h-full w-full text-left relative group hover:border-accent/40 transition-colors">
+                          <div className="h-1.5 rounded-full mb-4" style={{ background: gradFor(w) }} />
+                          <div className="flex items-center justify-between mb-3">
+                            <span className="system-label text-accent">WB {w.n}</span>
+                            <span className="text-xs px-2 py-1 bg-accent/10 text-accent rounded-full">{w.waxing ? "Waxing" : "Waning"}</span>
+                          </div>
+                          <h3 className="font-serif text-xl text-foreground mb-2">{w.lead} <span className="italic text-accent">{w.accent}</span></h3>
+                          <p className="text-xs uppercase tracking-wide text-muted-foreground/60 mb-3">{w.journey}</p>
+                          <p className="text-muted-foreground text-sm leading-relaxed">{w.blurb}</p>
+                          {w.isEclipse && (<div className="mt-3 text-xs text-accent flex items-center gap-2"><span aria-hidden>☉☾</span> {new Date().getFullYear()} eclipse gate</div>)}
+                          {w.n === currentN && (<span className="absolute top-4 right-4 text-[10px] uppercase tracking-wider text-accent border border-accent/50 rounded-full px-2 py-0.5">Now</span>)}
+                          {locked && (<div className="absolute inset-0 rounded-[inherit] bg-background/70 backdrop-blur-[2px] flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><Lock className="w-5 h-5 text-accent" /><span className="text-xs uppercase tracking-wider text-muted-foreground">Members</span></div>)}
+                        </button>
                       </ScrollReveal>
                     );
                   })}
                 </div>
-              </div>
-            </div>
-          </section>
+                {!isMember && (
+                  <div className="text-center mt-12">
+                    <Link to="/membership"><Button variant="gold" size="lg">Unlock all 24 workbooks <ArrowRight className="ml-2 w-4 h-4" /></Button></Link>
+                    <p className="text-xs text-muted-foreground/60 mt-3">Eclipse charge this year: WB {eclipse.n}. {eclipse.note}</p>
+                  </div>
+                )}
+              </section>
+            </>
+          )}
 
-          {/* 14-Day Journey Preview */}
-          <JourneyPreview />
+          {active && (
+            <section className="container mx-auto px-6 lg:px-12 py-10 lg:py-16">
+              <div className="max-w-3xl mx-auto">
+                <button onClick={backToLibrary} className="system-label text-muted-foreground hover:text-accent flex items-center gap-2 mb-8">
+                  <ArrowLeft className="w-4 h-4" /> All workbooks
+                </button>
+                <div className="h-1.5 rounded-full mb-6" style={{ background: gradFor(active) }} />
+                <span className="system-label text-accent">WB {active.n} / 24 · {active.n === currentN ? "The cycle you are in now" : "Exploring"}</span>
+                <h1 className="font-serif text-4xl lg:text-5xl text-foreground mt-3 mb-3">{active.lead} <span className="italic text-accent">{active.accent}</span></h1>
+                <p className="text-sm uppercase tracking-wider text-muted-foreground/70 mb-6">{active.journey} · {active.elementShift}</p>
+                <p className="font-serif italic text-xl text-muted-foreground leading-relaxed mb-10">{active.blurb}</p>
 
-          {/* Workbook Series Preview */}
-          <section className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
-            <div className="max-w-6xl mx-auto">
-              <ScrollReveal>
-                <div className="text-center mb-16">
-                  <span className="system-label block mb-6">The Collection</span>
-                  <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-foreground mb-6">
-                    26 Archetypal <span className="italic">Journeys</span>
-                  </h2>
-                  <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                    24 Archetypal Lunar Cycles + 2 Eclipse Portal Specials. Timeless wisdom for lifetime use.
-                  </p>
-                </div>
-              </ScrollReveal>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                {workbookSeries.map((workbook, index) => (
-                  <ScrollReveal key={workbook.title} delay={index * 0.05}>
-                    <div className="node-card h-full">
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="system-label text-accent">{workbook.number} of 26</span>
-                        <span className="text-xs px-2 py-1 bg-accent/10 text-accent rounded-full">{workbook.journey}</span>
+                {!canView ? (
+                  <div className="node-card border-accent/30 text-center py-12">
+                    <Lock className="w-10 h-10 text-accent mx-auto mb-5" />
+                    <h3 className="font-serif text-2xl text-foreground mb-3">A members' workbook</h3>
+                    <p className="text-muted-foreground max-w-md mx-auto mb-8">The current cycle (WB {currentN}) is always free. Unlock the full 24-workbook loop, the somatic protocols, and cross-device journaling with membership.</p>
+                    <Link to="/membership"><Button variant="gold" size="lg">Become a member <ArrowRight className="ml-2 w-4 h-4" /></Button></Link>
+                  </div>
+                ) : sections && (
+                  <div className="space-y-10">
+                    {/* 02 CONTEXT */}
+                    <div>
+                      <span className="system-label text-muted-foreground block mb-4">02 · Context framing</span>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {sections.context.map((c) => (
+                          <div key={c.label} className="node-card">
+                            <div className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mb-2">{c.label}</div>
+                            <div className="font-serif italic text-accent text-lg leading-tight mb-1">{c.value}</div>
+                            <div className="text-[10px] uppercase tracking-wider text-muted-foreground/50">{c.sub}</div>
+                          </div>
+                        ))}
                       </div>
-                      <h3 className="font-serif text-xl text-foreground mb-3">{workbook.title}</h3>
-                      <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{workbook.essence}</p>
-                      <div className="text-xs text-muted-foreground/60 border-t border-border/30 pt-4">
-                        {workbook.body}
+                    </div>
+
+                    {/* 03 ENERGY MAPPING */}
+                    <div>
+                      <span className="system-label text-muted-foreground block mb-4">03 · Energy mapping</span>
+                      <div className="space-y-3 mb-5">
+                        {sections.mapping.map((m) => (
+                          <div key={m.key} className="node-card">
+                            <p className="text-foreground text-sm mb-3">{m.q}</p>
+                            <textarea
+                              value={entries[m.key] || ""}
+                              onChange={(e) => saveField(m.key, e.target.value)}
+                              rows={2}
+                              className="w-full bg-background/60 border border-border/40 rounded-lg p-3 text-foreground text-sm resize-y focus:outline-none focus:border-accent"
+                              placeholder="…"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      <div className="node-card">
+                        {sections.tracks.map((t) => (
+                          <div key={t.l} className="mb-4 last:mb-0">
+                            <div className="flex justify-between items-baseline mb-2 gap-3">
+                              <span className="font-serif italic text-accent">{t.l}</span>
+                              <span className="text-[10px] uppercase tracking-wider text-muted-foreground/60 text-center">{t.note}</span>
+                              <span className="font-serif italic text-foreground">{t.r}</span>
+                            </div>
+                            <div className="h-1.5 rounded-full" style={{ background: "linear-gradient(90deg, var(--accent, #b6852a), #2ec9b0)" }} />
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  </ScrollReveal>
-                ))}
-              </div>
-              
-              <div className="text-center">
-                <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
-                  <Button variant="gold" size="lg">
-                    Get the Full Program on Lunar Chaperone
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </div>
-          </section>
 
-          {/* Evergreen Value */}
-          <section className="bg-accent/5 border-y border-accent/20">
-            <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
-              <div className="max-w-4xl mx-auto text-center">
-                <ScrollReveal>
-                  <Shield className="w-16 h-16 text-accent mx-auto mb-8" />
-                  <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-foreground mb-6">
-                    Why <span className="italic">Timeless?</span>
-                  </h2>
-                  <p className="text-muted-foreground text-lg leading-relaxed mb-12 max-w-2xl mx-auto">
-                    The Lunar Chaperone transcends specific dates and years. These workbooks contain archetypal wisdom that remains true whether you're using them in 2026, 2030, or beyond.
-                  </p>
-                  
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div className="node-card">
-                      <h3 className="font-serif text-lg text-foreground mb-2">Lifetime Investment</h3>
-                      <p className="text-muted-foreground text-sm">Use forever—no yearly updates needed</p>
+                    {/* 04 PROTOCOLS */}
+                    <div>
+                      <span className="system-label text-muted-foreground block mb-4">04 · Practices &amp; protocols</span>
+                      <div className="space-y-3">
+                        {sections.protocols.map((p) => (
+                          <div key={p.num} className="node-card flex gap-4">
+                            <div className="font-serif italic text-accent text-lg shrink-0">{p.num}</div>
+                            <div>
+                              <div className="font-serif text-lg text-foreground">{p.title}</div>
+                              <div className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mb-2">{p.sub}</div>
+                              <p className="text-muted-foreground text-sm leading-relaxed">{p.body}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="node-card">
-                      <h3 className="font-serif text-lg text-foreground mb-2">Archetypal Depth</h3>
-                      <p className="text-muted-foreground text-sm">Timeless patterns deepen with each cycle</p>
+
+                    {/* 05 LOGS */}
+                    <div>
+                      <span className="system-label text-muted-foreground block mb-4">05 · Practice logs</span>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {sections.logs.map((l) => (
+                          <div key={l.key} className="node-card">
+                            <div className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mb-2">{l.label}</div>
+                            <input
+                              value={entries[l.key] || ""}
+                              onChange={(e) => saveField(l.key, e.target.value)}
+                              className="w-full bg-background/60 border border-border/40 rounded-lg p-2 text-foreground text-sm focus:outline-none focus:border-accent"
+                              placeholder={l.ph}
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="node-card">
-                      <h3 className="font-serif text-lg text-foreground mb-2">Flexible Timing</h3>
-                      <p className="text-muted-foreground text-sm">Work with any lunar cycle in any year</p>
+
+                    {/* 06 INTEGRATION + prompt */}
+                    <div>
+                      <span className="system-label text-muted-foreground block mb-4">06 · Integration</span>
+                      {sections.integ.map((m) => (
+                        <div key={m.key} className="node-card mb-3">
+                          <p className="text-foreground text-sm mb-3">{m.q}</p>
+                          <textarea value={entries[m.key] || ""} onChange={(e) => saveField(m.key, e.target.value)} rows={3}
+                            className="w-full bg-background/60 border border-border/40 rounded-lg p-3 text-foreground text-sm resize-y focus:outline-none focus:border-accent" placeholder="…" />
+                        </div>
+                      ))}
+                      <div className="node-card border-accent/20">
+                        <span className="system-label text-accent block mb-3">This cycle's closing prompt</span>
+                        <p className="font-serif italic text-lg text-foreground leading-relaxed mb-4">{active.prompt}</p>
+                        <textarea value={entries["ritual"] || ""} onChange={(e) => saveField("ritual", e.target.value)} rows={3}
+                          className="w-full bg-background/60 border border-accent/30 rounded-lg p-3 text-foreground text-sm resize-y focus:outline-none focus:border-accent" placeholder="Set it down here." />
+                      </div>
+                      {!user && (<p className="text-[11px] text-muted-foreground/50 mt-3">Saved to this device. <Link to="/auth" className="text-accent">Sign in</Link> to sync across devices.</p>)}
                     </div>
-                    <div className="node-card">
-                      <h3 className="font-serif text-lg text-foreground mb-2">Premium Value</h3>
-                      <p className="text-muted-foreground text-sm">Reference-quality vs. disposable content</p>
+
+                    {active.isEclipse && (
+                      <div className="node-card border-accent/30">
+                        <span className="system-label text-accent block mb-2">☉☾ {new Date().getFullYear()} eclipse gate</span>
+                        <p className="text-muted-foreground text-sm">{eclipse.note}</p>
+                      </div>
+                    )}
+
+                    <div className="flex gap-4 pt-2">
+                      <Button variant="outline" className="flex-1" onClick={() => open(WORKBOOKS[(active.sequence - 2 + 24) % 24].n)}><ArrowLeft className="mr-2 w-4 h-4" /> Previous</Button>
+                      <Button variant="outline" className="flex-1" onClick={() => open(WORKBOOKS[active.sequence % 24].n)}>Next <ArrowRight className="ml-2 w-4 h-4" /></Button>
                     </div>
                   </div>
-                </ScrollReveal>
+                )}
               </div>
-            </div>
-          </section>
-
-          {/* CTA */}
-          <section className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
-            <ScrollReveal>
-              <div className="max-w-2xl mx-auto text-center">
-                <h2 className="font-serif text-3xl lg:text-4xl text-foreground mb-6">
-                  Stop Chasing Peaks. <br />
-                  <span className="italic">Start Walking the Path.</span>
-                </h2>
-                <p className="text-muted-foreground mb-10 leading-relaxed">
-                  Join the path walkers who transform cosmic entertainment into life transformation.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
-                    <Button variant="gold" size="lg">
-                      Begin with the Chaperone
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </Button>
-                  </a>
-                  <Link to="/method">
-                    <Button variant="outline" size="lg">
-                      Learn Phasecraft
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </ScrollReveal>
-          </section>
+            </section>
+          )}
         </main>
-        
         <Footer />
       </div>
     </PageTransition>
