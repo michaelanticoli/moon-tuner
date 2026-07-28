@@ -232,7 +232,7 @@ function ShareModal({
         ? new File([blob], `moontuner-directive.png`, { type: "image/png" })
         : null;
 
-      // @ts-ignore - canShare not on all TS lib targets
+      // @ts-expect-error - canShare is not available in every configured TS DOM target
       if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
