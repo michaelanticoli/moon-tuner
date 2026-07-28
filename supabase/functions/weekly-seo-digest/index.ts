@@ -31,6 +31,14 @@ function row(cells: (string | number)[]) {
   return `<tr>${cells.map((c) => `<td style="padding:6px 10px;border-bottom:1px solid #222;color:#e6e1d6">${c}</td>`).join('')}</tr>`;
 }
 
+interface SearchConsoleRow {
+  keys: string[];
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
@@ -58,8 +66,8 @@ Deno.serve(async (req) => {
   const endDate = isoDaysAgo(3);
 
   let totals = { clicks: 0, impressions: 0, ctr: 0, position: 0 };
-  let topQueries: any[] = [];
-  let topPages: any[] = [];
+  let topQueries: SearchConsoleRow[] = [];
+  let topPages: SearchConsoleRow[] = [];
   let warning = '';
 
   try {

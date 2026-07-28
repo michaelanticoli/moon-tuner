@@ -64,8 +64,8 @@ export function ExportImportPanel() {
         }
         store.setCustomPhases(phases);
         toast('Dataset imported successfully');
-      } catch (err: any) {
-        toast.error(err.message || 'Failed to parse CSV');
+      } catch (err: unknown) {
+        toast.error(err instanceof Error ? err.message : 'Failed to parse CSV');
       }
     };
     reader.readAsText(file);

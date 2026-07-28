@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-interface ZodiacGlyphProps {
+export interface ZodiacGlyphProps {
   sign: 
     | "aries" | "taurus" | "gemini" | "cancer" 
     | "leo" | "virgo" | "libra" | "scorpio" 

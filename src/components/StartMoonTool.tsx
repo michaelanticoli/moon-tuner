@@ -26,7 +26,7 @@ export function StartMoonTool() {
         <div className="flex flex-col md:flex-row gap-10 items-center md:items-start">
           {/* Glyph */}
           <div className="w-32 h-32 rounded-full border border-border bg-card flex items-center justify-center shrink-0">
-            <MoonPhaseGlyph phase={key as any} size={64} className="text-accent" />
+            <MoonPhaseGlyph phase={key} size={64} className="text-accent" />
           </div>
 
           {/* Info */}
