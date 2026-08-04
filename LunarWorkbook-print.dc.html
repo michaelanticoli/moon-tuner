@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <script src="./ds-base.js"></script>
+  <script src="./doc-page.js"></script>
+  <style>
+    html, body { margin: 0; }
+    doc-page:not(:defined) { visibility: hidden; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    * { animation-delay: -99s !important; animation-duration: .001s !important; animation-iteration-count: 1 !important; animation-fill-mode: both !important; animation-play-state: running !important; transition-duration: 0s !important; }
+    .wb-root { --pg:#efe7d3; --panel:#f4eedd; --ink:#1c1a17; --mute:#8a7f64; --rule:#cfc3a4; --accent:#1f7d88; --gold:#b6852a; }
+    .wb-root.wb-dark { --pg:hsl(0 0% 5%); --panel:hsl(0 0% 8%); --ink:hsl(40 20% 92%); --mute:hsl(40 10% 55%); --rule:hsl(0 0% 20%); --accent:hsl(168 75% 45%); --gold:hsl(42 50% 62%); }
+  </style>
+</helmet>
+<doc-page class="wb-root {{ themeClass }}" style="font-family:var(--font-ui);">
+
+  <!-- ============ PAGE 1 — PROGRAM COVER ============ -->
+  <div class="pg page" style="box-sizing:border-box; background:var(--pg); color:var(--ink); padding:56px 60px; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:11px;">
+        <span style="color:var(--ink); line-height:0; display:inline-block; width:24px; height:24px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz24 }}" hint-size="24px,24px"></x-import></span>
+        <span style="font-family:var(--font-ui); font-weight:600; font-size:14px; letter-spacing:0.24em; text-transform:uppercase; color:var(--ink);">Moontuner</span>
+      </div>
+      <span style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mute);">Phasecraft · Program Protocol</span>
+    </div>
+
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:30px;">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <sc-for list="{{ coverGlyphs }}" as="g" hint-placeholder-count="8">
+          <span style="color:{{ g.hue }}; line-height:0; display:inline-block; width:30px; height:30px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="{{ g.phase }}" size="{{ sz30 }}" hint-size="30px,30px"></x-import></span>
+        </sc-for>
+      </div>
+      <div>
+        <div style="font-family:var(--font-ui); font-size:12px; font-weight:600; letter-spacing:0.28em; text-transform:uppercase; color:var(--mute); margin-bottom:22px;">The Lunar Chaperone · 2026</div>
+        <h1 style="font-family:var(--font-display); font-weight:200; font-size:66px; line-height:1.0; letter-spacing:-0.03em; color:var(--ink); margin:0;">Twenty-six workbooks,<br><span style="font-family:var(--font-serif); font-style:italic; font-weight:400; color:var(--gold);">one for every turn of the tide.</span></h1>
+      </div>
+      <p style="font-family:var(--font-editorial); font-style:italic; font-size:23px; line-height:1.4; color:var(--ink); opacity:0.85; margin:0; max-width:560px;">A half-cycle at a time — from dark to full, from full to dark — the whole lunar year, tuned to the sky you were born under.</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <span style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); border:1px solid var(--rule); border-radius:999px; padding:7px 14px;">13 waxing arcs</span>
+        <span style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); border:1px solid var(--rule); border-radius:999px; padding:7px 14px;">13 waning arcs</span>
+        <span style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); border:1px solid var(--rule); border-radius:999px; padding:7px 14px;">96-flavor matrix</span>
+        <span style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); border:1px solid var(--rule); border-radius:999px; padding:7px 14px;">persona editions</span>
+      </div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1.5px solid var(--ink); padding-top:16px;">
+      <div style="font-family:var(--font-serif); font-size:22px; color:var(--ink);">{{ personName }}</div>
+      <div style="text-align:right; font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute); line-height:1.8;">
+        <div style="color:var(--accent);">Astrology with agency</div>
+        <div>{{ pageFootNote }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PAGE 2 — PROGRAM MAP ============ -->
+  <div class="pg page" style="box-sizing:border-box; background:var(--pg); color:var(--ink); padding:56px 60px; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1.5px solid var(--ink); padding-bottom:18px;">
+      <div>
+        <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent);">The arc of the year</div>
+        <div style="font-family:var(--font-display); font-weight:300; font-size:28px; letter-spacing:-0.02em; color:var(--ink);">Twenty-six half-cycles</div>
+      </div>
+      <span style="font-family:var(--font-mono); font-size:11px; color:var(--mute);">01</span>
+    </div>
+
+    <p style="font-family:var(--font-sans); font-size:14px; line-height:1.7; color:var(--ink); opacity:0.8; margin:22px 0 20px; max-width:600px;">Each new moon opens a <strong>waxing</strong> workbook — set the intention, build it to the full. Each full moon opens a <strong>waning</strong> workbook — harvest, then set it down. Together they walk you through the entire 2026 lunar year, anchored to real lunation dates and signs.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 34px; flex:1;">
+      <sc-for list="{{ programList }}" as="wb" hint-placeholder-count="26">
+        <div style="display:flex; align-items:center; gap:12px; padding:7px 0; border-bottom:1px solid var(--rule);">
+          <span style="font-family:var(--font-mono); font-size:11px; color:var(--mute); width:22px; flex:none;">{{ wb.no }}</span>
+          <span style="color:{{ wb.hue }}; line-height:0; display:inline-block; width:15px; height:15px; flex:none;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="{{ wb.glyphTo }}" size="{{ sz16 }}" hint-size="15px,15px"></x-import></span>
+          <div style="flex:1; min-width:0;">
+            <div style="font-family:var(--font-ui); font-size:12.5px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ wb.label }}</div>
+          </div>
+          <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:0.08em; text-transform:uppercase; color:{{ wb.hue }}; flex:none;">{{ wb.arcShort }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ============ PAGE 3 — SAMPLE EDITION COVER ============ -->
+  <div class="pg page" style="box-sizing:border-box; background:var(--pg); color:var(--ink); padding:56px 60px; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:{{ sample.accent }};">Sample edition · one half-cycle, fully assembled</span>
+      <span style="font-family:var(--font-mono); font-size:11px; color:var(--mute);">Cancer → Aquarius</span>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; gap:34px;">
+      <div style="display:flex; align-items:center; gap:30px;">
+        <span style="color:{{ sample.newHue }}; line-height:0; display:inline-block; width:64px; height:64px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="new" size="{{ sz44 }}" hint-size="64px,64px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:22px; color:var(--mute);">→</span>
+        <span style="color:{{ sample.fullHue }}; line-height:0; display:inline-block; width:64px; height:64px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="full" size="{{ sz44 }}" hint-size="64px,64px"></x-import></span>
+      </div>
+      <div>
+        <div style="font-family:var(--font-ui); font-size:12px; font-weight:600; letter-spacing:0.28em; text-transform:uppercase; color:var(--mute); margin-bottom:20px;">{{ sample.eyebrow }}</div>
+        <h1 style="font-family:var(--font-display); font-weight:200; font-size:56px; line-height:1.04; letter-spacing:-0.03em; color:var(--ink); margin:0;">{{ sample.title1 }}<br><span style="font-family:var(--font-serif); font-style:italic; font-weight:400; color:var(--gold);">{{ sample.title2 }}</span></h1>
+      </div>
+      <p style="font-family:var(--font-editorial); font-style:italic; font-size:22px; line-height:1.4; color:var(--ink); opacity:0.85; margin:0; max-width:500px;">{{ sample.quote }}</p>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1.5px solid var(--ink); padding-top:16px;">
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:{{ sample.accent }};">{{ sample.window }}</div>
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute);">Buck Moon</div>
+    </div>
+  </div>
+
+  <!-- ============ PAGE 4 — SET THE INTENTION ============ -->
+  <div class="pg page" style="box-sizing:border-box; background:var(--pg); color:var(--ink); padding:56px 60px;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1.5px solid var(--ink); padding-bottom:18px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="color:{{ sample.newHue }}; line-height:0; display:inline-block; width:30px; height:30px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="new" size="{{ sz30 }}" hint-size="30px,30px"></x-import></span>
+        <div>
+          <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:{{ sample.newHue }};">New Moon · Cancer</div>
+          <div style="font-family:var(--font-display); font-weight:300; font-size:26px; letter-spacing:-0.02em; color:var(--ink);">Set the intention</div>
+        </div>
+      </div>
+      <span style="font-family:var(--font-mono); font-size:11px; color:var(--mute);">02</span>
+    </div>
+    <p style="font-family:var(--font-editorial); font-style:italic; font-size:23px; line-height:1.4; color:var(--ink); margin:34px 0 30px; max-width:560px;">{{ sample.intentLead }}</p>
+    <sc-for list="{{ sample.intentPrompts }}" as="q" hint-placeholder-count="3">
+      <div style="margin-bottom:30px;">
+        <div style="font-family:var(--font-ui); font-weight:600; font-size:15px; color:var(--ink); margin-bottom:16px;">{{ q.n }}. {{ q.text }}</div>
+        <div style="height:30px; border-bottom:1px solid var(--rule);"></div>
+        <div style="height:30px; border-bottom:1px solid var(--rule); margin-top:14px;"></div>
+      </div>
+    </sc-for>
+    <div style="margin-top:12px; border:1.5px solid var(--ink); border-radius:8px; padding:22px 24px; background:var(--panel);">
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:{{ sample.newHue }}; margin-bottom:14px;">This half-cycle, I am tuning toward —</div>
+      <div style="height:28px; border-bottom:1px solid var(--rule);"></div>
+      <div style="height:28px; border-bottom:1px solid var(--rule); margin-top:14px;"></div>
+    </div>
+  </div>
+
+  <!-- ============ PAGE 5 — THE 14-DAY ARC ============ -->
+  <div class="pg page" style="box-sizing:border-box; background:var(--pg); color:var(--ink); padding:56px 60px;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1.5px solid var(--ink); padding-bottom:18px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="color:{{ sample.accent }}; line-height:0; display:inline-block; width:30px; height:30px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-gibbous" size="{{ sz30 }}" hint-size="30px,30px"></x-import></span>
+        <div>
+          <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:{{ sample.accent }};">Waxing arc · 14 days</div>
+          <div style="font-family:var(--font-display); font-weight:300; font-size:26px; letter-spacing:-0.02em; color:var(--ink);">Carry it toward the full</div>
+        </div>
+      </div>
+      <span style="font-family:var(--font-mono); font-size:11px; color:var(--mute);">03</span>
+    </div>
+    <p style="font-family:var(--font-sans); font-size:14px; line-height:1.7; color:var(--ink); opacity:0.78; margin:26px 0 22px; max-width:560px;">One small, aligned action each day. Momentum is built in the waxing half — you don't force it, you feed it.</p>
+    <div style="border-top:1px solid var(--rule);">
+      <sc-for list="{{ sampleArc }}" as="d" hint-placeholder-count="14">
+        <div style="display:flex; align-items:center; gap:16px; padding:11px 4px; border-bottom:1px solid var(--rule);">
+          <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute); width:26px; flex:none;">{{ d.label }}</span>
+          <span style="color:var(--ink); line-height:0; display:inline-block; width:20px; height:20px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="{{ d.phase }}" size="{{ sz20 }}" hint-size="20px,20px"></x-import></span>
+          <span style="flex:1; font-family:var(--font-ui); font-size:14px; color:var(--ink);">{{ d.directive }}</span>
+          <span style="width:18px; height:18px; border:1.5px solid var(--rule); border-radius:4px; flex:none;"></span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ============ PAGE 6 — REFLECT AT THE FULL ============ -->
+  <div class="pg page" style="box-sizing:border-box; background:var(--pg); color:var(--ink); padding:56px 60px;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1.5px solid var(--ink); padding-bottom:18px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="color:{{ sample.fullHue }}; line-height:0; display:inline-block; width:30px; height:30px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="full" size="{{ sz30 }}" hint-size="30px,30px"></x-import></span>
+        <div>
+          <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:{{ sample.fullHue }};">Full Moon · Aquarius · Buck Moon</div>
+          <div style="font-family:var(--font-display); font-weight:300; font-size:26px; letter-spacing:-0.02em; color:var(--ink);">Reflect &amp; release</div>
+        </div>
+      </div>
+      <span style="font-family:var(--font-mono); font-size:11px; color:var(--mute);">04</span>
+    </div>
+    <p style="font-family:var(--font-editorial); font-style:italic; font-size:23px; line-height:1.4; color:var(--ink); margin:34px 0 30px; max-width:560px;">{{ sample.reflectLead }}</p>
+    <sc-for list="{{ sample.reflectPrompts }}" as="q" hint-placeholder-count="3">
+      <div style="margin-bottom:30px;">
+        <div style="font-family:var(--font-ui); font-weight:600; font-size:15px; color:var(--ink); margin-bottom:16px;">{{ q.n }}. {{ q.text }}</div>
+        <div style="height:30px; border-bottom:1px solid var(--rule);"></div>
+        <div style="height:30px; border-bottom:1px solid var(--rule); margin-top:14px;"></div>
+      </div>
+    </sc-for>
+    <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:flex-end; border-top:1.5px solid var(--ink); padding-top:16px;">
+      <div style="font-family:var(--font-editorial); font-style:italic; font-size:18px; color:var(--ink);">Don't blame the moon. Change your tune.</div>
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute);">moontuner.xyz</div>
+    </div>
+  </div>
+
+  <!-- ============ PAGE 7 — THE 96 FLAVOR MATRIX ============ -->
+  <div class="pg page" style="box-sizing:border-box; background:var(--pg); color:var(--ink); padding:56px 60px; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1.5px solid var(--ink); padding-bottom:18px;">
+      <div>
+        <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent);">Phasecraft · the flavor matrix</div>
+        <div style="font-family:var(--font-display); font-weight:300; font-size:28px; letter-spacing:-0.02em; color:var(--ink);">Eight phases × twelve signs = ninety-six</div>
+      </div>
+      <span style="font-family:var(--font-mono); font-size:11px; color:var(--mute);">05</span>
+    </div>
+    <p style="font-family:var(--font-sans); font-size:14px; line-height:1.7; color:var(--ink); opacity:0.8; margin:22px 0 20px; max-width:600px;">Every planet you own is playing one of these ninety-six flavors right now — and the sky keeps re-tuning them by transit. This is the layer beneath the calendar: not <em>what</em> the moon is doing, but <em>who</em> each configuration is.</p>
+
+    <div style="display:grid; grid-template-columns:96px repeat(8, 1fr); border:1px solid var(--rule); border-radius:8px; overflow:hidden;">
+      <!-- header row -->
+      <div style="border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); background:var(--panel);"></div>
+      <sc-for list="{{ matrixCols }}" as="c" hint-placeholder-count="8">
+        <div style="border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); background:var(--panel); display:flex; align-items:center; justify-content:center; padding:9px 0;">
+          <span style="color:{{ c.hue }}; line-height:0; display:inline-block; width:18px; height:18px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="{{ c.phase }}" size="{{ sz16 }}" hint-size="18px,18px"></x-import></span>
+        </div>
+      </sc-for>
+      <!-- sign rows -->
+      <sc-for list="{{ matrixRows }}" as="r" hint-placeholder-count="12">
+        <div style="border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); display:flex; align-items:center; gap:9px; padding:0 12px; min-height:42px;">
+          <span style="width:8px; height:8px; border-radius:999px; background:{{ r.signHue }}; flex:none;"></span>
+          <span style="font-family:var(--font-ui); font-size:12px; font-weight:600; letter-spacing:0.01em; color:{{ r.signHue }};">{{ r.sign }}</span>
+        </div>
+        <sc-for list="{{ r.cells }}" as="cell" hint-placeholder-count="8">
+          <div style="border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); display:flex; align-items:center; justify-content:center; min-height:42px; background:{{ cell.activeBg }}; box-shadow:{{ cell.activeRing }};">
+            <span style="color:{{ cell.hue }}; opacity:{{ cell.op }}; line-height:0; display:inline-block; width:15px; height:15px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="{{ cell.phase }}" size="{{ sz16 }}" hint-size="15px,15px"></x-import></span>
+          </div>
+        </sc-for>
+      </sc-for>
+    </div>
+
+    <div style="margin-top:24px; display:flex; flex-direction:column; gap:12px;">
+      <div style="font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute);">Three of ninety-six, read aloud</div>
+      <sc-for list="{{ featured }}" as="f" hint-placeholder-count="3">
+        <div style="border-left:3px solid {{ f.hue }}; padding:6px 0 6px 16px;">
+          <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:{{ f.hue }}; margin-bottom:4px;">{{ f.key }}</div>
+          <div style="font-family:var(--font-editorial); font-style:italic; font-size:17px; line-height:1.4; color:var(--ink);">{{ f.tag }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ============ PAGE 8 — PERSONA EDITION COVER ============ -->
+  <div class="pg page" style="box-sizing:border-box; background:var(--pg); color:var(--ink); padding:56px 60px; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent);">Persona edition · the whole chart, not just the moon</span>
+      <span style="font-family:var(--font-mono); font-size:11px; color:var(--mute);">—</span>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:30px;">
+      <div style="font-family:var(--font-ui); font-size:12px; font-weight:600; letter-spacing:0.28em; text-transform:uppercase; color:var(--mute);">The Lunar Chaperone · Persona Workbook</div>
+      <h1 style="font-family:var(--font-display); font-weight:200; font-size:60px; line-height:1.02; letter-spacing:-0.03em; color:var(--ink); margin:0;">{{ persona.name }}</h1>
+      <div style="font-family:var(--font-serif); font-style:italic; font-size:26px; color:var(--gold);">{{ persona.line }}</div>
+      <div style="border:1.5px solid var(--ink); border-radius:8px; padding:20px 24px; background:var(--panel); max-width:560px;">
+        <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:10px;">Your seat in the matrix</div>
+        <div style="font-family:var(--font-editorial); font-style:italic; font-size:19px; line-height:1.4; color:var(--ink);">{{ persona.moonCell }}</div>
+      </div>
+      <p style="font-family:var(--font-sans); font-size:14px; line-height:1.7; color:var(--ink); opacity:0.8; max-width:560px;">Beyond the calendar, every planet in your chart carries its own sign-and-phase flavor — natally, and again each time the sky moves. The persona edition works all of them, and hands each half-cycle's directive back to the program.</p>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1.5px solid var(--ink); padding-top:16px;">
+      <div style="font-family:var(--font-editorial); font-style:italic; font-size:18px; color:var(--ink);">Live your chart, not your excuses.</div>
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute);">moontuner.xyz</div>
+    </div>
+  </div>
+
+  <!-- ============ PAGE 9 — NATAL SIGNATURES + PLANETS ============ -->
+  <div class="pg page" style="box-sizing:border-box; background:var(--pg); color:var(--ink); padding:56px 60px; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1.5px solid var(--ink); padding-bottom:18px;">
+      <div>
+        <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent);">Natal signatures</div>
+        <div style="font-family:var(--font-display); font-weight:300; font-size:26px; letter-spacing:-0.02em; color:var(--ink);">What your chart is built to do</div>
+      </div>
+      <span style="font-family:var(--font-mono); font-size:11px; color:var(--mute);">06</span>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px; margin:26px 0 30px;">
+      <sc-for list="{{ persona.cards }}" as="c" hint-placeholder-count="3">
+        <div style="border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:12px; padding:20px 24px; background:var(--panel);">
+          <div style="font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">{{ c.label }}</div>
+          <div style="font-family:var(--font-serif); font-weight:600; font-size:19px; color:var(--ink); margin-bottom:8px;">{{ c.head }}</div>
+          <div style="font-family:var(--font-sans); font-size:13.5px; line-height:1.6; color:var(--ink);">{{ c.body }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); margin-bottom:12px;">Working your planets · natal + this half-cycle's transit</div>
+    <div style="border-top:1px solid var(--rule);">
+      <sc-for list="{{ persona.planets }}" as="pl" hint-placeholder-count="4">
+        <div style="display:flex; align-items:baseline; gap:14px; padding:12px 4px; border-bottom:1px solid var(--rule);">
+          <span style="width:8px; height:8px; border-radius:999px; background:var(--accent); flex:none; align-self:center;"></span>
+          <div style="width:158px; flex:none; font-family:var(--font-ui); font-weight:600; font-size:14px; color:var(--ink);">{{ pl.name }}</div>
+          <div style="flex:1; font-family:var(--font-sans); font-size:13px; line-height:1.5; color:var(--ink);">{{ pl.natal }} <span style="color:var(--accent);">→ {{ pl.transit }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end; border-top:1.5px solid var(--ink); padding-top:16px;">
+      <div style="font-family:var(--font-editorial); font-style:italic; font-size:18px; color:var(--ink);">Less woo, more you.</div>
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute);">Persona edition · v1</div>
+    </div>
+  </div>
+
+</doc-page>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:816,&quot;height&quot;:1056},&quot;personName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Prepared for the cycle&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;pageFootNote&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Program protocol · v1&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;riso-paper&quot;,&quot;options&quot;:[&quot;riso-paper&quot;,&quot;core-dark&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props || {};
+    const theme = p.theme || "riso-paper";
+    const isDark = theme === "core-dark";
+
+    const PHASE_HUE = { "new":"#c9391f", "waxing-crescent":"#cf6a1a", "first-quarter":"#c8912f", "waxing-gibbous":"#1f9aa6", "full":"#2b4c8c", "waning-gibbous":"#c0397f", "last-quarter":"#8a8a3a", "waning-crescent":"#7a4ea3" };
+    const ELEM = { Aries:"Fire",Leo:"Fire",Sagittarius:"Fire", Taurus:"Earth",Virgo:"Earth",Capricorn:"Earth", Gemini:"Air",Libra:"Air",Aquarius:"Air", Cancer:"Water",Scorpio:"Water",Pisces:"Water" };
+    const ELEM_HUE = { Fire:"#c33a20", Earth:"#7a7d2e", Air:"#c08a2a", Water:"#2b5a8c" };
+    const FLAVOR = { Aries:"cayenne and adrenaline", Taurus:"warm honey and velvet", Gemini:"sparkling water and citrus zest", Cancer:"chamomile and sea salt", Leo:"champagne and gold leaf", Virgo:"clean linen and fresh herbs", Libra:"rose water and silk", Scorpio:"dark chocolate and smoke", Sagittarius:"campfire and wild sage", Capricorn:"black coffee and aged oak", Aquarius:"electric mint and ozone", Pisces:"sea glass and lavender fog" };
+    // U+FE0E variation selector forces monochrome TEXT presentation (no color-emoji box)
+    const TS = "\uFE0E";
+    const ZGLYPH = { Aries:"\u2648"+TS,Taurus:"\u2649"+TS,Gemini:"\u264A"+TS,Cancer:"\u264B"+TS,Leo:"\u264C"+TS,Virgo:"\u264D"+TS,Libra:"\u264E"+TS,Scorpio:"\u264F"+TS,Sagittarius:"\u2650"+TS,Capricorn:"\u2651"+TS,Aquarius:"\u2652"+TS,Pisces:"\u2653"+TS };
+    const SIGN_ORDER = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+    const PHASE_ORDER = ["new","waxing-crescent","first-quarter","waxing-gibbous","full","waning-gibbous","last-quarter","waning-crescent"];
+    const PHASE_MOOD = { "new":"whispered","waxing-crescent":"eager","first-quarter":"fierce","waxing-gibbous":"meticulous","full":"radiant","waning-gibbous":"generous","last-quarter":"unburdened","waning-crescent":"still" };
+
+    // ---- 2026 lunation spine (27 points -> 26 half-cycles) ----
+    const L = [
+      {d:"Dec 19",ph:"new",s:"Sagittarius"},{d:"Jan 3",ph:"full",s:"Cancer",m:"Wolf Moon"},{d:"Jan 18",ph:"new",s:"Capricorn"},
+      {d:"Feb 1",ph:"full",s:"Leo",m:"Snow Moon"},{d:"Feb 17",ph:"new",s:"Aquarius"},{d:"Mar 3",ph:"full",s:"Virgo",m:"Worm Moon"},
+      {d:"Mar 18",ph:"new",s:"Pisces"},{d:"Apr 1",ph:"full",s:"Libra",m:"Pink Moon"},{d:"Apr 17",ph:"new",s:"Aries"},
+      {d:"May 1",ph:"full",s:"Scorpio",m:"Flower Moon"},{d:"May 16",ph:"new",s:"Taurus"},{d:"May 31",ph:"full",s:"Sagittarius",m:"Blue Moon"},
+      {d:"Jun 14",ph:"new",s:"Gemini"},{d:"Jun 29",ph:"full",s:"Capricorn",m:"Strawberry Moon"},{d:"Jul 14",ph:"new",s:"Cancer"},
+      {d:"Jul 29",ph:"full",s:"Aquarius",m:"Buck Moon"},{d:"Aug 12",ph:"new",s:"Leo"},{d:"Aug 28",ph:"full",s:"Pisces",m:"Sturgeon Moon"},
+      {d:"Sep 11",ph:"new",s:"Virgo"},{d:"Sep 26",ph:"full",s:"Aries",m:"Harvest Moon"},{d:"Oct 10",ph:"new",s:"Libra"},
+      {d:"Oct 26",ph:"full",s:"Taurus",m:"Hunter's Moon"},{d:"Nov 9",ph:"new",s:"Scorpio"},{d:"Nov 24",ph:"full",s:"Gemini",m:"Beaver Moon"},
+      {d:"Dec 9",ph:"new",s:"Sagittarius"},{d:"Dec 23",ph:"full",s:"Cancer",m:"Cold Moon"},{d:"Jan 7",ph:"new",s:"Capricorn"}
+    ];
+    const cap = w => w.charAt(0).toUpperCase()+w.slice(1);
+    const programList = [];
+    for (let i=1;i<L.length;i++){
+      const f=L[i-1], t=L[i], wax=f.ph==="new";
+      programList.push({
+        no: String(i).padStart(2,"0"),
+        arcShort: wax?"WAX":"WAN",
+        glyphTo: t.ph,
+        hue: ELEM_HUE[ELEM[t.s]],
+        label: `${cap(f.ph==="new"?"new":"full")} ${f.s} \u2192 ${t.s}`,
+      });
+    }
+
+    const coverGlyphs = PHASE_ORDER.map(ph => ({ phase: ph, hue: PHASE_HUE[ph] }));
+
+    // ---- Sample workbook 15: New Moon in Cancer -> Full Moon in Aquarius ----
+    const WAX_ARC = ["Name the intention","Clear the space","Speak it aloud","Take the first step","Gather your tools","Build the structure","Push through friction","Recommit \u2014 don't quit","Refine the work","Share it early","Tend the momentum","Trust the ripening","Prepare to receive","Arrive at the full"];
+    const WAX_GLYPH = ["new","new","waxing-crescent","waxing-crescent","first-quarter","first-quarter","waxing-gibbous","waxing-gibbous","waxing-gibbous","full","full","full","full","full"];
+    const sampleArc = WAX_ARC.map((v,i)=>({
+      label:"D"+(i+1), phase:WAX_GLYPH[i],
+      directive: i===0 ? "Name the intention \u2014 in the key of Cancer" : (i===13 ? "Arrive at the Buck Moon in Aquarius" : v)
+    }));
+    const sample = {
+      eyebrow:"Workbook 15 · Waxing half-cycle",
+      title1:"New Moon in Cancer", title2:"to Full Moon in Aquarius",
+      window:"Jul 14 \u2013 Jul 29, 2026",
+      quote:"In the dark of Cancer, you plant it. Under the Buck Moon in Aquarius, you'll see what grew.",
+      accent: ELEM_HUE["Air"], newHue: PHASE_HUE["new"], fullHue: PHASE_HUE["full"],
+      intentLead:"In the dark, before anything is visible, you decide what you are growing. Cancer colours this seed: nurturing, emotion, sanctuary.",
+      intentPrompts:[
+        {n:1,text:"What are you ready to begin \u2014 named plainly, in the key of Cancer?"},
+        {n:2,text:"Cancer favours the nurturing, intuitive, protective and emotional. Which will you lean on this half-cycle?"},
+        {n:3,text:"What will you stop doing to make room for it before the Buck Moon?"}
+      ],
+      reflectLead:"Full light shows you everything \u2014 what ripened, and what you can finally set down. Aquarius holds the harvest: innovation, community, freedom.",
+      reflectPrompts:[
+        {n:1,text:"Under the Buck Moon in Aquarius, what actually ripened \u2014 expected or not?"},
+        {n:2,text:"Where did you stay in tune with the intention, and where did you drift?"},
+        {n:3,text:"What are you ready to release now the moon is full?"}
+      ]
+    };
+
+    // ---- 96 matrix grid ----
+    const matrixRows = SIGN_ORDER.map(sign => ({
+      sign, signHue: ELEM_HUE[ELEM[sign]], element: ELEM[sign], flavor: FLAVOR[sign],
+      cells: PHASE_ORDER.map(ph => {
+        const active = (sign==="Cancer" && ph==="full");
+        return {
+          phase: ph, hue: PHASE_HUE[ph], op: active ? 1 : 0.5,
+          activeBg: active ? "rgba(31,125,136,0.12)" : "transparent",
+          activeRing: active ? "inset 0 0 0 2px var(--accent)" : "none"
+        };
+      })
+    }));
+    const matrixCols = PHASE_ORDER.map(ph => ({ phase: ph, hue: PHASE_HUE[ph] }));
+    const featured = [
+      { key:"Cancer × Full", tag:"chamomile and sea salt \u2014 radiant \u2014 a bowl of broth set on a kitchen table where everyone you love has already sat", hue:PHASE_HUE["full"] },
+      { key:"Aries × New", tag:"cayenne and adrenaline \u2014 whispered \u2014 a matchstrike held under the tongue, waiting to be named", hue:PHASE_HUE["new"] },
+      { key:"Pisces × Waning Crescent", tag:"sea glass and lavender fog \u2014 still \u2014 fog over the harbor, your edges generously dissolved into morning", hue:PHASE_HUE["waning-crescent"] }
+    ];
+
+    // ---- Persona sample ----
+    const persona = {
+      name: p.personName || "Sol Vega",
+      line:"Leo sun · Cancer moon · Scorpio rising \u2014 a Water-forward chart, tuned by the Moon.",
+      moonCell:"Your natal moon: Cancer in the Full \u2014 chamomile and sea salt, radiant.",
+      cards:[
+        {label:"Soul purpose", head:"Lead from feeling, not performance", body:"Your Leo sun wants the stage; your Cancer moon remembers the point was always to make people feel safe enough to shine too. The North Node asks you to build the room, not just fill it."},
+        {label:"Shadow work", head:"Stop testing the door you keep flooding", body:"Scorpio rising guards what your Cancer moon floods. The pattern: test loyalty, then punish the failure you engineered. Integration begins the moment you ask instead of scan."},
+        {label:"Gift to the world", head:"Private tenderness, made public warmth", body:"You turn quiet care into a climate other people can grow in. People leave your orbit braver and better fed \u2014 that is the gift, and it costs you nothing to give more of it."}
+      ],
+      planets:[
+        {glyph:"\u2609"+TS,name:"Sun in Leo", natal:"Warmth as leadership.", transit:"Sky in Aquarius \u2014 share the credit, widen the circle."},
+        {glyph:"\u263D"+TS,name:"Moon in Cancer", natal:"Safety is your first language.", transit:"Buck Moon \u2014 let yourself be seen needing something."},
+        {glyph:"\u263F"+TS,name:"Mercury in Virgo", natal:"Precise, useful speech.", transit:"Retro shadow \u2014 edit before you send."},
+        {glyph:"\u2640"+TS,name:"Venus in Cancer", natal:"Love that feeds.", transit:"Trine \u2014 say the tender thing out loud."}
+      ]
+    };
+
+    return {
+      themeClass: isDark ? "wb-dark" : "",
+      personName: p.personName || "Prepared for the cycle",
+      pageFootNote: (p.pageFootNote != null ? p.pageFootNote : "Program protocol · v1"),
+      programList, coverGlyphs, sample, sampleArc, matrixRows, matrixCols, featured, persona,
+      sz16:16, sz20:20, sz22:22, sz24:24, sz30:30, sz44:44
+    };
+  }
+}
+</script>
+</body>
+</html>
