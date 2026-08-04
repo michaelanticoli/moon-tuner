@@ -67,6 +67,7 @@ const Today = lazy(() => import("./pages/Today"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
+const Resources = lazy(() => import("./pages/Resources"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 // PhasecraftRoutes is a named export, so .then() is required by React.lazy
 const PhasecraftRoutes = lazy(() => import("@/phasecraft/PhasecraftRoutes").then(m => ({ default: m.PhasecraftRoutes })));
@@ -193,6 +194,8 @@ function AnimatedRoutes() {
 
           {/* ── Phase 3 — Digital Smudging (gated) ───────────────────── */}
           <Route path="/digital-smudging" element={PHASE_3_ENABLED ? <DigitalSmudging /> : <ComingSoon />} />
+
+          <Route path="/resources" element={<Resources />} />
 
           {/* ── Legal pages ─────────────────────────────────────────── */}
           <Route path="/terms" element={<Terms />} />

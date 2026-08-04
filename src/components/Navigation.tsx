@@ -51,6 +51,7 @@ const NAV_GROUPS: NavGroupData[] = [
     label: 'Products',
     items: [
       { label: 'Workbooks', href: '/workbooks', desc: 'Guided practice' },
+      { label: 'Resources', href: '/resources', desc: 'Downloads & reference materials' },
       { label: 'Offerings', href: '/offerings', desc: 'Reports & insight tools' },
       { label: 'Lunar Reports', href: '/lunar-reports', desc: 'Personal readings' },
       { label: 'Lunar Chaperone', href: '/lunar-chaperone', desc: 'Monthly guidance' },
