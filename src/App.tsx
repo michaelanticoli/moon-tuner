@@ -23,6 +23,8 @@ const Philosophy = lazy(() => import("./pages/Philosophy"));
 const Workbooks = lazy(() => import("./pages/Workbooks"));
 const WorkbookPreview = lazy(() => import("./pages/WorkbookPreview"));
 const LunarChaperone = lazy(() => import("./pages/LunarChaperone"));
+const Chaperone = lazy(() => import("./pages/Chaperone"));
+const Persona = lazy(() => import("./pages/Persona"));
 const LunarSystem = lazy(() => import("./pages/LunarSystem"));
 const LunarCipher = lazy(() => import("./pages/LunarCipher"));
 const LunarReports = lazy(() => import("./pages/LunarReports"));
