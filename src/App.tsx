@@ -23,6 +23,8 @@ const Philosophy = lazy(() => import("./pages/Philosophy"));
 const Workbooks = lazy(() => import("./pages/Workbooks"));
 const WorkbookPreview = lazy(() => import("./pages/WorkbookPreview"));
 const LunarChaperone = lazy(() => import("./pages/LunarChaperone"));
+const Chaperone = lazy(() => import("./pages/Chaperone"));
+const Persona = lazy(() => import("./pages/Persona"));
 const LunarSystem = lazy(() => import("./pages/LunarSystem"));
 const LunarCipher = lazy(() => import("./pages/LunarCipher"));
 const LunarReports = lazy(() => import("./pages/LunarReports"));
@@ -109,7 +111,8 @@ function AnimatedRoutes() {
           <Route path="/phasecraft/*" element={<PhasecraftRoutes />} />
           <Route path="/philosophy" element={<Philosophy />} />
           <Route path="/lunar-system" element={<LunarSystem />} />
-      <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
+          <Route path="/persona" element={<Persona />} />
+          <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
       <Route path="/current-moon-phase" element={<MoonPhaseToday />} />
       <Route path="/moon-cycle-today" element={<MoonPhaseToday />} />
       <Route path="/free-guide" element={<FreeGuide />} />
@@ -143,7 +146,7 @@ function AnimatedRoutes() {
           <Route path="/workbooks" element={PHASE_2_ENABLED ? <Workbooks /> : <ComingSoon />} />
           <Route path="/workbook-preview" element={PHASE_2_ENABLED ? <WorkbookPreview /> : <ComingSoon />} />
           <Route path="/lunar-chaperone" element={PHASE_2_ENABLED ? <LunarChaperone /> : <ComingSoon />} />
-          <Route path="/chaperone" element={PHASE_2_ENABLED ? <LunarChaperone /> : <ComingSoon />} />
+          <Route path="/chaperone" element={<Chaperone />} />
           <Route path="/lunar-cipher" element={PHASE_2_ENABLED ? <LunarCipher /> : <ComingSoon />} />
           <Route path="/cipher" element={PHASE_2_ENABLED ? <LunarCipher /> : <ComingSoon />} />
           <Route path="/offerings" element={PHASE_2_ENABLED ? <Offerings /> : <ComingSoon />} />
