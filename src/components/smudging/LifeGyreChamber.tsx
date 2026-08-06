@@ -71,6 +71,28 @@ export function LifeGyreChamber({ items, onComplete }: LifeGyreChamberProps) {
 
   return (
     <section className="gyre-chamber" aria-labelledby="gyre-title">
+      <motion.header
+        className="gyre-chamber__copy"
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.1 }}
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          backgroundColor: 'rgba(7, 8, 12, 0.85)',
+          backdropFilter: 'blur(8px)',
+          padding: '2rem',
+          marginBottom: '1.5rem',
+        }}
+      >
+        <p className="gyre-chamber__number">02 · THE LIFE GYRE</p>
+        <h1 id="gyre-title">Give the noise<br /><em>somewhere to move.</em></h1>
+        <p>
+          These are the things occupying your attention. Move through them slowly.
+          Press and hold to send a deeper resonance through the field.
+        </p>
+      </motion.header>
+
       <LifeGyre
         className="gyre-chamber__field"
         thoughts={thoughts}
@@ -88,20 +110,6 @@ export function LifeGyreChamber({ items, onComplete }: LifeGyreChamberProps) {
 
       <div className="gyre-chamber__veil" aria-hidden="true" />
 
-      <motion.header
-        className="gyre-chamber__copy"
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.1 }}
-      >
-        <p className="gyre-chamber__number">02 · THE LIFE GYRE</p>
-        <h1 id="gyre-title">Give the noise<br /><em>somewhere to move.</em></h1>
-        <p>
-          These are the things occupying your attention. Move through them slowly.
-          Press and hold to send a deeper resonance through the field.
-        </p>
-      </motion.header>
-
       <div className="gyre-chamber__clarity" aria-live="polite">
         <div className="gyre-chamber__clarity-label">
           <span>OPEN SPACE</span><strong>{clarity}%</strong>
@@ -113,10 +121,10 @@ export function LifeGyreChamber({ items, onComplete }: LifeGyreChamberProps) {
           {fieldUnavailable
             ? "The particle field is unavailable on this device."
             : ritualReady
-            ? "A clearing has opened."
-            : clarity >= CLEAR_THRESHOLD
-              ? "Remain here. Let the opening settle."
-              : "Move to smudge · hold to resonate"}
+              ? "A clearing has opened."
+              : clarity >= CLEAR_THRESHOLD
+                ? "Remain here. Let the opening settle."
+                : "Move to smudge · hold to resonate"}
         </small>
       </div>
 
