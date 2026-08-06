@@ -7,7 +7,7 @@ export interface BirthDataInput {
 }
 
 export interface CompendiumResponse {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const fetchCompendium = async (
