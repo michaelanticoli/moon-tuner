@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import ViteSitemap from "vite-plugin-sitemap";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -9,7 +10,37 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [
+    react(),
+    mode === "development" && componentTagger(),
+    ViteSitemap({
+      hostname: "https://www.moontuner.xyz",
+      dynamicRoutes: [
+        "/",
+        "/classic",
+        "/v3",
+        "/today",
+        "/about",
+        "/manifesto",
+        "/method",
+        "/philosophy",
+        "/the-moon",
+        "/lunar-system",
+        "/lunar-chaperone",
+        "/chaperone",
+        "/lunar-cipher",
+        "/cipher",
+        "/lunar-reports",
+        "/workbooks",
+        "/membership",
+        "/auth",
+        "/explore",
+        "/journal",
+        "/terms",
+        "/privacy",
+      ],
+    }),
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
