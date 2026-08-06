@@ -6,7 +6,7 @@ A lunar alignment system for tracking intention, energy, and momentum through th
 
 ## About Moontuner
 
-Moontuner is a lunar alignment system designed to help you live in phase with the Moon's natural cycles. It's not about predictions or horoscopes—it's about tracking intention, energy, and momentum through phasecraft.
+Moontuner is a lunar alignment system designed to help you live in phase with the Moon's natural cycles. It's not about predictions or horoscopes—it's about tracking intention, energy, and moment[...]
 
 ### Key Features
 
@@ -62,14 +62,14 @@ Set them in your Supabase project so `supabase/functions/subscribe-email/index.t
 
 ### Supabase Auth email verification requirements
 
-User signup in the app uses `supabase.auth.signUp(...)` from the browser (`src/contexts/AuthContext.tsx`). Verification email delivery depends on Supabase Auth configuration outside this repository.
+User signup in the app uses `supabase.auth.signUp(...)` from the browser (`src/contexts/AuthContext.tsx`). Verification email delivery depends on Supabase Auth configuration outside this repositor[...]
 
 Make sure your Supabase project has all of the following configured:
 
 - Auth email provider/SMTP settings enabled and valid (default Supabase mailer or custom SMTP).
 - Email confirmations enabled if you require verified emails before sign-in.
 - Site URL and redirect URLs include your deployed callback route (`/auth/callback`), for example `https://moontuner.xyz/auth/callback`.
-- Set `VITE_SITE_URL` in your deployed frontend environment to the same public origin allowlisted in Supabase (for example `https://moontuner.xyz`). This keeps signup, magic-link, and password-reset emails pointed at the canonical site instead of whichever preview domain a user happened to visit.
+- Set `VITE_SITE_URL` in your deployed frontend environment to the same public origin allowlisted in Supabase (for example `https://moontuner.xyz`). This keeps signup, magic-link, and password-res[...]
 
 Without valid Supabase Auth email configuration, signup may still return success on the client while verification messages are not delivered.
 
@@ -116,18 +116,16 @@ Or connect your GitHub repository to Vercel:
 2. Import your GitHub repository
 3. Vercel will automatically detect the configuration and deploy
 
-### Option 3: Deploy to Netlify
+### Option 3: Deploy to Hostinger
 
-This project includes a `netlify.toml` configuration file for easy deployment to Netlify.
+Host the built site on Hostinger by uploading the production output or using Hostinger's Git/SFTP integrations.
 
-1. Install Netlify CLI: `npm i -g netlify-cli`
-2. Run `netlify deploy --prod` in the project directory
-3. Follow the prompts to deploy
+1. Build the project locally: `npm run build`
+2. Upload the contents of the generated `dist/` directory to your Hostinger site (for example, to `public_html`) via the Hostinger File Manager, SFTP, or Git integration.
+3. In your Hostinger control panel, set the necessary environment variables (for example: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_SITE_URL`, `VITE_SCHOOL_URL`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`).
+4. Confirm your domain and SSL settings in Hostinger and verify the site.
 
-Or connect your GitHub repository to Netlify:
-1. Visit [netlify.com](https://netlify.com)
-2. Import your GitHub repository
-3. Netlify will automatically detect the configuration and deploy
+This approach works for any static host (Hostinger, Netlify, Vercel, etc.) — you just need to upload the built files and configure environment variables where the host provides them.
 
 ### Manual Build
 
