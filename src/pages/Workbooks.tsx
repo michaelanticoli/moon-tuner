@@ -503,7 +503,7 @@ const Workbooks = () => {
                   Download all 26 workbooks—24 archetypal cycles plus 2 eclipse portal specials—as a complete bundle.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a href="https://lunar-chaperone.onrender.com" target="_blank" rel="noopener noreferrer">
+                  <a href="https://moontuner-chaperone.vercel.app/" target="_blank" rel="noopener noreferrer">
                     <Button variant="gold" size="lg">
                       Get the Complete Series
                       <ArrowRight className="ml-2 w-4 h-4" />

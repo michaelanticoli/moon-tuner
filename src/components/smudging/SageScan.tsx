@@ -1,72 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { SMUDGING_PATTERNS } from "./content";
 
 interface SageScanProps {
   onComplete: (selected: string[]) => void;
 }
-
-const SCAN_ITEMS = [
-  {
-    id: "notifications",
-    label: "Notification overflow",
-    desc: "Alerts interrupting focus without adding real value",
-    icon: "◎",
-  },
-  {
-    id: "feeds",
-    label: "Mindless scrolling",
-    desc: "Feeds consumed without intention or return",
-    icon: "◈",
-  },
-  {
-    id: "subscriptions",
-    label: "Forgotten subscriptions",
-    desc: "Services quietly drawing energy and attention",
-    icon: "◇",
-  },
-  {
-    id: "inbox",
-    label: "Inbox weight",
-    desc: "Unread messages creating background pressure",
-    icon: "◻",
-  },
-  {
-    id: "tabs",
-    label: "Phantom tabs",
-    desc: "Kept open out of obligation, never revisited",
-    icon: "◈",
-  },
-  {
-    id: "apps",
-    label: "Dormant apps",
-    desc: "Digital clutter collecting in silence",
-    icon: "◇",
-  },
-  {
-    id: "comparison",
-    label: "Comparison traps",
-    desc: "Spaces that diminish more than they expand",
-    icon: "◎",
-  },
-  {
-    id: "reactivity",
-    label: "Habitual checking",
-    desc: "Reaching for a device without purpose",
-    icon: "◻",
-  },
-  {
-    id: "news",
-    label: "Passive news loops",
-    desc: "Consuming updates that create anxiety, not clarity",
-    icon: "◈",
-  },
-  {
-    id: "drafts",
-    label: "Unfinished drafts",
-    desc: "Messages and projects carrying unresolved weight",
-    icon: "◇",
-  },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -144,7 +82,7 @@ export function SageScan({ onComplete }: SageScanProps) {
         animate="visible"
         className="grid grid-cols-1 sm:grid-cols-2 max-w-2xl w-full gap-3 mb-14"
       >
-        {SCAN_ITEMS.map((item) => {
+        {SMUDGING_PATTERNS.map((item) => {
           const isSelected = selected.has(item.id);
           return (
             <motion.button
@@ -180,7 +118,7 @@ export function SageScan({ onComplete }: SageScanProps) {
                     {item.label}
                   </p>
                   <p className="text-xs leading-relaxed" style={{ color: "hsl(22 8% 35%)" }}>
-                    {item.desc}
+                    {item.description}
                   </p>
                 </div>
               </div>

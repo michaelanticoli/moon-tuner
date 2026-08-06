@@ -38,6 +38,7 @@ export default defineConfig(({ mode }) => ({
             "@radix-ui/react-tooltip",
           ],
           "vendor-motion": ["framer-motion"],
+          "vendor-three": ["three"],
           "vendor-charts": ["recharts"],
           "vendor-supabase": ["@supabase/supabase-js"],
           "vendor-tone": ["tone"],

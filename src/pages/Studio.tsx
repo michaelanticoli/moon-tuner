@@ -30,6 +30,7 @@ import { toast } from "sonner";
 import { CreatorNarrationStudio } from "@/components/studio/CreatorNarrationStudio";
 
 import { isCreator } from "@/lib/creatorAccess";
+import { useAdminAccess } from "@/hooks/useAdminAccess";
 
 interface Tile {
   to: string;
@@ -80,6 +81,7 @@ const STANDALONE_TILES: Tile[] = [
 
 export default function Studio() {
   const { user, loading } = useAuth();
+  const { isAdmin } = useAdminAccess();
   const navigate = useNavigate();
   const { birth, update } = useSharedBirth();
   const [form, setForm] = useState(birth);
@@ -98,7 +100,7 @@ export default function Studio() {
     );
   }
 
-  // Studio is open to all signed-in users (creator allowlist kept only as a label).
+  // Studio is open to all signed-in users; admin/creator access unlocks creator-only tools.
   void isCreator;
 
   const ready = isCompleteBirth(form);
@@ -319,7 +321,7 @@ export default function Studio() {
             </div>
           </section>
 
-          {isCreator(user?.email) && <CreatorNarrationStudio />}
+          {(isAdmin || isCreator(user?.email)) && <CreatorNarrationStudio />}
 
           {/* Standalone — no birth data */}
           <section>

@@ -234,7 +234,7 @@ export function SmudgingHero({ onBegin }: SmudgingHeroProps) {
           className="mt-7 text-xs tracking-widest"
           style={{ color: "hsl(22 8% 28%)" }}
         >
-          5 chambers · ~10 minutes
+          6 chambers · ~10 minutes
         </motion.p>
       </motion.div>
     </section>

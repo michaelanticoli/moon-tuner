@@ -1,21 +1,33 @@
+## Ship the "Spiral" landing page
 
+Drop in your uploaded `SpiralLanding-2.tsx` as the new homepage, add a Dusk-palette variant of the live lunar status, and keep the current landing accessible at `/classic`.
 
-# Plan: Integrate Lunar Datapoints Knowledge Base
+### Files
 
-## Status: Implementation Complete ✅
+**Create `src/pages/SpiralLanding.tsx`**
+- Ported from `user-uploads://SpiralLanding-2.tsx` (no changes).
+- Replaces the imported `LunarLiveStatus` with the new Dusk-palette `DuskLiveStatus` so the "Sky, Right Now" section blends into the dusk surfaces around it.
 
-### Completed Steps:
-1. ✅ Created `lunar_datapoints` table with RLS (public SELECT only)
-2. ✅ Copied CSV to `public/data/lunar_datapoints.csv`
-3. ✅ Built `ingest-lunar-datapoints` edge function (deduplication + auto-categorization)
-4. ✅ Built `generate-cycle-insight` edge function (Lovable AI gateway integration)
-5. ✅ Created `src/data/lunarDatapoints.ts` — typed helpers & query functions
-6. ✅ Created `src/components/CycleInsightCard.tsx` — reusable fact card
-7. ✅ Created `src/components/DeepDiveSection.tsx` — expandable accordion with AI synthesis
-8. ✅ Created `src/components/school/SchoolCycles.tsx` — "Cosmic Cycles" curriculum module
-9. ✅ Integrated into `LunarSystem.tsx` — Synodic Month + Saros deep dives
-10. ✅ Integrated into `MoontunerSchool.tsx` — Cosmic Cycles section
-11. ✅ Integrated into `CipherDayDetail.tsx` — Cycle Context section
+**Create `src/components/dusk/DuskLiveStatus.tsx`**
+- New, self-contained component. Reads the exact same fields from `useMoonPhase()` as `LunarLiveStatus` (`astrological.phaseName / energy / theme / quality / frequencyHz`, `astronomical.moonSign / hoursInSign`).
+- Renders in the Dusk palette: `dusk-surface` shell, hairline dividers, ivory/gold typography, `dusk-serif` headings, mono eyebrow labels, `ZodiacGlyph` tinted with a subtle gold accent. Same live "pulse" dot in gold instead of teal.
+- Preserves the four-stat grid (Phase / Transit / Energy / Time Remaining) and three-panel detail row (Phase Theme + Hz / Zodiac Influence / Body Activation), matched to the surrounding sections' rhythm.
+- The shared `LunarLiveStatus` used elsewhere is left untouched.
 
-### Remaining:
-- Run the ingestion edge function to populate the database with CSV data
+**Edit `src/App.tsx`**
+- Add `const SpiralLanding = lazy(() => import("./pages/SpiralLanding"));` next to the other lazy imports.
+- Change route `/` to render `<SpiralLanding />`.
+- Add a new route `/classic` rendering the existing `<Index />` so the previous homepage is still reachable.
+
+### SEO
+`SpiralLanding` already sets `<SEOHead title="Moontuner — You're Not Behind. You're On a Spiral." … canonical="/" jsonLd={websiteSchema()} />`, so canonical + title/description update automatically when it becomes `/`.
+
+### Not doing (unless you ask)
+- No edits to the shared `LunarLiveStatus` (still used on other pages).
+- No changes to `DuskHero` / `TodaysDirective` / `HarmonicProfileTeaser` (still rendered by `/classic`).
+- No new dependencies.
+
+### Verify after build
+- `/` shows the spiral hero, then the Dusk-styled "Sky, Right Now" card with live phase/sign/Hz.
+- `/classic` still renders the previous homepage.
+- Nav links to `/method`, `/phasecraft`, `/lunar-cipher`, etc. still work.
