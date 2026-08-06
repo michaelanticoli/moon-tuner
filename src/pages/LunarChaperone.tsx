@@ -6,18 +6,11 @@ import { PageTransition } from "@/components/PageTransition";
 import { SEOHead } from "@/components/SEOHead";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
-<<<<<<< HEAD
-import { ArrowRight, ArrowLeft, Lock } from "lucide-react";
-import { useMembership } from "@/contexts/MembershipContext";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/lib/supabase";
-=======
 import { ArrowRight, ArrowLeft, Check, Lock } from "lucide-react";
 import { useMembership } from "@/contexts/MembershipContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { openStripeCheckout } from "@/lib/stripeLinks";
->>>>>>> 90261e22ba75616a9da1bdefb1022a4f01032b1b
 import {
   WORKBOOKS, SIGNS, ELEMENT_HEX, getWorkbook,
   resolveWorkbook, resolveEclipseWorkbook, type Workbook,
@@ -72,10 +65,7 @@ const LunarChaperone = () => {
   const { tier } = useMembership();
   const isMember = tier !== "free";
   const { user } = useAuth();                  // for cross-device journaling
-<<<<<<< HEAD
-=======
   const [hasPurchased, setHasPurchased] = useState(false);
->>>>>>> 90261e22ba75616a9da1bdefb1022a4f01032b1b
 
   const sky = useMemo(() => resolveWorkbook(new Date()), []);
   const currentN = sky.workbook.n;
@@ -87,9 +77,6 @@ const LunarChaperone = () => {
   const backToLibrary = () => setParams({});
   useEffect(() => { if (active) window.scrollTo({ top: 0 }); }, [active]);
 
-<<<<<<< HEAD
-  const canView = active ? isMember || isFreeToView(active, currentN) : true;
-=======
   useEffect(() => {
     if (!user) {
       setHasPurchased(false);
@@ -114,7 +101,6 @@ const LunarChaperone = () => {
   const ownsProgram = isMember || hasPurchased;
   const canView = active ? ownsProgram || isFreeToView(active, currentN) : true;
   const purchase = () => openStripeCheckout("lunar-chaperone");
->>>>>>> 90261e22ba75616a9da1bdefb1022a4f01032b1b
 
   // ── Journaling: Supabase when signed in, localStorage fallback ────────────
   const [entries, setEntries] = useState<Record<string, string>>({});
@@ -130,7 +116,7 @@ const LunarChaperone = () => {
           .eq("workbook", active.n);
         if (!cancelled && data) {
           const m: Record<string, string> = {};
-          data.forEach((r: { field: string; value: string }) => { m[r.field] = r.value; });
+          data.forEach((r: any) => { m[r.field] = r.value; });
           setEntries(m);
         }
       } else {
@@ -185,10 +171,6 @@ const LunarChaperone = () => {
                     <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl text-foreground mb-6 leading-[1.05]">
                       The Lunar <span className="italic text-accent">Chaperone</span>
                     </h1>
-<<<<<<< HEAD
-                    <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-10">
-                      Twenty-four half-moon workbooks, one continuous loop. Astrology you live — not a fate you hide behind.
-=======
                     <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-8">
                       Turn each moon phase into a clear, grounded practice. Follow the current sky through 24 guided workbooks with reflection prompts, somatic exercises, and integration rituals.
                     </p>
@@ -202,7 +184,6 @@ const LunarChaperone = () => {
                     </div>
                     <p className="text-xs text-muted-foreground/60 mb-12">
                       One payment · lifetime access · no subscription
->>>>>>> 90261e22ba75616a9da1bdefb1022a4f01032b1b
                     </p>
                     <div className="node-card border-accent/30 max-w-2xl mx-auto text-left">
                       <div className="h-1.5 rounded-full mb-5" style={{ background: gradFor(sky.workbook) }} />
@@ -219,11 +200,6 @@ const LunarChaperone = () => {
                   </div>
                 </ScrollReveal>
               </section>
-<<<<<<< HEAD
-
-              <section className="container mx-auto px-6 lg:px-12 py-12 lg:py-20 border-t border-border/30">
-                <ScrollReveal>
-=======
 
               <section className="border-y border-border/30 bg-card/20">
                 <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-20">
@@ -298,7 +274,6 @@ const LunarChaperone = () => {
 
               <section className="container mx-auto px-6 lg:px-12 py-12 lg:py-20 border-t border-border/30">
                 <ScrollReveal>
->>>>>>> 90261e22ba75616a9da1bdefb1022a4f01032b1b
                   <div className="text-center mb-14">
                     <span className="system-label block mb-4">The full loop</span>
                     <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-foreground mb-4">
@@ -306,21 +281,13 @@ const LunarChaperone = () => {
                     </h2>
                     <p className="text-muted-foreground max-w-2xl mx-auto">
                       Every full moon sits opposite its new moon. The loop never drifts — and it never ends.
-<<<<<<< HEAD
-                      {!isMember && " Open the current cycle free; unlock the whole year with membership."}
-=======
                       {!ownsProgram && " Open the current cycle free; purchase once to unlock the whole year."}
->>>>>>> 90261e22ba75616a9da1bdefb1022a4f01032b1b
                     </p>
                   </div>
                 </ScrollReveal>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                   {WORKBOOKS.map((w, i) => {
-<<<<<<< HEAD
-                    const locked = !isMember && !isFreeToView(w, currentN);
-=======
                     const locked = !ownsProgram && !isFreeToView(w, currentN);
->>>>>>> 90261e22ba75616a9da1bdefb1022a4f01032b1b
                     return (
                       <ScrollReveal key={w.n} delay={(i % 3) * 0.05}>
                         <button onClick={() => open(w.n)} className="node-card h-full w-full text-left relative group hover:border-accent/40 transition-colors">
@@ -340,16 +307,10 @@ const LunarChaperone = () => {
                     );
                   })}
                 </div>
-<<<<<<< HEAD
-                {!isMember && (
-                  <div className="text-center mt-12">
-                    <Link to="/membership"><Button variant="gold" size="lg">Unlock all 24 workbooks <ArrowRight className="ml-2 w-4 h-4" /></Button></Link>
-=======
                 {!ownsProgram && (
                   <div className="text-center mt-12">
                     <Button variant="gold" size="lg" onClick={purchase}>Unlock all 24 for $97 <ArrowRight className="ml-2 w-4 h-4" /></Button>
                     <p className="text-xs text-muted-foreground/60 mt-3">One payment · lifetime access · no subscription</p>
->>>>>>> 90261e22ba75616a9da1bdefb1022a4f01032b1b
                     <p className="text-xs text-muted-foreground/60 mt-3">Eclipse charge this year: WB {eclipse.n}. {eclipse.note}</p>
                   </div>
                 )}
@@ -372,15 +333,9 @@ const LunarChaperone = () => {
                 {!canView ? (
                   <div className="node-card border-accent/30 text-center py-12">
                     <Lock className="w-10 h-10 text-accent mx-auto mb-5" />
-<<<<<<< HEAD
-                    <h3 className="font-serif text-2xl text-foreground mb-3">A members' workbook</h3>
-                    <p className="text-muted-foreground max-w-md mx-auto mb-8">The current cycle (WB {currentN}) is always free. Unlock the full 24-workbook loop, the somatic protocols, and cross-device journaling with membership.</p>
-                    <Link to="/membership"><Button variant="gold" size="lg">Become a member <ArrowRight className="ml-2 w-4 h-4" /></Button></Link>
-=======
                     <h3 className="font-serif text-2xl text-foreground mb-3">Part of the complete program</h3>
                     <p className="text-muted-foreground max-w-md mx-auto mb-8">The current cycle (WB {currentN}) is always free. Get lifetime access to all 24 workbooks, somatic protocols, and saved reflections for a single $97 payment.</p>
                     <Button variant="gold" size="lg" onClick={purchase}>Get lifetime access — $97 <ArrowRight className="ml-2 w-4 h-4" /></Button>
->>>>>>> 90261e22ba75616a9da1bdefb1022a4f01032b1b
                   </div>
                 ) : sections && (
                   <div className="space-y-10">
