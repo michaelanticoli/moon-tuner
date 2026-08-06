@@ -130,7 +130,7 @@ const LunarChaperone = () => {
           .eq("workbook", active.n);
         if (!cancelled && data) {
           const m: Record<string, string> = {};
-          data.forEach((r: any) => { m[r.field] = r.value; });
+          data.forEach((r: { field: string; value: string }) => { m[r.field] = r.value; });
           setEntries(m);
         }
       } else {

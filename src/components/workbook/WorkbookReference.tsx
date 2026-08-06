@@ -19,7 +19,7 @@ import {
   type MoonRitual
 } from "@/data/chaperoneRituals";
 import { getLoreForSign, getMythsForPhase, lunarEphemera } from "@/data/chaperoneLore";
-import { ZodiacGlyph } from "@/components/ZodiacGlyph";
+import { ZodiacGlyph, signNameToKey } from "@/components/ZodiacGlyph";
 import { elementInfo, aspectMusicalData, signMusicalModes } from "@/utils/harmonicWisdom";
 
 interface WorkbookReferenceProps {
@@ -309,7 +309,7 @@ const ZodiacCard = ({ zodiac, label }: { zodiac: ZodiacCorrespondence; label: st
   <div className="node-card">
     <span className="system-label block mb-2">{label}</span>
     <div className="flex items-center gap-3 mb-4">
-      <ZodiacGlyph sign={zodiac.sign.toLowerCase() as any} size="2xl" className="text-accent" />
+      <ZodiacGlyph sign={signNameToKey[zodiac.sign]} size="2xl" className="text-accent" />
       <div>
         <h4 className="font-serif text-xl text-foreground">{zodiac.sign}</h4>
         <p className="text-xs text-muted-foreground">{zodiac.element} · {zodiac.modality} · {zodiac.ruler}</p>

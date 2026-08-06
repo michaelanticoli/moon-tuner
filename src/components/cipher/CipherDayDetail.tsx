@@ -52,7 +52,13 @@ function formatTime(d: Date): string {
   return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZoneName: "short" });
 }
 
-function CycleContextSection({ phaseData, dayEvents }: { phaseData: any; dayEvents?: DayEvents | null }) {
+function CycleContextSection({
+  phaseData,
+  dayEvents,
+}: {
+  phaseData: ReturnType<typeof getMoonPhase2026>;
+  dayEvents?: DayEvents | null;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [datapoints, setDatapoints] = useState<LunarDatapoint[]>([]);
   const [aiInsight, setAiInsight] = useState<string | null>(null);

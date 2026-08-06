@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://flrojnnbpankkrouthyz.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "moontuner-mcp",
+      "version": "0.1.0",
+      "title": "Moontuner"
+    },
+    "tools": [
+      {
+        "name": "get_current_moon_phase",
+        "title": "Get current moon phase",
+        "description": "Return the current moon phase angle, phase name, illumination percentage, and Moon zodiac sign for right now (UTC).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_my_profile",
+        "title": "Get my Moontuner profile",
+        "description": "Return the signed-in user's Moontuner profile: display name, email, birth date/time/location, and preferences.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_natal_reports",
+        "title": "List my natal reports",
+        "description": "List the signed-in user's Moontuner natal reports (astro-harmonic charts). Returns id, name, birth details, sun/moon/ascendant, and any generated audio/PDF URLs.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "limit": {
+              "description": "Maximum reports to return. Default 20.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_purchases",
+        "title": "List my Moontuner purchases",
+        "description": "List the signed-in user's Moontuner purchases: product type/label, amount, status, and fulfillment date.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "limit": {
+              "description": "Maximum purchases to return. Default 25.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
