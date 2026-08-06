@@ -58,7 +58,7 @@ but you should verify the `tier` column was added by Step 2 above.
 
 ## Environment Variables Checklist
 
-Ensure the following are set in your deployment environment (e.g. Vercel/Netlify):
+Ensure the following are set in your deployment environment (e.g. Lovable/Hostinger/Vercel):
 
 | Variable | Required | Notes |
 |---|---|---|
