@@ -8,7 +8,7 @@ import { ZodiacGlyph } from "@/components/ZodiacGlyph";
 import { ArrowUpRight, BookOpen, Brain, Layers, Target, Sparkles, Clock, Compass } from "lucide-react";
 import { SchoolCycles } from "@/components/school/SchoolCycles";
 
-const SCHOOL_URL = "https://moontuner-school.netlify.app";
+const SCHOOL_URL = import.meta.env.VITE_SCHOOL_URL ?? "https://moontuner-school.lovable.dev";
 
 const curriculum = [
   { icon: BookOpen, title: "Foundations", desc: "Master the 8 phases and 12 signs individually" },

@@ -90,7 +90,7 @@ function extractPhaseSign(summary: string): string | undefined {
 
 function cleanTitle(summary: string): string {
   // Remove leading emoji clusters
-  return summary.replace(/^[\p{Emoji}\p{Emoji_Component}\s♈♉♊♋♌♍♎♏♐♑♒♓✦💫🌙🌕🌑🌓🌗🌿🕯️⚡🔥🌊💎🌸☀️]+/u, "").trim();
+  return summary.replace(/^[^\p{L}\p{N}]+/u, "").trim();
 }
 
 function extractMoonSign(categories: string[]): string | undefined {

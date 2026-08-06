@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Activity, MapPin, Zap, Clock, Sparkles, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useMoonPhase } from "@/hooks/useMoonPhase";
-import { ZodiacGlyph } from "@/components/ZodiacGlyph";
+import { ZodiacGlyph, type ZodiacGlyphProps } from "@/components/ZodiacGlyph";
 import type { ZodiacSign } from "@/data/lunar2026Data";
 
 /**
@@ -18,7 +18,7 @@ import type { ZodiacSign } from "@/data/lunar2026Data";
 
 const ZODIAC_META: Record<
   ZodiacSign,
-  { signKey: string; element: "Fire" | "Earth" | "Air" | "Water"; body: string; ruler: string; quality: string }
+  { signKey: ZodiacGlyphProps["sign"]; element: "Fire" | "Earth" | "Air" | "Water"; body: string; ruler: string; quality: string }
 > = {
   Aries:       { signKey: "aries",       element: "Fire",  body: "Head & Brain",           ruler: "Mars",    quality: "Cardinal" },
   Taurus:      { signKey: "taurus",      element: "Earth", body: "Throat & Neck",          ruler: "Venus",   quality: "Fixed"    },
@@ -109,7 +109,7 @@ export function DuskLiveStatus() {
               <p className="dusk-ivory text-[1rem] flex items-center gap-2 leading-snug">
                 {showGlyph && (
                   <span style={{ color: tint, display: "inline-flex" }}>
-                    <ZodiacGlyph sign={meta.signKey as any} size="md" />
+                    <ZodiacGlyph sign={meta.signKey} size="md" />
                   </span>
                 )}
                 <span>{value}</span>
@@ -154,7 +154,7 @@ export function DuskLiveStatus() {
             >
               <div className="flex items-center gap-3 mb-2">
                 <span style={{ color: tint, display: "inline-flex" }}>
-                  <ZodiacGlyph sign={meta.signKey as any} size="xl" />
+                  <ZodiacGlyph sign={meta.signKey} size="xl" />
                 </span>
                 <div>
                   <p className="dusk-ivory font-medium" style={{ color: tint }}>

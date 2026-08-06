@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-interface MoonPhaseGlyphProps {
+export interface MoonPhaseGlyphProps {
   phase: "new" | "waxing-crescent" | "first-quarter" | "waxing-gibbous" | "full" | "waning-gibbous" | "last-quarter" | "waning-crescent";
   size?: "sm" | "md" | "lg" | "xl" | number;
   className?: string;

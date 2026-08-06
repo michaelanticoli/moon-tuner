@@ -23,6 +23,8 @@ const Philosophy = lazy(() => import("./pages/Philosophy"));
 const Workbooks = lazy(() => import("./pages/Workbooks"));
 const WorkbookPreview = lazy(() => import("./pages/WorkbookPreview"));
 const LunarChaperone = lazy(() => import("./pages/LunarChaperone"));
+const Chaperone = lazy(() => import("./pages/Chaperone"));
+const Persona = lazy(() => import("./pages/Persona"));
 const LunarSystem = lazy(() => import("./pages/LunarSystem"));
 const LunarCipher = lazy(() => import("./pages/LunarCipher"));
 const LunarReports = lazy(() => import("./pages/LunarReports"));
@@ -46,6 +48,8 @@ const CazimiPunchcard = lazy(() => import("./pages/CazimiPunchcard"));
 const SpacetimePrinter = lazy(() => import("./pages/SpacetimePrinter"));
 const HarmonicProfile = lazy(() => import("./pages/HarmonicProfile"));
 const AuthCallback = lazy(() => import("./pages/AuthCallback"));
+const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
+
 const DigitalSmudging = lazy(() => import("./pages/DigitalSmudging"));
 const Offerings = lazy(() => import("./pages/Offerings"));
 const Journal = lazy(() => import("./pages/Journal"));
@@ -65,6 +69,7 @@ const Today = lazy(() => import("./pages/Today"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
+const Resources = lazy(() => import("./pages/Resources"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 // PhasecraftRoutes is a named export, so .then() is required by React.lazy
 const PhasecraftRoutes = lazy(() => import("@/phasecraft/PhasecraftRoutes").then(m => ({ default: m.PhasecraftRoutes })));
@@ -106,7 +111,8 @@ function AnimatedRoutes() {
           <Route path="/phasecraft/*" element={<PhasecraftRoutes />} />
           <Route path="/philosophy" element={<Philosophy />} />
           <Route path="/lunar-system" element={<LunarSystem />} />
-      <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
+          <Route path="/persona" element={<Persona />} />
+          <Route path="/moon-phase-today" element={<MoonPhaseToday />} />
       <Route path="/current-moon-phase" element={<MoonPhaseToday />} />
       <Route path="/moon-cycle-today" element={<MoonPhaseToday />} />
       <Route path="/free-guide" element={<FreeGuide />} />
@@ -116,6 +122,8 @@ function AnimatedRoutes() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/auth/reset-password" element={<AuthResetPassword />} />
+          <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+
           <Route
             path="/dashboard"
             element={
@@ -138,7 +146,7 @@ function AnimatedRoutes() {
           <Route path="/workbooks" element={PHASE_2_ENABLED ? <Workbooks /> : <ComingSoon />} />
           <Route path="/workbook-preview" element={PHASE_2_ENABLED ? <WorkbookPreview /> : <ComingSoon />} />
           <Route path="/lunar-chaperone" element={PHASE_2_ENABLED ? <LunarChaperone /> : <ComingSoon />} />
-          <Route path="/chaperone" element={PHASE_2_ENABLED ? <LunarChaperone /> : <ComingSoon />} />
+          <Route path="/chaperone" element={<Chaperone />} />
           <Route path="/lunar-cipher" element={PHASE_2_ENABLED ? <LunarCipher /> : <ComingSoon />} />
           <Route path="/cipher" element={PHASE_2_ENABLED ? <LunarCipher /> : <ComingSoon />} />
           <Route path="/offerings" element={PHASE_2_ENABLED ? <Offerings /> : <ComingSoon />} />
@@ -189,6 +197,8 @@ function AnimatedRoutes() {
 
           {/* ── Phase 3 — Digital Smudging (gated) ───────────────────── */}
           <Route path="/digital-smudging" element={PHASE_3_ENABLED ? <DigitalSmudging /> : <ComingSoon />} />
+
+          <Route path="/resources" element={<Resources />} />
 
           {/* ── Legal pages ─────────────────────────────────────────── */}
           <Route path="/terms" element={<Terms />} />

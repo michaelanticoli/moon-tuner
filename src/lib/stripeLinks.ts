@@ -9,7 +9,7 @@ export const STRIPE_LINKS = {
   // One-time digital products — moontuner Stripe account, each redirects to /<product>?paid=true
   "lunar-arc":         "https://buy.stripe.com/00w8wO44u4gy9mL4s92Ji0a",
   // Astro-Harmonic — moontuner Stripe account, redirects to /quantumelodic?paid=true
-  "astro-harmonic":    "https://buy.stripe.com/aFa3cucB09AS7eD6Ah2Ji09",
+  "astro-harmonic":    "https://buy.stripe.com/6oU3cua6S5aQayv5axe7m0d",
   "cipher-calendar":   "https://buy.stripe.com/4gM7sKfNc00i0Qf9Mt2Ji0b",
   "phasecraft":        "https://buy.stripe.com/00waEW44ufZg8iH8Ip2Ji0c",
   "lunar-chaperone":   "https://buy.stripe.com/eVq4gy8kKaEWfL9e2J2Ji0d",
