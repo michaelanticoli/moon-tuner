@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Moon, Loader2, AlertCircle } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import {
+  primarySupabase as supabase,
+} from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { sanitizeRedirectPath } from "@/lib/authRedirect";
 
