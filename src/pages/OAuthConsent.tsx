@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import {
+  primarySupabase as supabase,
+} from "@/integrations/supabase/client";
 
 // Minimal typed wrapper for the beta supabase.auth.oauth namespace.
 type OAuthDetails = {

@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session, AuthError } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import {
+  primarySupabase as supabase,
+} from "@/integrations/supabase/client";
 import { buildAuthCallbackUrl } from '@/lib/authRedirect';
 
 interface AuthContextType {

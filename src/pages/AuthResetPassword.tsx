@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/lib/supabase";
+import {
+  primarySupabase as supabase,
+} from "@/integrations/supabase/client";
 import { AlertCircle, ArrowRight, Loader2, Lock, Moon } from "lucide-react";
 
 const MIN_PASSWORD_LENGTH = 6;
