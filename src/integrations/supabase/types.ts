@@ -523,6 +523,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      claim_gift: { Args: { _claim_code: string }; Returns: string }
       get_user_id_by_email: {
         Args: { email_input: string }
         Returns: {

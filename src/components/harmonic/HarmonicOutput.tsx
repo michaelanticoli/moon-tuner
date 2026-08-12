@@ -143,7 +143,7 @@ export function HarmonicOutput({ archetype, onRestart }: HarmonicOutputProps) {
       <div className="max-w-4xl mx-auto px-6 lg:px-12 pt-24">
         <ProfileSection label="Your Harmonic Archetype">
           <h2 className="dusk-serif text-3xl mb-4">{archetype.title}</h2>
-          <p className="text-muted-foreground mb-6">{archetype.description}</p>
+          <p className="text-muted-foreground mb-6">{archetype.tagline}</p>
           <div className="flex gap-3">
             <button onClick={onRestart} className="dusk-btn dusk-btn-ghost">Start over</button>
             <Link to="/persona" className="dusk-btn dusk-btn-primary">Open Persona Edition</Link>

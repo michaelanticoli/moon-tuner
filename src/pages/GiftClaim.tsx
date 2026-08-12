@@ -61,65 +61,40 @@ export default function GiftClaim() {
     setErrorMsg(null);
 
     try {
-      // Look up the gift by claim_code
-      const { data: gift, error: fetchErr } = await supabase
-        .from('gifts')
-        .select('*')
-        .eq('claim_code', trimmed)
-        .single();
+      // Claim is validated entirely server-side (recipient identity, paid status,
+      // expiry and single-use are enforced inside the database function).
+      const { data, error } = await supabase.rpc('claim_gift', { _claim_code: trimmed });
 
-      if (fetchErr || !gift) {
+      if (error) {
         setStatus('error');
         return;
       }
 
-      if (gift.status === 'claimed') {
-        setStatus('already_claimed');
-        return;
+      switch (data) {
+        case 'success':
+          setStatus('success');
+          break;
+        case 'already_claimed':
+          setStatus('already_claimed');
+          break;
+        case 'expired':
+          setStatus('expired');
+          break;
+        case 'needs_auth':
+          setStatus('needs_auth');
+          break;
+        case 'not_paid':
+          setStatus('error');
+          setErrorMsg('This gift hasn\'t been completed yet. Ask the sender to check their payment.');
+          break;
+        default:
+          setStatus('error');
       }
-
-      if (gift.status === 'expired') {
-        setStatus('expired');
-        return;
-      }
-
-      if (gift.expires_at && new Date(gift.expires_at) < new Date()) {
-        // Mark as expired and surface it
-        await supabase.from('gifts').update({ status: 'expired' }).eq('id', gift.id);
-        setStatus('expired');
-        return;
-      }
-
-      if (gift.status !== 'paid') {
-        // Pending — not yet purchased
-        setStatus('error');
-        setErrorMsg('This gift hasn\'t been completed yet. Ask the sender to check their payment.');
-        return;
-      }
-
-      // Claim it — mark as claimed and link to this user
-      const { error: claimErr } = await supabase
-        .from('gifts')
-        .update({
-          status: 'claimed',
-          recipient_user_id: user.id,
-          claimed_at: new Date().toISOString(),
-        })
-        .eq('id', gift.id)
-        .eq('status', 'paid'); // idempotency guard
-
-      if (claimErr) {
-        setStatus('error');
-        return;
-      }
-
-      // If it's a membership gift, the backend (edge function) will activate it.
-      // Surface a success state immediately while the backend handles activation.
-      setStatus('success');
     } catch {
       setStatus('error');
     }
   };
+
 
   const isResolved = ['success', 'already_claimed', 'expired', 'error'].includes(status);
   const copy = STATUS_COPY[status];

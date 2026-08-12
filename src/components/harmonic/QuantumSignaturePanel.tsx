@@ -110,7 +110,7 @@ export function QuantumSignaturePanel({
     if (!analysis) return;
     setMidiLoading(true);
     try {
-      await downloadNatalMidi(analysis, chartName ?? form.name ?? "natal_chart");
+      await downloadNatalMidi(analysis, chartName ?? "natal_chart");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to download MIDI");
     } finally {
