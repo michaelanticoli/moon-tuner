@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Arrival Rite — MOONtuner Method</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Barlow+Condensed:wght@500;600;700&family=Karla:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808;
+    --bg-panel:#121110;
+    --bg-panel-raised:#171412;
+    --ink:#EDE6D6;
+    --ink-dim:#A99C82;
+    --ink-faint:#71675A;
+    --gold:#B8924A;
+    --gold-bright:#D4AF6A;
+    --bronze:#8A6D3B;
+    --line:rgba(184,146,74,0.22);
+    --bruise:#5C3140;
+    --bruise-bright:#B97C97;
+    --serif:'Cormorant Garamond', serif;
+    --cond:'Barlow Condensed', sans-serif;
+    --util:'Karla', sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--serif);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{background:var(--gold); color:#080808;}
+
+  a{color:var(--gold-bright);}
+
+  :focus-visible{
+    outline:1.5px solid var(--gold-bright);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 28px 140px;
+  }
+
+  /* ---------- HEADER ---------- */
+
+  header{
+    padding:88px 0 48px;
+    border-bottom:1px solid var(--line);
+    text-align:center;
+  }
+
+  .eyebrow{
+    font-family:var(--cond);
+    font-weight:600;
+    font-size:12.5px;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 22px;
+  }
+
+  h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(40px, 7vw, 62px);
+    letter-spacing:0.01em;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+
+  .subtitle{
+    font-family:var(--cond);
+    font-weight:500;
+    font-size:15px;
+    letter-spacing:0.06em;
+    color:var(--ink-dim);
+    margin:0 0 40px;
+    text-transform:uppercase;
+  }
+
+  .epigraph{
+    font-style:italic;
+    font-size:clamp(19px, 2.6vw, 23px);
+    color:var(--gold-bright);
+    max-width:500px;
+    margin:0 auto;
+    line-height:1.5;
+    font-weight:400;
+  }
+
+  /* ---------- ENTRY POINT ---------- */
+
+  .entry-point{
+    margin:44px 0 0;
+    padding:20px 4px;
+    border-top:1px solid var(--gold);
+    border-bottom:1px solid var(--gold);
+    display:flex;
+    align-items:center;
+    gap:20px;
+  }
+
+  .entry-point .glyph-holder{flex:0 0 auto;}
+  .entry-point .text{flex:1 1 auto;}
+
+  .entry-tag{
+    font-family:var(--cond);
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--gold-bright);
+    margin:0 0 4px;
+  }
+
+  .entry-station{
+    font-family:var(--serif);
+    font-size:21px;
+    color:var(--ink);
+    margin:0 0 2px;
+  }
+
+  .entry-detail{
+    font-family:var(--util);
+    font-size:13px;
+    color:var(--ink-faint);
+    margin:0;
+  }
+
+  /* ---------- FRAMING ---------- */
+
+  .framing{
+    padding:44px 0 8px;
+    font-size:17.5px;
+    color:var(--ink-dim);
+  }
+
+  .framing p{margin:0 0 18px;}
+  .framing strong{color:var(--ink); font-weight:500;}
+
+  .how-to{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 28px;
+    padding:20px 0 8px;
+    margin-bottom:8px;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+
+  .how-to div{
+    font-family:var(--util);
+    font-size:12.5px;
+    color:var(--ink-faint);
+    letter-spacing:0.01em;
+  }
+
+  .how-to span{color:var(--gold);}
+
+  /* ---------- CYCLE ---------- */
+
+  .cycle{position:relative; margin-top:56px;}
+
+  .cycle::before{
+    content:'';
+    position:absolute;
+    top:6px;
+    bottom:6px;
+    left:39px;
+    width:1px;
+    background:repeating-linear-gradient(
+      180deg,
+      var(--line) 0px, var(--line) 2px,
+      transparent 2px, transparent 13px
+    );
+    mask-image:linear-gradient(180deg, transparent, #000 4%, #000 96%, transparent);
+    -webkit-mask-image:linear-gradient(180deg, transparent, #000 4%, #000 96%, transparent);
+  }
+
+  .station{
+    position:relative;
+    display:grid;
+    grid-template-columns:80px 1fr;
+    gap:0 22px;
+    padding-bottom:64px;
+  }
+
+  .station:last-child{padding-bottom:0;}
+
+  .marker{
+    grid-column:1;
+    display:flex;
+    justify-content:center;
+    padding-top:4px;
+  }
+
+  .marker svg{width:44px; height:44px; display:block;}
+
+  .station.is-today .marker svg{
+    filter:drop-shadow(0 0 9px rgba(212,175,106,0.55));
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .station.is-today .marker svg{animation:pulse 4.5s ease-in-out infinite;}
+  }
+
+  @keyframes pulse{
+    0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,106,0.35));}
+    50%{filter:drop-shadow(0 0 13px rgba(212,175,106,0.65));}
+  }
+
+  .content{
+    grid-column:2;
+    background-image:repeating-linear-gradient(
+      180deg,
+      transparent 0, transparent 27px,
+      rgba(184,146,74,0.05) 27px, rgba(184,146,74,0.05) 28px
+    );
+    background-position:0 4px;
+  }
+
+  .station-eyebrow{
+    font-family:var(--cond);
+    font-weight:600;
+    font-size:11.5px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin:6px 0 10px;
+  }
+
+  .station.is-today .station-eyebrow{color:var(--gold-bright);}
+
+  .verb-tag{
+    display:inline-block;
+    font-family:var(--cond);
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    padding:3px 9px;
+    border-radius:1px;
+    margin-bottom:14px;
+  }
+
+  .station.bruise .verb-tag{color:var(--bruise-bright); border-color:var(--bruise-bright);}
+
+  .station h2{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:29px;
+    margin:0 0 14px;
+    color:var(--ink);
+  }
+
+  .station .directive{
+    font-size:17px;
+    color:var(--ink-dim);
+    margin:0 0 20px;
+  }
+
+  .station.bruise .directive{color:#C9AEB8;}
+
+  .prompts{
+    list-style:none;
+    margin:0 0 22px;
+    padding:0;
+    border-left:2px solid var(--line);
+    padding-left:16px;
+  }
+
+  .station.bruise .prompts{border-left-color:var(--bruise);}
+
+  .prompts li{
+    font-style:italic;
+    font-size:16px;
+    color:var(--gold-bright);
+    margin-bottom:8px;
+  }
+
+  .station.bruise .prompts li{color:var(--bruise-bright);}
+  .prompts li:last-child{margin-bottom:0;}
+
+  .worksheet-label{
+    font-family:var(--util);
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin:0 0 6px;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+  }
+
+  .save-flag{
+    font-family:var(--util);
+    font-size:11px;
+    color:var(--gold);
+    opacity:0;
+    transition:opacity 0.4s ease;
+  }
+
+  .save-flag.show{opacity:1;}
+
+  textarea{
+    width:100%;
+    min-height:88px;
+    resize:vertical;
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:2px;
+    color:var(--ink);
+    font-family:var(--util);
+    font-size:14.5px;
+    line-height:1.55;
+    padding:12px 14px;
+  }
+
+  textarea::placeholder{color:var(--ink-faint);}
+  textarea:focus{border-color:var(--gold);}
+  .station.bruise textarea:focus{border-color:var(--bruise-bright);}
+
+  /* ---------- CLOSING ---------- */
+
+  .closing{
+    margin-top:70px;
+    padding-top:52px;
+    border-top:1px solid var(--line);
+    text-align:center;
+  }
+
+  .closing .station-eyebrow{text-align:center; margin-bottom:20px;}
+
+  .closing p{
+    font-size:18px;
+    color:var(--ink-dim);
+    max-width:490px;
+    margin:0 auto 18px;
+  }
+
+  .triad{
+    margin:30px auto;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:21px;
+    color:var(--gold-bright);
+    line-height:1.9;
+  }
+
+  .closing .final{
+    font-size:16.5px;
+    color:var(--ink-faint);
+    margin-top:26px;
+  }
+
+  .brandmark{
+    margin-top:44px;
+    font-family:var(--cond);
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    color:var(--bronze);
+  }
+
+  .utility-row{text-align:center; margin-top:36px;}
+
+  .clear-btn{
+    background:none;
+    border:1px solid var(--ink-faint);
+    color:var(--ink-faint);
+    font-family:var(--util);
+    font-size:11.5px;
+    letter-spacing:0.05em;
+    padding:8px 16px;
+    border-radius:2px;
+    cursor:pointer;
+  }
+
+  .clear-btn:hover{border-color:var(--gold); color:var(--gold);}
+
+  @media (max-width:520px){
+    .station{grid-template-columns:52px 1fr; gap:0 14px;}
+    .cycle::before{left:25px;}
+    .marker svg{width:34px; height:34px;}
+    header{padding:64px 0 40px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1>The Arrival Rite</h1>
+    <p class="subtitle">Time Disease · Chronic Lateness · Restoring the Gauge</p>
+    <p class="epigraph">"I once knew exactly what a distance costs in minutes. That knowing isn't gone — I just stopped consulting it."</p>
+  </header>
+
+  <div class="entry-point" id="entryPoint">
+    <div class="glyph-holder" id="entryGlyph"></div>
+    <div class="text">
+      <p class="entry-tag">Tonight's Position</p>
+      <p class="entry-station" id="entryStationName">—</p>
+      <p class="entry-detail" id="entryStationDetail">Calculating tonight's phase…</p>
+    </div>
+  </div>
+
+  <div class="framing">
+    <p>This isn't a fix. It's recalibration. Eight stations, one lunation, one honest measurement of the gap between what you say and when you actually move.</p>
+    <p><strong>You were prompt once.</strong> This isn't a new skill to learn — it's an old one that got quietly deprioritized until it started costing you people, patience, and rooms you weren't in when they closed.</p>
+    <p>The aim isn't punishment for the pattern. It's an accurate gauge, restored — prompt again, not anxious about it. Accountable, not surveilled. Trusted, not tracked.</p>
+  </div>
+
+  <div class="how-to">
+    <div><span>01 —</span> Work it in one sitting, or across the real eight nights. Either is correct.</div>
+    <div><span>02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div><span>03 —</span> Bring actual numbers where you can. This rite runs on measurement, not vibes.</div>
+  </div>
+
+  <div class="cycle" id="cycle"></div>
+
+  <div class="closing">
+    <p class="station-eyebrow">Return</p>
+    <p>The cycle closes on the same dark it opened on. You don't.</p>
+    <p>The gauge was never broken. It was overridden, every time, by something that felt more urgent than the door. What changed this cycle is the measurement, the ledger, and the buffer that actually holds.</p>
+    <div class="triad">
+      Prompt again. Not anxious about it.<br>
+      Accountable. Not surveilled.<br>
+      Trusted. Not tracked.
+    </div>
+    <p class="final">The gauge was never broken. Begin whenever you're ready — it's already running.</p>
+    <p class="brandmark">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div class="utility-row">
+    <button class="clear-btn" id="clearBtn" type="button">Clear this cycle's entries</button>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  // ---------- Clock-dial glyph generator ----------
+  // 8 stations mapped to 8 evenly-spaced positions around a dial face,
+  // rather than lunar crescents — this rite's icon language is measurement, not phase.
+  const ROMAN = ["I","II","III","IV","V","VI","VII","VIII"];
+
+  function pt(cx, cy, r, stationIndex){
+    const angle = (stationIndex * 45 - 90) * Math.PI / 180;
+    return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
+  }
+
+  function clockSVG(stationIndex, bright){
+    const fill = bright ? "#D4AF6A" : "#B8924A";
+    const stroke = bright ? "#D4AF6A" : "#8A6D3B";
+    const dim = "rgba(138,109,59,0.45)";
+    let ticks = "";
+    for(let i=0;i<8;i++){
+      const isThis = (i === stationIndex);
+      const outer = pt(50,50,48,i);
+      const inner = pt(50,50,39,i);
+      ticks += '<line x1="'+inner.x+'" y1="'+inner.y+'" x2="'+outer.x+'" y2="'+outer.y+'" ' +
+               'stroke="'+(isThis ? fill : dim)+'" stroke-width="'+(isThis?4:2)+'" stroke-linecap="round"/>';
+    }
+    const hand = pt(50,50,32,stationIndex);
+    let svg = '<circle cx="50" cy="50" r="48" fill="#121110" stroke="'+stroke+'" stroke-width="2"/>';
+    svg += ticks;
+    svg += '<line x1="50" y1="50" x2="'+hand.x+'" y2="'+hand.y+'" stroke="'+fill+'" stroke-width="3" stroke-linecap="round"/>';
+    svg += '<circle cx="50" cy="50" r="4" fill="'+fill+'"/>';
+    return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+svg+'</svg>';
+  }
+
+  // ---------- Station data ----------
+  const STATIONS = [
+    {
+      id:"new-moon", phase:0, name:"New Moon", illum:"0% illuminated",
+      verb:"Time-Stamp",
+      title:"The Confession",
+      directive:"Before defending it, log the last five times you were late — the real minutes late, the reason you gave out loud, and the reason underneath it. No editorializing yet. Just the record.",
+      prompts:[
+        "What's the actual average gap between when I say I'll leave and when I leave?",
+        "When did &ldquo;I'm just running behind&rdquo; stop being occasional and become identity?"
+      ],
+      placeholder:"Five instances. Stated time, actual time, stated reason, real reason."
+    },
+    {
+      id:"waxing-crescent", phase:1, name:"Waxing Crescent", illum:"~25% illuminated",
+      verb:"Recalibrate",
+      title:"The Gauge",
+      directive:"For the next several trips, before you leave, guess how long it'll take — write the number down. Then track the real time. Don't fix anything yet. Just measure the gap between your estimate and the truth, like calibrating an instrument that's drifted.",
+      prompts:[
+        "Is my estimate consistently short by a fixed amount, or does it vary — and what does that tell me about what I'm actually estimating: the drive, or my own start time?"
+      ],
+      placeholder:"Guess vs. actual. A running tally."
+    },
+    {
+      id:"first-quarter", phase:2, name:"First Quarter", illum:"50% illuminated",
+      verb:"Tally the Debt",
+      title:"The Ledger of What It Cost",
+      directive:"This is the reckoning station. List the specific instances where lateness cost something real — a job, a strained relationship, someone's patience, an opportunity that didn't wait for you. Don't soften it into &ldquo;I'm just bad with time.&rdquo; Put a number, a name, or a consequence next to it. This is where the actual size of the damage gets counted, not felt vaguely.",
+      prompts:[
+        "Who has stopped fully trusting my stated arrival time?",
+        "What has this actually cost me that I haven't let myself total up?",
+        "What am I avoiding by staying vague about the size of this?"
+      ],
+      placeholder:"List it plainly. Names, numbers, consequences. Nobody's grading the accuracy of this one.",
+      bruise:true
+    },
+    {
+      id:"waxing-gibbous", phase:3, name:"Waxing Gibbous", illum:"~75% illuminated",
+      verb:"Wipe the Clockface",
+      title:"Clearing the Fog",
+      directive:"Find the exact moment lateness actually begins — not the drive, not the traffic, but the specific decision a few minutes before you should have already left. One more email, one more scroll, one more thing that felt more urgent than the door. Name it precisely; vague guilt can't be corrected, a specific habit can.",
+      prompts:[
+        "What's the exact action I do instead of leaving, every single time?"
+      ],
+      placeholder:"Name the habit. Not the excuse for it — the action itself."
+    },
+    {
+      id:"full-moon", phase:4, name:"Full Moon", illum:"100% illuminated",
+      verb:"View From Outside",
+      title:"The Person Still Waiting",
+      directive:"Picture the specific person standing there — checking their phone, recalculating whether to leave, quietly writing a story about what your lateness means about how much they matter to you. Sit fully in their side of it. Not defensively, not with a ready excuse. Just the view from where they're standing.",
+      prompts:[
+        "If I were the one waiting on me, what would I actually conclude about how much my time — and theirs — matters to me?"
+      ],
+      placeholder:"Write it from their side. First person, if you can stand to.",
+      epigraph:true
+    },
+    {
+      id:"waning-gibbous", phase:5, name:"Waning Gibbous", illum:"~75% illuminated",
+      verb:"Flush the Excuse",
+      title:"The Release",
+      directive:"Say out loud the excuse you reach for most — traffic, the last text, &ldquo;time got away from me.&rdquo; Then say out loud what's actually true instead. Let the excuse go. It was never information about the world; it was architecture protecting something you haven't named yet.",
+      prompts:[
+        "What am I protecting by staying &ldquo;someone who's just bad with time&rdquo; instead of someone who chose not to leave?"
+      ],
+      placeholder:"The excuse. Then the true sentence underneath it."
+    },
+    {
+      id:"last-quarter", phase:6, name:"Last Quarter", illum:"50% illuminated",
+      verb:"Set the Buffer",
+      title:"Rebuild the Structure",
+      directive:"Half dark, half light — the balance station. Build the one structural fix the ledger actually revealed, not a mindset shift: a real earlier alarm, a real added buffer, a hard stop on the pre-departure habit you named. Keep it small enough to actually hold. Then physically move — walk it off, shake out whatever rushing has been living in your shoulders.",
+      prompts:[
+        "Given the real gap I measured at the Waxing Crescent, what's the smallest buffer that actually closes it?"
+      ],
+      placeholder:"The one structural fix. Specific enough to check whether you did it."
+    },
+    {
+      id:"waning-crescent", phase:7, name:"Waning Crescent", illum:"~25% illuminated",
+      verb:"Remember &amp; Selectively Forget",
+      title:"The Composting",
+      directive:"Decide what gets kept as working data — the measured gap, the real cost tally, the buffer that held — and what gets released: the shame, the &ldquo;I'm just like this&rdquo; identity story that never once made you earlier. Keep the numbers. Burn the story.",
+      prompts:[
+        "What number or fact from this cycle do I want to still know a year from now?",
+        "What self-story am I finally allowed to stop repeating?"
+      ],
+      placeholder:"Two lists: keep, release. Act on the second one."
+    }
+  ];
+
+  // ---------- Compute tonight's moon phase ----------
+  function getPhaseIndex(){
+    const synodic = 29.530588853 * 86400000;
+    const knownNewMoon = Date.UTC(2000,0,6,18,14,0);
+    const now = Date.now();
+    let diff = (now - knownNewMoon) % synodic;
+    if(diff < 0) diff += synodic;
+    const frac = diff / synodic;
+    return Math.floor(frac * 8) % 8;
+  }
+
+  const todayIndex = getPhaseIndex();
+
+  // ---------- Render entry-point box ----------
+  const entryStation = STATIONS[todayIndex];
+  document.getElementById('entryGlyph').innerHTML =
+    '<div style="width:52px;height:52px;">'+ clockSVG(todayIndex, true) +'</div>';
+  document.getElementById('entryStationName').textContent = entryStation.name;
+  document.getElementById('entryStationDetail').textContent =
+    entryStation.illum + ' · Position ' + ROMAN[todayIndex] + ' of VIII · "' + entryStation.verb.replace(/&amp;/g,'&').replace(/&ldquo;|&rdquo;/g,'"') + '"';
+
+  // ---------- Render the cycle ----------
+  const cycleEl = document.getElementById('cycle');
+  STATIONS.forEach(function(st, i){
+    const isToday = (i === todayIndex);
+    const article = document.createElement('div');
+    article.className = 'station' + (isToday ? ' is-today' : '') + (st.bruise ? ' bruise' : '');
+    article.id = st.id;
+
+    article.innerHTML =
+      '<div class="marker">' + clockSVG(i, isToday) + '</div>' +
+      '<div class="content">' +
+        '<p class="station-eyebrow">Position ' + ROMAN[i] + ' · ' + st.name + ' · ' + st.illum + (isToday ? ' · Begin Here' : '') + '</p>' +
+        '<span class="verb-tag">' + st.verb + '</span>' +
+        '<h2>' + st.title + '</h2>' +
+        '<p class="directive">' + st.directive + '</p>' +
+        '<ul class="prompts">' + st.prompts.map(function(p){return '<li>'+p+'</li>';}).join('') + '</ul>' +
+        '<p class="worksheet-label"><span>Your Accounting</span><span class="save-flag" id="flag-'+st.id+'">Saved to this device</span></p>' +
+        '<textarea id="ta-'+st.id+'" placeholder="'+st.placeholder+'"></textarea>' +
+      '</div>';
+
+    cycleEl.appendChild(article);
+  });
+
+  // ---------- Persistence ----------
+  const STORAGE_PREFIX = 'arrivalrite:entry:';
+
+  function loadEntry(id){
+    if(!window.storage) return;
+    window.storage.get(STORAGE_PREFIX + id, false)
+      .then(function(res){
+        if(res && res.value){
+          const ta = document.getElementById('ta-'+id);
+          if(ta) ta.value = res.value;
+        }
+      })
+      .catch(function(){ /* no saved entry yet — fine */ });
+  }
+
+  function saveEntry(id, value){
+    if(!window.storage) return;
+    window.storage.set(STORAGE_PREFIX + id, value, false)
+      .then(function(res){
+        if(res){
+          const flag = document.getElementById('flag-'+id);
+          if(flag){
+            flag.classList.add('show');
+            clearTimeout(flag._t);
+            flag._t = setTimeout(function(){ flag.classList.remove('show'); }, 1800);
+          }
+        }
+      })
+      .catch(function(err){ console.error('Arrival Rite: save failed', err); });
+  }
+
+  let debounceTimers = {};
+  STATIONS.forEach(function(st){
+    loadEntry(st.id);
+    const ta = document.getElementById('ta-'+st.id);
+    if(ta){
+      ta.addEventListener('input', function(){
+        clearTimeout(debounceTimers[st.id]);
+        debounceTimers[st.id] = setTimeout(function(){
+          saveEntry(st.id, ta.value);
+        }, 600);
+      });
+    }
+  });
+
+  // ---------- Clear all ----------
+  document.getElementById('clearBtn').addEventListener('click', function(){
+    if(!confirm('Clear all written entries for this cycle? This cannot be undone.')) return;
+    STATIONS.forEach(function(st){
+      const ta = document.getElementById('ta-'+st.id);
+      if(ta) ta.value = '';
+      if(window.storage){
+        window.storage.delete(STORAGE_PREFIX + st.id, false).catch(function(){});
+      }
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>
