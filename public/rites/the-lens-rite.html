@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lens Rite — MOONtuner Method</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Barlow+Condensed:wght@500;600;700&family=Karla:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808;
+    --bg-panel:#121110;
+    --bg-panel-raised:#171412;
+    --ink:#EDE6D6;
+    --ink-dim:#A99C82;
+    --ink-faint:#71675A;
+    --gold:#B8924A;
+    --gold-bright:#D4AF6A;
+    --bronze:#8A6D3B;
+    --line:rgba(184,146,74,0.22);
+    --bruise:#5C3140;
+    --bruise-bright:#B97C97;
+    --serif:'Cormorant Garamond', serif;
+    --cond:'Barlow Condensed', sans-serif;
+    --util:'Karla', sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--serif);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{background:var(--gold); color:#080808;}
+
+  a{color:var(--gold-bright);}
+
+  :focus-visible{
+    outline:1.5px solid var(--gold-bright);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 28px 140px;
+  }
+
+  /* ---------- HEADER ---------- */
+
+  header{
+    padding:88px 0 48px;
+    border-bottom:1px solid var(--line);
+    text-align:center;
+  }
+
+  .eyebrow{
+    font-family:var(--cond);
+    font-weight:600;
+    font-size:12.5px;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 22px;
+  }
+
+  h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(40px, 7vw, 62px);
+    letter-spacing:0.01em;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+
+  .subtitle{
+    font-family:var(--cond);
+    font-weight:500;
+    font-size:15px;
+    letter-spacing:0.06em;
+    color:var(--ink-dim);
+    margin:0 0 40px;
+    text-transform:uppercase;
+  }
+
+  .epigraph{
+    font-style:italic;
+    font-size:clamp(19px, 2.6vw, 23px);
+    color:var(--gold-bright);
+    max-width:480px;
+    margin:0 auto;
+    line-height:1.5;
+    font-weight:400;
+  }
+
+  /* ---------- ENTRY POINT ---------- */
+
+  .entry-point{
+    margin:44px 0 0;
+    padding:22px 26px;
+    border:1px solid var(--gold);
+    border-radius:2px;
+    background:linear-gradient(180deg, rgba(184,146,74,0.08), transparent);
+    display:flex;
+    align-items:center;
+    gap:20px;
+  }
+
+  .entry-point .glyph-holder{
+    flex:0 0 auto;
+  }
+
+  .entry-point .text{
+    flex:1 1 auto;
+  }
+
+  .entry-tag{
+    font-family:var(--cond);
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--gold-bright);
+    margin:0 0 4px;
+  }
+
+  .entry-station{
+    font-family:var(--serif);
+    font-size:21px;
+    color:var(--ink);
+    margin:0 0 2px;
+  }
+
+  .entry-detail{
+    font-family:var(--util);
+    font-size:13px;
+    color:var(--ink-faint);
+    margin:0;
+  }
+
+  /* ---------- FRAMING ---------- */
+
+  .framing{
+    padding:44px 0 8px;
+    font-size:17.5px;
+    color:var(--ink-dim);
+  }
+
+  .framing p{margin:0 0 18px;}
+  .framing strong{color:var(--ink); font-weight:500;}
+
+  .how-to{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 28px;
+    padding:20px 0 8px;
+    margin-bottom:8px;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+
+  .how-to div{
+    font-family:var(--util);
+    font-size:12.5px;
+    color:var(--ink-faint);
+    letter-spacing:0.01em;
+  }
+
+  .how-to span{color:var(--gold);}
+
+  /* ---------- CYCLE ---------- */
+
+  .cycle{
+    position:relative;
+    margin-top:56px;
+  }
+
+  .cycle::before{
+    content:'';
+    position:absolute;
+    top:6px;
+    bottom:6px;
+    left:39px;
+    width:1px;
+    background:linear-gradient(180deg, transparent, var(--line) 8%, var(--line) 92%, transparent);
+  }
+
+  .station{
+    position:relative;
+    display:grid;
+    grid-template-columns:80px 1fr;
+    gap:0 22px;
+    padding-bottom:64px;
+  }
+
+  .station:last-child{padding-bottom:0;}
+
+  .marker{
+    grid-column:1;
+    display:flex;
+    justify-content:center;
+    padding-top:4px;
+  }
+
+  .marker svg{
+    width:44px;
+    height:44px;
+    display:block;
+  }
+
+  .station.is-today .marker svg{
+    filter:drop-shadow(0 0 9px rgba(212,175,106,0.55));
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .station.is-today .marker svg{
+      animation:pulse 4.5s ease-in-out infinite;
+    }
+  }
+
+  @keyframes pulse{
+    0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,106,0.35));}
+    50%{filter:drop-shadow(0 0 13px rgba(212,175,106,0.65));}
+  }
+
+  .content{grid-column:2;}
+
+  .station-eyebrow{
+    font-family:var(--cond);
+    font-weight:600;
+    font-size:11.5px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin:6px 0 10px;
+  }
+
+  .station.is-today .station-eyebrow{color:var(--gold-bright);}
+
+  .verb-tag{
+    display:inline-block;
+    font-family:var(--cond);
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    padding:3px 9px;
+    border-radius:1px;
+    margin-bottom:14px;
+  }
+
+  .station.bruise .verb-tag{
+    color:var(--bruise-bright);
+    border-color:var(--bruise-bright);
+  }
+
+  .station h2{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:29px;
+    margin:0 0 14px;
+    color:var(--ink);
+  }
+
+  .station .directive{
+    font-size:17px;
+    color:var(--ink-dim);
+    margin:0 0 20px;
+  }
+
+  .station.bruise .directive{color:#C9AEB8;}
+
+  .prompts{
+    list-style:none;
+    margin:0 0 22px;
+    padding:0;
+    border-left:2px solid var(--line);
+    padding-left:16px;
+  }
+
+  .station.bruise .prompts{border-left-color:var(--bruise);}
+
+  .prompts li{
+    font-style:italic;
+    font-size:16px;
+    color:var(--gold-bright);
+    margin-bottom:8px;
+  }
+
+  .station.bruise .prompts li{color:var(--bruise-bright);}
+
+  .prompts li:last-child{margin-bottom:0;}
+
+  .worksheet-label{
+    font-family:var(--util);
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin:0 0 6px;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+  }
+
+  .save-flag{
+    font-family:var(--util);
+    font-size:11px;
+    color:var(--gold);
+    opacity:0;
+    transition:opacity 0.4s ease;
+  }
+
+  .save-flag.show{opacity:1;}
+
+  textarea{
+    width:100%;
+    min-height:88px;
+    resize:vertical;
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:2px;
+    color:var(--ink);
+    font-family:var(--util);
+    font-size:14.5px;
+    line-height:1.55;
+    padding:12px 14px;
+  }
+
+  textarea::placeholder{color:var(--ink-faint);}
+
+  textarea:focus{border-color:var(--gold);}
+
+  .station.bruise textarea:focus{border-color:var(--bruise-bright);}
+
+  /* ---------- CLOSING ---------- */
+
+  .closing{
+    margin-top:70px;
+    padding-top:52px;
+    border-top:1px solid var(--line);
+    text-align:center;
+  }
+
+  .closing .station-eyebrow{
+    text-align:center;
+    margin-bottom:20px;
+  }
+
+  .closing p{
+    font-size:18px;
+    color:var(--ink-dim);
+    max-width:480px;
+    margin:0 auto 18px;
+  }
+
+  .triad{
+    margin:30px auto;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:21px;
+    color:var(--gold-bright);
+    line-height:1.9;
+  }
+
+  .closing .final{
+    font-size:16.5px;
+    color:var(--ink-faint);
+    margin-top:26px;
+  }
+
+  .brandmark{
+    margin-top:44px;
+    font-family:var(--cond);
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    color:var(--bronze);
+  }
+
+  .utility-row{
+    text-align:center;
+    margin-top:36px;
+  }
+
+  .clear-btn{
+    background:none;
+    border:1px solid var(--ink-faint);
+    color:var(--ink-faint);
+    font-family:var(--util);
+    font-size:11.5px;
+    letter-spacing:0.05em;
+    padding:8px 16px;
+    border-radius:2px;
+    cursor:pointer;
+  }
+
+  .clear-btn:hover{
+    border-color:var(--gold);
+    color:var(--gold);
+  }
+
+  @media (max-width:520px){
+    .station{grid-template-columns:52px 1fr; gap:0 14px;}
+    .cycle::before{left:25px;}
+    .marker svg{width:34px; height:34px;}
+    header{padding:64px 0 40px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1>The Lens Rite</h1>
+    <p class="subtitle">Constriction · Trauma Inventory · The View From Outside</p>
+    <p class="epigraph">"The power I have now is the same I had then, and the same I'll have when."</p>
+  </header>
+
+  <div class="entry-point" id="entryPoint">
+    <div class="glyph-holder" id="entryGlyph"></div>
+    <div class="text">
+      <p class="entry-tag">Tonight's Entry Point</p>
+      <p class="entry-station" id="entryStationName">—</p>
+      <p class="entry-detail" id="entryStationDetail">Calculating tonight's phase…</p>
+    </div>
+  </div>
+
+  <div class="framing">
+    <p>This isn't a fix. It's an accounting. Eight stations, one lunation, one honest look at what's actually constricting you — the limits you built yourself, and the ones that got put on you without asking.</p>
+    <p><strong>Begin wherever the moon actually is tonight.</strong> The cycle doesn't care where you enter. It only cares whether you ride it all the way around, back to the same dark, on the other side of the thing.</p>
+    <p>The aim isn't transformation into someone new. It's recovery of someone accurate — more activated, less inundated, humbled but not humiliated, accountable but not all-faulted.</p>
+  </div>
+
+  <div class="how-to">
+    <div><span>01 —</span> Work it in one sitting, or across the real eight nights. Either is correct.</div>
+    <div><span>02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div><span>03 —</span> Skip nothing at the bruise station. That's the one doing the actual work.</div>
+  </div>
+
+  <div class="cycle" id="cycle"></div>
+
+  <div class="closing">
+    <p class="station-eyebrow">Return</p>
+    <p>The cycle closes on the same dark it opened on. You don't.</p>
+    <p>You don't come back around more powerful in some new way — you already had the power, at the start, in the middle, in the worst part of it, the whole time. What changed is the lens, the load, and the ledger.</p>
+    <div class="triad">
+      More activated. Less inundated.<br>
+      Humbled, not humiliated.<br>
+      Accountable, not all-faulted.
+    </div>
+    <p class="final">Same power. Different light. Begin again whenever you're ready — the moon already is.</p>
+    <p class="brandmark">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div class="utility-row">
+    <button class="clear-btn" id="clearBtn" type="button">Clear this cycle's entries</button>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  // ---------- Moon-phase glyph generator ----------
+  // 8 hand-set phase paths, index 0 = new moon ... 4 = full ... 7 = waning crescent
+  const PHASE_PATHS = [
+    null, // 0 new moon — outline only
+    "M50,2 A48,48 0 0,1 50,98 A20,48 0 0,1 50,2 Z",   // 1 waxing crescent
+    "M50,2 A48,48 0 0,1 50,98 L50,2 Z",                // 2 first quarter
+    "M50,2 A48,48 0 0,1 50,98 A20,48 0 0,0 50,2 Z",   // 3 waxing gibbous
+    "FULL",                                            // 4 full moon
+    "M50,2 A48,48 0 0,0 50,98 A20,48 0 0,1 50,2 Z",   // 5 waning gibbous
+    "M50,2 A48,48 0 0,0 50,98 L50,2 Z",                // 6 last quarter
+    "M50,2 A48,48 0 0,0 50,98 A20,48 0 0,0 50,2 Z"    // 7 waning crescent
+  ];
+
+  function moonSVG(phaseIndex, bright){
+    const fill = bright ? "#D4AF6A" : "#B8924A";
+    const stroke = bright ? "#D4AF6A" : "#8A6D3B";
+    const d = PHASE_PATHS[phaseIndex];
+    let inner = '<circle cx="50" cy="50" r="48" fill="#121110" stroke="'+stroke+'" stroke-width="2"/>';
+    if(d === "FULL"){
+      inner += '<circle cx="50" cy="50" r="47" fill="'+fill+'"/>';
+    } else if(d){
+      inner += '<path d="'+d+'" fill="'+fill+'"/>';
+      inner += '<circle cx="50" cy="50" r="48" fill="none" stroke="'+stroke+'" stroke-width="2"/>';
+    }
+    return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+inner+'</svg>';
+  }
+
+  // ---------- Station data ----------
+  const STATIONS = [
+    {
+      id:"new-moon", phase:0, name:"New Moon", illum:"0% illuminated",
+      verb:"Biopsy",
+      title:"The Intake",
+      directive:"Before anything is visible, take the smallest true sample of what's constricting you. One incident. One belief. One name, if there's a name. Don't diagnose it yet — just extract it and set it aside where the light will eventually reach it.",
+      prompts:[
+        "What is the specific shape of my constriction right now?",
+        "Where did I first agree to make myself smaller?"
+      ],
+      placeholder:"Name the sample. Just the sample — no verdict yet."
+    },
+    {
+      id:"waxing-crescent", phase:1, name:"Waxing Crescent", illum:"~25% illuminated",
+      verb:"Culture",
+      title:"Let It Sit",
+      directive:"Don't act on the sample yet. Watch what grows from it over a few days of ordinary light — journal it, voice-note it, whatever gets it out of your head. The culture tells you whether the thing is infection or immune response.",
+      prompts:[
+        "Is this actually still active, or am I keeping it alive out of habit?"
+      ],
+      placeholder:"What grew? What turned out to be nothing?"
+    },
+    {
+      id:"first-quarter", phase:2, name:"First Quarter", illum:"50% illuminated",
+      verb:"Scoop the Bruise",
+      title:"The Trauma Inventory",
+      directive:"This is the maloik station — the evil eye, the psychic residue, the attention you never asked for and never fully metabolized. Name every instance where you suspect your energy was taken, drained, envied, or targeted. Real or imagined doesn't matter for this pass. This isn't about assigning permanent blame outward — it's about locating what was never organically yours, so you can stop performing someone else's poison as your own personality.",
+      prompts:[
+        "What do I carry that I never actually agreed to carry?",
+        "Whose eye do I still feel on me?",
+        "What would I release if I were certain it was never mine to hold?"
+      ],
+      placeholder:"List it plainly. Nobody's grading the accuracy of this one.",
+      bruise:true
+    },
+    {
+      id:"waxing-gibbous", phase:3, name:"Waxing Gibbous", illum:"~75% illuminated",
+      verb:"Wipe the Lens (I)",
+      title:"Clearing Toward Sight",
+      directive:"Physically clean something that represents your seeing — mirror, glasses, a screen, the altar. As you do it, name one distortion you're ready to stop mistaking for reality. You're not fully clear yet. You're just removing what's obviously smudge before the peak arrives.",
+      prompts:[
+        "What have I been calling &ldquo;the way things are&rdquo; that's actually just smudge?"
+      ],
+      placeholder:"Name the distortion you're setting down."
+    },
+    {
+      id:"full-moon", phase:4, name:"Full Moon", illum:"100% illuminated",
+      verb:"View From Outside",
+      title:"The Whole Life, At Once",
+      directive:"Stand somewhere you can see your whole living space, or close your eyes and see your whole life, all at once. Describe it in the third person, past tense, like a file already closed. What did they build. What did they survive. What did they get right that they never gave themselves credit for.",
+      prompts:[
+        "If I were reading this life as someone else's file, what would I actually conclude about their character?",
+        "Where's the gap between that conclusion and the one I make about myself?"
+      ],
+      placeholder:"Write the file. Third person. Past tense.",
+      epigraph:true
+    },
+    {
+      id:"waning-gibbous", phase:5, name:"Waning Gibbous", illum:"~75% illuminated",
+      verb:"Flush the Cobwebs",
+      title:"The Release Begins",
+      directive:"Flush something, literally — water, breath, an actual cleaning. Say out loud what you're no longer maintaining. Cobwebs are architecture nobody's using anymore. Take it down before it starts looking like structure.",
+      prompts:[
+        "What structure am I still dusting that no longer holds anything?"
+      ],
+      placeholder:"Say what you're done maintaining."
+    },
+    {
+      id:"last-quarter", phase:6, name:"Last Quarter", illum:"50% illuminated",
+      verb:"Restrat &amp; Restretch",
+      title:"Rebuild the Structure",
+      directive:"Half dark, half light — the balance station. Write the one adjusted strategy that comes out of everything surfaced this cycle. Not a whole life plan, just the smallest recalibration to the specific constriction you named at the new moon. Then physically stretch whatever's been holding the tension — jaw, hands, chest, whatever it actually is.",
+      prompts:[
+        "Given everything I've seen this cycle, what's the smallest structural change that actually holds?"
+      ],
+      placeholder:"The one adjusted strategy. Keep it small enough to actually do."
+    },
+    {
+      id:"waning-crescent", phase:7, name:"Waning Crescent", illum:"~25% illuminated",
+      verb:"Remember &amp; Selectively Forget",
+      title:"The Composting",
+      directive:"Decide, deliberately, what from this cycle becomes working knowledge and what gets released as no-longer-useful memory. Write both lists. Burn, delete, or physically discard the forget list. Keep the remember list somewhere you'll actually see it again.",
+      prompts:[
+        "What do I want to still know a year from now?",
+        "What am I finally allowed to stop rehearsing?"
+      ],
+      placeholder:"Two lists: remember, forget. Then act on the second one."
+    }
+  ];
+
+  // ---------- Compute tonight's moon phase ----------
+  function getPhaseIndex(){
+    const synodic = 29.530588853 * 86400000;
+    const knownNewMoon = Date.UTC(2000,0,6,18,14,0);
+    const now = Date.now();
+    let diff = (now - knownNewMoon) % synodic;
+    if(diff < 0) diff += synodic;
+    const frac = diff / synodic; // 0..1
+    return Math.floor(frac * 8) % 8;
+  }
+
+  const todayIndex = getPhaseIndex();
+
+  // ---------- Render entry-point box ----------
+  const entryStation = STATIONS[todayIndex];
+  document.getElementById('entryGlyph').innerHTML =
+    '<div style="width:52px;height:52px;">'+ moonSVG(entryStation.phase, true) +'</div>';
+  document.getElementById('entryStationName').textContent = entryStation.name;
+  document.getElementById('entryStationDetail').textContent =
+    entryStation.illum + ' · Station ' + (todayIndex+1) + ' of 8 · "' + entryStation.verb.replace(/&amp;/g,'&').replace(/&ldquo;|&rdquo;/g,'"') + '"';
+
+  // ---------- Render the cycle ----------
+  const cycleEl = document.getElementById('cycle');
+  STATIONS.forEach(function(st, i){
+    const isToday = (i === todayIndex);
+    const article = document.createElement('div');
+    article.className = 'station' + (isToday ? ' is-today' : '') + (st.bruise ? ' bruise' : '');
+    article.id = st.id;
+
+    article.innerHTML =
+      '<div class="marker">' + moonSVG(st.phase, isToday) + '</div>' +
+      '<div class="content">' +
+        '<p class="station-eyebrow">Station ' + String(i+1).padStart(2,'0') + ' · ' + st.name + ' · ' + st.illum + (isToday ? ' · Begin Here' : '') + '</p>' +
+        '<span class="verb-tag">' + st.verb + '</span>' +
+        '<h2>' + st.title + '</h2>' +
+        '<p class="directive">' + st.directive + '</p>' +
+        '<ul class="prompts">' + st.prompts.map(function(p){return '<li>'+p+'</li>';}).join('') + '</ul>' +
+        '<p class="worksheet-label"><span>Your Accounting</span><span class="save-flag" id="flag-'+st.id+'">Saved to this device</span></p>' +
+        '<textarea id="ta-'+st.id+'" placeholder="'+st.placeholder+'"></textarea>' +
+      '</div>';
+
+    cycleEl.appendChild(article);
+  });
+
+  // ---------- Persistence ----------
+  const STORAGE_PREFIX = 'lensrite:entry:';
+
+  function loadEntry(id){
+    if(!window.storage) return;
+    window.storage.get(STORAGE_PREFIX + id, false)
+      .then(function(res){
+        if(res && res.value){
+          const ta = document.getElementById('ta-'+id);
+          if(ta) ta.value = res.value;
+        }
+      })
+      .catch(function(){ /* no saved entry yet — fine */ });
+  }
+
+  function saveEntry(id, value){
+    if(!window.storage) return;
+    window.storage.set(STORAGE_PREFIX + id, value, false)
+      .then(function(res){
+        if(res){
+          const flag = document.getElementById('flag-'+id);
+          if(flag){
+            flag.classList.add('show');
+            clearTimeout(flag._t);
+            flag._t = setTimeout(function(){ flag.classList.remove('show'); }, 1800);
+          }
+        }
+      })
+      .catch(function(err){ console.error('Lens Rite: save failed', err); });
+  }
+
+  let debounceTimers = {};
+  STATIONS.forEach(function(st){
+    loadEntry(st.id);
+    const ta = document.getElementById('ta-'+st.id);
+    if(ta){
+      ta.addEventListener('input', function(){
+        clearTimeout(debounceTimers[st.id]);
+        debounceTimers[st.id] = setTimeout(function(){
+          saveEntry(st.id, ta.value);
+        }, 600);
+      });
+    }
+  });
+
+  // ---------- Clear all ----------
+  document.getElementById('clearBtn').addEventListener('click', function(){
+    if(!confirm('Clear all written entries for this cycle? This cannot be undone.')) return;
+    STATIONS.forEach(function(st){
+      const ta = document.getElementById('ta-'+st.id);
+      if(ta) ta.value = '';
+      if(window.storage){
+        window.storage.delete(STORAGE_PREFIX + st.id, false).catch(function(){});
+      }
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>

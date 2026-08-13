@@ -34,6 +34,7 @@ export default defineConfig(({ mode }) => ({
         "/quantumelodic",
         "/digital-smudging",
         "/phasecraft",
+        "/rites",
         "/membership",
         "/terms",
         "/privacy",
