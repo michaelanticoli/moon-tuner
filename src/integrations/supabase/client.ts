@@ -6,17 +6,16 @@ const primaryKey =
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
   import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-const secondaryUrl = import.meta.env.VITE_SECONDARY_SUPABASE_URL;
+// Optional second project. When it isn't configured we fall back to the
+// primary project rather than throwing (a throw here blanks the whole app).
+const secondaryUrl = import.meta.env.VITE_SECONDARY_SUPABASE_URL || primaryUrl;
 const secondaryKey =
-  import.meta.env.VITE_SECONDARY_SUPABASE_PUBLISHABLE_KEY;
+  import.meta.env.VITE_SECONDARY_SUPABASE_PUBLISHABLE_KEY || primaryKey;
 
 if (!primaryUrl || !primaryKey) {
   throw new Error("Primary Supabase environment variables are missing.");
 }
 
-if (!secondaryUrl || !secondaryKey) {
-  throw new Error("Secondary Supabase environment variables are missing.");
-}
 
 /**
  * Primary project:
