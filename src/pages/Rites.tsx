@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { SEOHead } from "@/components/SEOHead";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Download, Eye, X } from "lucide-react";
 
 interface Rite {
   volume: string;
@@ -10,6 +11,7 @@ interface Rite {
   subtitle: string;
   description: string;
   href: string;
+  pdf?: string;
   status: "launched" | "in-development";
 }
 
@@ -21,6 +23,7 @@ const rites: Rite[] = [
     description:
       "A station-cycle working on perception — what you focus on, what you filter out, and how to reset the frame. Self-contained, autosaving worksheet fields, print-ready.",
     href: "/rites/the-lens-rite.html",
+    pdf: "/rites/_archive/the-lens-rite.pdf",
     status: "launched",
   },
   {
@@ -30,18 +33,62 @@ const rites: Rite[] = [
     description:
       "Eight positions on a clock dial rather than a lunar crescent — the same MOONtuner timing substrate, a different instrument face. Bring real numbers.",
     href: "/rites/the-arrival-rite.html",
+    pdf: "/rites/_archive/the-arrival-rite.pdf",
     status: "launched",
   },
 ];
 
-function RiteCard({ rite }: { rite: Rite }) {
+const archivePdfs: { label: string; href: string }[] = [
+  { label: "The Arrival Rite — PDF", href: "/rites/_archive/the-arrival-rite.pdf" },
+  { label: "The Lens Rite — PDF", href: "/rites/_archive/the-lens-rite.pdf" },
+];
+
+async function downloadFile(href: string) {
+  try {
+    const res = await fetch(href);
+    if (!res.ok) throw new Error(`Download failed: ${res.status}`);
+    const blob = await res.blob();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = href.split("/").pop() || "download.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  } catch {
+    window.open(href, "_blank", "noopener,noreferrer");
+  }
+}
+
+function PdfViewer({ src, title, onClose }: { src: string; title: string; onClose: () => void }) {
   return (
-    <a
-      href={rite.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group block border border-white/10 rounded-sm p-8 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/25 transition-colors"
-    >
+    <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex flex-col">
+      <div className="flex items-center justify-between gap-4 px-5 py-3 border-b border-white/10">
+        <span className="text-xs uppercase tracking-[0.2em] text-white/70">{title}</span>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => downloadFile(src)}
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-white/70 hover:text-white"
+          >
+            <Download className="w-3.5 h-3.5" /> Download
+          </button>
+          <button
+            onClick={onClose}
+            aria-label="Close viewer"
+            className="text-white/60 hover:text-white"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+      <iframe src={src} title={title} className="flex-1 w-full bg-neutral-900" />
+    </div>
+  );
+}
+
+function RiteCard({ rite, onView }: { rite: Rite; onView: (r: Rite) => void }) {
+  return (
+    <div className="group block border border-white/10 rounded-sm p-8 bg-white/[0.02] hover:border-white/25 transition-colors">
       <div className="flex items-baseline justify-between gap-4">
         <span className="text-[11px] uppercase tracking-[0.24em] text-primary/80">
           {rite.volume}
@@ -59,19 +106,44 @@ function RiteCard({ rite }: { rite: Rite }) {
         {rite.description}
       </p>
 
-      <span className="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-white/70 group-hover:text-white">
-        Open the rite <ExternalLink className="w-3.5 h-3.5" />
-      </span>
-    </a>
+      <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs uppercase tracking-[0.18em]">
+        <a
+          href={rite.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-white/70 hover:text-white"
+        >
+          Open the rite <ExternalLink className="w-3.5 h-3.5" />
+        </a>
+        {rite.pdf && (
+          <>
+            <button
+              onClick={() => onView(rite)}
+              className="inline-flex items-center gap-2 text-white/70 hover:text-white"
+            >
+              <Eye className="w-3.5 h-3.5" /> View PDF
+            </button>
+            <button
+              onClick={() => downloadFile(rite.pdf!)}
+              className="inline-flex items-center gap-2 text-primary/85 hover:text-primary"
+            >
+              <Download className="w-3.5 h-3.5" /> Download PDF
+            </button>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
 
 export default function Rites() {
+  const [viewing, setViewing] = useState<{ src: string; title: string } | null>(null);
+
   return (
     <PageTransition>
       <SEOHead
         title="The Rites — MOONtuner Method Workbooks"
-        description="Standalone MOONtuner Method rites: station-cycle workbooks for perception, timing, and arrival. Dark editorial, print-ready, autosaving."
+        description="Standalone MOONtuner Method rites: station-cycle workbooks for perception, timing, and arrival. Read online or download the print-ready PDFs."
         canonical="/rites"
       />
       <Navigation />
@@ -94,11 +166,49 @@ export default function Rites() {
 
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {rites.map((r) => (
-              <RiteCard key={r.href} rite={r} />
+              <RiteCard
+                key={r.href}
+                rite={r}
+                onView={(rite) => setViewing({ src: rite.pdf!, title: rite.title })}
+              />
             ))}
           </div>
 
           <section className="mt-20 border-t border-white/10 pt-10">
+            <h2 className="text-[11px] uppercase tracking-[0.24em] text-white/40">
+              Archived PDFs
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm text-white/50 leading-relaxed">
+              Print-ready dark exports of each launched volume. Read them here or
+              keep a copy.
+            </p>
+            <ul className="mt-6 divide-y divide-white/10 border-y border-white/10">
+              {archivePdfs.map((f) => (
+                <li
+                  key={f.href}
+                  className="flex flex-wrap items-center justify-between gap-4 py-4"
+                >
+                  <span className="text-sm text-white/75">{f.label}</span>
+                  <span className="flex items-center gap-5 text-xs uppercase tracking-[0.16em]">
+                    <button
+                      onClick={() => setViewing({ src: f.href, title: f.label })}
+                      className="inline-flex items-center gap-2 text-white/70 hover:text-white"
+                    >
+                      <Eye className="w-3.5 h-3.5" /> View
+                    </button>
+                    <button
+                      onClick={() => downloadFile(f.href)}
+                      className="inline-flex items-center gap-2 text-primary/85 hover:text-primary"
+                    >
+                      <Download className="w-3.5 h-3.5" /> Download
+                    </button>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="mt-16 border-t border-white/10 pt-10">
             <h2 className="text-[11px] uppercase tracking-[0.24em] text-white/40">
               Series framework
             </h2>
@@ -118,14 +228,6 @@ export default function Rites() {
               </a>
               <a
                 className="text-white/70 hover:text-white underline underline-offset-4"
-                href="/rites/_archive/the-lens-rite.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Lens Rite PDF
-              </a>
-              <a
-                className="text-white/70 hover:text-white underline underline-offset-4"
                 href="/rites/_archive/the-arrival-rite-webfonts.html"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -136,6 +238,14 @@ export default function Rites() {
           </section>
         </div>
       </main>
+
+      {viewing && (
+        <PdfViewer
+          src={viewing.src}
+          title={viewing.title}
+          onClose={() => setViewing(null)}
+        />
+      )}
 
       <Footer />
     </PageTransition>
