@@ -17,8 +17,9 @@ Kept for comparison and as source material for future volumes — not linked as
 launched pages:
 
 - `the-arrival-rite-webfonts.html` — earlier build using Google Fonts links instead of embedded fonts. Lighter file, requires network at render time.
-- `the-lens-rite.pdf` — dark-PDF export of Volume I (Playwright → Chromium, `print_background`, zero-margin `@page`).
+- `the-lens-rite.pdf` / `the-arrival-rite.pdf` — dark-PDF exports (Playwright → Chromium, `print_background`, zero-margin `@page`). Both are surfaced on `/rites` with view + download.
 - `moontuner-rite-roadmap.md` — the series framework: shared chassis, what must be reinvented per volume, and candidate volumes.
+
 
 ## Building a new volume
 
