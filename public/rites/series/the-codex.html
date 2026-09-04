@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#080808;--bg-panel:#121110;--ink:#EDE6D6;--ink-dim:#A99C82;--ink-faint:#71675A;--gold:#B8924A;--gold-bright:#D4AF6A;--bronze:#8A6D3B;--line:rgba(184,146,74,0.22);--bruise:#5C3140;--bruise-bright:#B97C97;}
+    *{box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--gold);color:var(--bg);}a{color:var(--gold-bright);}a:hover{color:var(--ink);}
+    :focus-visible{outline:1.5px solid var(--gold-bright);outline-offset:3px;}
+    textarea::placeholder{color:var(--ink-faint);}textarea:focus{border-color:var(--gold)!important;outline:none;}
+    @keyframes pulse{0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,106,0.35));}50%{filter:drop-shadow(0 0 13px rgba(212,175,106,0.65));}}
+    @media(max-width:520px){.rite-grid{grid-template-columns:52px 1fr!important;gap:0 14px!important;}.rite-marker img{width:34px!important;height:34px!important;}.rite-dashed{left:25px!important;}}
+    @media print{@page{size:Letter;margin:0;}html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}body{padding:0.62in 0.7in;}.rite-grid{break-inside:avoid;page-break-inside:avoid;}textarea{background:var(--bg-panel)!important;border:1px solid var(--line)!important;min-height:104px;color:transparent;resize:none;}textarea::placeholder{color:var(--ink-faint)!important;opacity:1;}.rite-clear{display:none!important;}}
+  </style>
+  <script src="rite-engine.js"></script>
+</helmet>
+
+<div style="max-width:720px; margin:0 auto; padding:0 28px 140px;">
+  <header style="padding:88px 0 48px; border-bottom:1px solid var(--line); text-align:center;">
+    <img src="codex-logo.png" alt="Codex" style="width:120px; height:auto; filter:invert(1); opacity:0.85; margin:0 auto 28px; display:block;" />
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); margin:0 0 22px;">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(40px,7vw,62px); letter-spacing:0.01em; margin:0 0 6px;">The Codex</h1>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:15px; letter-spacing:0.06em; color:var(--ink-dim); margin:0 0 40px; text-transform:uppercase;">The Quantumelodic Codex · Your Operating System in Twelve Measures</p>
+    <p style="font-style:italic; font-size:clamp(19px,2.6vw,23px); color:var(--gold-bright); max-width:500px; margin:0 auto; line-height:1.5; font-weight:400;">"The system isn't the map. You are the territory it was drawn from."</p>
+  </header>
+
+  <div style="margin:44px 0 0; padding:20px 4px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); display:flex; align-items:center; gap:20px;">
+    <div style="flex:0 0 auto; width:52px; height:52px;"><img src="{{ entryClockSrc }}" style="width:100%; height:100%;" alt="" /></div>
+    <div style="flex:1 1 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 4px;">Tonight's Position</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:21px; color:var(--ink); margin:0 0 2px;">{{ entryName }}</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-faint); margin:0;">{{ entryDetail }}</p>
+    </div>
+  </div>
+
+  <div style="padding:44px 0 8px; font-size:17.5px; color:var(--ink-dim);">
+    <p style="margin:0 0 18px;">Twelve stations. The longest rite in the series, and the last one you should attempt. This is the capstone — a master integration of every pattern you've mapped, every override you've built, every boundary you've tested across the other rites. If you haven't worked at least three other rites, stop here and go back.</p>
+    <p style="margin:0 0 18px;"><span style="color:var(--ink); font-weight:500;">The Codex is not a self-help project.</span> It is an operating system — built from your own patterns, calibrated to your own rhythm, loaded with your own overrides. Nobody else's framework can do what this one does, because nobody else has your pattern library.</p>
+    <p style="margin:0 0 18px;">The aim is Codex v1 — a compressed, portable, operational document you can actually consult. Not comprehensive. Functional. If it doesn't fit in your head, it won't travel with you.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:10px 28px; padding:20px 0 8px; margin-bottom:8px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">01 —</span> Work this across a full lunation — twelve nights, one station per night.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">03 —</span> Bring your completed rites. This one draws from all of them.</div>
+  </div>
+
+  {{ cycleEl }}
+
+  <div style="margin-top:70px; padding-top:52px; border-top:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 20px;">Return</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">The Codex is written. Not as a conclusion — as a version number. Codex v1.</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">It will need revision. The patterns will shift, the overrides will need updating, the anchors will be tested. But the system exists now, and it's operational. Built from your own territory, not someone else's map. Run it. Revise at the next cycle.</p>
+    <div style="margin:30px auto; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:21px; color:var(--gold-bright); line-height:1.9;">
+      Mapped, not guessing.<br />
+      Loaded, not hoping.<br />
+      Operational, not aspirational.
+    </div>
+    <p style="font-size:16.5px; color:var(--ink-faint); margin-top:26px;">Codex v1 is live. Run it. Revise at the next cycle. The system is yours.</p>
+    <p style="margin-top:44px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--bronze);">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div id="notation-workshop" style="margin-top:80px; padding-top:60px; border-top:2px solid var(--gold);">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); margin:0 0 12px;">Appendix</p>
+    <h2 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(28px,5vw,38px); margin:0 0 8px;">Notation Workshop</h2>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:14px; letter-spacing:0.04em; color:var(--ink-dim); margin:0 0 36px; text-transform:uppercase;">Encode Your Codex in Quantumelodic Notation</p>
+
+    <p style="font-size:17px; color:var(--ink-dim); margin:0 0 16px;">Optional. The Quantumelodic notation system compresses ritual design into symbolic shorthand — planetary frequencies, harmonic intervals, elemental directions, and procedural directives packed into compact, parseable strings. Your completed Codex can be encoded this way. A notation-encoded codex is portable, computable, and ritually precise.</p>
+
+    <div style="margin:28px 0 36px; padding:16px 20px; background:var(--bg-panel); border:1px solid var(--line); border-radius:3px;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 10px;">String Anatomy</p>
+      <p style="font-family:'IBM Plex Mono',monospace; font-size:clamp(12px,2.2vw,14.5px); color:var(--ink); margin:0; line-height:1.8; word-break:break-all;">∿ [Tone] [Interval] [Tone] → [Element] [Intention] ↝ [Directive]</p>
+      <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint); margin:8px 0 0;">Open ritual space · set harmonic relationship · direct toward element and purpose · execute</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px 32px; margin:0 0 36px;">
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 12px;">Planetary Tones</p>
+        <div style="display:grid; grid-template-columns:auto 1fr auto; gap:4px 12px; font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); line-height:1.9;">
+          <span style="color:var(--ink);">☉</span><span>Sun</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">216 Hz</span>
+          <span style="color:var(--ink);">☽</span><span>Moon</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">210 Hz</span>
+          <span style="color:var(--ink);">☿</span><span>Mercury</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">252 Hz</span>
+          <span style="color:var(--ink);">♀</span><span>Venus</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">432 Hz</span>
+          <span style="color:var(--ink);">♂</span><span>Mars</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">288 Hz</span>
+          <span style="color:var(--ink);">♃</span><span>Jupiter</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">360 Hz</span>
+          <span style="color:var(--ink);">♄</span><span>Saturn</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">384 Hz</span>
+          <span style="color:var(--ink);">♅</span><span>Uranus</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">396 Hz</span>
+          <span style="color:var(--ink);">♆</span><span>Neptune</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">417 Hz</span>
+          <span style="color:var(--ink);">♇</span><span>Pluto</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">307.2 Hz</span>
+        </div>
+      </div>
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 12px;">Intervals</p>
+        <div style="display:grid; grid-template-columns:auto 1fr auto; gap:4px 12px; font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); line-height:1.9;">
+          <span style="color:var(--ink);">☌</span><span>Conjunction</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">1:1</span>
+          <span style="color:var(--ink);">⚹</span><span>Sextile</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">5:4</span>
+          <span style="color:var(--ink);">□</span><span>Square</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">45:32</span>
+          <span style="color:var(--ink);">△</span><span>Trine</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">3:2</span>
+          <span style="color:var(--ink);">☍</span><span>Opposition</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">15:8</span>
+          <span style="color:var(--ink);">∠</span><span>Quincunx</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">8:5</span>
+        </div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-bright); margin:20px 0 12px;">Elements</p>
+        <div style="display:grid; grid-template-columns:auto 1fr auto; gap:4px 12px; font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); line-height:1.9;">
+          <span style="color:var(--ink);">🜂</span><span>Fire</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">South</span>
+          <span style="color:var(--ink);">🜄</span><span>Water</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">West</span>
+          <span style="color:var(--ink);">🜁</span><span>Air</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">East</span>
+          <span style="color:var(--ink);">🜃</span><span>Earth</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);">North</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin:0 0 36px;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 12px;">Operators</p>
+      <div style="display:flex; flex-wrap:wrap; gap:6px 20px; font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim);">
+        <span><span style="color:var(--ink); font-family:'IBM Plex Mono',monospace;">∿</span> Portal</span>
+        <span><span style="color:var(--ink); font-family:'IBM Plex Mono',monospace;">⋇</span> Stack</span>
+        <span><span style="color:var(--ink); font-family:'IBM Plex Mono',monospace;">→</span> Outcome</span>
+        <span><span style="color:var(--ink); font-family:'IBM Plex Mono',monospace;">↝</span> Duration</span>
+        <span><span style="color:var(--ink); font-family:'IBM Plex Mono',monospace;">↺</span> Reflect</span>
+        <span><span style="color:var(--ink); font-family:'IBM Plex Mono',monospace;">×N</span> Repeat</span>
+        <span><span style="color:var(--ink); font-family:'IBM Plex Mono',monospace;">[…]</span> Intention</span>
+        <span><span style="color:var(--ink); font-family:'IBM Plex Mono',monospace;">//</span> Notes</span>
+      </div>
+    </div>
+
+    <div style="margin:0 0 44px; padding:18px 20px; background:var(--bg-panel); border-left:2px solid var(--gold); border-radius:0 3px 3px 0;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 10px;">Worked Example</p>
+      <p style="font-family:'IBM Plex Mono',monospace; font-size:clamp(13px,2.2vw,15px); color:var(--ink); margin:0 0 12px; line-height:1.7;">∿ ☉216 △ ♃360 → 🜂 [vision-activation] ↝ chant-tone 5m</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); margin:0; line-height:1.7;">Open ritual space with Sun at 216 Hz in trine with Jupiter at 360 Hz. Direct toward Fire element for vision activation. Execute as a 5-minute chanting tone.</p>
+    </div>
+
+    <div style="margin:0 0 36px;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink); margin:0 0 6px;">Exercise I — Your First String</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0 0 12px;">Pick a planetary tone that corresponds to your primary anchor from Measure IV. Direct it toward an element and set a duration. Keep it simple — one tone, one direction.</p>
+      <textarea id="codex-n1" placeholder="∿ ☉216 → 🜃 [anchor-name] ↝ tone-5m" style="width:100%; min-height:80px; background:var(--bg-panel); border:1px solid var(--line); border-radius:3px; color:var(--ink); font-family:'IBM Plex Mono',monospace; font-size:14px; padding:14px; resize:vertical; line-height:1.7;"></textarea>
+    </div>
+
+    <div style="margin:0 0 36px;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink); margin:0 0 6px;">Exercise II — Encode Your Top Override</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0 0 12px;">Take your highest-priority override from Measure VI. The pattern is tension — use a square (□) or opposition (☍) interval to encode the catalytic energy needed to break through it.</p>
+      <textarea id="codex-n2" placeholder="∿ ♂288 □ ♄384 → 🜁 [breakthrough-pattern] ↝ tension-drone 5m" style="width:100%; min-height:80px; background:var(--bg-panel); border:1px solid var(--line); border-radius:3px; color:var(--ink); font-family:'IBM Plex Mono',monospace; font-size:14px; padding:14px; resize:vertical; line-height:1.7;"></textarea>
+    </div>
+
+    <div style="margin:0 0 36px;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink); margin:0 0 6px;">Exercise III — Codex v1 in Notation</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0 0 12px;">Compose a multi-line notation document encoding your three rules, three protocols, and three anchors from Measure IX. One line per element. This is your operating system in symbolic shorthand.</p>
+      <textarea id="codex-n3" placeholder="// Codex v1 — [your name] — [date]&#10;// Rule 1&#10;∿ …&#10;// Rule 2&#10;∿ …&#10;// Rule 3&#10;∿ …" style="width:100%; min-height:160px; background:var(--bg-panel); border:1px solid var(--line); border-radius:3px; color:var(--ink); font-family:'IBM Plex Mono',monospace; font-size:14px; padding:14px; resize:vertical; line-height:1.7;"></textarea>
+    </div>
+
+    <p style="font-size:14px; color:var(--ink-faint); font-family:'Karla',sans-serif; text-align:center; margin:0;">For the full notation specification — grammar, composition frameworks, implementation reference — see the <a href="The Codex Notation Reference.dc.html" style="color:var(--gold-bright);">Codex Notation Reference</a>.</p>
+  </div>
+
+  <div class="rite-clear" style="text-align:center; margin-top:36px;">
+    <button onClick="{{ clearHandler }}" style="background:none; border:1px solid var(--ink-faint); color:var(--ink-faint); font-family:'Karla',sans-serif; font-size:11.5px; letter-spacing:0.05em; padding:8px 16px; border-radius:2px; cursor:pointer;" style-hover="border-color:var(--gold); color:var(--gold);">Clear this cycle's entries</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    var RE = window.RiteEngine;
+    if (RE) RE.setupTextareas('codex:', this.stations());
+    ['codex-n1','codex-n2','codex-n3'].forEach(function(id){
+      var el = document.getElementById(id); if (!el) return;
+      var k = 'codex:notation:'+id, v = localStorage.getItem(k);
+      if (v) el.value = v;
+      el.addEventListener('input',function(){localStorage.setItem(k,el.value);});
+    });
+  }
+  stations() {
+    if (this._s) return this._s;
+    return this._s = [
+      {id:'survey',name:'Measure I',illum:'0% illuminated',verb:'Survey',title:'The Current State',
+       directive:'Before integrating, assess. Where are you right now \u2014 not aspirationally, not historically, but tonight? Rate five domains honestly: body, relationships, work, inner life, and momentum. Use numbers, not feelings. A system built on an inaccurate starting position navigates to the wrong destination.',
+       prompts:['On a 1\u201310 scale, where is each domain \u2014 and when did I last honestly check?'],
+       placeholder:'Five domains. Current honest rating. Date of last assessment.'},
+      {id:'patterns',name:'Measure II',illum:'\u223c17% illuminated',verb:'Collect',title:'The Pattern Library',
+       directive:'Gather every pattern you\u2019ve identified through the rites you\u2019ve worked \u2014 the sabotage tripwire, the critic\u2019s script, the scar\u2019s policy, the minimization habit, the failed boundary, the cord that needed cutting. These are your operating patterns. A codex without a pattern library is a blank book. Collect them in one place.',
+       prompts:['What patterns have I identified? Which ones are still active?'],
+       placeholder:'The pattern library. Active and resolved patterns.'},
+      {id:'priority',name:'Measure III',illum:'\u223c33% illuminated',verb:'Sequence',title:'The Priority Stack',
+       directive:'Order the active patterns by impact \u2014 not by pain, by operational impact. Which pattern, if interrupted, would change the most downstream behavior? That\u2019s your primary target. Codex work isn\u2019t about fixing everything at once. It\u2019s about identifying leverage points and working them in sequence.',
+       prompts:['Which pattern, if interrupted, creates the largest cascade of change?'],
+       placeholder:'The priority stack. Highest-leverage pattern at the top.'},
+      {id:'anchors',name:'Measure IV',illum:'50% illuminated',verb:'Anchor',title:'The Non-Negotiables',
+       directive:'Name three things that are not up for renegotiation \u2014 structures, relationships, commitments, or practices that form the fixed points of your operating system. Everything else can flex. These don\u2019t. A codex without anchors drifts. Define what holds position regardless of phase, mood, or circumstance.',
+       prompts:['What three things do I protect regardless of everything else?'],
+       placeholder:'Three anchors. Why each one is fixed.'},
+      {id:'rhythm',name:'Measure V',illum:'\u223c67% illuminated',verb:'Map',title:'The Cycle Map',
+       directive:'Map your actual energy rhythm across a lunar month. Not the one you wish you had \u2014 the one you actually have. When do you start things well? When do you lose momentum? When is your judgment sharpest? When does everything feel harder than it should? The codex runs on your real rhythm, not an idealized one.',
+       prompts:['When in the cycle am I sharpest? When am I most vulnerable to my patterns?'],
+       placeholder:'The rhythm map. Peak phases. Vulnerable phases.'},
+      {id:'protocols',name:'Measure VI',illum:'\u223c83% illuminated',verb:'Load',title:'The Override Library',
+       directive:'For each active pattern in your priority stack, write the override \u2014 the structural intervention you\u2019ve built or will build. The sabotage override. The critic replacement. The boundary architecture. Collect them as protocols: when X happens, I do Y. A codex is a decision library, pre-loaded so you don\u2019t have to decide under pressure.',
+       prompts:['Do I have an override for every active pattern? Which ones are missing?'],
+       placeholder:'The protocol library. Pattern \u2192 override. Gaps noted.'},
+      {id:'calibrate',name:'Measure VII',illum:'100% illuminated',verb:'Calibrate',title:'The Gauge Check',
+       directive:'Return to the five domains from station one. Are the numbers still accurate, or has the work of this rite already shifted them? Recalibrate. The codex is a living document \u2014 if it doesn\u2019t update, it\u2019s a diary. Check the gauges, adjust the readings, and note what moved and what didn\u2019t.',
+       prompts:['Have any of the five domains shifted since the survey? By how much?'],
+       placeholder:'Updated ratings. What moved. What stayed fixed.'},
+      {id:'integrate',name:'Measure VIII',illum:'\u223c83% illuminated',verb:'Integrate',title:'The Connections',
+       directive:'Map how your patterns connect to each other. The self-sabotage might feed the self-criticism. The scar might power the boundary failures. The cord you\u2019re maintaining might be the sabotage\u2019s payoff. Patterns don\u2019t operate in isolation \u2014 they\u2019re a system. The codex needs to see the system, not just the parts.',
+       prompts:['Which patterns reinforce each other? Where are the feedback loops?'],
+       placeholder:'The connection map. Which patterns feed which.',bruise:true},
+      {id:'reduce',name:'Measure IX',illum:'\u223c67% illuminated',verb:'Simplify',title:'The Reduction',
+       directive:'You\u2019ve built a pattern library, a priority stack, a protocol library, and a connection map. Now reduce it to what you can actually carry. The codex that works is not the comprehensive one \u2014 it\u2019s the one you\u2019ll actually consult. Compress everything into three rules, three protocols, three anchors. If it doesn\u2019t fit in your pocket, it won\u2019t travel with you.',
+       prompts:['What are the three most important things I need to remember from all of this?'],
+       placeholder:'Three rules. Three protocols. Three anchors. Nothing more.'},
+      {id:'contract',name:'Measure X',illum:'50% illuminated',verb:'Commit',title:'The Contract',
+       directive:'Write a contract with yourself. Not a resolution \u2014 a contract, with terms. What you commit to doing, the conditions under which you\u2019ll do it, and the specific check-in point where you\u2019ll assess whether the terms are being met. Sign it. Date it. A commitment without terms is a wish. A commitment with terms is a policy.',
+       prompts:['What are the terms? When is the check-in? What counts as met?'],
+       placeholder:'The contract. Terms. Check-in date. Success criteria.'},
+      {id:'transmit',name:'Measure XI',illum:'\u223c33% illuminated',verb:'Transmit',title:'The Briefing',
+       directive:'Explain your codex to one other person. Not the whole thing \u2014 the three-rule compressed version. Not for accountability, but for clarity. If you can\u2019t explain it, you haven\u2019t finished building it. The person doesn\u2019t need to understand the framework. They need to understand what you\u2019re doing differently and why.',
+       prompts:['Can I explain my three rules in under two minutes? Did they land?'],
+       placeholder:'Who you told. What you said. Whether it was clear.'},
+      {id:'seal',name:'Measure XII',illum:'\u223c17% illuminated',verb:'Seal',title:'The Closing Frequency',
+       directive:'The codex is written. The patterns are mapped, the overrides are loaded, the anchors are set, the rhythm is known, and the contract is signed. This is not a conclusion \u2014 it\u2019s a version number. Codex v1. It will need revision. But it exists now, and it\u2019s operational. Close this version. Begin running it.',
+       prompts:['Is the codex operational? What\u2019s the first protocol I\u2019ll use?'],
+       placeholder:'Codex v1 summary. First protocol activation date.'}
+    ];
+  }
+  renderVals() {
+    var RE = window.RiteEngine;
+    if (!RE) return {cycleEl:null,entryClockSrc:'',entryName:'\u2014',entryDetail:'Calculating\u2026',clearHandler:function(){}};
+    var sts = this.stations(), c = sts.length, t = RE.getPhaseIndex(c), e = sts[t];
+    return {
+      cycleEl: React.createElement('div',{style:{position:'relative',marginTop:56},dangerouslySetInnerHTML:{__html:RE.buildCycleHTML(sts,c,t)}}),
+      entryClockSrc: RE.clockUrl(t,c,true),
+      entryName: e.name,
+      entryDetail: RE.entryDetail(e,t,c),
+      clearHandler: function(){RE.clearAll('codex:',sts);}
+    };
+  }
+}
+</script>
+</body>
+</html>

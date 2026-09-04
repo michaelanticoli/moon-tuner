@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#080808;--bg-panel:#121110;--ink:#EDE6D6;--ink-dim:#A99C82;--ink-faint:#71675A;--gold:#B8924A;--gold-bright:#D4AF6A;--bronze:#8A6D3B;--line:rgba(184,146,74,0.22);--bruise:#5C3140;--bruise-bright:#B97C97;}
+    *{box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--gold);color:var(--bg);}a{color:var(--gold-bright);}a:hover{color:var(--ink);}
+    :focus-visible{outline:1.5px solid var(--gold-bright);outline-offset:3px;}
+    textarea::placeholder{color:var(--ink-faint);}textarea:focus{border-color:var(--gold)!important;outline:none;}
+    @keyframes pulse{0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,106,0.35));}50%{filter:drop-shadow(0 0 13px rgba(212,175,106,0.65));}}
+    @media(max-width:520px){.rite-grid{grid-template-columns:52px 1fr!important;gap:0 14px!important;}.rite-marker img{width:34px!important;height:34px!important;}.rite-dashed{left:25px!important;}}
+    @media print{@page{size:Letter;margin:0;}html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}body{padding:0.62in 0.7in;}.rite-grid{break-inside:avoid;page-break-inside:avoid;}textarea{background:var(--bg-panel)!important;border:1px solid var(--line)!important;min-height:104px;color:transparent;resize:none;}textarea::placeholder{color:var(--ink-faint)!important;opacity:1;}.rite-clear{display:none!important;}}
+  </style>
+  <script src="rite-engine.js"></script>
+</helmet>
+
+<div style="max-width:720px; margin:0 auto; padding:0 28px 140px;">
+  <header style="padding:88px 0 48px; border-bottom:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); margin:0 0 22px;">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(40px,7vw,62px); letter-spacing:0.01em; margin:0 0 6px;">The Severance Rite</h1>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:15px; letter-spacing:0.06em; color:var(--ink-dim); margin:0 0 40px; text-transform:uppercase;">Energetic Audit · Releasing What No Longer Carries Weight</p>
+    <p style="font-style:italic; font-size:clamp(19px,2.6vw,23px); color:var(--gold-bright); max-width:500px; margin:0 auto; line-height:1.5; font-weight:400;">"Not every thread that connects you is holding you up. Some of them are just holding you still."</p>
+  </header>
+
+  <div style="margin:44px 0 0; padding:20px 4px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); display:flex; align-items:center; gap:20px;">
+    <div style="flex:0 0 auto; width:52px; height:52px;"><img src="{{ entryClockSrc }}" style="width:100%; height:100%;" alt="" /></div>
+    <div style="flex:1 1 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 4px;">Tonight's Position</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:21px; color:var(--ink); margin:0 0 2px;">{{ entryName }}</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-faint); margin:0;">{{ entryDetail }}</p>
+    </div>
+  </div>
+
+  <div style="padding:44px 0 8px; font-size:17.5px; color:var(--ink-dim);">
+    <p style="margin:0 0 18px;">Six stations. A cord-cutting rite doesn't need a full lunation — it needs a clean audit, one honest cut, and a sealed end. Anything longer is stalling.</p>
+    <p style="margin:0 0 18px;"><span style="color:var(--ink); font-weight:500;">This is not about hating what you're releasing.</span> Some of the cords that need cutting were once the best things in your life. They served you, they shaped you, and they ran their course. Holding on past the expiration doesn't honor them — it drains them of everything they were.</p>
+    <p style="margin:0 0 18px;">The aim is an energy audit — where yours actually goes, what it actually costs, and whether the return justifies the draw.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:10px 28px; padding:20px 0 8px; margin-bottom:8px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">01 —</span> Work it in one sitting, or across six nights. Either is correct.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">03 —</span> One real cut is worth more than a hundred imagined ones. Do it for real.</div>
+  </div>
+
+  {{ cycleEl }}
+
+  <div style="margin-top:70px; padding-top:52px; border-top:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 20px;">Return</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">Not every severance is a loss. Some of them are the first honest accounting you've done of where your energy actually goes.</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">The cords that remain are the ones that survived the audit — they're chosen now, not defaulted to. The cut ends are sealed. The energy is yours again.</p>
+    <div style="margin:30px auto; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:21px; color:var(--gold-bright); line-height:1.9;">
+      Connected, not tangled.<br />
+      Bonded, not bound.<br />
+      Chosen, not defaulted.
+    </div>
+    <p style="font-size:16.5px; color:var(--ink-faint); margin-top:26px;">One cord is cut. The end is sealed. Notice where the freed energy goes.</p>
+    <p style="margin-top:44px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--bronze);">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div class="rite-clear" style="text-align:center; margin-top:36px;">
+    <button onClick="{{ clearHandler }}" style="background:none; border:1px solid var(--ink-faint); color:var(--ink-faint); font-family:'Karla',sans-serif; font-size:11.5px; letter-spacing:0.05em; padding:8px 16px; border-radius:2px; cursor:pointer;" style-hover="border-color:var(--gold); color:var(--gold);">Clear this cycle's entries</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    var RE = window.RiteEngine;
+    if (RE) RE.setupTextareas('severancerite:', this.stations());
+  }
+  stations() {
+    if (this._s) return this._s;
+    return this._s = [
+      {id:'inventory',name:'New Moon',illum:'0% illuminated',verb:'Map',title:'The Attachment Inventory',
+       directive:'List every connection that currently draws your energy \u2014 people, obligations, habits, identities, grievances, hopes you\u2019re still tending. Don\u2019t judge them yet. Just map the full network. Include the ones you know are done but haven\u2019t officially released, and the ones you\u2019re maintaining out of guilt rather than genuine connection. This is a wiring diagram, not a hit list.',
+       prompts:['What am I still connected to that I haven\u2019t consciously chosen in over a year?','Which connections do I maintain because ending them feels harder than continuing?'],
+       placeholder:'The full inventory. People, obligations, habits, identities, unfinished business.'},
+      {id:'cost-benefit',name:'First Quarter',illum:'50% illuminated',verb:'Weigh',title:'The Cost-Benefit',
+       directive:'For each attachment on your inventory, write two numbers: what it gives you and what it costs. Be honest about both. Some connections give you warmth and cost you nothing. Some give you familiarity and cost you growth. Some give you nothing at all and cost you energy you could measure in hours per week. The math is usually clear once you do it.',
+       prompts:['Which attachments cost more than they return \u2014 and have for a long time?'],
+       placeholder:'Each attachment. What it gives. What it costs. The net.'},
+      {id:'afraid-to-cut',name:'Full Moon',illum:'100% illuminated',verb:'Illuminate',title:'The Thread You\u2019re Afraid to Cut',
+       directive:'Name the one cord you already know needs cutting but haven\u2019t touched. The relationship you\u2019ve outgrown. The obligation you resent. The identity that fit once and doesn\u2019t anymore. The grudge you\u2019re feeding like a pet. Full illumination \u2014 not on the cord itself, but on your reason for keeping it. Fear of confrontation is not loyalty. Guilt is not love. Habit is not commitment.',
+       prompts:['What exactly am I afraid will happen if I cut this one?','Is that fear evidence-based, or is it the cord\u2019s own argument for its survival?'],
+       placeholder:'The cord. Why you\u2019ve kept it. What you\u2019re actually afraid of.',bruise:true},
+      {id:'clean-cut',name:'Waning Gibbous',illum:'\u223c75% illuminated',verb:'Prepare',title:'The Clean Cut',
+       directive:'Design the severance. Not a dramatic gesture \u2014 a clean, honest action. If it\u2019s a relationship: what specifically needs to be said, and when, and how. If it\u2019s an obligation: what needs to be declined or handed off. If it\u2019s a grievance: what needs to be set down. If it\u2019s an identity: what needs to stop being claimed. Plan the mechanics, not the emotion. Emotion follows action, not the other way around.',
+       prompts:['What is the smallest, cleanest action that actually severs this?'],
+       placeholder:'The plan. Specific actions, words, timelines.'},
+      {id:'severance',name:'Last Quarter',illum:'50% illuminated',verb:'Cut',title:'The Severance',
+       directive:'Execute one cut. Just one. It doesn\u2019t have to be the hardest one. But it has to be real \u2014 not a mental exercise, not a journal entry, but an action in the world. Send the message. Decline the invitation. Stop showing up. Return the object. The cord doesn\u2019t dissolve from thinking about it. It dissolves from acting.',
+       prompts:['What did I actually do? What happened?'],
+       placeholder:'The action taken. The result. How the energy shifted.'},
+      {id:'seal',name:'Waning Crescent',illum:'\u223c25% illuminated',verb:'Seal',title:'The Open End',
+       directive:'A cut cord has an open end. If you don\u2019t seal it, it reaches for reconnection \u2014 not because the attachment was good, but because open circuits seek completion. Seal it with a clear statement of what you\u2019ve released and what you\u2019re keeping. You can keep the gratitude without keeping the cord. You can keep the lesson without keeping the teacher. Seal the end. Let the energy reroute.',
+       prompts:['What do I keep from this connection? What is fully released?'],
+       placeholder:'What\u2019s kept. What\u2019s released. The seal.'}
+    ];
+  }
+  renderVals() {
+    var RE = window.RiteEngine;
+    if (!RE) return {cycleEl:null,entryClockSrc:'',entryName:'\u2014',entryDetail:'Calculating\u2026',clearHandler:function(){}};
+    var sts = this.stations(), c = sts.length, t = RE.getPhaseIndex(c), e = sts[t];
+    return {
+      cycleEl: React.createElement('div',{style:{position:'relative',marginTop:56},dangerouslySetInnerHTML:{__html:RE.buildCycleHTML(sts,c,t)}}),
+      entryClockSrc: RE.clockUrl(t,c,true),
+      entryName: e.name,
+      entryDetail: RE.entryDetail(e,t,c),
+      clearHandler: function(){RE.clearAll('severancerite:',sts);}
+    };
+  }
+}
+</script>
+</body>
+</html>

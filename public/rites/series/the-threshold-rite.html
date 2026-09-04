@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#080808;--bg-panel:#121110;--ink:#EDE6D6;--ink-dim:#A99C82;--ink-faint:#71675A;--gold:#B8924A;--gold-bright:#D4AF6A;--bronze:#8A6D3B;--line:rgba(184,146,74,0.22);--bruise:#5C3140;--bruise-bright:#B97C97;}
+    *{box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--gold);color:var(--bg);}a{color:var(--gold-bright);}a:hover{color:var(--ink);}
+    :focus-visible{outline:1.5px solid var(--gold-bright);outline-offset:3px;}
+    textarea::placeholder{color:var(--ink-faint);}textarea:focus{border-color:var(--gold)!important;outline:none;}
+    @keyframes pulse{0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,106,0.35));}50%{filter:drop-shadow(0 0 13px rgba(212,175,106,0.65));}}
+    @media(max-width:520px){.rite-grid{grid-template-columns:52px 1fr!important;gap:0 14px!important;}.rite-marker img{width:34px!important;height:34px!important;}.rite-dashed{left:25px!important;}}
+    @media print{@page{size:Letter;margin:0;}html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}body{padding:0.62in 0.7in;}.rite-grid{break-inside:avoid;page-break-inside:avoid;}textarea{background:var(--bg-panel)!important;border:1px solid var(--line)!important;min-height:104px;color:transparent;resize:none;}textarea::placeholder{color:var(--ink-faint)!important;opacity:1;}.rite-clear{display:none!important;}}
+  </style>
+  <script src="rite-engine.js"></script>
+</helmet>
+
+<div style="max-width:720px; margin:0 auto; padding:0 28px 140px;">
+  <header style="padding:88px 0 48px; border-bottom:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); margin:0 0 22px;">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(40px,7vw,62px); letter-spacing:0.01em; margin:0 0 6px;">The Threshold Rite</h1>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:15px; letter-spacing:0.06em; color:var(--ink-dim); margin:0 0 40px; text-transform:uppercase;">Initiation Paralysis · The Doorway You Keep Standing In</p>
+    <p style="font-style:italic; font-size:clamp(19px,2.6vw,23px); color:var(--gold-bright); max-width:500px; margin:0 auto; line-height:1.5; font-weight:400;">"You've been getting ready to begin for longer than the thing itself would have taken."</p>
+  </header>
+
+  <div style="margin:44px 0 0; padding:20px 4px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); display:flex; align-items:center; gap:20px;">
+    <div style="flex:0 0 auto; width:52px; height:52px;"><img src="{{ entryClockSrc }}" style="width:100%; height:100%;" alt="" /></div>
+    <div style="flex:1 1 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 4px;">Tonight's Position</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:21px; color:var(--ink); margin:0 0 2px;">{{ entryName }}</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-faint); margin:0;">{{ entryDetail }}</p>
+    </div>
+  </div>
+
+  <div style="padding:44px 0 8px; font-size:17.5px; color:var(--ink-dim);">
+    <p style="margin:0 0 18px;">Seven stations for a rite about beginning — because the irony of never starting is that the analysis phase has no natural end. This one gives it one.</p>
+    <p style="margin:0 0 18px;"><span style="color:var(--ink); font-weight:500;">You are not lazy.</span> Lazy people don't agonize. They shrug and move on. You stand at the threshold and think — about readiness, about the right moment, about what could go wrong, about needing just a little more information before you can responsibly commit. The thinking feels like preparation. It is not. It is the avoidance.</p>
+    <p style="margin:0 0 18px;">The aim is one crossed threshold. Not the right one, not the perfect one. One that's been open long enough for the standing-in-it to cost more than the walking-through.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:10px 28px; padding:20px 0 8px; margin-bottom:8px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">01 —</span> Work it in one sitting, or across seven nights. Either is correct.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">03 —</span> The rite asks you to actually begin something. Not to plan to begin. To begin.</div>
+  </div>
+
+  {{ cycleEl }}
+
+  <div style="margin-top:70px; padding-top:52px; border-top:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 20px;">Return</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">The threshold is behind you. Not because the moment was perfect, but because you stopped waiting for a moment that would never come and walked through the one that was actually there.</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">Readiness is not a feeling. It's a story you tell yourself while the door stays open and the opportunity gets smaller. You were ready before this rite. You just hadn't moved yet.</p>
+    <div style="margin:30px auto; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:21px; color:var(--gold-bright); line-height:1.9;">
+      Begun, not ready.<br />
+      Moving, not waiting.<br />
+      Through the door, not studying it.
+    </div>
+    <p style="font-size:16.5px; color:var(--ink-faint); margin-top:26px;">The threshold is crossed. The beginning already happened. Keep moving.</p>
+    <p style="margin-top:44px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--bronze);">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div class="rite-clear" style="text-align:center; margin-top:36px;">
+    <button onClick="{{ clearHandler }}" style="background:none; border:1px solid var(--ink-faint); color:var(--ink-faint); font-family:'Karla',sans-serif; font-size:11.5px; letter-spacing:0.05em; padding:8px 16px; border-radius:2px; cursor:pointer;" style-hover="border-color:var(--gold); color:var(--gold);">Clear this cycle's entries</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    var RE = window.RiteEngine;
+    if (RE) RE.setupTextareas('thresholdrite:', this.stations());
+  }
+  stations() {
+    if (this._s) return this._s;
+    return this._s = [
+      {id:'inventory',name:'New Moon',illum:'0% illuminated',verb:'List',title:'The Unstarted',
+       directive:'Write down everything you\u2019ve been meaning to begin and haven\u2019t. Not someday-maybes \u2014 the ones that actively occupy mental space, the ones you think about at 2am, the ones you\u2019ve researched, planned, told people about, and still not started. Include how long each one has been waiting. The number itself is data.',
+       prompts:['What have I been \u201cabout to start\u201d for more than three months?','Which unstarted thing costs me the most energy to keep not-starting?'],
+       placeholder:'The unstarted list. Each item. How long it\u2019s been waiting.'},
+      {id:'anatomy',name:'Waxing Crescent',illum:'\u223c25% illuminated',verb:'Dissect',title:'The Anatomy of Not-Starting',
+       directive:'Pick the one unstarted thing that\u2019s been waiting longest or costing most. Map what happens when you approach it. There\u2019s a sequence: you think about it, you feel something (anxiety, inadequacy, overwhelm), you do something else instead (research, reorganize, plan more), and then you explain the delay to yourself. Name each step. The sequence is the machine. The machine runs every time.',
+       prompts:['What\u2019s the exact feeling that fires right before I redirect?','What\u2019s the \u201cinstead\u201d activity that masquerades as preparation?'],
+       placeholder:'The thing. The feeling. The redirect. The explanation.'},
+      {id:'cost-of-standing',name:'First Quarter',illum:'50% illuminated',verb:'Tally',title:'The Cost of Standing Still',
+       directive:'Calculate what not-starting has actually cost. Not vaguely \u2014 in time, money, opportunity, self-respect, and the slow erosion of believing you\u2019re someone who does things. Every month in the doorway is a month of evidence that you don\u2019t walk through doorways. That evidence accumulates. It becomes identity. Tally the cost in real units.',
+       prompts:['How many months have I spent in the doorway? What could I have learned in that time?','What has the \u201cnot starting\u201d done to how I see myself?'],
+       placeholder:'The cost. Time, money, opportunity, identity. Real numbers.',bruise:true},
+      {id:'readiness-myth',name:'Waxing Gibbous',illum:'\u223c75% illuminated',verb:'Expose',title:'The Readiness Myth',
+       directive:'Name the condition you\u2019re waiting for \u2014 the thing that needs to be true before you can begin. More knowledge, more money, more time, a better plan, the right moment, someone\u2019s permission. Now check: has that condition ever been fully met for anything you\u2019ve actually done? Readiness is not a precondition. It\u2019s a narrative you\u2019re telling the doorway.',
+       prompts:['What condition am I waiting for? Has it ever actually been met before I did something important?'],
+       placeholder:'The readiness condition. Whether it\u2019s real or narrative.'},
+      {id:'smallest-act',name:'Full Moon',illum:'100% illuminated',verb:'Begin',title:'The First Fifteen Minutes',
+       directive:'Do fifteen minutes of the thing. Not plan to do it. Not prepare to do it. Open the document. Make the call. Put on the shoes. Set the timer for fifteen minutes and do the work, badly if necessary, in the wrong order if that\u2019s all you can manage. The threshold isn\u2019t crossed by being ready. It\u2019s crossed by moving. Fifteen minutes. Then you can stop. You probably won\u2019t.',
+       prompts:['What did I actually do in fifteen minutes? What happened to the resistance once I started?'],
+       placeholder:'What I did. How long I actually went. What the resistance felt like once I was moving.'},
+      {id:'debrief',name:'Waning Gibbous',illum:'\u223c75% illuminated',verb:'Debrief',title:'The Debrief',
+       directive:'You started. Write down what actually happened \u2014 not the feelings, but the facts. Was the work as hard as the not-starting made it seem? Was the barrier where you thought it would be, or somewhere else entirely? Was the readiness condition relevant at all once you were in motion? The debrief is the data that overwrites the resistance narrative next time.',
+       prompts:['Was the actual difficulty proportional to the resistance I felt beforehand?'],
+       placeholder:'What was hard. What wasn\u2019t. Whether readiness mattered once I was moving.'},
+      {id:'protocol',name:'Waning Crescent',illum:'\u223c25% illuminated',verb:'Install',title:'The Start Protocol',
+       directive:'Build a repeatable protocol for the next threshold. You know the sequence now (feeling \u2192 redirect \u2192 explanation) and you know the override (fifteen minutes, badly, now). Write the protocol as a specific instruction you can follow without deciding anything in the moment. Decisions are where the resistance lives. A protocol bypasses the decision.',
+       prompts:['What is the one-line instruction I follow next time I\u2019m standing in a doorway?'],
+       placeholder:'The protocol. One instruction. No decision points.'}
+    ];
+  }
+  renderVals() {
+    var RE = window.RiteEngine;
+    if (!RE) return {cycleEl:null,entryClockSrc:'',entryName:'\u2014',entryDetail:'Calculating\u2026',clearHandler:function(){}};
+    var sts = this.stations(), c = sts.length, t = RE.getPhaseIndex(c), e = sts[t];
+    return {
+      cycleEl: React.createElement('div',{style:{position:'relative',marginTop:56},dangerouslySetInnerHTML:{__html:RE.buildCycleHTML(sts,c,t)}}),
+      entryClockSrc: RE.clockUrl(t,c,true),
+      entryName: e.name,
+      entryDetail: RE.entryDetail(e,t,c),
+      clearHandler: function(){RE.clearAll('thresholdrite:',sts);}
+    };
+  }
+}
+</script>
+</body>
+</html>

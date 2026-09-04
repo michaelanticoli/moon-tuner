@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#080808;--bg-panel:#121110;--ink:#EDE6D6;--ink-dim:#A99C82;--ink-faint:#71675A;--gold:#B8924A;--gold-bright:#D4AF6A;--bronze:#8A6D3B;--line:rgba(184,146,74,0.22);--bruise:#5C3140;--bruise-bright:#B97C97;}
+    *{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--gold);color:var(--bg);}
+    a{color:var(--gold-bright);}a:hover{color:var(--ink);}
+    :focus-visible{outline:1.5px solid var(--gold-bright);outline-offset:3px;}
+    textarea::placeholder{color:var(--ink-faint);}
+    textarea:focus{border-color:var(--gold)!important;outline:none;}
+    @keyframes pulse{0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,106,0.35));}50%{filter:drop-shadow(0 0 13px rgba(212,175,106,0.65));}}
+    @media(max-width:520px){.rite-grid{grid-template-columns:52px 1fr!important;gap:0 14px!important;}.rite-marker img{width:34px!important;height:34px!important;}.rite-dashed{left:25px!important;}}
+    @media print{@page{size:Letter;margin:0;}html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}body{padding:0.62in 0.7in;}.rite-grid{break-inside:avoid;page-break-inside:avoid;}textarea{background:var(--bg-panel)!important;border:1px solid var(--line)!important;min-height:104px;color:transparent;resize:none;}textarea::placeholder{color:var(--ink-faint)!important;opacity:1;}.rite-clear{display:none!important;}}
+  </style>
+  <script src="rite-engine.js"></script>
+</helmet>
+
+<div style="max-width:720px; margin:0 auto; padding:0 28px 140px;">
+  <header style="padding:88px 0 48px; border-bottom:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); margin:0 0 22px;">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(40px,7vw,62px); letter-spacing:0.01em; margin:0 0 6px;">The Sabotage Rite</h1>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:15px; letter-spacing:0.06em; color:var(--ink-dim); margin:0 0 40px; text-transform:uppercase;">Pattern Recognition · The Moment Before the Undo</p>
+    <p style="font-style:italic; font-size:clamp(19px,2.6vw,23px); color:var(--gold-bright); max-width:500px; margin:0 auto; line-height:1.5; font-weight:400;">"I know exactly what would work. I just keep finding elegant reasons not to do it."</p>
+  </header>
+
+  <div style="margin:44px 0 0; padding:20px 4px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); display:flex; align-items:center; gap:20px;">
+    <div style="flex:0 0 auto; width:52px; height:52px;">
+      <img src="{{ entryClockSrc }}" style="width:100%; height:100%;" alt="" />
+    </div>
+    <div style="flex:1 1 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 4px;">Tonight's Position</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:21px; color:var(--ink); margin:0 0 2px;">{{ entryName }}</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-faint); margin:0;">{{ entryDetail }}</p>
+    </div>
+  </div>
+
+  <div style="padding:44px 0 8px; font-size:17.5px; color:var(--ink-dim);">
+    <p style="margin:0 0 18px;">This is not a motivational exercise. It's a forensic examination of the moment you choose to undo your own progress — and you do choose it, every time, even when it doesn't feel like a choice.</p>
+    <p style="margin:0 0 18px;"><span style="color:var(--ink); font-weight:500;">You know what works.</span> You've proven it. The skill isn't missing — something overrides it at the threshold, and that override has been running long enough to feel like personality. It isn't. It's a pattern, and patterns have mechanics.</p>
+    <p style="margin:0 0 18px;">The aim isn't to shame the pattern. It's to map it precisely enough to interrupt it at the exact point where it fires — and to understand what it was protecting you from, so you can decide whether that protection is still worth the cost.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:10px 28px; padding:20px 0 8px; margin-bottom:8px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">01 —</span> Work it in one sitting, or across the real eight nights. Either is correct.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">03 —</span> Be forensic, not dramatic. This rite runs on specifics, not feelings.</div>
+  </div>
+
+  {{ cycleEl }}
+
+  <div style="margin-top:70px; padding-top:52px; border-top:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 20px;">Return</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">The cycle closes. The pattern doesn't have to.</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">What changed isn't your character — it's your map. You can see the tripwire now. You know the payoff. You built one override. That's not a cure. It's a diagnostic, and a diagnostic is worth more than a hundred resolutions.</p>
+    <div style="margin:30px auto; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:21px; color:var(--gold-bright); line-height:1.9;">
+      Not broken. Patterned.<br />
+      Not helpless. Mapped.<br />
+      Not fixed. Interrupted — which is enough.
+    </div>
+    <p style="font-size:16.5px; color:var(--ink-faint); margin-top:26px;">The override is set. Use it once. Then trust what you measured.</p>
+    <p style="margin-top:44px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--bronze);">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div class="rite-clear" style="text-align:center; margin-top:36px;">
+    <button onClick="{{ clearHandler }}" style="background:none; border:1px solid var(--ink-faint); color:var(--ink-faint); font-family:'Karla',sans-serif; font-size:11.5px; letter-spacing:0.05em; padding:8px 16px; border-radius:2px; cursor:pointer;" style-hover="border-color:var(--gold); color:var(--gold);">Clear this cycle's entries</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    var RE = window.RiteEngine;
+    if (RE) RE.setupTextareas('sabotagerite:', this.stations());
+  }
+  stations() {
+    if (this._s) return this._s;
+    return this._s = [
+      {id:'undo-log',name:'New Moon',illum:'0% illuminated',verb:'Inventory',title:'The Undo Log',
+       directive:'List the last five times something was working \u2014 gaining traction, building momentum, approaching a threshold \u2014 and you did something that stopped it. Not bad luck. Not circumstances. Your move. Note what was working, what you did, and how quickly afterward you explained it away.',
+       prompts:['What was the pattern working toward before I intervened?','Did I know what I was doing when I did it, or did I only recognize it afterward?'],
+       placeholder:'Five instances. What was working. What you did. How you narrated it afterward.'},
+      {id:'tripwire',name:'Waxing Crescent',illum:'\u223c25% illuminated',verb:'Locate',title:'The Tripwire',
+       directive:'Find the exact moment sabotage engages. It\u2019s not random \u2014 there\u2019s a threshold where progress starts feeling dangerous, and a specific behavior that fires in response. It might be procrastination, a fight you pick, a sudden change of plan, or simply going quiet when showing up was required. Name the trigger point and the default response. Be forensic, not dramatic.',
+       prompts:['At what point in the arc \u2014 how close to working \u2014 does the pattern fire?'],
+       placeholder:'The trigger point. The default sabotage behavior. How long between them.'},
+      {id:'ledger-almost',name:'First Quarter',illum:'50% illuminated',verb:'Tally',title:'The Ledger of Almost',
+       directive:'Count what the pattern has cost. Not as a feeling \u2014 as a number. Jobs not taken, relationships eroded, projects abandoned at 80%, money left on the table, trust withdrawn by people who watched it happen more than once. Put it in a column. This is an audit, not a therapy session.',
+       prompts:['What\u2019s the largest single thing this pattern has cost me?','Who stopped offering because they\u2019d seen me undo it before?'],
+       placeholder:'The ledger. Be specific \u2014 names, amounts, timelines.',bruise:true},
+      {id:'hidden-contract',name:'Waxing Gibbous',illum:'\u223c75% illuminated',verb:'Map',title:'The Hidden Contract',
+       directive:'Name what you get from the sabotage. There is always a payoff, or the pattern wouldn\u2019t persist. Staying small keeps you safe from the scrutiny success brings. Failing confirms a story that\u2019s become comfortable. Blowing it up gives you the relief of not having to maintain it. Find the contract you signed without reading it.',
+       prompts:['What becomes true when I fail that wouldn\u2019t be true if I succeeded?','What responsibility am I avoiding by staying in the almost?'],
+       placeholder:'The payoff. Name it without flinching.'},
+      {id:'wreckage',name:'Full Moon',illum:'100% illuminated',verb:'Witness',title:'The View From the Wreckage',
+       directive:'Pick the most recent sabotage \u2014 the one that still stings \u2014 and sit in the aftermath. Not the narrative you told about it, but the actual scene: the email you didn\u2019t send, the door that closed, the look on someone\u2019s face when they realized you\u2019d done it again. Full illumination. No filter, no lesson, no redemption arc yet.',
+       prompts:['If I could show someone a photograph of the moment right after, what would it look like?'],
+       placeholder:'The aftermath. Describe the scene, not the story you made about it.'},
+      {id:'trade',name:'Waning Gibbous',illum:'\u223c75% illuminated',verb:'Release',title:'The Trade',
+       directive:'The payoff you named at station four has a price. Staying safe costs momentum. The comfortable failure story costs credibility. The relief of destruction costs everything you built. Decide \u2014 explicitly, out loud if possible \u2014 what you are willing to lose by letting something actually work. You can\u2019t release the sabotage without releasing its payoff.',
+       prompts:['What will become true about my life if I stop undoing my own progress?','Am I actually willing to live with that?'],
+       placeholder:'The trade. What you give up. What you get.'},
+      {id:'override',name:'Last Quarter',illum:'50% illuminated',verb:'Build',title:'The Override',
+       directive:'Build one structural intervention for the tripwire moment you identified at station two. Not a mindset shift, not a mantra \u2014 a concrete action or rule that physically interrupts the pattern. If the sabotage is quitting at 80%, the override might be telling someone else the deadline. If it\u2019s picking a fight when things get good, the override might be a 24-hour rule on difficult conversations after a win. Keep it mechanical. Willpower is not a structure.',
+       prompts:['What\u2019s the smallest mechanical change that would interrupt the pattern at the exact point it fires?'],
+       placeholder:'The structural fix. Specific enough that you\u2019ll know whether you used it.'},
+      {id:'compost',name:'Waning Crescent',illum:'\u223c25% illuminated',verb:'Compost',title:'What Gets Kept',
+       directive:'Separate the working data from the shame. Keep the tripwire map, the override, the honest ledger. Release the identity \u2014 \u201cI always do this,\u201d \u201cI can\u2019t help it,\u201d \u201cit\u2019s just who I am.\u201d Those sentences were never diagnostic. They were permission slips. The pattern is mechanical, not moral, and mechanical things can be interrupted by anyone who knows where the switch is.',
+       prompts:['What fact from this cycle do I need to remember?','What story about myself am I done telling?'],
+       placeholder:'Two columns: keep, release.'}
+    ];
+  }
+  renderVals() {
+    var RE = window.RiteEngine;
+    if (!RE) return {cycleEl:null,entryClockSrc:'',entryName:'\u2014',entryDetail:'Calculating\u2026',clearHandler:function(){}};
+    var sts = this.stations(), c = sts.length, t = RE.getPhaseIndex(c), e = sts[t];
+    return {
+      cycleEl: React.createElement('div',{style:{position:'relative',marginTop:56},dangerouslySetInnerHTML:{__html:RE.buildCycleHTML(sts,c,t)}}),
+      entryClockSrc: RE.clockUrl(t,c,true),
+      entryName: e.name,
+      entryDetail: RE.entryDetail(e,t,c),
+      clearHandler: function(){RE.clearAll('sabotagerite:',sts);}
+    };
+  }
+}
+</script>
+</body>
+</html>
