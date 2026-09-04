@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#080808;--bg-panel:#121110;--ink:#EDE6D6;--ink-dim:#A99C82;--ink-faint:#71675A;--gold:#B8924A;--gold-bright:#D4AF6A;--bronze:#8A6D3B;--line:rgba(184,146,74,0.22);--bruise:#5C3140;--bruise-bright:#B97C97;}
+    *{box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--gold);color:var(--bg);}a{color:var(--gold-bright);}a:hover{color:var(--ink);}
+    :focus-visible{outline:1.5px solid var(--gold-bright);outline-offset:3px;}
+    textarea::placeholder{color:var(--ink-faint);}textarea:focus{border-color:var(--gold)!important;outline:none;}
+    @keyframes pulse{0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,106,0.35));}50%{filter:drop-shadow(0 0 13px rgba(212,175,106,0.65));}}
+    @media(max-width:520px){.rite-grid{grid-template-columns:52px 1fr!important;gap:0 14px!important;}.rite-marker img{width:34px!important;height:34px!important;}.rite-dashed{left:25px!important;}}
+    @media print{@page{size:Letter;margin:0;}html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}body{padding:0.62in 0.7in;}.rite-grid{break-inside:avoid;page-break-inside:avoid;}textarea{background:var(--bg-panel)!important;border:1px solid var(--line)!important;min-height:104px;color:transparent;resize:none;}textarea::placeholder{color:var(--ink-faint)!important;opacity:1;}.rite-clear{display:none!important;}}
+  </style>
+  <script src="rite-engine.js"></script>
+</helmet>
+
+<div style="max-width:720px; margin:0 auto; padding:0 28px 140px;">
+  <header style="padding:88px 0 48px; border-bottom:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); margin:0 0 22px;">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(40px,7vw,62px); letter-spacing:0.01em; margin:0 0 6px;">The Foundation Rite</h1>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:15px; letter-spacing:0.06em; color:var(--ink-dim); margin:0 0 40px; text-transform:uppercase;">Evidence-Based Confidence · Rebuilding From the Record</p>
+    <p style="font-style:italic; font-size:clamp(19px,2.6vw,23px); color:var(--gold-bright); max-width:500px; margin:0 auto; line-height:1.5; font-weight:400;">"Confidence isn't a feeling. It's a ledger that tallies differently than the one you've been keeping."</p>
+  </header>
+
+  <div style="margin:44px 0 0; padding:20px 4px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); display:flex; align-items:center; gap:20px;">
+    <div style="flex:0 0 auto; width:52px; height:52px;"><img src="{{ entryClockSrc }}" style="width:100%; height:100%;" alt="" /></div>
+    <div style="flex:1 1 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 4px;">Tonight's Position</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:21px; color:var(--ink); margin:0 0 2px;">{{ entryName }}</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-faint); margin:0;">{{ entryDetail }}</p>
+    </div>
+  </div>
+
+  <div style="padding:44px 0 8px; font-size:17.5px; color:var(--ink-dim);">
+    <p style="margin:0 0 18px;">This rite does not build confidence. Confidence is not something you build. It's a byproduct of accurate record-keeping — and your records have been systematically wrong.</p>
+    <p style="margin:0 0 18px;"><span style="color:var(--ink); font-weight:500;">You have been under-reporting.</span> Not out of humility — out of habit. You minimize wins, over-weight failures, and run a ledger so skewed that your own assessment of yourself bears almost no resemblance to the evidence. This rite corrects the ledger.</p>
+    <p style="margin:0 0 18px;">The aim isn't to feel good about yourself. It's to see yourself accurately — neither inflated nor deflated — and to let the evidence, for once, do the talking.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:10px 28px; padding:20px 0 8px; margin-bottom:8px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">01 —</span> Work it in one sitting, or across the real eight nights. Either is correct.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">03 —</span> Use evidence, not feelings. This rite runs on specifics you can point to.</div>
+  </div>
+
+  {{ cycleEl }}
+
+  <div style="margin-top:70px; padding-top:52px; border-top:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 20px;">Return</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">Confidence was never the missing ingredient. Accurate accounting was.</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">You have a record now — not of potential, but of demonstrated capacity. The ledger isn't about feeling invincible. It's about knowing the floor and trusting the evidence.</p>
+    <div style="margin:30px auto; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:21px; color:var(--gold-bright); line-height:1.9;">
+      Not certain. Evidenced.<br />
+      Not fearless. Tested.<br />
+      Not confident. Accurate — which is better.
+    </div>
+    <p style="font-size:16.5px; color:var(--ink-faint); margin-top:26px;">The ledger is updated. Consult it before the old one. The record is better than you've been reporting.</p>
+    <p style="margin-top:44px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--bronze);">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div class="rite-clear" style="text-align:center; margin-top:36px;">
+    <button onClick="{{ clearHandler }}" style="background:none; border:1px solid var(--ink-faint); color:var(--ink-faint); font-family:'Karla',sans-serif; font-size:11.5px; letter-spacing:0.05em; padding:8px 16px; border-radius:2px; cursor:pointer;" style-hover="border-color:var(--gold); color:var(--gold);">Clear this cycle's entries</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    var RE = window.RiteEngine;
+    if (RE) RE.setupTextareas('foundationrite:', this.stations());
+  }
+  stations() {
+    if (this._s) return this._s;
+    return this._s = [
+      {id:'audit',name:'New Moon',illum:'0% illuminated',verb:'Inventory',title:'The Honest Audit',
+       directive:'Before building confidence, establish what\u2019s actually there. List your real competencies \u2014 not aspirational, not what you wish were true, not what your resume says. What can you actually do, reliably, when it counts? Include the skills nobody pays you for and the capacities you\u2019ve stopped noticing because they come too easily to feel like achievements.',
+       prompts:['What do people consistently come to me for?','What do I do well that I\u2019ve stopped counting because it feels obvious?'],
+       placeholder:'The inventory. What you can actually do. Be boring and specific.'},
+      {id:'buried-wins',name:'Waxing Crescent',illum:'\u223c25% illuminated',verb:'Recover',title:'The Buried Wins',
+       directive:'List five things you did that worked \u2014 that you minimized, explained away, or attributed to luck. The project that landed. The conversation you handled well. The decision that turned out right. Confidence erodes not because you stop winning, but because you stop counting wins.',
+       prompts:['What have I dismissed as luck that was actually skill?'],
+       placeholder:'Five minimized wins. What happened. Why you discounted it.'},
+      {id:'floor',name:'First Quarter',illum:'50% illuminated',verb:'Map',title:'Where the Floor Is',
+       directive:'Name the worst professional or personal failure of the last two years. Then name what you did after it. Not the recovery story \u2014 the specific actions. You got up. You handled something. You didn\u2019t die. The floor is not where you think it is; it\u2019s where you\u2019ve already been and walked away from. Confidence built on avoiding failure is fragile. Confidence built on surviving failure is structural.',
+       prompts:['What\u2019s the worst thing that happened, and what did I do the next day?'],
+       placeholder:'The failure. The day after. What that says about the actual floor.'},
+      {id:'distinguish',name:'Waxing Gibbous',illum:'\u223c75% illuminated',verb:'Distinguish',title:'Confidence vs. Performance',
+       directive:'Separate the feeling from the capacity. You have done good work while feeling terrible. You have spoken well while certain you\u2019d fail. You have shown up on days when every signal said stay home. Belief in yourself is not a prerequisite for functioning \u2014 but functioning is evidence for belief. Stop waiting to feel confident before you act. Start letting action update the ledger.',
+       prompts:['When was the last time I did something well despite feeling completely unqualified?'],
+       placeholder:'Action taken without confidence. Outcome. What the ledger should actually say.'},
+      {id:'external',name:'Full Moon',illum:'100% illuminated',verb:'Receive',title:'The External Record',
+       directive:'Ask someone who knows your work \u2014 not a cheerleader, someone honest \u2014 what they consider your genuine strengths. Write down what they say without arguing, deflecting, or minimizing. You don\u2019t have to believe it yet. Just receive the data. Your internal ledger has been self-audited for years; an external audit is overdue.',
+       prompts:['What did they say that surprised me?','What did they say that I immediately wanted to argue with?'],
+       placeholder:'What they said. Your reaction. Which part you wanted to dismiss.'},
+      {id:'minimization',name:'Waning Gibbous',illum:'\u223c75% illuminated',verb:'Name',title:'The Minimization Habit',
+       directive:'Identify how you shrink yourself. The specific language (\u201cI just got lucky\u201d), the specific gestures (deflecting compliments, over-qualifying statements), the specific choices (not applying, not asking, not showing up). Self-minimization is not humility. It\u2019s a strategy \u2014 often one that\u2019s outlived its usefulness. Name the habit precisely so you can see it the next time it fires.',
+       prompts:['What\u2019s my go-to minimization move?','Who taught me that shrinking was the correct response to competence?'],
+       placeholder:'The minimization habits. Where they came from.',bruise:true},
+      {id:'policy-change',name:'Last Quarter',illum:'50% illuminated',verb:'Build',title:'One Policy Change',
+       directive:'Choose one minimization habit and replace it with a neutral, factual alternative. Not bragging \u2014 just accuracy. \u201cI just got lucky\u201d becomes \u201cThat worked because I prepared.\u201d \u201cAnyone could do this\u201d becomes \u201cI did this.\u201d Implement it for one week. This is not a confidence exercise \u2014 it\u2019s an accuracy correction. You\u2019ve been systematically under-reporting. Correct the report.',
+       prompts:['Which minimization habit am I correcting this week, and what\u2019s the accurate replacement?'],
+       placeholder:'The old line. The accurate replacement. Where you\u2019ll use it first.'},
+      {id:'updated-ledger',name:'Waning Crescent',illum:'\u223c25% illuminated',verb:'Set',title:'The Updated Ledger',
+       directive:'Rewrite your internal ledger with the evidence gathered across this cycle: the inventory, the recovered wins, the survived failures, the external audit, the minimization correction. This is your new baseline \u2014 not a pep talk, not an aspiration, but an accurate accounting of what\u2019s actually there. Confidence is a ledger. You\u2019ve been keeping the wrong one.',
+       prompts:['If I reported on myself honestly \u2014 neither inflated nor deflated \u2014 what would the summary say?'],
+       placeholder:'The updated ledger. Evidence-based. Neither generous nor harsh.'}
+    ];
+  }
+  renderVals() {
+    var RE = window.RiteEngine;
+    if (!RE) return {cycleEl:null,entryClockSrc:'',entryName:'\u2014',entryDetail:'Calculating\u2026',clearHandler:function(){}};
+    var sts = this.stations(), c = sts.length, t = RE.getPhaseIndex(c), e = sts[t];
+    return {
+      cycleEl: React.createElement('div',{style:{position:'relative',marginTop:56},dangerouslySetInnerHTML:{__html:RE.buildCycleHTML(sts,c,t)}}),
+      entryClockSrc: RE.clockUrl(t,c,true),
+      entryName: e.name,
+      entryDetail: RE.entryDetail(e,t,c),
+      clearHandler: function(){RE.clearAll('foundationrite:',sts);}
+    };
+  }
+}
+</script>
+</body>
+</html>

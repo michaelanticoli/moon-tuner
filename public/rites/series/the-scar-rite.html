@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#080808;--bg-panel:#121110;--ink:#EDE6D6;--ink-dim:#A99C82;--ink-faint:#71675A;--gold:#B8924A;--gold-bright:#D4AF6A;--bronze:#8A6D3B;--line:rgba(184,146,74,0.22);--bruise:#5C3140;--bruise-bright:#B97C97;}
+    *{box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--gold);color:var(--bg);}a{color:var(--gold-bright);}a:hover{color:var(--ink);}
+    :focus-visible{outline:1.5px solid var(--gold-bright);outline-offset:3px;}
+    textarea::placeholder{color:var(--ink-faint);}textarea:focus{border-color:var(--gold)!important;outline:none;}
+    @keyframes pulse{0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,106,0.35));}50%{filter:drop-shadow(0 0 13px rgba(212,175,106,0.65));}}
+    @media(max-width:520px){.rite-grid{grid-template-columns:52px 1fr!important;gap:0 14px!important;}.rite-marker img{width:34px!important;height:34px!important;}.rite-dashed{left:25px!important;}}
+    @media print{@page{size:Letter;margin:0;}html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}body{padding:0.62in 0.7in;}.rite-grid{break-inside:avoid;page-break-inside:avoid;}textarea{background:var(--bg-panel)!important;border:1px solid var(--line)!important;min-height:104px;color:transparent;resize:none;}textarea::placeholder{color:var(--ink-faint)!important;opacity:1;}.rite-clear{display:none!important;}}
+  </style>
+  <script src="rite-engine.js"></script>
+</helmet>
+
+<div style="max-width:720px; margin:0 auto; padding:0 28px 140px;">
+  <header style="padding:88px 0 48px; border-bottom:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); margin:0 0 22px;">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(40px,7vw,62px); letter-spacing:0.01em; margin:0 0 6px;">The Scar Rite</h1>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:15px; letter-spacing:0.06em; color:var(--ink-dim); margin:0 0 40px; text-transform:uppercase;">Residual Authority · When Someone Else's Words Became Your Rules</p>
+    <p style="font-style:italic; font-size:clamp(19px,2.6vw,23px); color:var(--gold-bright); max-width:500px; margin:0 auto; line-height:1.5; font-weight:400;">"Someone said something once, and I never stopped answering them."</p>
+  </header>
+
+  <div style="margin:44px 0 0; padding:20px 4px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); display:flex; align-items:center; gap:20px;">
+    <div style="flex:0 0 auto; width:52px; height:52px;"><img src="{{ entryClockSrc }}" style="width:100%; height:100%;" alt="" /></div>
+    <div style="flex:1 1 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 4px;">Tonight's Position</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:21px; color:var(--ink); margin:0 0 2px;">{{ entryName }}</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-faint); margin:0;">{{ entryDetail }}</p>
+    </div>
+  </div>
+
+  <div style="padding:44px 0 8px; font-size:17.5px; color:var(--ink-dim);">
+    <p style="margin:0 0 18px;">Seven stations. The odd number is deliberate — no neat symmetry, no clean balance. Scars don't resolve into tidy arcs. They leave a mark, and the mark changes the architecture around it.</p>
+    <p style="margin:0 0 18px;"><span style="color:var(--ink); font-weight:500;">Someone said something once.</span> It might have been one sentence, one afternoon, one offhand remark they forgot before the end of the week. But you didn't forget. You built a policy around it — a whole behavioral architecture designed to make sure you never again earned that particular verdict. The architecture is still running. This rite audits it.</p>
+    <p style="margin:0 0 18px;">The aim isn't to erase the scar. It's to check whether the authority you gave to the person who made it was ever warranted — and whether it's time to revoke it.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:10px 28px; padding:20px 0 8px; margin-bottom:8px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">01 —</span> Work it in one sitting, or across seven nights. Either is correct.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">03 —</span> Name the person. Name the sentence. Vague wounds can't be treated.</div>
+  </div>
+
+  {{ cycleEl }}
+
+  <div style="margin-top:70px; padding-top:52px; border-top:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 20px;">Return</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">The wound was real. The authority was borrowed — and never returned until now.</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">Someone else's sentence does not get to write your operating manual indefinitely. You've filed the case. You've mounted the defense that younger-you couldn't. The scar stays. The obedience doesn't.</p>
+    <div style="margin:30px auto; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:21px; color:var(--gold-bright); line-height:1.9;">
+      Scarred, not governed.<br />
+      Marked, not obedient.<br />
+      Shaped by it, not run by it.
+    </div>
+    <p style="font-size:16.5px; color:var(--ink-faint); margin-top:26px;">The authority is revoked. The file is closed. Your policy is your own now.</p>
+    <p style="margin-top:44px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--bronze);">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div class="rite-clear" style="text-align:center; margin-top:36px;">
+    <button onClick="{{ clearHandler }}" style="background:none; border:1px solid var(--ink-faint); color:var(--ink-faint); font-family:'Karla',sans-serif; font-size:11.5px; letter-spacing:0.05em; padding:8px 16px; border-radius:2px; cursor:pointer;" style-hover="border-color:var(--gold); color:var(--gold);">Clear this cycle's entries</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    var RE = window.RiteEngine;
+    if (RE) RE.setupTextareas('scarrite:', this.stations());
+  }
+  stations() {
+    if (this._s) return this._s;
+    return this._s = [
+      {id:'wound',name:'New Moon',illum:'0% illuminated',verb:'Excavate',title:'The Original Wound',
+       directive:'Name the critique that still runs your decisions. Not the most dramatic one \u2014 the one that\u2019s most operational. The teacher who said you weren\u2019t creative. The parent who said you\u2019d never finish anything. The partner who said you were too much. Find the one that became policy \u2014 the one you still obey even though the person who said it may not remember saying it.',
+       prompts:['What is the exact sentence \u2014 or as close as I can reconstruct it?','How old was I when I first started obeying it?'],
+       placeholder:'The critique. The speaker. Your age when it landed.'},
+      {id:'policy',name:'Waxing Crescent',illum:'\u223c25% illuminated',verb:'Trace',title:'The Policy It Wrote',
+       directive:'Map every current behavior that traces back to that critique. It won\u2019t be one thing \u2014 it\u2019ll be a web. The critique that you\u2019re \u201ctoo much\u201d might have produced: speaking less in meetings, apologizing before making a point, choosing partners who need you small, curating yourself exhaustively online. Follow the roots. One sentence can build an entire architecture of avoidance.',
+       prompts:['What do I currently do \u2014 or not do \u2014 because of this one sentence?'],
+       placeholder:'The behaviors. Trace each one back to the original critique.'},
+      {id:'authority',name:'First Quarter',illum:'50% illuminated',verb:'Weigh',title:'The Authority Check',
+       directive:'Ask honestly: was the person who said it qualified to assess you on that axis? Did they have your context, your full picture, your trajectory? Or were they projecting their own limitation, exhaustion, envy, or pain? This isn\u2019t about discounting everything they said. It\u2019s about checking whether you gave them more authority than their position warranted \u2014 and whether you\u2019ve been renewing that authority every year since.',
+       prompts:['On a scale of one to ten, how qualified was this person to make this assessment?','Would I accept this same critique from someone I respect today?'],
+       placeholder:'Their qualifications. Whether the authority was earned or assumed.'},
+      {id:'counter',name:'Waxing Gibbous',illum:'\u223c75% illuminated',verb:'Gather',title:'The Counter-Evidence',
+       directive:'Build the case against the critique. Not affirmations \u2014 evidence. Times you were, in fact, creative. Things you did finish. Relationships where you were exactly the right amount. The critique survived this long because you never mounted a defense. Mount one now. Use specifics.',
+       prompts:['What have I done that directly contradicts what they said?'],
+       placeholder:'The evidence. Specific instances. Dates if you have them.'},
+      {id:'confront',name:'Full Moon',illum:'100% illuminated',verb:'Confront',title:'The Return Address',
+       directive:'Write the response you never gave. Not the revenge fantasy \u2014 the factual, measured, adult response. Address it to the person who said it. Tell them what their words actually did \u2014 not to wound them, but to take the power of the narrative back. You don\u2019t need to send it. You need to write it, because the person you most need to hear it is you.',
+       prompts:['What would I say now, with everything I know, to the person who said it?'],
+       placeholder:'The unsent letter. Measured, factual, complete.',bruise:true},
+      {id:'revoke',name:'Last Quarter',illum:'50% illuminated',verb:'Revoke',title:'The Policy Change',
+       directive:'Formally revoke the authority you gave them. Pick one specific behavior from the web you mapped at station two \u2014 the most operational one, the one you feel most \u2014 and deliberately do the opposite this week. Not as defiance, but as data collection. The critique predicted something. Test the prediction. Behave as though it isn\u2019t true and see what actually happens.',
+       prompts:['Which one behavior am I going to change first, and what do I expect to happen?'],
+       placeholder:'The behavior. The prediction. What actually happened.'},
+      {id:'archive',name:'Waning Crescent',illum:'\u223c25% illuminated',verb:'Archive',title:'The Closed File',
+       directive:'The scar doesn\u2019t vanish. You don\u2019t owe it erasure \u2014 you owe it accurate filing. It happened. It shaped you. It no longer runs the policy. File it as history, not as instruction. Keep the resilience it built. Release the obedience it installed.',
+       prompts:['What did this scar teach me that\u2019s actually useful?','What rule does it enforce that I\u2019m done following?'],
+       placeholder:'What gets filed as history. What gets revoked as active policy.'}
+    ];
+  }
+  renderVals() {
+    var RE = window.RiteEngine;
+    if (!RE) return {cycleEl:null,entryClockSrc:'',entryName:'\u2014',entryDetail:'Calculating\u2026',clearHandler:function(){}};
+    var sts = this.stations(), c = sts.length, t = RE.getPhaseIndex(c), e = sts[t];
+    return {
+      cycleEl: React.createElement('div',{style:{position:'relative',marginTop:56},dangerouslySetInnerHTML:{__html:RE.buildCycleHTML(sts,c,t)}}),
+      entryClockSrc: RE.clockUrl(t,c,true),
+      entryName: e.name,
+      entryDetail: RE.entryDetail(e,t,c),
+      clearHandler: function(){RE.clearAll('scarrite:',sts);}
+    };
+  }
+}
+</script>
+</body>
+</html>

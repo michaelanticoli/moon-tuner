@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#080808;--bg-panel:#121110;--ink:#EDE6D6;--ink-dim:#A99C82;--ink-faint:#71675A;--gold:#B8924A;--gold-bright:#D4AF6A;--bronze:#8A6D3B;--line:rgba(184,146,74,0.22);--bruise:#5C3140;--bruise-bright:#B97C97;}
+    *{box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--gold);color:var(--bg);}a{color:var(--gold-bright);}a:hover{color:var(--ink);}
+    :focus-visible{outline:1.5px solid var(--gold-bright);outline-offset:3px;}
+    textarea::placeholder{color:var(--ink-faint);}textarea:focus{border-color:var(--gold)!important;outline:none;}
+    @keyframes pulse{0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,106,0.35));}50%{filter:drop-shadow(0 0 13px rgba(212,175,106,0.65));}}
+    @media(max-width:520px){.rite-grid{grid-template-columns:52px 1fr!important;gap:0 14px!important;}.rite-marker img{width:34px!important;height:34px!important;}.rite-dashed{left:25px!important;}}
+    @media print{@page{size:Letter;margin:0;}html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}body{padding:0.62in 0.7in;}.rite-grid{break-inside:avoid;page-break-inside:avoid;}textarea{background:var(--bg-panel)!important;border:1px solid var(--line)!important;min-height:104px;color:transparent;resize:none;}textarea::placeholder{color:var(--ink-faint)!important;opacity:1;}.rite-clear{display:none!important;}}
+  </style>
+  <script src="rite-engine.js"></script>
+</helmet>
+
+<div style="max-width:720px; margin:0 auto; padding:0 28px 140px;">
+  <header style="padding:88px 0 48px; border-bottom:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); margin:0 0 22px;">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(40px,7vw,62px); letter-spacing:0.01em; margin:0 0 6px;">The Mirror Rite</h1>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:15px; letter-spacing:0.06em; color:var(--ink-dim); margin:0 0 40px; text-transform:uppercase;">Inner Audit · The Critic Who Knows Your Floor Plan</p>
+    <p style="font-style:italic; font-size:clamp(19px,2.6vw,23px); color:var(--gold-bright); max-width:500px; margin:0 auto; line-height:1.5; font-weight:400;">"The harshest judge in the building was never on the bench. They were in the hallway, pretending to sweep."</p>
+  </header>
+
+  <div style="margin:44px 0 0; padding:20px 4px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); display:flex; align-items:center; gap:20px;">
+    <div style="flex:0 0 auto; width:52px; height:52px;">
+      <img src="{{ entryClockSrc }}" style="width:100%; height:100%;" alt="" />
+    </div>
+    <div style="flex:1 1 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 4px;">Tonight's Position</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:21px; color:var(--ink); margin:0 0 2px;">{{ entryName }}</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-faint); margin:0;">{{ entryDetail }}</p>
+    </div>
+  </div>
+
+  <div style="padding:44px 0 8px; font-size:17.5px; color:var(--ink-dim);">
+    <p style="margin:0 0 18px;">This rite is shorter than most — six stations instead of eight. The work is subtraction, not addition. You are not building a new voice. You are identifying the one that's been speaking without authorization and checking its credentials.</p>
+    <p style="margin:0 0 18px;"><span style="color:var(--ink); font-weight:500;">Self-criticism is not rigor.</span> Rigor looks at evidence and updates. Self-criticism ignores evidence and repeats. One is an instrument. The other is a habit wearing the instrument's clothes.</p>
+    <p style="margin:0 0 18px;">The aim is accurate self-assessment — honest enough to be useful, precise enough to act on, and stripped of the cruelty that's been masquerading as standards.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:10px 28px; padding:20px 0 8px; margin-bottom:8px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">01 —</span> Work it in one sitting, or across six nights. Either is correct.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">03 —</span> Record exact words, not paraphrases. The transcript is the evidence.</div>
+  </div>
+
+  {{ cycleEl }}
+
+  <div style="margin-top:70px; padding-top:52px; border-top:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 20px;">Return</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">The mirror was never the problem. The distortion was.</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">You can look at yourself honestly — measure the gaps, name the work that remains — without the voice that turns every assessment into an indictment. Rigor and cruelty are not the same instrument. You've been confusing them long enough.</p>
+    <div style="margin:30px auto; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:21px; color:var(--gold-bright); line-height:1.9;">
+      Honest, not harsh.<br />
+      Accurate, not punishing.<br />
+      Assessed, not sentenced.
+    </div>
+    <p style="font-size:16.5px; color:var(--ink-faint); margin-top:26px;">The transcript is evidence now. The replacement is policy. Use the accurate version.</p>
+    <p style="margin-top:44px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--bronze);">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div class="rite-clear" style="text-align:center; margin-top:36px;">
+    <button onClick="{{ clearHandler }}" style="background:none; border:1px solid var(--ink-faint); color:var(--ink-faint); font-family:'Karla',sans-serif; font-size:11.5px; letter-spacing:0.05em; padding:8px 16px; border-radius:2px; cursor:pointer;" style-hover="border-color:var(--gold); color:var(--gold);">Clear this cycle's entries</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    var RE = window.RiteEngine;
+    if (RE) RE.setupTextareas('mirrorrite:', this.stations());
+  }
+  stations() {
+    if (this._s) return this._s;
+    return this._s = [
+      {id:'transcript',name:'New Moon',illum:'0% illuminated',verb:'Transcribe',title:'The Recording',
+       directive:'For one full day, write down every self-critical thought verbatim. Not the gist \u2014 the exact words. \u201cYou\u2019re so stupid.\u201d \u201cYou\u2019ll never get this right.\u201d \u201cEveryone can see you don\u2019t belong here.\u201d Record them like a court reporter: no editing, no softening, no arguing back. Just the transcript.',
+       prompts:['How many of these sentences would I say out loud to someone I respect?','When I read them back, whose voice are they actually in?'],
+       placeholder:'The transcript. Exact words. No editorializing.'},
+      {id:'source',name:'First Quarter',illum:'50% illuminated',verb:'Source',title:'The Original Speaker',
+       directive:'Trace the critic\u2019s voice back to its source. Most self-critical scripts were written by someone else \u2014 a parent, a teacher, a partner, a culture \u2014 and then adopted wholesale as internal policy. Find the original speaker. This isn\u2019t about blame; it\u2019s about authorship. You\u2019re running code you didn\u2019t write. Name who wrote it.',
+       prompts:['Who first said this \u2014 or something close enough \u2014 that I started saying it to myself?','What was happening when I accepted their assessment as truth?'],
+       placeholder:'The source. Who wrote the script. When you adopted it.'},
+      {id:'deposition',name:'Full Moon',illum:'100% illuminated',verb:'Externalize',title:'The Deposition',
+       directive:'Take the three harshest lines from your transcript and write them as though you\u2019re hearing them said to someone else \u2014 someone you care about. Read them out loud in that framing. Notice the reaction. The criticism that felt like accountability when directed at yourself becomes visibly cruel when directed outward. That\u2019s not because you deserve it more. It\u2019s because you stopped noticing the cruelty.',
+       prompts:['Would I let someone say this to a person I love? Then why do I let myself hear it daily?'],
+       placeholder:'The three harshest lines, reframed outward. Your honest reaction.'},
+      {id:'accuracy',name:'Waning Gibbous',illum:'\u223c75% illuminated',verb:'Audit',title:'The Accuracy Check',
+       directive:'Take each critical statement and run it against evidence. Not feelings \u2014 evidence. \u201cYou\u2019re incompetent\u201d \u2014 name five things you\u2019ve done competently this month. \u201cNobody respects you\u201d \u2014 name three people who sought your input recently. The critic doesn\u2019t deal in evidence. It deals in atmosphere. Force it into the courtroom.',
+       prompts:['What is the actual evidence for and against this statement?','If this were a legal case, would the critic\u2019s argument survive cross-examination?'],
+       placeholder:'The statement. The evidence for. The evidence against. The verdict.',bruise:true},
+      {id:'correction',name:'Last Quarter',illum:'50% illuminated',verb:'Replace',title:'The Correction',
+       directive:'For each critical script you\u2019ve identified, write the accurate version \u2014 not the positive spin, not an affirmation, just the factually correct statement. \u201cYou\u2019re stupid\u201d becomes \u201cYou missed that, and you\u2019ve solved harder problems before.\u201d \u201cYou\u2019ll never get this right\u201d becomes \u201cThis is taking longer than expected, and you\u2019re still working on it.\u201d Accuracy, not encouragement.',
+       prompts:['What would a fair, evidence-based assessment actually sound like?'],
+       placeholder:'Old script \u2192 accurate replacement. No cheerleading \u2014 just truth.'},
+      {id:'eviction',name:'Waning Crescent',illum:'\u223c25% illuminated',verb:'Evict',title:'The Lease Is Up',
+       directive:'The critic has been living rent-free because you never questioned its tenancy. It moved in as protection \u2014 if you beat yourself up first, nobody else\u2019s criticism could land as hard. That was a strategy. It may have even worked once. But the protection racket now costs more than the threat it was built against. Keep the capacity for honest self-assessment. Evict the cruelty that disguised itself as rigor.',
+       prompts:['What am I protecting by keeping the harsh voice? Is the threat still real?','What becomes possible if I can assess myself honestly without the cruelty?'],
+       placeholder:'What the critic was protecting you from. Whether that protection is still needed.'}
+    ];
+  }
+  renderVals() {
+    var RE = window.RiteEngine;
+    if (!RE) return {cycleEl:null,entryClockSrc:'',entryName:'\u2014',entryDetail:'Calculating\u2026',clearHandler:function(){}};
+    var sts = this.stations(), c = sts.length, t = RE.getPhaseIndex(c), e = sts[t];
+    return {
+      cycleEl: React.createElement('div',{style:{position:'relative',marginTop:56},dangerouslySetInnerHTML:{__html:RE.buildCycleHTML(sts,c,t)}}),
+      entryClockSrc: RE.clockUrl(t,c,true),
+      entryName: e.name,
+      entryDetail: RE.entryDetail(e,t,c),
+      clearHandler: function(){RE.clearAll('mirrorrite:',sts);}
+    };
+  }
+}
+</script>
+</body>
+</html>

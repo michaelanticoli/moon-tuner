@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@500;600&family=Karla:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#080808;--bg-panel:#121110;--ink:#EDE6D6;--ink-dim:#A99C82;--ink-faint:#71675A;--gold:#B8924A;--gold-bright:#D4AF6A;--bronze:#8A6D3B;--line:rgba(184,146,74,0.22);--teal:#2EC4B6;}
+    *{box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--gold);color:var(--bg);}
+    a{color:var(--gold-bright);text-decoration:none;}a:hover{color:var(--ink);text-decoration:underline;}
+    @media(max-width:600px){.ref-2col{grid-template-columns:1fr!important;}}
+    @media print{@page{size:Letter;margin:0.6in;}body{background:#fff!important;color:#1a1a1a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.ref-toc{display:none!important;}.ref-code{background:#f5f3ee!important;border-color:#ccc!important;color:#1a1a1a!important;}}
+  </style>
+</helmet>
+
+<div style="max-width:760px; margin:0 auto; padding:0 28px 140px;">
+
+  <header style="padding:80px 0 48px; border-bottom:2px solid var(--gold); text-align:center;">
+    <img src="codex-logo.png" alt="Codex" style="width:100px; height:auto; filter:invert(1); opacity:0.85; margin:0 auto 24px; display:block;" />
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); margin:0 0 18px;">Quantumelodic Notation System</p>
+    <h1 style="font-weight:500; font-size:clamp(36px,6.5vw,54px); letter-spacing:0.01em; margin:0 0 8px;">The Codex</h1>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:15px; letter-spacing:0.06em; color:var(--ink-dim); margin:0 0 28px; text-transform:uppercase;">Notation Reference · Technical Specification</p>
+    <p style="font-style:italic; font-size:clamp(18px,2.4vw,21px); color:var(--gold-bright); max-width:460px; margin:0 auto; line-height:1.5;">"A shorthand for ritual — translating many concepts into a packaged form that travels well."</p>
+  </header>
+
+  <!-- TABLE OF CONTENTS -->
+  <nav class="ref-toc" style="margin:36px 0; padding:20px 24px; background:var(--bg-panel); border:1px solid var(--line); border-radius:4px;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 12px;">Contents</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px 28px; font-family:'Karla',sans-serif; font-size:13.5px;">
+      <a href="#foundations" style="color:var(--ink-dim);">1 — Foundational Concepts</a>
+      <a href="#syntax" style="color:var(--ink-dim);">2 — Core Syntax</a>
+      <a href="#symbols" style="color:var(--ink-dim);">3 — Symbol Reference</a>
+      <a href="#frameworks" style="color:var(--ink-dim);">4 — Composition Frameworks</a>
+      <a href="#examples" style="color:var(--ink-dim);">5 — Worked Examples</a>
+      <a href="#templates" style="color:var(--ink-dim);">6 — Template Library</a>
+      <a href="#temporal" style="color:var(--ink-dim);">7 — Temporal Modification</a>
+      <a href="#quickref" style="color:var(--ink-dim);">8 — Quick Reference</a>
+    </div>
+  </nav>
+
+  <!-- 1. FOUNDATIONAL CONCEPTS -->
+  <section id="foundations" style="margin:56px 0 0;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin:0 0 8px;">Chapter 1</p>
+    <h2 style="font-weight:500; font-size:clamp(26px,4.5vw,34px); margin:0 0 24px;">Foundational Concepts</h2>
+
+    <h3 style="font-size:20px; font-weight:500; color:var(--ink); margin:0 0 12px;">The Harmonic Law of Correspondence</h3>
+    <p style="font-size:17px; color:var(--ink-dim); margin:0 0 16px;">The Codex rests on a correspondence principle: relationships between entities can be expressed as harmonic intervals. Angular relationships in cyclical systems produce proportional divisions with correlates in musical intervals, geometric relationships, and symbolic attributions.</p>
+    <p style="font-size:17px; color:var(--ink-dim); margin:0 0 28px;">The correspondence operates bidirectionally. Given a relationship type (a 120° angular separation), derive an interval classification (trine → harmonious flow). Given an intended outcome (activation), select appropriate intervals (major sixth, perfect fifth). The Codex functions as both descriptive and prescriptive notation.</p>
+
+    <h3 style="font-size:20px; font-weight:500; color:var(--ink); margin:0 0 14px;">Planetary Frequency Baselines</h3>
+    <p style="font-size:15.5px; color:var(--ink-dim); margin:0 0 16px;">Canonical frequency assignments derived from harmonic analysis of orbital relationships, traditional correspondence systems, and established frequency research.</p>
+
+    <div style="display:grid; grid-template-columns:auto 1fr auto auto; gap:0; border:1px solid var(--line); border-radius:4px; overflow:hidden; margin:0 0 32px;">
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:10px 16px; background:rgba(184,146,74,0.08); border-bottom:1px solid var(--line); font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-bright);">
+        <span>Symbol</span><span>Body</span><span>Hz</span><span>Quality</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">☉</span><span>Sun</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">216</span><span style="font-size:12px; color:var(--ink-faint);">Vitality, fundamental tonic</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">☽</span><span>Moon</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">210</span><span style="font-size:12px; color:var(--ink-faint);">Intuition, emotional fluidity</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">☿</span><span>Mercury</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">252</span><span style="font-size:12px; color:var(--ink-faint);">Communication, messenger</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">♀</span><span>Venus</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">432</span><span style="font-size:12px; color:var(--ink-faint);">Beauty, harmony</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">♂</span><span>Mars</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">288</span><span style="font-size:12px; color:var(--ink-faint);">Will, action, assertion</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">♃</span><span>Jupiter</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">360</span><span style="font-size:12px; color:var(--ink-faint);">Wisdom, expansion</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">♄</span><span>Saturn</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">384</span><span style="font-size:12px; color:var(--ink-faint);">Structure, time, legacy</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">♅</span><span>Uranus</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">396</span><span style="font-size:12px; color:var(--ink-faint);">Innovation, disruption</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">♆</span><span>Neptune</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">417</span><span style="font-size:12px; color:var(--ink-faint);">Dream, transpersonal</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">♇</span><span>Pluto</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">307.2</span><span style="font-size:12px; color:var(--ink-faint);">Transformation, depth</span>
+      </div>
+    </div>
+
+    <h3 style="font-size:20px; font-weight:500; color:var(--ink); margin:0 0 14px;">Interval Ratio System</h3>
+    <p style="font-size:15.5px; color:var(--ink-dim); margin:0 0 16px;">The system employs just intonation ratios rather than equal temperament, preserving the harmonic purity of simple integer relationships.</p>
+
+    <div style="display:grid; grid-template-columns:auto 1fr auto auto auto; gap:0; border:1px solid var(--line); border-radius:4px; overflow:hidden; margin:0 0 28px;">
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:10px 16px; background:rgba(184,146,74,0.08); border-bottom:1px solid var(--line); font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-bright);">
+        <span>Glyph</span><span>Aspect</span><span>Interval</span><span>Ratio</span><span>Quality</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">☌</span><span>Conjunction</span><span>Unison</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px;">1:1</span><span style="font-size:12px; color:var(--ink-faint);">Pure, focused</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">⚹</span><span>Sextile</span><span>Major Third</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px;">5:4</span><span style="font-size:12px; color:var(--ink-faint);">Flow, opportunity</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">□</span><span>Square</span><span>Tritone</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px;">45:32</span><span style="font-size:12px; color:var(--ink-faint);">Tension, catalytic</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">△</span><span>Trine</span><span>Perfect Fifth</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px;">3:2</span><span style="font-size:12px; color:var(--ink-faint);">Harmony, ease</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">☍</span><span>Opposition</span><span>Major Seventh</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px;">15:8</span><span style="font-size:12px; color:var(--ink-faint);">Polarity, mirroring</span>
+      </div>
+      <div style="grid-column:1/-1; display:grid; grid-template-columns:subgrid; padding:8px 16px; font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-size:18px; color:var(--ink);">∠</span><span>Quincunx</span><span>Minor Sixth</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px;">8:5</span><span style="font-size:12px; color:var(--ink-faint);">Adjustment, dissonance</span>
+      </div>
+    </div>
+
+    <h3 style="font-size:20px; font-weight:500; color:var(--ink); margin:0 0 14px;">Quantum Field Metaphors</h3>
+    <p style="font-size:15.5px; color:var(--ink-dim); margin:0 0 16px;">Interpretive metaphors drawn from quantum physics describe the experiential qualities of different interval types.</p>
+    <div style="display:grid; gap:10px; margin:0 0 16px;">
+      <div style="padding:12px 16px; background:var(--bg-panel); border-left:2px solid var(--gold); border-radius:0 3px 3px 0;">
+        <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--gold-bright); margin:0 0 4px; font-weight:500;">Sun △ Jupiter — Constructive Interference</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Growth, amplification, benevolent presence</p>
+      </div>
+      <div style="padding:12px 16px; background:var(--bg-panel); border-left:2px solid var(--gold); border-radius:0 3px 3px 0;">
+        <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--gold-bright); margin:0 0 4px; font-weight:500;">Mars □ Saturn — Field Disruption</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Catalytic change, breaking through stagnation</p>
+      </div>
+      <div style="padding:12px 16px; background:var(--bg-panel); border-left:2px solid var(--gold); border-radius:0 3px 3px 0;">
+        <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--gold-bright); margin:0 0 4px; font-weight:500;">Venus ☌ Pluto — Annihilation-Rebirth</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Shadow integration, alchemical transformation</p>
+      </div>
+      <div style="padding:12px 16px; background:var(--bg-panel); border-left:2px solid var(--gold); border-radius:0 3px 3px 0;">
+        <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--gold-bright); margin:0 0 4px; font-weight:500;">Uranus ☍ Moon — Phase Inversion</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Liberation, ancestral loop breaking, electric awakening</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. CORE SYNTAX -->
+  <section id="syntax" style="margin:64px 0 0; padding-top:48px; border-top:1px solid var(--line);">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin:0 0 8px;">Chapter 2</p>
+    <h2 style="font-weight:500; font-size:clamp(26px,4.5vw,34px); margin:0 0 24px;">Core Syntax</h2>
+
+    <h3 style="font-size:20px; font-weight:500; color:var(--ink); margin:0 0 14px;">Codex String Anatomy</h3>
+    <p style="font-size:15.5px; color:var(--ink-dim); margin:0 0 16px;">A Codex string consists of modular symbolic tokens. Each represents a discrete component: planetary tone, harmonic interval, elemental direction, intentional field, or procedural directive.</p>
+    <div class="ref-code" style="padding:18px 22px; background:var(--bg-panel); border:1px solid var(--line); border-radius:4px; margin:0 0 28px;">
+      <p style="font-family:'IBM Plex Mono',monospace; font-size:clamp(13px,2.2vw,15px); color:var(--ink); margin:0; line-height:2;">
+        <span style="color:var(--teal);">[Tone Root]</span> <span style="color:var(--gold-bright);">[Interval]</span> <span style="color:var(--teal);">[Secondary Tone]</span> <span style="color:var(--ink-faint);">→</span> <span style="color:#B97C97;">[Element]</span> <span style="color:var(--ink-dim);">[Intention]</span> <span style="color:var(--ink-faint);">↝</span> <span style="color:var(--ink-dim);">[Directive]</span>
+      </p>
+    </div>
+
+    <h3 style="font-size:20px; font-weight:500; color:var(--ink); margin:0 0 14px;">Component Definitions</h3>
+    <div style="display:grid; gap:14px; margin:0 0 20px;">
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--teal); margin:0 0 6px;">Tone Root</p>
+        <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0;">The foundational frequency of the ritual — a planetary symbol paired with its frequency value. Establishes the fundamental resonance. Multiple tone roots may be specified to establish a harmonic field.</p>
+      </div>
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 6px;">Interval Modifier</p>
+        <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0;">The harmonic relationship between tones, expressed as an aspect symbol. Determines the experiential quality — trines sound harmonious, squares sound catalytic, sextiles sound supportive.</p>
+      </div>
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#B97C97; margin:0 0 6px;">Element</p>
+        <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0;">The elemental direction invoked by the ritual, expressed as alchemical symbols. 🜂 Fire (activation), 🜄 Water (emotional release), 🜁 Air (clarity), 🜃 Earth (grounding).</p>
+      </div>
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-dim); margin:0 0 6px;">Intention</p>
+        <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0;">A bracketed keyword phrase documenting the ritual's purpose. Guides experiential interpretation. Format: <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">[vision-activation]</span></p>
+      </div>
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-dim); margin:0 0 6px;">Directive</p>
+        <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0;">Procedural instruction for execution — action type, duration, repetition, or sequencing. Translates symbolic specification into practical guidance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SYMBOL REFERENCE -->
+  <section id="symbols" style="margin:64px 0 0; padding-top:48px; border-top:1px solid var(--line);">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin:0 0 8px;">Chapter 3</p>
+    <h2 style="font-weight:500; font-size:clamp(26px,4.5vw,34px); margin:0 0 24px;">Complete Symbol Reference</h2>
+
+    <h3 style="font-size:18px; font-weight:500; color:var(--ink); margin:0 0 14px;">Operator Symbols</h3>
+    <div style="border:1px solid var(--line); border-radius:4px; overflow:hidden; margin:0 0 32px;">
+      <div style="display:grid; grid-template-columns:60px 1fr auto 1fr; padding:10px 16px; background:rgba(184,146,74,0.08); border-bottom:1px solid var(--line); font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-bright);">
+        <span>Symbol</span><span>Name</span><span>Type</span><span>Function</span>
+      </div>
+      <div style="display:grid; grid-template-columns:60px 1fr auto 1fr; padding:9px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--ink);">∿</span><span>Ritual Portal</span><span style="font-size:11px; color:var(--ink-faint); padding:0 12px;">Operator</span><span style="font-size:12px;">Begin ritual sequence; open harmonic space</span>
+      </div>
+      <div style="display:grid; grid-template-columns:60px 1fr auto 1fr; padding:9px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--ink);">⋇</span><span>Stack</span><span style="font-size:11px; color:var(--ink-faint); padding:0 12px;">Aggregate</span><span style="font-size:12px;">Combine multiple tones or archetypes</span>
+      </div>
+      <div style="display:grid; grid-template-columns:60px 1fr auto 1fr; padding:9px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--ink);">→</span><span>Outcome</span><span style="font-size:11px; color:var(--ink-faint); padding:0 12px;">Directional</span><span style="font-size:12px;">Flow toward intention or element</span>
+      </div>
+      <div style="display:grid; grid-template-columns:60px 1fr auto 1fr; padding:9px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--ink);">↝</span><span>Duration</span><span style="font-size:11px; color:var(--ink-faint); padding:0 12px;">Temporal</span><span style="font-size:12px;">Duration marker for execution</span>
+      </div>
+      <div style="display:grid; grid-template-columns:60px 1fr auto 1fr; padding:9px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--ink);">↺</span><span>Reflect</span><span style="font-size:11px; color:var(--ink-faint); padding:0 12px;">Procedural</span><span style="font-size:12px;">Reflective action marker</span>
+      </div>
+      <div style="display:grid; grid-template-columns:60px 1fr auto 1fr; padding:9px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--ink);">↻</span><span>Cycle</span><span style="font-size:11px; color:var(--ink-faint); padding:0 12px;">Procedural</span><span style="font-size:12px;">Cycle marker for repeating patterns</span>
+      </div>
+      <div style="display:grid; grid-template-columns:60px 1fr auto 1fr; padding:9px 16px; border-bottom:1px solid var(--line); font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--ink);">[…]</span><span>Intention</span><span style="font-size:11px; color:var(--ink-faint); padding:0 12px;">Comment</span><span style="font-size:12px;">Stores emotional or programmatic goal</span>
+      </div>
+      <div style="display:grid; grid-template-columns:60px 1fr auto 1fr; padding:9px 16px; font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-dim); align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--ink);">//</span><span>Notes</span><span style="font-size:11px; color:var(--ink-faint); padding:0 12px;">Meta</span><span style="font-size:12px;">Human-readable annotations</span>
+      </div>
+    </div>
+
+    <h3 style="font-size:18px; font-weight:500; color:var(--ink); margin:0 0 14px;">Elemental Symbols</h3>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:0 0 32px;">
+      <div style="padding:16px; background:var(--bg-panel); border:1px solid var(--line); border-radius:4px; text-align:center;">
+        <p style="font-size:28px; margin:0 0 6px;">🜂</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); margin:0 0 2px;">Fire</p>
+        <p style="font-family:'Karla',sans-serif; font-size:11px; color:var(--ink-faint); margin:0;">South · Activation</p>
+      </div>
+      <div style="padding:16px; background:var(--bg-panel); border:1px solid var(--line); border-radius:4px; text-align:center;">
+        <p style="font-size:28px; margin:0 0 6px;">🜄</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); margin:0 0 2px;">Water</p>
+        <p style="font-family:'Karla',sans-serif; font-size:11px; color:var(--ink-faint); margin:0;">West · Release</p>
+      </div>
+      <div style="padding:16px; background:var(--bg-panel); border:1px solid var(--line); border-radius:4px; text-align:center;">
+        <p style="font-size:28px; margin:0 0 6px;">🜁</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); margin:0 0 2px;">Air</p>
+        <p style="font-family:'Karla',sans-serif; font-size:11px; color:var(--ink-faint); margin:0;">East · Clarity</p>
+      </div>
+      <div style="padding:16px; background:var(--bg-panel); border:1px solid var(--line); border-radius:4px; text-align:center;">
+        <p style="font-size:28px; margin:0 0 6px;">🜃</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); margin:0 0 2px;">Earth</p>
+        <p style="font-family:'Karla',sans-serif; font-size:11px; color:var(--ink-faint); margin:0;">North · Grounding</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. COMPOSITION FRAMEWORKS -->
+  <section id="frameworks" style="margin:64px 0 0; padding-top:48px; border-top:1px solid var(--line);">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin:0 0 8px;">Chapter 4</p>
+    <h2 style="font-weight:500; font-size:clamp(26px,4.5vw,34px); margin:0 0 28px;">Composition Frameworks</h2>
+
+    <div style="display:grid; gap:24px;">
+      <div style="padding:22px 24px; background:var(--bg-panel); border:1px solid var(--line); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 8px;">1 — Harmonic Invocation</p>
+        <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0 0 14px;">The foundational pattern. Establishes a harmonic relationship between two planetary tones and directs toward a specific elemental and intentional goal.</p>
+        <div class="ref-code" style="padding:12px 16px; background:var(--bg); border:1px solid var(--line); border-radius:3px; margin:0 0 10px;">
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-faint); margin:0 0 6px;">Standard form:</p>
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--ink); margin:0;">∿ [Planet₁][Freq] [Interval] [Planet₂][Freq] → [Element] [Intention] ↝ [Duration]</p>
+        </div>
+        <div class="ref-code" style="padding:12px 16px; background:var(--bg); border:1px solid var(--line); border-radius:3px;">
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-faint); margin:0 0 6px;">Example:</p>
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--gold-bright); margin:0 0 8px;">∿ ☉216 △ ♃360 → 🜂 [vision-activation] ↝ chant-tone 5m</p>
+          <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Sun at 216 Hz trine Jupiter at 360 Hz → Fire element → vision activation → 5-minute chant</p>
+        </div>
+      </div>
+
+      <div style="padding:22px 24px; background:var(--bg-panel); border:1px solid var(--line); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 8px;">2 — Transmutation Spiral</p>
+        <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0 0 14px;">For deep transformation, shadow integration, or release of entrenched patterns. Employs dissonant or tense intervals to generate catalytic energy for breakthrough.</p>
+        <div class="ref-code" style="padding:12px 16px; background:var(--bg); border:1px solid var(--line); border-radius:3px; margin:0 0 10px;">
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-faint); margin:0 0 6px;">Standard form:</p>
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--ink); margin:0;">∿ [Planet₁][Freq] [TenseInterval] [Planet₂][Freq] → [Element] [Release] ↝ [Descent]</p>
+        </div>
+        <div class="ref-code" style="padding:12px 16px; background:var(--bg); border:1px solid var(--line); border-radius:3px;">
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-faint); margin:0 0 6px;">Example:</p>
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--gold-bright); margin:0 0 8px;">∿ ♇307.2 □ ☽210 → 🜁 [emotional-release] ↝ drone-descending-7x</p>
+          <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Pluto at 307.2 Hz square Moon at 210 Hz → Air element → 7 descending drone sweeps</p>
+        </div>
+      </div>
+
+      <div style="padding:22px 24px; background:var(--bg-panel); border:1px solid var(--line); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 8px;">3 — Calibration Protocol</p>
+        <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0 0 14px;">Establishes harmonic alignment between complementary or opposing forces. Employs opposition or conjunction for reflective or balancing dynamics.</p>
+        <div class="ref-code" style="padding:12px 16px; background:var(--bg); border:1px solid var(--line); border-radius:3px; margin:0 0 10px;">
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-faint); margin:0 0 6px;">Standard form:</p>
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--ink); margin:0;">[Planet₁][Freq] [Opposition] [Planet₂][Freq] ↺ [ReflectiveAction] [Cycles] ↝ [Close]</p>
+        </div>
+        <div class="ref-code" style="padding:12px 16px; background:var(--bg); border:1px solid var(--line); border-radius:3px;">
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-faint); margin:0 0 6px;">Example:</p>
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--gold-bright); margin:0 0 8px;">☽210 ☍ ☉216 ↺ reflect-dual-tone-mirror ×3 ↝ silence-close</p>
+          <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Moon opposition Sun → 3 reflective mirror cycles → close with silence</p>
+        </div>
+      </div>
+
+      <div style="padding:22px 24px; background:var(--bg-panel); border:1px solid var(--line); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 8px;">4 — Multi-Tone Stack</p>
+        <p style="font-family:'Karla',sans-serif; font-size:13.5px; color:var(--ink-dim); margin:0 0 14px;">For complex ritual designs requiring multiple harmonic layers. The Stack operator (⋇) combines multiple tone sequences into a unified composition.</p>
+        <div class="ref-code" style="padding:12px 16px; background:var(--bg); border:1px solid var(--line); border-radius:3px; margin:0 0 10px;">
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-faint); margin:0 0 6px;">Standard form:</p>
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--ink); margin:0;">∿ [Planet₁][Freq] ⋇ [Planet₂][Freq] ⋇ [Planet₃][Freq] → [Element] [Intention]</p>
+        </div>
+        <div class="ref-code" style="padding:12px 16px; background:var(--bg); border:1px solid var(--line); border-radius:3px;">
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-faint); margin:0 0 6px;">Example:</p>
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--gold-bright); margin:0 0 8px;">∿ ☿252 ⋇ ♃360 ⋇ ♀432 → 🜁 [clarity-of-expression] ↝ harmonic-triad 10m</p>
+          <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Mercury + Jupiter + Venus stacked → Air element → 10-minute harmonic triad</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. WORKED EXAMPLES -->
+  <section id="examples" style="margin:64px 0 0; padding-top:48px; border-top:1px solid var(--line);">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin:0 0 8px;">Chapter 5</p>
+    <h2 style="font-weight:500; font-size:clamp(26px,4.5vw,34px); margin:0 0 28px;">Worked Examples</h2>
+
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 16px;">Entry Level</p>
+    <div style="display:grid; gap:12px; margin:0 0 32px;">
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Karla',sans-serif; font-size:12px; color:var(--ink-faint); margin:0 0 6px;">Solar Activation — vitality and centeredness</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ ☉216 → 🜂 [vitality] ↝ tone-3m</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Tone the Sun frequency for three minutes toward Fire.</p>
+      </div>
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Karla',sans-serif; font-size:12px; color:var(--ink-faint); margin:0 0 6px;">Lunar Emotional Release — processing and release</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ ☽210 → 🜄 [emotional-flow] ↝ drone-7m</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Moon drone for seven minutes toward Water.</p>
+      </div>
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Karla',sans-serif; font-size:12px; color:var(--ink-faint); margin:0 0 6px;">Venus-Jupiter Harmony — expansive joy</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ ♀432 △ ♃360 → 🜃 [expansion-in-beauty] ↝ sustained-tone 10m</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Venus trine Jupiter for ten minutes toward Earth.</p>
+      </div>
+    </div>
+
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 16px;">Intermediate</p>
+    <div style="display:grid; gap:12px; margin:0 0 32px;">
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Karla',sans-serif; font-size:12px; color:var(--ink-faint); margin:0 0 6px;">Mars-Saturn Catalytic Break — breakthrough a blocking pattern</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ ♂288 □ ♄384 → 🜁 [breakthrough-barrier] ↝ tension-drone 5m</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Mars square Saturn as tension drone for five minutes.</p>
+      </div>
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Karla',sans-serif; font-size:12px; color:var(--ink-faint); margin:0 0 6px;">Mercury-Neptune Dream Integration — intuitive insight</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ ☿252 ∠ ♆417 → 🜄 [insight-release] ↝ drift-tone 12m</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Mercury quincunx Neptune as drift tone for twelve minutes.</p>
+      </div>
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Karla',sans-serif; font-size:12px; color:var(--ink-faint); margin:0 0 6px;">Pluto Shadow Transformation — integrate shadow material</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ ♇307.2 □ ☽210 → 🜃 [shadow-integration] ↝ deep-tone 15m</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Pluto square Moon as deep tone for fifteen minutes.</p>
+      </div>
+    </div>
+
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 16px;">Advanced</p>
+    <div style="display:grid; gap:12px; margin:0 0 16px;">
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Karla',sans-serif; font-size:12px; color:var(--ink-faint); margin:0 0 6px;">Triple Planetary Stack — conscious will to manifest</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ ☉216 ⋇ ♃360 ⋇ ♂288 → 🜂 [willful-creation] ↝ tri-tone-ascend 20m</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Sun + Jupiter + Mars stacked for twenty-minute ascending progression.</p>
+      </div>
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Karla',sans-serif; font-size:12px; color:var(--ink-faint); margin:0 0 6px;">Eclipse Window Ritual — profound transformation</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ ☽210 ☍ ☉216 ↺ mirror-reflection ×3 ↝ eclipse-closing</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Moon-Sun opposition, three mirror reflection cycles, eclipse-specific close.</p>
+      </div>
+      <div style="padding:14px 18px; background:var(--bg-panel); border-radius:4px;">
+        <p style="font-family:'Karla',sans-serif; font-size:12px; color:var(--ink-faint); margin:0 0 6px;">Seven-Day Healing Cycle — sustained healing practice</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ ♀432 △ ☽210 → 🜄 [emotional-healing] ↝ night-drone 7d</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-dim); margin:0;">Venus-Moon trine each evening as a seven-day night drone practice.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. TEMPLATE LIBRARY -->
+  <section id="templates" style="margin:64px 0 0; padding-top:48px; border-top:1px solid var(--line);">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin:0 0 8px;">Chapter 6</p>
+    <h2 style="font-weight:500; font-size:clamp(26px,4.5vw,34px); margin:0 0 28px;">Template Library</h2>
+
+    <div style="display:grid; gap:14px;">
+      <div style="padding:16px 20px; border:1px solid var(--line); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); margin:0 0 8px;">Activation Practice</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ [ActivePlanet][Freq] → 🜂 [activation-intention] ↝ [Duration]</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint); margin:0;">Single tone, Fire element, direct activation.</p>
+      </div>
+      <div style="padding:16px 20px; border:1px solid var(--line); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); margin:0 0 8px;">Release Practice</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ [ReleasingPlanet][Freq] → 🜄 [release-intention] ↝ [Duration]</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint); margin:0;">Single tone, Water element, emotional release.</p>
+      </div>
+      <div style="padding:16px 20px; border:1px solid var(--line); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); margin:0 0 8px;">Balance Practice</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">[Planet₁][Freq] [BalancingInterval] [Planet₂][Freq] ↺ [BalanceAction]</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint); margin:0;">Dual tone with reflective balancing action.</p>
+      </div>
+      <div style="padding:16px 20px; border:1px solid var(--line); border-radius:4px;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); margin:0 0 8px;">Integration Practice</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--gold-bright); margin:0 0 6px;">∿ [Planet₁][Freq] △ [Planet₂][Freq] △ [Planet₃][Freq] → 🜃 [integration-intention]</p>
+        <p style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint); margin:0;">Multi-tone trine stack, Earth element, deep integration.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. TEMPORAL MODIFICATION -->
+  <section id="temporal" style="margin:64px 0 0; padding-top:48px; border-top:1px solid var(--line);">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin:0 0 8px;">Chapter 7</p>
+    <h2 style="font-weight:500; font-size:clamp(26px,4.5vw,34px); margin:0 0 24px;">Temporal Modification</h2>
+
+    <p style="font-size:15.5px; color:var(--ink-dim); margin:0 0 20px;">Codex strings may include temporal specifications that modify ritual duration, repetition cycles, or scheduling.</p>
+
+    <div style="display:grid; gap:10px; margin:0 0 16px;">
+      <div style="display:grid; grid-template-columns:80px 1fr 1fr; gap:12px; padding:12px 16px; background:var(--bg-panel); border-radius:4px; font-family:'Karla',sans-serif; font-size:13px; align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; color:var(--ink);">↝</span>
+        <span style="color:var(--ink-dim);">Duration</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">↝ tone-cycle-5m</span>
+      </div>
+      <div style="display:grid; grid-template-columns:80px 1fr 1fr; gap:12px; padding:12px 16px; background:var(--bg-panel); border-radius:4px; font-family:'Karla',sans-serif; font-size:13px; align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; color:var(--ink);">×N</span>
+        <span style="color:var(--ink-dim);">Repetition</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">×3 (three times)</span>
+      </div>
+      <div style="display:grid; grid-template-columns:80px 1fr 1fr; gap:12px; padding:12px 16px; background:var(--bg-panel); border-radius:4px; font-family:'Karla',sans-serif; font-size:13px; align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; color:var(--ink);">[N]d</span>
+        <span style="color:var(--ink-dim);">Day cycle</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">7d (seven-day practice)</span>
+      </div>
+      <div style="display:grid; grid-template-columns:80px 1fr 1fr; gap:12px; padding:12px 16px; background:var(--bg-panel); border-radius:4px; font-family:'Karla',sans-serif; font-size:13px; align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; color:var(--ink);">[phase]</span>
+        <span style="color:var(--ink-dim);">Lunar phase</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);">waning (waning moon)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. QUICK REFERENCE -->
+  <section id="quickref" style="margin:64px 0 0; padding-top:48px; border-top:2px solid var(--gold);">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin:0 0 8px;">Quick Reference</p>
+    <h2 style="font-weight:500; font-size:clamp(26px,4.5vw,34px); margin:0 0 28px;">Codex at a Glance</h2>
+
+    <div class="ref-2col" style="display:grid; grid-template-columns:1fr 1fr; gap:20px 28px;">
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 10px;">Planets</p>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink); line-height:2;">
+          ☉ Sun 216 · ☽ Moon 210 · ☿ Mercury 252<br />♀ Venus 432 · ♂ Mars 288 · ♃ Jupiter 360<br />♄ Saturn 384 · ♅ Uranus 396<br />♆ Neptune 417 · ♇ Pluto 307.2
+        </div>
+      </div>
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 10px;">Intervals</p>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink); line-height:2;">
+          ☌ Conjunction 1:1 · ⚹ Sextile 5:4<br />□ Square 45:32 · △ Trine 3:2<br />☍ Opposition 15:8 · ∠ Quincunx 8:5
+        </div>
+      </div>
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 10px;">Elements</p>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink); line-height:2;">
+          🜂 Fire South · 🜄 Water West<br />🜁 Air East · 🜃 Earth North
+        </div>
+      </div>
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 10px;">Operators</p>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink); line-height:2;">
+          ∿ Portal · ⋇ Stack · → Outcome<br />↝ Duration · ↺ Reflect · ×N Repeat<br />[…] Intention · // Notes
+        </div>
+      </div>
+    </div>
+
+    <div style="margin:32px 0 0; padding:18px 22px; border:2px solid var(--gold); border-radius:4px;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 10px;">Master Form</p>
+      <p style="font-family:'IBM Plex Mono',monospace; font-size:clamp(13px,2.2vw,15px); color:var(--ink); margin:0; line-height:1.8;">∿ [Tone][Freq] [Interval] [Tone][Freq] → [Element] [Intention] ↝ [Directive] [Duration]</p>
+    </div>
+  </section>
+
+  <footer style="margin-top:80px; padding-top:40px; border-top:1px solid var(--line); text-align:center;">
+    <img src="codex-logo.png" alt="Codex" style="width:48px; height:auto; filter:invert(1); opacity:0.5; margin:0 auto 16px; display:block;" />
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--bronze); margin:0 0 6px;">MOONtuner · Quantumelodics</p>
+    <p style="font-family:'Karla',sans-serif; font-size:12px; color:var(--ink-faint); margin:0;">The Codex Notation System · Technical Specification v1</p>
+  </footer>
+</div>
+</x-dc>
+</body>
+</html>

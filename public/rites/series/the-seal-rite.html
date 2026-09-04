@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#080808;--bg-panel:#121110;--ink:#EDE6D6;--ink-dim:#A99C82;--ink-faint:#71675A;--gold:#B8924A;--gold-bright:#D4AF6A;--bronze:#8A6D3B;--line:rgba(184,146,74,0.22);--bruise:#5C3140;--bruise-bright:#B97C97;}
+    *{box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--gold);color:var(--bg);}a{color:var(--gold-bright);}a:hover{color:var(--ink);}
+    :focus-visible{outline:1.5px solid var(--gold-bright);outline-offset:3px;}
+    textarea::placeholder{color:var(--ink-faint);}textarea:focus{border-color:var(--gold)!important;outline:none;}
+    @keyframes pulse{0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,106,0.35));}50%{filter:drop-shadow(0 0 13px rgba(212,175,106,0.65));}}
+    @media(max-width:520px){.rite-grid{grid-template-columns:52px 1fr!important;gap:0 14px!important;}.rite-marker img{width:34px!important;height:34px!important;}.rite-dashed{left:25px!important;}}
+    @media print{@page{size:Letter;margin:0;}html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}body{padding:0.62in 0.7in;}.rite-grid{break-inside:avoid;page-break-inside:avoid;}textarea{background:var(--bg-panel)!important;border:1px solid var(--line)!important;min-height:104px;color:transparent;resize:none;}textarea::placeholder{color:var(--ink-faint)!important;opacity:1;}.rite-clear{display:none!important;}}
+  </style>
+  <script src="rite-engine.js"></script>
+</helmet>
+
+<div style="max-width:720px; margin:0 auto; padding:0 28px 140px;">
+  <header style="padding:88px 0 48px; border-bottom:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); margin:0 0 22px;">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(40px,7vw,62px); letter-spacing:0.01em; margin:0 0 6px;">The Seal Rite</h1>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:15px; letter-spacing:0.06em; color:var(--ink-dim); margin:0 0 40px; text-transform:uppercase;">Boundary Architecture · Closing What Needs to Stay Closed</p>
+    <p style="font-style:italic; font-size:clamp(19px,2.6vw,23px); color:var(--gold-bright); max-width:500px; margin:0 auto; line-height:1.5; font-weight:400;">"Some doors need closing from the inside. The lock was always yours."</p>
+  </header>
+
+  <div style="margin:44px 0 0; padding:20px 4px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); display:flex; align-items:center; gap:20px;">
+    <div style="flex:0 0 auto; width:52px; height:52px;"><img src="{{ entryClockSrc }}" style="width:100%; height:100%;" alt="" /></div>
+    <div style="flex:1 1 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 4px;">Tonight's Position</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:21px; color:var(--ink); margin:0 0 2px;">{{ entryName }}</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-faint); margin:0;">{{ entryDetail }}</p>
+    </div>
+  </div>
+
+  <div style="padding:44px 0 8px; font-size:17.5px; color:var(--ink-dim);">
+    <p style="margin:0 0 18px;">Five stations. The shortest rite in the series, because sealing is a single decisive act that doesn't improve with deliberation. You identify, diagnose, design, test, and cure. Then it's done.</p>
+    <p style="margin:0 0 18px;"><span style="color:var(--ink); font-weight:500;">A boundary is not a feeling.</span> It is not a wish, a resolution, or a statement of intent. A boundary is a structure: a specific condition, a specific consequence, and a specific action you take when the condition is met. If any of those three pieces is missing, it's not a boundary. It's a hope. Hopes don't hold.</p>
+    <p style="margin:0 0 18px;">The aim is to build one boundary that actually works — tested, held, cured — and to understand why the previous ones didn't.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:10px 28px; padding:20px 0 8px; margin-bottom:8px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">01 —</span> Work it in one sitting, or across five nights. Either is correct.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">03 —</span> Condition, consequence, action. If you can't name all three, keep working.</div>
+  </div>
+
+  {{ cycleEl }}
+
+  <div style="margin-top:70px; padding-top:52px; border-top:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 20px;">Return</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">The seal is set. Not because you decided, but because you tested and it held.</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">Boundaries built on declaration dissolve. Boundaries built on architecture — condition, consequence, action — hold because they don't depend on your mood, your courage, or the other person's compliance. They hold because the structure holds.</p>
+    <div style="margin:30px auto; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:21px; color:var(--gold-bright); line-height:1.9;">
+      Sealed, not just stated.<br />
+      Tested, not just intended.<br />
+      Held, not just hoped.
+    </div>
+    <p style="font-size:16.5px; color:var(--ink-faint); margin-top:26px;">The seal is curing. Use it again. Each repetition makes it structural.</p>
+    <p style="margin-top:44px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--bronze);">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div class="rite-clear" style="text-align:center; margin-top:36px;">
+    <button onClick="{{ clearHandler }}" style="background:none; border:1px solid var(--ink-faint); color:var(--ink-faint); font-family:'Karla',sans-serif; font-size:11.5px; letter-spacing:0.05em; padding:8px 16px; border-radius:2px; cursor:pointer;" style-hover="border-color:var(--gold); color:var(--gold);">Clear this cycle's entries</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    var RE = window.RiteEngine;
+    if (RE) RE.setupTextareas('sealrite:', this.stations());
+  }
+  stations() {
+    if (this._s) return this._s;
+    return this._s = [
+      {id:'open-doors',name:'New Moon',illum:'0% illuminated',verb:'Identify',title:'The Open Doors',
+       directive:'List every boundary you\u2019ve set that didn\u2019t hold \u2014 every \u201cno\u201d that became \u201cwell, maybe,\u201d every limit that dissolved under pressure, every door you closed that someone walked back through because you left it unlocked. Don\u2019t list the ones you\u2019ve never tried to set. Start with the failures \u2014 they show you where the architecture is weakest.',
+       prompts:['Which boundary have I set and broken the most times?','What\u2019s the pattern \u2014 who or what walks through my closed doors?'],
+       placeholder:'The failed boundaries. How many times each. Who or what pushed through.'},
+      {id:'why-broke',name:'First Quarter',illum:'50% illuminated',verb:'Diagnose',title:'Why the Seal Broke',
+       directive:'For each failed boundary, find the structural failure. It\u2019s rarely about willpower \u2014 it\u2019s about design. You set a boundary verbally but not structurally. You set it with one person but not the system around them. You set it when you were strong and it failed when you were tired. The seal broke because of how it was built, not because of how hard someone pushed.',
+       prompts:['Was the failure in the boundary itself, or in the conditions I set it under?'],
+       placeholder:'Each failed boundary. The structural reason it broke.',bruise:true},
+      {id:'architecture',name:'Full Moon',illum:'100% illuminated',verb:'Design',title:'The Architecture',
+       directive:'Redesign one boundary from scratch. Not as a statement of intent \u2014 as a structure. A boundary is not a feeling or a hope. It is a specific condition, a specific consequence, and a specific action you take when the condition is met. \u201cI won\u2019t tolerate disrespect\u201d is a wish. \u201cWhen someone raises their voice at me, I leave the room and resume the conversation in twenty-four hours\u201d is a boundary.',
+       prompts:['What is the condition, the consequence, and the action \u2014 specifically?'],
+       placeholder:'The boundary. Condition \u2192 consequence \u2192 action. No ambiguity.'},
+      {id:'first-hold',name:'Last Quarter',illum:'50% illuminated',verb:'Test',title:'The First Hold',
+       directive:'Use the boundary once. Note what happens \u2014 in the world and in you. The first hold is the hardest because the seal hasn\u2019t cured yet. The person or pattern will push back, because it always has before and breaking through has always worked. This time, the architecture is different. Hold once. That\u2019s all.',
+       prompts:['What pushed against the boundary? Did it hold? What did I feel?'],
+       placeholder:'The test. What pushed. Whether it held. The internal experience.'},
+      {id:'cure',name:'Waning Crescent',illum:'\u223c25% illuminated',verb:'Cure',title:'The Set Seal',
+       directive:'A seal that\u2019s been tested once is stronger than one that hasn\u2019t. Write down what held, what almost broke, and what needs reinforcement. The boundary is now a tested structure, not a fresh intention. Cure it: commit to the same response next time, with the evidence that it survived its first test. Seals don\u2019t become permanent from declaration. They become permanent from repetition.',
+       prompts:['What held? What needs reinforcement? What\u2019s the commitment going forward?'],
+       placeholder:'The test results. The reinforcement. The commitment.'}
+    ];
+  }
+  renderVals() {
+    var RE = window.RiteEngine;
+    if (!RE) return {cycleEl:null,entryClockSrc:'',entryName:'\u2014',entryDetail:'Calculating\u2026',clearHandler:function(){}};
+    var sts = this.stations(), c = sts.length, t = RE.getPhaseIndex(c), e = sts[t];
+    return {
+      cycleEl: React.createElement('div',{style:{position:'relative',marginTop:56},dangerouslySetInnerHTML:{__html:RE.buildCycleHTML(sts,c,t)}}),
+      entryClockSrc: RE.clockUrl(t,c,true),
+      entryName: e.name,
+      entryDetail: RE.entryDetail(e,t,c),
+      clearHandler: function(){RE.clearAll('sealrite:',sts);}
+    };
+  }
+}
+</script>
+</body>
+</html>

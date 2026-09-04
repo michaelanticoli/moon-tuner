@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#080808;--bg-panel:#121110;--ink:#EDE6D6;--ink-dim:#A99C82;--ink-faint:#71675A;--gold:#B8924A;--gold-bright:#D4AF6A;--bronze:#8A6D3B;--line:rgba(184,146,74,0.22);--bruise:#5C3140;--bruise-bright:#B97C97;}
+    *{box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--gold);color:var(--bg);}a{color:var(--gold-bright);}a:hover{color:var(--ink);}
+    :focus-visible{outline:1.5px solid var(--gold-bright);outline-offset:3px;}
+    textarea::placeholder{color:var(--ink-faint);}textarea:focus{border-color:var(--gold)!important;outline:none;}
+    @keyframes pulse{0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,106,0.35));}50%{filter:drop-shadow(0 0 13px rgba(212,175,106,0.65));}}
+    @media(max-width:520px){.rite-grid{grid-template-columns:52px 1fr!important;gap:0 14px!important;}.rite-marker img{width:34px!important;height:34px!important;}.rite-dashed{left:25px!important;}}
+    @media print{@page{size:Letter;margin:0;}html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}body{padding:0.62in 0.7in;}.rite-grid{break-inside:avoid;page-break-inside:avoid;}textarea{background:var(--bg-panel)!important;border:1px solid var(--line)!important;min-height:104px;color:transparent;resize:none;}textarea::placeholder{color:var(--ink-faint)!important;opacity:1;}.rite-clear{display:none!important;}}
+  </style>
+  <script src="rite-engine.js"></script>
+</helmet>
+
+<div style="max-width:720px; margin:0 auto; padding:0 28px 140px;">
+  <header style="padding:88px 0 48px; border-bottom:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); margin:0 0 22px;">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(40px,7vw,62px); letter-spacing:0.01em; margin:0 0 6px;">The Forge Rite</h1>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:15px; letter-spacing:0.06em; color:var(--ink-dim); margin:0 0 40px; text-transform:uppercase;">Material Anchor · Making an Object Hold What You've Named</p>
+    <p style="font-style:italic; font-size:clamp(19px,2.6vw,23px); color:var(--gold-bright); max-width:500px; margin:0 auto; line-height:1.5; font-weight:400;">"An object can't carry what you haven't defined. Name it first. Then forge the vessel."</p>
+  </header>
+
+  <div style="margin:44px 0 0; padding:20px 4px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); display:flex; align-items:center; gap:20px;">
+    <div style="flex:0 0 auto; width:52px; height:52px;"><img src="{{ entryClockSrc }}" style="width:100%; height:100%;" alt="" /></div>
+    <div style="flex:1 1 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-bright); margin:0 0 4px;">Tonight's Position</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:21px; color:var(--ink); margin:0 0 2px;">{{ entryName }}</p>
+      <p style="font-family:'Karla',sans-serif; font-size:13px; color:var(--ink-faint); margin:0;">{{ entryDetail }}</p>
+    </div>
+  </div>
+
+  <div style="padding:44px 0 8px; font-size:17.5px; color:var(--ink-dim);">
+    <p style="margin:0 0 18px;">This is the most hands-on rite in the series. You will make a physical object — not buy one, not imagine one, not add one to a wishlist. Make it. The material, the mark, the making itself are the practice.</p>
+    <p style="margin:0 0 18px;"><span style="color:var(--ink); font-weight:500;">A talisman is not magic.</span> It is material memory — a physical anchor for a decision you've already made. The object doesn't do the work. You did the work when you named the charge. The object reminds you that you named it, and that the naming was a real event.</p>
+    <p style="margin:0 0 18px;">The aim is one object, deliberately made, carrying one clearly defined function. Anything without a named charge is decoration. Decoration is fine. It isn't a talisman.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:10px 28px; padding:20px 0 8px; margin-bottom:8px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">01 —</span> Work it across the real eight nights. This rite involves making — give it time.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div style="font-family:'Karla',sans-serif; font-size:12.5px; color:var(--ink-faint);"><span style="color:var(--gold);">03 —</span> Use real materials. The weight and texture are part of the function.</div>
+  </div>
+
+  {{ cycleEl }}
+
+  <div style="margin-top:70px; padding-top:52px; border-top:1px solid var(--line); text-align:center;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 20px;">Return</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">The object is forged, charged, and placed. It works if you work it — if you reach for it when the charge is relevant, if you let its weight remind you of the sentence you inscribed.</p>
+    <p style="font-size:18px; color:var(--ink-dim); max-width:490px; margin:0 auto 18px;">A talisman is not magic. It's material memory — a physical anchor for a decision you've already made. The decision is the charge. The object is just the vessel.</p>
+    <div style="margin:30px auto; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:21px; color:var(--gold-bright); line-height:1.9;">
+      Named, not wished.<br />
+      Forged, not found.<br />
+      Carried, not displayed.
+    </div>
+    <p style="font-size:16.5px; color:var(--ink-faint); margin-top:26px;">The object is in place. Let it work. Reach for it before you need to explain why.</p>
+    <p style="margin-top:44px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--bronze);">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div class="rite-clear" style="text-align:center; margin-top:36px;">
+    <button onClick="{{ clearHandler }}" style="background:none; border:1px solid var(--ink-faint); color:var(--ink-faint); font-family:'Karla',sans-serif; font-size:11.5px; letter-spacing:0.05em; padding:8px 16px; border-radius:2px; cursor:pointer;" style-hover="border-color:var(--gold); color:var(--gold);">Clear this cycle's entries</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    var RE = window.RiteEngine;
+    if (RE) RE.setupTextareas('forgerite:', this.stations());
+  }
+  stations() {
+    if (this._s) return this._s;
+    return this._s = [
+      {id:'charge',name:'New Moon',illum:'0% illuminated',verb:'Define',title:'The Charge',
+       directive:'Before you make anything, name exactly what this object needs to hold. Not a vague intention \u2014 a specific function. Protection from what? Reminder of what? Anchor for which state? An amulet without a defined charge is jewelry. A talisman without a named function is decoration. Write the charge as a single, declarative sentence.',
+       prompts:['What specific function does this object need to serve?','Can I say the charge in one sentence without hedging?'],
+       placeholder:'The charge. One sentence. No ambiguity.'},
+      {id:'material',name:'Waxing Crescent',illum:'\u223c25% illuminated',verb:'Select',title:'The Material',
+       directive:'Choose what you\u2019ll work with based on the charge, not aesthetics. Heavy charges need dense materials \u2014 stone, metal, wood. Light charges (reminder, centering) can live in fabric, paper, cord. The material\u2019s weight, temperature, and texture become part of the function. You\u2019ll carry this or keep it close \u2014 it needs to feel like what it does.',
+       prompts:['What material matches the weight and texture of the charge?'],
+       placeholder:'The material chosen. Why it fits the charge.'},
+      {id:'gather',name:'First Quarter',illum:'50% illuminated',verb:'Gather',title:'The Source Inventory',
+       directive:'Collect everything you need. The materials, the tools, the workspace. This station is about preparation, not creation. Clean the workspace. Lay out the materials. Remove distractions. Making a charged object in a cluttered, distracted environment builds distraction into the object. The conditions of creation become part of the creation.',
+       prompts:['Is the workspace clear? Are the materials ready? Is the phone put away?'],
+       placeholder:'What was gathered. The state of the workspace.'},
+      {id:'inscribe',name:'Waxing Gibbous',illum:'\u223c75% illuminated',verb:'Inscribe',title:'The Mark',
+       directive:'Before shaping the object, inscribe the charge onto or into the material. A word, a sigil, a mark only you understand. This is the moment the object stops being raw material and begins carrying function. The inscription doesn\u2019t need to be visible in the finished piece \u2014 it needs to be present. If you\u2019re working with cord, tie a knot while stating the charge. If stone, mark the underside. If metal, etch before polishing.',
+       prompts:['What mark carries the charge? Where does it go?'],
+       placeholder:'The inscription. Where it\u2019s placed. What it means.'},
+      {id:'making',name:'Full Moon',illum:'100% illuminated',verb:'Forge',title:'The Making',
+       directive:'Build it. Full illumination, full attention. No music, no background noise, no multitasking. The making is the rite \u2014 not preparation for a rite. Each action (cutting, wrapping, shaping, knotting) is a repetition of the charge. State it \u2014 out loud or internally \u2014 with each significant action. When you\u2019re done, set it down and don\u2019t touch it until the next station.',
+       prompts:['Did I maintain attention through the full making, or did the charge drift?'],
+       placeholder:'What was made. How the process felt. Whether attention held.'},
+      {id:'weight-check',name:'Waning Gibbous',illum:'\u223c75% illuminated',verb:'Test',title:'The Weight Check',
+       directive:'Pick up the finished object. Hold it. Does it feel like the charge? Not metaphorically \u2014 physically. Does the weight, the temperature, the texture match the function you defined? If something feels wrong \u2014 too light for a heavy charge, too decorative for a protective function \u2014 this is the station to modify. The object serves you, not the other way around.',
+       prompts:['Does it feel right in my hand? Does it feel like what it\u2019s supposed to do?'],
+       placeholder:'The weight check. What felt right. What needed adjustment.'},
+      {id:'activate',name:'Last Quarter',illum:'50% illuminated',verb:'Activate',title:'The Setting',
+       directive:'Place the object in its position \u2014 on your person, in your space, wherever it needs to be to serve its function. This is not symbolic placement. It\u2019s functional. A protective amulet goes where you need protection. A grounding talisman goes where you lose ground. A reminder goes where you forget. Position is part of the charge.',
+       prompts:['Where does this object need to be to do what it\u2019s charged to do?'],
+       placeholder:'The placement. Why this location serves the function.'},
+      {id:'bond',name:'Waning Crescent',illum:'\u223c25% illuminated',verb:'Bond',title:'The Closing Seal',
+       directive:'Carry or keep the object for one full day without explaining it to anyone. Let it work without narration. At the end of the day, write one sentence about whether you noticed its presence and whether it did what you charged it to do. A talisman that goes unnoticed isn\u2019t working. One that you reached for \u2014 physically or mentally \u2014 is.',
+       prompts:['Did I notice it today? Did I reach for it? Did it do its job?'],
+       placeholder:'One day\u2019s report. Whether the object earned its place.'}
+    ];
+  }
+  renderVals() {
+    var RE = window.RiteEngine;
+    if (!RE) return {cycleEl:null,entryClockSrc:'',entryName:'\u2014',entryDetail:'Calculating\u2026',clearHandler:function(){}};
+    var sts = this.stations(), c = sts.length, t = RE.getPhaseIndex(c), e = sts[t];
+    return {
+      cycleEl: React.createElement('div',{style:{position:'relative',marginTop:56},dangerouslySetInnerHTML:{__html:RE.buildCycleHTML(sts,c,t)}}),
+      entryClockSrc: RE.clockUrl(t,c,true),
+      entryName: e.name,
+      entryDetail: RE.entryDetail(e,t,c),
+      clearHandler: function(){RE.clearAll('forgerite:',sts);}
+    };
+  }
+}
+</script>
+</body>
+</html>
