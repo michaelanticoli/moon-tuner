@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
@@ -5,7 +6,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { ZodiacGlyph } from "@/components/ZodiacGlyph";
-import { ArrowUpRight, BookOpen, Brain, Layers, Target, Sparkles, Clock, Compass } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BookOpen, Brain, Layers, Target, Sparkles, Clock, Compass } from "lucide-react";
 import { SchoolCycles } from "@/components/school/SchoolCycles";
 
 const SCHOOL_URL = import.meta.env.VITE_SCHOOL_URL ?? "https://moontuner-school.lovable.dev";
