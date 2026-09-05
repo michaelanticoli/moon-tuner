@@ -35,6 +35,8 @@ export default defineConfig(({ mode }) => ({
         "/digital-smudging",
         "/phasecraft",
         "/rites",
+        "/school",
+        "/school/curriculum",
         "/membership",
         "/terms",
         "/privacy",

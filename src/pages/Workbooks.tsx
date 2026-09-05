@@ -8,6 +8,7 @@ import { LeadMagnet } from "@/components/LeadMagnet";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Download, BookOpen, Check, Moon, Star, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
+import { WorkbookAppCards } from "@/components/WorkbookAppCards";
 
 // Full Moon → New Moon Series (1-12)
 const fullToNewWorkbooks = [
@@ -491,6 +492,8 @@ const Workbooks = () => {
               </div>
             </div>
           </section>
+
+          <WorkbookAppCards />
 
           {/* Bundle CTA */}
           <section className="container mx-auto px-6 lg:px-12 py-16 lg:py-24">
