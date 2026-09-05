@@ -512,11 +512,11 @@ const Workbooks = () => {
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                   </a>
-                  <Link to="/lunar-chaperone">
+                  <a href="https://persona-edition.lovable.app" target="_blank" rel="noopener noreferrer">
                     <Button variant="outline" size="lg">
-                      Learn About the Program
+                      Personalize it — Persona Edition
                     </Button>
-                  </Link>
+                  </a>
                 </div>
                 <p className="text-xs text-muted-foreground/60 mt-4">
                   Full program hosted on Lunar Chaperone · opens in a new tab
