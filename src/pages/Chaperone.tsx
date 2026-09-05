@@ -18,7 +18,8 @@ import {
   type Workbook,
 } from "@/data/chaperoneCanon";
 
-const PROGRAM_URL = "https://moontuner-chaperone.vercel.app/";
+const PROGRAM_URL = "https://lunar-chaperone.lovable.app";
+const PERSONA_URL = "https://persona-edition.lovable.app";
 
 const STEPS = [
   {
@@ -176,6 +177,11 @@ export default function Chaperone() {
             </a>
           </Button>
           <Button size="lg" variant="outline" asChild>
+            <a href={PERSONA_URL} target="_blank" rel="noopener noreferrer">
+              Personalize it — Persona Edition
+            </a>
+          </Button>
+          <Button size="lg" variant="ghost" asChild>
             <Link to="/workbooks">Browse the Workbooks</Link>
           </Button>
         </div>
@@ -289,7 +295,9 @@ export default function Chaperone() {
               </a>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/lunar-chaperone">See the Full Chaperone</Link>
+              <a href={PERSONA_URL} target="_blank" rel="noopener noreferrer">
+                Personalize it — Persona Edition
+              </a>
             </Button>
           </div>
         </div>

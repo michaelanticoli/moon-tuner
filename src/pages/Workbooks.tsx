@@ -506,17 +506,17 @@ const Workbooks = () => {
                   Download all 26 workbooks—24 archetypal cycles plus 2 eclipse portal specials—as a complete bundle.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a href="https://moontuner-chaperone.vercel.app/" target="_blank" rel="noopener noreferrer">
+                  <a href="https://lunar-chaperone.lovable.app" target="_blank" rel="noopener noreferrer">
                     <Button variant="gold" size="lg">
                       Get the Complete Series
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                   </a>
-                  <Link to="/lunar-chaperone">
+                  <a href="https://persona-edition.lovable.app" target="_blank" rel="noopener noreferrer">
                     <Button variant="outline" size="lg">
-                      Learn About the Program
+                      Personalize it — Persona Edition
                     </Button>
-                  </Link>
+                  </a>
                 </div>
                 <p className="text-xs text-muted-foreground/60 mt-4">
                   Full program hosted on Lunar Chaperone · opens in a new tab

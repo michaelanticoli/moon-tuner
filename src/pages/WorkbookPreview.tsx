@@ -472,10 +472,15 @@ const WorkbookPreview = () => {
                 <p className="text-muted-foreground mb-6">
                   Subscribe to access all 24 archetypal lunar journeys plus 2 eclipse portal specials.
                 </p>
-                <a href="https://moontuner-chaperone.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <a href="https://lunar-chaperone.lovable.app" target="_blank" rel="noopener noreferrer">
                   <Button variant="gold" size="lg">
                     Subscribe for Full Access
                     <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </a>
+                <a href="https://persona-edition.lovable.app" target="_blank" rel="noopener noreferrer" className="block mt-3">
+                  <Button variant="outline" size="lg">
+                    Personalize it — Persona Edition
                   </Button>
                 </a>
                 <p className="text-xs text-muted-foreground/60 mt-3">
