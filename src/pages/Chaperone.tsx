@@ -177,6 +177,11 @@ export default function Chaperone() {
             </a>
           </Button>
           <Button size="lg" variant="outline" asChild>
+            <a href={PERSONA_URL} target="_blank" rel="noopener noreferrer">
+              Personalize it — Persona Edition
+            </a>
+          </Button>
+          <Button size="lg" variant="ghost" asChild>
             <Link to="/workbooks">Browse the Workbooks</Link>
           </Button>
         </div>
