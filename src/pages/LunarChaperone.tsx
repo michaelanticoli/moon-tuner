@@ -7,6 +7,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, Check, Lock } from "lucide-react";
+import { WorkbookAppCards } from "@/components/WorkbookAppCards";
 import { useMembership } from "@/contexts/MembershipContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
@@ -456,6 +457,7 @@ const LunarChaperone = () => {
               </div>
             </section>
           )}
+          <WorkbookAppCards />
         </main>
         <Footer />
       </div>

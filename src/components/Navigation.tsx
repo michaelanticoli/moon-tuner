@@ -32,6 +32,7 @@ const NAV_GROUPS: NavGroupData[] = [
     items: [
       { label: 'Explore', href: '/explore', desc: 'Guides & emotional intelligence' },
       { label: 'School', href: '/school', desc: 'Structured learning' },
+      { label: 'Curriculum', href: '/school/curriculum', desc: 'The 6-module course map' },
       { label: 'Quantumelodic', href: '/quantumelodic', desc: 'Sound + lunar theory' },
       { label: 'Blog', href: 'https://moontuner.ghost.io', desc: 'Articles & essays', external: true },
     ],
@@ -43,6 +44,7 @@ const NAV_GROUPS: NavGroupData[] = [
       { label: 'Lunar Cipher', href: '/lunar-cipher', desc: 'Decode your chart' },
       { label: 'Digital Smudging', href: '/digital-smudging', desc: 'Intentional digital clearing' },
       { label: 'Spacetime Printer', href: '/spacetime-printer', desc: 'Submit a proposal' },
+      { label: 'The Rites', href: '/rites', desc: 'Standalone working documents' },
       { label: 'Journal', href: '/journal', desc: 'Reflections & directives' },
       { label: 'App', href: '/app', desc: 'Full lunar toolkit' },
     ],

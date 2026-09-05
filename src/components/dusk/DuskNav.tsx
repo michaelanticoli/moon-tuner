@@ -13,6 +13,7 @@ const LINKS: DuskLink[] = [
   { label: "Today", href: "/today" },
   { label: "Harmonic Profile", href: "/harmonic-profile" },
   { label: "Explore", href: "/explore" },
+  { label: "Rites", href: "/rites" },
   { label: "Journal", href: "/journal" },
   { label: "About", href: "/about" },
 ];

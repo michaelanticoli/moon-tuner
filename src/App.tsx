@@ -71,6 +71,7 @@ const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Resources = lazy(() => import("./pages/Resources"));
 const Rites = lazy(() => import("./pages/Rites"));
+const SchoolCurriculum = lazy(() => import("./pages/SchoolCurriculum"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 // PhasecraftRoutes is a named export, so .then() is required by React.lazy
 const PhasecraftRoutes = lazy(() => import("@/phasecraft/PhasecraftRoutes").then(m => ({ default: m.PhasecraftRoutes })));
@@ -201,6 +202,7 @@ function AnimatedRoutes() {
 
           <Route path="/resources" element={<Resources />} />
           <Route path="/rites" element={<Rites />} />
+          <Route path="/school/curriculum" element={<SchoolCurriculum />} />
 
           {/* ── Legal pages ─────────────────────────────────────────── */}
           <Route path="/terms" element={<Terms />} />
