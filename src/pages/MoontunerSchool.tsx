@@ -159,6 +159,36 @@ export default function MoontunerSchool() {
           </section>
         </ScrollReveal>
 
+        {/* Curriculum */}
+        <ScrollReveal>
+          <section className="py-16 lg:py-24 border-t border-border">
+            <div className="container mx-auto px-6 lg:px-12">
+              <div className="max-w-3xl">
+                <span className="text-xs uppercase tracking-[0.3em] text-accent font-medium">The course map</span>
+                <h3 className="font-serif text-2xl lg:text-3xl text-foreground mt-5 mb-4">
+                  Lunar Phasecraft Mastery — six modules
+                </h3>
+                <p className="text-muted-foreground mb-8 leading-relaxed">
+                  Foundations, the waxing journey, moon signs, waning wisdom, advanced frequency work,
+                  and integration — each module with its learning outcomes and key topics laid out in full,
+                  plus the overview PDF to keep.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <Link to="/school/curriculum">
+                    <Button variant="gold">
+                      See the curriculum
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link to="/rites">
+                    <Button variant="outline">The Rites — the practice layer</Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+        </ScrollReveal>
+
         {/* Cosmic Cycles Knowledge Base */}
         <ScrollReveal>
           <section className="py-16 lg:py-24 border-t border-border">
