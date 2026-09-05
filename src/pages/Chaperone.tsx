@@ -19,6 +19,7 @@ import {
 } from "@/data/chaperoneCanon";
 
 const PROGRAM_URL = "https://lunar-chaperone.lovable.app";
+const PERSONA_URL = "https://persona-edition.lovable.app";
 
 const STEPS = [
   {
