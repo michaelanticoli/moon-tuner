@@ -478,6 +478,11 @@ const WorkbookPreview = () => {
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </a>
+                <a href="https://persona-edition.lovable.app" target="_blank" rel="noopener noreferrer" className="block mt-3">
+                  <Button variant="outline" size="lg">
+                    Personalize it — Persona Edition
+                  </Button>
+                </a>
                 <p className="text-xs text-muted-foreground/60 mt-3">
                   The full 26-workbook program lives on Lunar Chaperone · opens in a new tab
                 </p>
