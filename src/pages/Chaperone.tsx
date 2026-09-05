@@ -18,7 +18,7 @@ import {
   type Workbook,
 } from "@/data/chaperoneCanon";
 
-const PROGRAM_URL = "https://moontuner-chaperone.vercel.app/";
+const PROGRAM_URL = "https://lunar-chaperone.lovable.app";
 
 const STEPS = [
   {
