@@ -295,7 +295,9 @@ export default function Chaperone() {
               </a>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/lunar-chaperone">See the Full Chaperone</Link>
+              <a href={PERSONA_URL} target="_blank" rel="noopener noreferrer">
+                Personalize it — Persona Edition
+              </a>
             </Button>
           </div>
         </div>
