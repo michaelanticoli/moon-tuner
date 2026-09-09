@@ -11,6 +11,7 @@ import {
   curriculumModules,
   bonusModules,
 } from "@/data/phasecraftCurriculum";
+import { lessonsForModule, TOTAL_LESSONS } from "@/data/phasecraftLessons";
 
 export default function SchoolCurriculum() {
   return (
