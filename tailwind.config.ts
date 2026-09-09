@@ -105,7 +105,7 @@ export default {
       fontFamily: {
         serif: ["Playfair Display", "Georgia", "serif"],
         sans: ["DM Sans", "system-ui", "sans-serif"],
-        display: ["Inter", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Inter", "system-ui", "sans-serif"],
         editorial: ["Instrument Serif", "Playfair Display", "Georgia", "serif"],
         ui: ["Work Sans", "system-ui", "-apple-system", "sans-serif"],
         mono: ["ui-monospace", "SFMono-Regular", "SF Mono", "Menlo", "monospace"],
