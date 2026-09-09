@@ -206,14 +206,24 @@ function RiteStatsPanel() {
 }
 
 
-function PdfViewer({ src, title, onClose }: { src: string; title: string; onClose: () => void }) {
+function PdfViewer({
+  src,
+  title,
+  slug,
+  onClose,
+}: {
+  src: string;
+  title: string;
+  slug: string;
+  onClose: () => void;
+}) {
   return (
     <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex flex-col">
       <div className="flex items-center justify-between gap-4 px-5 py-3 border-b border-white/10">
         <span className="text-xs uppercase tracking-[0.2em] text-white/70">{title}</span>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => downloadFile(src)}
+            onClick={() => downloadFile(src, slug)}
             className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-white/70 hover:text-white"
           >
             <Download className="w-3.5 h-3.5" /> Download
@@ -247,6 +257,7 @@ function RiteCard({ rite, onView }: { rite: Rite; onView: (r: Rite) => void }) {
           href={rite.href}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => logRiteAction(rite.title, rite.href, "view")}
           className="inline-flex items-center gap-2 text-white/70 hover:text-white"
         >
           Open the rite <ExternalLink className="w-3.5 h-3.5" />
@@ -260,7 +271,7 @@ function RiteCard({ rite, onView }: { rite: Rite; onView: (r: Rite) => void }) {
               <Eye className="w-3.5 h-3.5" /> View PDF
             </button>
             <button
-              onClick={() => downloadFile(rite.pdf!)}
+              onClick={() => downloadFile(rite.pdf!, rite.title)}
               className="inline-flex items-center gap-2 text-primary/85 hover:text-primary"
             >
               <Download className="w-3.5 h-3.5" /> Download PDF
@@ -271,6 +282,7 @@ function RiteCard({ rite, onView }: { rite: Rite; onView: (r: Rite) => void }) {
     </div>
   );
 }
+
 
 function WorkingRiteCard({ rite }: { rite: WorkingRite }) {
   return (
