@@ -310,6 +310,12 @@
   background-clip: text;
 }
 
+/* Core theme scope — mirrors the :root palette for explicit opt-in */
+.theme-core {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
 /* Display typography - large dramatic headings */
 .font-display {
   font-family: var(--font-display);
