@@ -307,7 +307,11 @@ function WorkingRiteCard({ rite }: { rite: WorkingRite }) {
 }
 
 export default function Rites() {
-  const [viewing, setViewing] = useState<{ src: string; title: string } | null>(null);
+  const [viewing, setViewing] = useState<{ src: string; title: string; slug: string } | null>(
+    null,
+  );
+
+
 
   return (
     <PageTransition>
