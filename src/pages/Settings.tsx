@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUserMemory } from "@/hooks/useUserMemory";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { supabase } from "@/lib/supabase";
+import { writeSharedBirth } from "@/hooks/useSharedBirth";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -139,6 +140,14 @@ const Settings = () => {
         notifications_enabled: preferences.notifications_enabled,
         ai_synthesis_enabled: preferences.ai_synthesis_enabled,
         updated_at: new Date().toISOString(),
+      });
+
+      writeSharedBirth({
+        name: profile.display_name,
+        date: profile.birth_date,
+        time: profile.birth_time,
+        location: profile.birth_location,
+        email: user.email ?? "",
       });
 
       setSaved(true);

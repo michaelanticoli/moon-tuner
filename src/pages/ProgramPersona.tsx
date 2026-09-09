@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 import {
   WORKBOOKS,
   SIGNS,
@@ -44,6 +45,8 @@ export default function ProgramPersona() {
 
   useEffect(() => {
     if (!user) {
+      const shared = readSharedBirth();
+      setBirth({ birth_date: shared.date || null, birth_time: shared.time || null, birth_location: shared.location || null });
       setLoaded(true);
       return;
     }
@@ -53,7 +56,14 @@ export default function ProgramPersona() {
         .select("birth_date, birth_time, birth_location")
         .eq("user_id", user.id)
         .maybeSingle();
-      if (data) setBirth(data as BirthData);
+      if (data) {
+        setBirth(data as BirthData);
+        writeSharedBirth({
+          date: data.birth_date ?? "",
+          time: data.birth_time?.slice(0, 5) ?? "",
+          location: data.birth_location ?? "",
+        });
+      }
       setLoaded(true);
     })();
   }, [user]);
@@ -78,6 +88,11 @@ export default function ProgramPersona() {
       })
       .eq("user_id", user.id);
     setSaving(false);
+    if (!error) writeSharedBirth({
+      date: birth.birth_date ?? "",
+      time: birth.birth_time?.slice(0, 5) ?? "",
+      location: birth.birth_location ?? "",
+    });
     toast(
       error
         ? { title: "Could not save", description: error.message }

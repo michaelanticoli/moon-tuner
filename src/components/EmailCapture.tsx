@@ -19,10 +19,11 @@ export const EmailCapture = ({
     setStatus("loading");
 
     try {
-      const { error } = await supabase
-        .from("subscribers")
-        .insert([{ email: email.trim().toLowerCase() }]);
+      const { data, error } = await supabase.functions.invoke("subscribe-email", {
+        body: { email: email.trim().toLowerCase(), source: "email-capture" },
+      });
       if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || "Subscription failed");
       setStatus("success");
       setEmail("");
     } catch (err) {

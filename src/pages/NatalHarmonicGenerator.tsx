@@ -26,6 +26,7 @@ import { AudioPlayer } from "@/components/natal-harmonic/AudioPlayer";
 import { CodexString } from "@/components/natal-harmonic/CodexString";
 import { RitualScript } from "@/components/natal-harmonic/RitualScript";
 import { CopyFeedback } from "@/components/natal-harmonic/CopyFeedback";
+import { readSharedBirth, writeSharedBirth } from "@/hooks/useSharedBirth";
 
 // ─── Web Audio drone engine ──────────────────────────────────────────────────
 
@@ -137,12 +138,14 @@ const NatalHarmonicGenerator = () => {
     };
   }, []);
 
-  const [formData, setFormData] = useState({
-    birthDate: "",
-    birthTime: "12:00",
-    birthLocation: "",
+  const [formData, setFormData] = useState(() => {
+    const birth = readSharedBirth();
+    return {
+    birthDate: birth.date,
+    birthTime: birth.time || "12:00",
+    birthLocation: birth.location,
     intention: "healing",
-  });
+  }});
 
   // Derived display data
   const [displayData, setDisplayData] = useState<{
@@ -160,6 +163,9 @@ const NatalHarmonicGenerator = () => {
   const handleInputChange = useCallback(
     (field: string, value: string) => {
       setFormData((prev) => ({ ...prev, [field]: value }));
+      if (field === "birthDate") writeSharedBirth({ date: value });
+      if (field === "birthTime") writeSharedBirth({ time: value });
+      if (field === "birthLocation") writeSharedBirth({ location: value });
     },
     []
   );
