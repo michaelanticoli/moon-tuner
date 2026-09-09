@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { primarySupabase as supabase } from "@/integrations/supabase/client";
 
 export interface SharedBirth {
   name: string;
@@ -18,7 +18,7 @@ const empty: SharedBirth = { name: "", date: "", time: "", location: "", email: 
 export function readSharedBirth(): SharedBirth {
   if (typeof window === "undefined") return empty;
   try {
-    const raw = sessionStorage.getItem(KEY);
+    const raw = localStorage.getItem(KEY) ?? sessionStorage.getItem(KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
       return { ...empty, ...parsed };
@@ -28,7 +28,7 @@ export function readSharedBirth(): SharedBirth {
       if (legacy) {
         const parsed = JSON.parse(legacy);
         const merged: SharedBirth = { ...empty, ...parsed };
-        sessionStorage.setItem(KEY, JSON.stringify(merged));
+        localStorage.setItem(KEY, JSON.stringify(merged));
         return merged;
       }
     }
@@ -42,8 +42,24 @@ export function writeSharedBirth(birth: Partial<SharedBirth>) {
   if (typeof window === "undefined") return;
   const current = readSharedBirth();
   const next = { ...current, ...birth };
+  localStorage.setItem(KEY, JSON.stringify(next));
   sessionStorage.setItem(KEY, JSON.stringify(next));
   window.dispatchEvent(new CustomEvent("mt-birth-updated", { detail: next }));
+
+  void supabase.auth.getUser().then(({ data }) => {
+    const user = data.user;
+    if (!user || user.is_anonymous) return;
+    return supabase.from("profiles").upsert({
+      user_id: user.id,
+      email: user.email ?? next.email ?? "unknown@example.invalid",
+      display_name: next.name || null,
+      full_name: next.name || null,
+      birth_date: next.date || null,
+      birth_time: next.time || null,
+      birth_location: next.location || null,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: "user_id" });
+  }).catch((error) => console.warn("Unable to sync birth profile.", error));
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -75,6 +91,27 @@ export function useSharedBirth() {
       if (detail) setBirth(detail);
     };
     window.addEventListener("mt-birth-updated", onUpdate);
+    void supabase.auth.getUser().then(async ({ data }) => {
+      const user = data.user;
+      if (!user || user.is_anonymous) return;
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("display_name, full_name, birth_date, birth_time, birth_location, email")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (!profile) return;
+      const local = readSharedBirth();
+      const hydrated: SharedBirth = {
+        name: local.name || profile.display_name || profile.full_name || "",
+        date: local.date || profile.birth_date || "",
+        time: local.time || profile.birth_time?.slice(0, 5) || "",
+        location: local.location || profile.birth_location || "",
+        email: local.email || profile.email || user.email || "",
+      };
+      localStorage.setItem(KEY, JSON.stringify(hydrated));
+      sessionStorage.setItem(KEY, JSON.stringify(hydrated));
+      setBirth(hydrated);
+    }).catch((error) => console.warn("Unable to load saved birth profile.", error));
     return () => window.removeEventListener("mt-birth-updated", onUpdate);
   }, []);
 

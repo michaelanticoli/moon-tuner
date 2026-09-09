@@ -4,6 +4,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Moon, Target, BookOpen, Volume2, Bell, Shield, Sparkles } from "lucide-react";
+import { EmailSubscribeForm } from "@/components/EmailSubscribeForm";
 
 const features = [
   {
@@ -241,15 +242,8 @@ const MoontunedApp = () => {
                     Be among the first to experience Moontuner when it launches. Early access members receive the complete workbook series free.
                   </p>
                   
-                  <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                    <input
-                      type="email"
-                      placeholder="Your email"
-                      className="flex-1 px-4 py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-gold/50 transition-colors"
-                    />
-                    <Button variant="gold">
-                      Join Waitlist
-                    </Button>
+                  <div className="max-w-md mx-auto">
+                    <EmailSubscribeForm source="app-waitlist" buttonText="Join Waitlist" />
                   </div>
                   
                   <p className="text-xs text-muted-foreground mt-4">

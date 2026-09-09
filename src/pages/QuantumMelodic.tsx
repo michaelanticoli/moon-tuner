@@ -124,7 +124,7 @@ const QuantumMelodic = () => {
     const b = readSharedBirth();
     return {
       name: b.name || "",
-      email: "",
+      email: b.email || user?.email || "",
       date: b.date || "1990-01-01",
       time: b.time || "12:00",
       location: b.location || "",
@@ -146,8 +146,9 @@ const QuantumMelodic = () => {
       date: birthData.date,
       time: birthData.time,
       location: birthData.location,
+      email: formData.email,
     });
-  }, []);
+  }, [formData.email]);
 
   const beginCheckout = useCallback(() => {
     if (checkoutLoading) return;

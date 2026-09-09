@@ -4,7 +4,7 @@
 // - Hashed /assets/*: cache-first, immutable
 // - Other same-origin GETs: stale-while-revalidate
 // Versioned cache name — bump to invalidate all caches.
-const VERSION = 'mt-sw-v1';
+const VERSION = 'mt-sw-v2';
 const HTML_CACHE = `${VERSION}-html`;
 const ASSET_CACHE = `${VERSION}-assets`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
@@ -37,6 +37,10 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   // Only handle same-origin
   if (url.origin !== self.location.origin) return;
+
+  // Authentication and managed OAuth must always reach the network. Caching
+  // these responses can replay stale verification or recovery state.
+  if (url.pathname.startsWith('/auth/') || url.pathname.startsWith('/~oauth')) return;
 
   // HTML: network-first
   if (isHTMLRequest(request)) {

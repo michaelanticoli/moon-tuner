@@ -6,14 +6,14 @@
 // summary into a single multi-page PDF using html2canvas + jsPDF (loaded
 // on-demand to keep the initial bundle light).
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { useSharedBirth, isCompleteBirth } from "@/hooks/useSharedBirth";
 import {
-  Music2, Moon, Sun, Calendar, Download, Loader2, ArrowUpRight, Sparkles,
+  Music2, Moon, Sun, Calendar, Download, Loader2, ArrowUpRight, Sparkles, Compass, SlidersHorizontal,
 } from "lucide-react";
 import { generateReport, type LunarReport } from "@/lib/lunarReportEngine";
 import {
@@ -170,6 +170,30 @@ export default function TotalTuner() {
                 Your natal chart translated into a generative musical score with
                 ElevenLabs voiceover. The Symphony page renders the full audio,
                 interactive natal wheel, and downloadable PDF.
+              </p>
+            </Section>
+
+            <Section
+              title="Harmonic Profile"
+              tag="Pattern"
+              icon={<Compass className="w-5 h-5" />}
+              to="/harmonic-profile"
+              navigate={navigate}
+            >
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                A reflective profile of your natural timing, creative orientation, and recurring patterns — the purpose-and-practice layer of the toolkit.
+              </p>
+            </Section>
+
+            <Section
+              title="Spacetime Printer"
+              tag="Decision Practice"
+              icon={<SlidersHorizontal className="w-5 h-5" />}
+              to="/spacetime-printer"
+              navigate={navigate}
+            >
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Turn intention, uncertainty, resistance, and direction into a grounded proposal you can revisit alongside your timing reports.
               </p>
             </Section>
 
