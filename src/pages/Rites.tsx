@@ -138,7 +138,8 @@ const archivePdfs: { label: string; href: string }[] = [
   { label: "The Lens Rite — PDF", href: "/rites/_archive/the-lens-rite.pdf" },
 ];
 
-async function downloadFile(href: string) {
+async function downloadFile(href: string, slug: string) {
+  logRiteAction(slug, href, "download");
   try {
     const res = await fetch(href);
     if (!res.ok) throw new Error(`Download failed: ${res.status}`);
@@ -154,6 +155,56 @@ async function downloadFile(href: string) {
     window.open(href, "_blank", "noopener,noreferrer");
   }
 }
+
+function RiteStatsPanel() {
+  const { isAdmin } = useAdminAccess();
+  const [stats, setStats] = useState<RiteDownloadStat[]>([]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    void fetchRiteStats().then(setStats);
+  }, [isAdmin]);
+
+  if (!isAdmin) return null;
+
+  return (
+    <section className="mt-20 border-t border-white/10 pt-10">
+      <h2 className="text-[11px] uppercase tracking-[0.24em] text-primary/80">
+        Rite usage — admin only
+      </h2>
+      <p className="mt-4 max-w-2xl text-sm text-white/50 leading-relaxed">
+        Which rites people are actually opening and keeping, most used first.
+      </p>
+      {stats.length === 0 ? (
+        <p className="mt-6 text-sm text-white/40">No activity recorded yet.</p>
+      ) : (
+        <table className="mt-6 w-full text-sm">
+          <thead>
+            <tr className="text-[10px] uppercase tracking-[0.18em] text-white/40 border-b border-white/10">
+              <th className="text-left py-3 font-normal">Rite</th>
+              <th className="text-right py-3 font-normal">Last 30 days</th>
+              <th className="text-right py-3 font-normal">Downloads</th>
+              <th className="text-right py-3 font-normal">Views</th>
+              <th className="text-right py-3 font-normal">All time</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {stats.map((s) => (
+              <tr key={s.slug}>
+                <td className="py-3 text-white/75">{s.slug}</td>
+                <td className="py-3 text-right text-white/55">{s.last30}</td>
+                <td className="py-3 text-right text-white/55">{s.downloads}</td>
+                <td className="py-3 text-right text-white/55">{s.views}</td>
+                <td className="py-3 text-right text-primary/85">{s.total}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </section>
+  );
+}
+
 
 function PdfViewer({ src, title, onClose }: { src: string; title: string; onClose: () => void }) {
   return (
