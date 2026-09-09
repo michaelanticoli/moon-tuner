@@ -53,6 +53,9 @@ const NAV_GROUPS: NavGroupData[] = [
   {
     label: 'Products',
     items: [
+      { label: 'Workbook Program', href: '/program', desc: 'All 24 half-cycles' },
+      { label: 'Persona Edition', href: '/program/persona', desc: 'The cycle in your signature' },
+      { label: 'Program Portal', href: '/program/portal', desc: 'Your place in the arc' },
       { label: 'Workbooks', href: '/workbooks', desc: 'Guided practice' },
       { label: 'Resources', href: '/resources', desc: 'Downloads & reference materials' },
       { label: 'Offerings', href: '/offerings', desc: 'Reports & insight tools' },
