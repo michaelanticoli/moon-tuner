@@ -290,6 +290,7 @@ function WorkingRiteCard({ rite }: { rite: WorkingRite }) {
       href={rite.href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => logRiteAction(rite.title, rite.href, "view")}
       className="group block border border-white/10 rounded-sm p-6 bg-white/[0.02] hover:border-primary/40 transition-colors"
     >
       <div className="flex items-baseline justify-between gap-3">
