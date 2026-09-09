@@ -20,6 +20,7 @@ const Index = () => {
         title="Moontuner — Reflective Lunar OS for Daily Alignment"
         description="Today's Directive, your Harmonic Profile, and a lunar framework for creative rhythm and intentional living."
         canonical="/"
+        ogImage="/og-moontuner.jpg"
         keywords={[
           "moon phase today",
           "current moon phase",
