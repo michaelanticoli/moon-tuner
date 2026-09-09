@@ -24,6 +24,8 @@ Moontuner is a framework for energetic accountability and self-sovereignty built
 - [The Rites](/rites): The full rites catalog — press volumes, eight behavioral working rites, and the Codex capstone.
 - [Lunar Cipher](/lunar-cipher): 2026 ephemeris with VOC and phase timing.
 - [Lunar Reports](/lunar-reports): Personalized 12-month Lunar Arc and Natal Signature reports.
+- [Lunar Workbook Program](/program): The twenty-four half-cycle workbook canon, live to the current phase.
+- [Persona Edition](/program/persona): The same canon read against your own birth moment.
 - [School Curriculum](/school/curriculum): The six-module Lunar Phasecraft Mastery course map with outcomes and topics.
 - [Moontuner School](/school): The Cosmic Cycles knowledge base and assessment.
 - [Lunar Chaperone](/lunar-chaperone): 26-workbook continuous companionship system.

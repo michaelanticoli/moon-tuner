@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { SEOHead } from "@/components/SEOHead";
 import { ExternalLink, Download, Eye, X } from "lucide-react";
+import { useAdminAccess } from "@/hooks/useAdminAccess";
+import { fetchRiteStats, logRiteAction, type RiteDownloadStat } from "@/lib/riteTracking";
 
 interface Rite {
   volume: string;
@@ -138,7 +140,8 @@ const archivePdfs: { label: string; href: string }[] = [
   { label: "The Lens Rite — PDF", href: "/rites/_archive/the-lens-rite.pdf" },
 ];
 
-async function downloadFile(href: string) {
+async function downloadFile(href: string, slug: string) {
+  logRiteAction(slug, href, "download");
   try {
     const res = await fetch(href);
     if (!res.ok) throw new Error(`Download failed: ${res.status}`);
@@ -155,14 +158,74 @@ async function downloadFile(href: string) {
   }
 }
 
-function PdfViewer({ src, title, onClose }: { src: string; title: string; onClose: () => void }) {
+function RiteStatsPanel() {
+  const { isAdmin } = useAdminAccess();
+  const [stats, setStats] = useState<RiteDownloadStat[]>([]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    void fetchRiteStats().then(setStats);
+  }, [isAdmin]);
+
+  if (!isAdmin) return null;
+
+  return (
+    <section className="mt-20 border-t border-white/10 pt-10">
+      <h2 className="text-[11px] uppercase tracking-[0.24em] text-primary/80">
+        Rite usage — admin only
+      </h2>
+      <p className="mt-4 max-w-2xl text-sm text-white/50 leading-relaxed">
+        Which rites people are actually opening and keeping, most used first.
+      </p>
+      {stats.length === 0 ? (
+        <p className="mt-6 text-sm text-white/40">No activity recorded yet.</p>
+      ) : (
+        <table className="mt-6 w-full text-sm">
+          <thead>
+            <tr className="text-[10px] uppercase tracking-[0.18em] text-white/40 border-b border-white/10">
+              <th className="text-left py-3 font-normal">Rite</th>
+              <th className="text-right py-3 font-normal">Last 30 days</th>
+              <th className="text-right py-3 font-normal">Downloads</th>
+              <th className="text-right py-3 font-normal">Views</th>
+              <th className="text-right py-3 font-normal">All time</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {stats.map((s) => (
+              <tr key={s.slug}>
+                <td className="py-3 text-white/75">{s.slug}</td>
+                <td className="py-3 text-right text-white/55">{s.last30}</td>
+                <td className="py-3 text-right text-white/55">{s.downloads}</td>
+                <td className="py-3 text-right text-white/55">{s.views}</td>
+                <td className="py-3 text-right text-primary/85">{s.total}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </section>
+  );
+}
+
+
+function PdfViewer({
+  src,
+  title,
+  slug,
+  onClose,
+}: {
+  src: string;
+  title: string;
+  slug: string;
+  onClose: () => void;
+}) {
   return (
     <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex flex-col">
       <div className="flex items-center justify-between gap-4 px-5 py-3 border-b border-white/10">
         <span className="text-xs uppercase tracking-[0.2em] text-white/70">{title}</span>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => downloadFile(src)}
+            onClick={() => downloadFile(src, slug)}
             className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-white/70 hover:text-white"
           >
             <Download className="w-3.5 h-3.5" /> Download
@@ -196,6 +259,7 @@ function RiteCard({ rite, onView }: { rite: Rite; onView: (r: Rite) => void }) {
           href={rite.href}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => logRiteAction(rite.title, rite.href, "view")}
           className="inline-flex items-center gap-2 text-white/70 hover:text-white"
         >
           Open the rite <ExternalLink className="w-3.5 h-3.5" />
@@ -209,7 +273,7 @@ function RiteCard({ rite, onView }: { rite: Rite; onView: (r: Rite) => void }) {
               <Eye className="w-3.5 h-3.5" /> View PDF
             </button>
             <button
-              onClick={() => downloadFile(rite.pdf!)}
+              onClick={() => downloadFile(rite.pdf!, rite.title)}
               className="inline-flex items-center gap-2 text-primary/85 hover:text-primary"
             >
               <Download className="w-3.5 h-3.5" /> Download PDF
@@ -221,12 +285,14 @@ function RiteCard({ rite, onView }: { rite: Rite; onView: (r: Rite) => void }) {
   );
 }
 
+
 function WorkingRiteCard({ rite }: { rite: WorkingRite }) {
   return (
     <a
       href={rite.href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => logRiteAction(rite.title, rite.href, "view")}
       className="group block border border-white/10 rounded-sm p-6 bg-white/[0.02] hover:border-primary/40 transition-colors"
     >
       <div className="flex items-baseline justify-between gap-3">
@@ -243,7 +309,11 @@ function WorkingRiteCard({ rite }: { rite: WorkingRite }) {
 }
 
 export default function Rites() {
-  const [viewing, setViewing] = useState<{ src: string; title: string } | null>(null);
+  const [viewing, setViewing] = useState<{ src: string; title: string; slug: string } | null>(
+    null,
+  );
+
+
 
   return (
     <PageTransition>
@@ -276,7 +346,10 @@ export default function Rites() {
                 <RiteCard
                   key={r.href}
                   rite={r}
-                  onView={(rite) => setViewing({ src: rite.pdf!, title: rite.title })}
+                  onView={(rite) => {
+                    logRiteAction(rite.title, rite.pdf!, "view");
+                    setViewing({ src: rite.pdf!, title: rite.title, slug: rite.title });
+                  }}
                 />
               ))}
             </div>
@@ -346,13 +419,16 @@ export default function Rites() {
                   <span className="text-sm text-white/75">{f.label}</span>
                   <span className="flex items-center gap-5 text-xs uppercase tracking-[0.16em]">
                     <button
-                      onClick={() => setViewing({ src: f.href, title: f.label })}
+                      onClick={() => {
+                        logRiteAction(f.label, f.href, "view");
+                        setViewing({ src: f.href, title: f.label, slug: f.label });
+                      }}
                       className="inline-flex items-center gap-2 text-white/70 hover:text-white"
                     >
                       <Eye className="w-3.5 h-3.5" /> View
                     </button>
                     <button
-                      onClick={() => downloadFile(f.href)}
+                      onClick={() => downloadFile(f.href, f.label)}
                       className="inline-flex items-center gap-2 text-primary/85 hover:text-primary"
                     >
                       <Download className="w-3.5 h-3.5" /> Download
@@ -380,6 +456,8 @@ export default function Rites() {
               carries both across every half-cycle of the year.
             </p>
           </section>
+
+          <RiteStatsPanel />
 
           {/* Series framework */}
           <section className="mt-16 border-t border-white/10 pt-10">
@@ -414,7 +492,12 @@ export default function Rites() {
       </main>
 
       {viewing && (
-        <PdfViewer src={viewing.src} title={viewing.title} onClose={() => setViewing(null)} />
+        <PdfViewer
+          src={viewing.src}
+          title={viewing.title}
+          slug={viewing.slug}
+          onClose={() => setViewing(null)}
+        />
       )}
 
       <Footer />

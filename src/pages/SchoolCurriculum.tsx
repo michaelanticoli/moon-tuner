@@ -11,6 +11,7 @@ import {
   curriculumModules,
   bonusModules,
 } from "@/data/phasecraftCurriculum";
+import { lessonsForModule, TOTAL_LESSONS } from "@/data/phasecraftLessons";
 
 export default function SchoolCurriculum() {
   return (
@@ -52,9 +53,19 @@ export default function SchoolCurriculum() {
                 ))}
               </div>
 
+              <p className="text-sm text-muted-foreground/70 mb-6">
+                {TOTAL_LESSONS} lessons across six modules, each with a practice
+                and reflection prompts.
+              </p>
+
               <div className="flex flex-wrap gap-4">
-                <a href={curriculumMeta.overviewPdf} download>
+                <Link to="/school/portal">
                   <Button variant="gold" size="lg">
+                    Open the student portal
+                  </Button>
+                </Link>
+                <a href={curriculumMeta.overviewPdf} download>
+                  <Button variant="gold-outline" size="lg">
                     <Download className="w-4 h-4 mr-2" />
                     Download the overview PDF
                   </Button>
@@ -131,6 +142,40 @@ export default function SchoolCurriculum() {
                             ))}
                           </ul>
                         </div>
+                      </div>
+
+                      <div className="mt-8 pt-8 border-t border-border">
+                        <h4 className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60 mb-4">
+                          Lessons in this module
+                        </h4>
+                        <ol className="space-y-5">
+                          {lessonsForModule(m.number).map((l, i) => (
+                            <li key={l.slug}>
+                              <div className="flex items-baseline gap-3">
+                                <span className="text-[11px] text-accent tabular-nums">
+                                  {String(i + 1).padStart(2, "0")}
+                                </span>
+                                <div>
+                                  <h5 className="font-serif text-lg text-foreground">
+                                    {l.title}
+                                    <span className="ml-3 text-[10px] uppercase tracking-[0.18em] text-muted-foreground/50">
+                                      {l.minutes} min
+                                    </span>
+                                  </h5>
+                                  <p className="text-sm text-muted-foreground leading-relaxed mt-1">
+                                    {l.body[0]}
+                                  </p>
+                                  <p className="text-sm text-foreground/75 leading-relaxed mt-2">
+                                    <span className="text-[10px] uppercase tracking-[0.18em] text-accent mr-2">
+                                      Practice
+                                    </span>
+                                    {l.practice}
+                                  </p>
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ol>
                       </div>
                     </article>
                   </ScrollReveal>

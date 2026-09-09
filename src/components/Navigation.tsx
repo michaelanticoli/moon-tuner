@@ -33,6 +33,7 @@ const NAV_GROUPS: NavGroupData[] = [
       { label: 'Explore', href: '/explore', desc: 'Guides & emotional intelligence' },
       { label: 'School', href: '/school', desc: 'Structured learning' },
       { label: 'Curriculum', href: '/school/curriculum', desc: 'The 6-module course map' },
+      { label: 'Student Portal', href: '/school/portal', desc: 'Your lessons & progress' },
       { label: 'Quantumelodic', href: '/quantumelodic', desc: 'Sound + lunar theory' },
       { label: 'Blog', href: 'https://moontuner.ghost.io', desc: 'Articles & essays', external: true },
     ],
@@ -52,6 +53,9 @@ const NAV_GROUPS: NavGroupData[] = [
   {
     label: 'Products',
     items: [
+      { label: 'Workbook Program', href: '/program', desc: 'All 24 half-cycles' },
+      { label: 'Persona Edition', href: '/program/persona', desc: 'The cycle in your signature' },
+      { label: 'Program Portal', href: '/program/portal', desc: 'Your place in the arc' },
       { label: 'Workbooks', href: '/workbooks', desc: 'Guided practice' },
       { label: 'Resources', href: '/resources', desc: 'Downloads & reference materials' },
       { label: 'Offerings', href: '/offerings', desc: 'Reports & insight tools' },

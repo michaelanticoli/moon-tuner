@@ -293,6 +293,57 @@ export type Database = {
         }
         Relationships: []
       }
+      program_entitlements: {
+        Row: {
+          created_at: string
+          id: string
+          source: string
+          user_id: string
+          workbook_n: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          source?: string
+          user_id: string
+          workbook_n: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          source?: string
+          user_id?: string
+          workbook_n?: string
+        }
+        Relationships: []
+      }
+      program_members: {
+        Row: {
+          created_at: string
+          current_step: number
+          id: string
+          start_step: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_step?: number
+          id?: string
+          start_step?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_step?: number
+          id?: string
+          start_step?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       purchases: {
         Row: {
           amount_cents: number
@@ -383,6 +434,57 @@ export type Database = {
           stripe_session_id?: string | null
           updated_at?: string
           voice_id?: string | null
+        }
+        Relationships: []
+      }
+      rite_downloads: {
+        Row: {
+          action: string
+          asset: string
+          created_at: string
+          id: string
+          slug: string
+          user_id: string | null
+        }
+        Insert: {
+          action?: string
+          asset: string
+          created_at?: string
+          id?: string
+          slug: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          asset?: string
+          created_at?: string
+          id?: string
+          slug?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      school_progress: {
+        Row: {
+          completed_at: string
+          id: string
+          lesson_slug: string
+          module_number: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          lesson_slug: string
+          module_number: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          lesson_slug?: string
+          module_number?: number
+          user_id?: string
         }
         Relationships: []
       }

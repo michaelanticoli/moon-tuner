@@ -72,6 +72,11 @@ const Privacy = lazy(() => import("./pages/Privacy"));
 const Resources = lazy(() => import("./pages/Resources"));
 const Rites = lazy(() => import("./pages/Rites"));
 const SchoolCurriculum = lazy(() => import("./pages/SchoolCurriculum"));
+const SchoolPortal = lazy(() => import("./pages/SchoolPortal"));
+const Program = lazy(() => import("./pages/Program"));
+const ProgramWorkbook = lazy(() => import("./pages/ProgramWorkbook"));
+const ProgramPersona = lazy(() => import("./pages/ProgramPersona"));
+const ProgramPortal = lazy(() => import("./pages/ProgramPortal"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 // PhasecraftRoutes is a named export, so .then() is required by React.lazy
 const PhasecraftRoutes = lazy(() => import("@/phasecraft/PhasecraftRoutes").then(m => ({ default: m.PhasecraftRoutes })));
@@ -203,6 +208,28 @@ function AnimatedRoutes() {
           <Route path="/resources" element={<Resources />} />
           <Route path="/rites" element={<Rites />} />
           <Route path="/school/curriculum" element={<SchoolCurriculum />} />
+          <Route
+            path="/school/portal"
+            element={
+              <ProtectedRoute>
+                <SchoolPortal />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* ── Lunar Workbook Program ───────────────────────────────── */}
+          <Route path="/program" element={<Program />} />
+          <Route path="/program/workbook/:n" element={<ProgramWorkbook />} />
+          <Route path="/program/persona" element={<ProgramPersona />} />
+          <Route
+            path="/program/portal"
+            element={
+              <ProtectedRoute>
+                <ProgramPortal />
+              </ProtectedRoute>
+            }
+          />
+
 
           {/* ── Legal pages ─────────────────────────────────────────── */}
           <Route path="/terms" element={<Terms />} />
