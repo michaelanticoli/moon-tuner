@@ -208,6 +208,28 @@ function AnimatedRoutes() {
           <Route path="/resources" element={<Resources />} />
           <Route path="/rites" element={<Rites />} />
           <Route path="/school/curriculum" element={<SchoolCurriculum />} />
+          <Route
+            path="/school/portal"
+            element={
+              <ProtectedRoute>
+                <SchoolPortal />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* ── Lunar Workbook Program ───────────────────────────────── */}
+          <Route path="/program" element={<Program />} />
+          <Route path="/program/workbook/:n" element={<ProgramWorkbook />} />
+          <Route path="/program/persona" element={<ProgramPersona />} />
+          <Route
+            path="/program/portal"
+            element={
+              <ProtectedRoute>
+                <ProgramPortal />
+              </ProtectedRoute>
+            }
+          />
+
 
           {/* ── Legal pages ─────────────────────────────────────────── */}
           <Route path="/terms" element={<Terms />} />
