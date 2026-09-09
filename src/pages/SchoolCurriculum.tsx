@@ -53,9 +53,19 @@ export default function SchoolCurriculum() {
                 ))}
               </div>
 
+              <p className="text-sm text-muted-foreground/70 mb-6">
+                {TOTAL_LESSONS} lessons across six modules, each with a practice
+                and reflection prompts.
+              </p>
+
               <div className="flex flex-wrap gap-4">
-                <a href={curriculumMeta.overviewPdf} download>
+                <Link to="/school/portal">
                   <Button variant="gold" size="lg">
+                    Open the student portal
+                  </Button>
+                </Link>
+                <a href={curriculumMeta.overviewPdf} download>
+                  <Button variant="gold-outline" size="lg">
                     <Download className="w-4 h-4 mr-2" />
                     Download the overview PDF
                   </Button>
