@@ -1,11 +1,13 @@
-import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 const APPS = [
   {
     tag: "Main program",
     title: "Lunar Workbook Program",
     desc:
-      "The full 26-workbook Chaperone build — every half-cycle, live to the current phase, with the 14-day arc and practice logs. This is the core program.",
+      "The full Chaperone build — every half-cycle, live to the current phase, with the 14-day arc and practice logs. This is the core program.",
+    to: "/program",
     href: "https://lunar-chaperone.lovable.app",
     accent: true,
   },
@@ -14,6 +16,7 @@ const APPS = [
     title: "Persona Edition",
     desc:
       "Your birth chart layered over the same cycle: natal placements, instrumentation, and a compendium written to your own signature rather than the archetype.",
+    to: "/program/persona",
     href: "https://persona-edition.lovable.app",
     accent: false,
   },
@@ -31,12 +34,9 @@ export function WorkbookAppCards({ className = "" }: { className?: string }) {
 
       <div className="grid gap-6 md:grid-cols-2 max-w-5xl">
         {APPS.map((app) => (
-          <a
-            key={app.href}
-            href={app.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`node-card group block transition-colors ${
+          <div
+            key={app.to}
+            className={`node-card transition-colors ${
               app.accent
                 ? "border-accent/30 hover:border-accent/60"
                 : "hover:border-foreground/30"
@@ -45,15 +45,23 @@ export function WorkbookAppCards({ className = "" }: { className?: string }) {
             <span className="text-[10px] uppercase tracking-[0.22em] text-accent">
               {app.tag}
             </span>
-            <h3 className="font-serif text-2xl text-foreground mt-3 mb-3 flex items-center gap-2">
-              {app.title}
-              <ArrowUpRight className="w-4 h-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">{app.desc}</p>
-            <span className="mt-5 block text-[11px] uppercase tracking-[0.18em] text-muted-foreground/60">
-              Opens in a new tab
-            </span>
-          </a>
+            <Link to={app.to} className="group block">
+              <h3 className="font-serif text-2xl text-foreground mt-3 mb-3 flex items-center gap-2">
+                {app.title}
+                <ArrowRight className="w-4 h-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{app.desc}</p>
+            </Link>
+            <a
+              href={app.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.18em] text-muted-foreground/60 hover:text-foreground transition-colors"
+            >
+              Standalone app
+              <ArrowUpRight className="w-3 h-3" />
+            </a>
+          </div>
         ))}
       </div>
     </section>
