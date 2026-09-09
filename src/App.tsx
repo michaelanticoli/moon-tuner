@@ -4,7 +4,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { MembershipProvider } from "@/contexts/MembershipContext";
 import { AnalyticsProvider } from "@/contexts/AnalyticsContext";
@@ -99,8 +98,7 @@ function AnimatedRoutes() {
     <>
       <ScrollToTop />
       <Suspense fallback={<div style={{ minHeight: "100vh", background: "#07080c" }} />}>
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
+        <Routes location={location}>
           {/* ── Phase 1 — Core public routes ──────────────────────────── */}
           <Route path="/" element={<SpiralLanding />} />
           <Route path="/classic" element={<Index />} />
@@ -237,7 +235,6 @@ function AnimatedRoutes() {
 
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </AnimatePresence>
       </Suspense>
       <ReportLauncher />
     </>
