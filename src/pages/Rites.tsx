@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { SEOHead } from "@/components/SEOHead";
 import { ExternalLink, Download, Eye, X } from "lucide-react";
+import { useAdminAccess } from "@/hooks/useAdminAccess";
+import { fetchRiteStats, logRiteAction, type RiteDownloadStat } from "@/lib/riteTracking";
 
 interface Rite {
   volume: string;
@@ -344,7 +346,10 @@ export default function Rites() {
                 <RiteCard
                   key={r.href}
                   rite={r}
-                  onView={(rite) => setViewing({ src: rite.pdf!, title: rite.title })}
+                  onView={(rite) => {
+                    logRiteAction(rite.title, rite.pdf!, "view");
+                    setViewing({ src: rite.pdf!, title: rite.title, slug: rite.title });
+                  }}
                 />
               ))}
             </div>
@@ -414,13 +419,16 @@ export default function Rites() {
                   <span className="text-sm text-white/75">{f.label}</span>
                   <span className="flex items-center gap-5 text-xs uppercase tracking-[0.16em]">
                     <button
-                      onClick={() => setViewing({ src: f.href, title: f.label })}
+                      onClick={() => {
+                        logRiteAction(f.label, f.href, "view");
+                        setViewing({ src: f.href, title: f.label, slug: f.label });
+                      }}
                       className="inline-flex items-center gap-2 text-white/70 hover:text-white"
                     >
                       <Eye className="w-3.5 h-3.5" /> View
                     </button>
                     <button
-                      onClick={() => downloadFile(f.href)}
+                      onClick={() => downloadFile(f.href, f.label)}
                       className="inline-flex items-center gap-2 text-primary/85 hover:text-primary"
                     >
                       <Download className="w-3.5 h-3.5" /> Download
@@ -448,6 +456,8 @@ export default function Rites() {
               carries both across every half-cycle of the year.
             </p>
           </section>
+
+          <RiteStatsPanel />
 
           {/* Series framework */}
           <section className="mt-16 border-t border-white/10 pt-10">
@@ -482,7 +492,12 @@ export default function Rites() {
       </main>
 
       {viewing && (
-        <PdfViewer src={viewing.src} title={viewing.title} onClose={() => setViewing(null)} />
+        <PdfViewer
+          src={viewing.src}
+          title={viewing.title}
+          slug={viewing.slug}
+          onClose={() => setViewing(null)}
+        />
       )}
 
       <Footer />
