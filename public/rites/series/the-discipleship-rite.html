@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Discipleship Rite — MOONtuner</title>
+<meta name="description" content="A working rite for beginning again: observation, refinement, practice, embodiment. Five stations, autosaving fields, print-ready.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@500;600&family=Karla:wght@400;500&display=swap" rel="stylesheet">
+<script src="/rites/rite-nav.js" defer></script>
+<style>
+  :root{--bg:#080808;--bg-panel:#121110;--ink:#EDE6D6;--ink-dim:#A99C82;--ink-faint:#71675A;--gold:#B8924A;--gold-bright:#D4AF6A;--bronze:#8A6D3B;--line:rgba(184,146,74,0.22);--bruise:#5C3140;--bruise-bright:#B97C97;}
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  ::selection{background:var(--gold);color:var(--bg);}
+  a{color:var(--gold-bright);}a:hover{color:var(--ink);}
+  :focus-visible{outline:1.5px solid var(--gold-bright);outline-offset:3px;}
+  .shell{max-width:720px;margin:0 auto;padding:0 28px 140px;}
+  .eyebrow{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin:0 0 22px;}
+  header{padding:88px 0 48px;border-bottom:1px solid var(--line);text-align:center;}
+  h1{font-weight:500;font-size:clamp(40px,7vw,62px);letter-spacing:.01em;margin:0 0 6px;}
+  .sub{font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:15px;letter-spacing:.06em;color:var(--ink-dim);margin:0 0 40px;text-transform:uppercase;}
+  .pull{font-style:italic;font-size:clamp(19px,2.6vw,23px);color:var(--gold-bright);max-width:520px;margin:0 auto;line-height:1.5;}
+  .meta{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);margin:44px 0 0;}
+  .meta div{padding:18px 14px 18px 0;border-right:1px solid var(--line);}
+  .meta div:last-child{border-right:0;}
+  .meta strong{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--gold-bright);margin-bottom:5px;}
+  .meta span{font-size:18px;color:var(--ink);}
+  .intro{padding:44px 0 8px;font-size:17.5px;color:var(--ink-dim);}
+  .intro .lead{color:var(--ink);}
+  .howto{display:flex;flex-wrap:wrap;gap:10px 28px;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .howto div{font-family:'Karla',sans-serif;font-size:12.5px;color:var(--ink-faint);}
+  .howto span{color:var(--gold);}
+  .station{display:grid;grid-template-columns:64px 1fr;gap:0 22px;padding:56px 0 0;}
+  .marker{position:relative;}
+  .marker .dot{width:38px;height:38px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:.08em;color:var(--gold-bright);background:var(--bg);}
+  .marker .spine{position:absolute;top:44px;bottom:-56px;left:19px;border-left:1px dashed var(--line);}
+  .station:last-of-type .marker .spine{display:none;}
+  .verb{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 6px;}
+  h2{font-weight:500;font-size:clamp(27px,4.4vw,36px);line-height:1.1;margin:0 0 8px;}
+  .kicker{font-style:italic;color:var(--ink-faint);font-size:18px;margin:0 0 20px;}
+  .copy{font-size:17px;color:var(--ink-dim);margin:0 0 18px;}
+  .prompts{list-style:none;margin:0 0 20px;padding:0;}
+  .prompts li{padding:11px 0;border-top:1px solid var(--line);font-size:17.5px;color:var(--ink);}
+  .prompts li:last-child{border-bottom:1px solid var(--line);}
+  label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin:22px 0 7px;}
+  textarea,input[type=text]{width:100%;background:var(--bg-panel);border:1px solid var(--line);border-radius:2px;color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:17px;padding:12px 14px;outline:none;}
+  textarea{min-height:88px;resize:vertical;}
+  textarea::placeholder{color:var(--ink-faint);}
+  textarea:focus,input:focus{border-color:var(--gold);}
+  .cycle{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:26px 0 6px;}
+  .cycle div{background:var(--bg-panel);padding:20px 16px;}
+  .cycle b{display:block;font-weight:500;font-size:18px;color:var(--gold-bright);margin-bottom:4px;}
+  .cycle small{font-family:'Karla',sans-serif;font-size:12.5px;color:var(--ink-faint);}
+  .vow{margin-top:34px;padding-top:26px;border-top:1px solid var(--gold);}
+  .return{margin-top:70px;padding-top:52px;border-top:1px solid var(--line);text-align:center;}
+  .return p{font-size:18px;color:var(--ink-dim);max-width:490px;margin:0 auto 14px;}
+  .litany{margin:30px auto;font-style:italic;font-size:21px;color:var(--gold-bright);line-height:1.9;}
+  .sigil{margin-top:44px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--bronze);}
+  .rite-clear{text-align:center;margin-top:36px;}
+  .rite-clear button{background:none;border:1px solid var(--ink-faint);color:var(--ink-faint);font-family:'Karla',sans-serif;font-size:11.5px;letter-spacing:.05em;padding:8px 16px;border-radius:2px;cursor:pointer;}
+  .rite-clear button:hover{border-color:var(--gold);color:var(--gold);}
+  @media(max-width:560px){
+    .meta{grid-template-columns:1fr 1fr;}
+    .meta div:nth-child(2){border-right:0;}
+    .meta div:nth-child(3),.meta div:nth-child(4){border-top:1px solid var(--line);}
+    .cycle{grid-template-columns:1fr 1fr;}
+    .station{grid-template-columns:46px 1fr;gap:0 14px;}
+    .marker .dot{width:32px;height:32px;font-size:12px;}
+    .marker .spine{left:16px;}
+  }
+  @media print{
+    @page{size:Letter;margin:0;}
+    html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    body{padding:.62in .7in;}
+    .station{break-inside:avoid;page-break-inside:avoid;}
+    textarea{min-height:104px;color:transparent;resize:none;}
+    .rite-clear{display:none!important;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <p class="eyebrow">MOONtuner Method · A Quantumelodics Practice</p>
+    <h1>The Discipleship Rite</h1>
+    <p class="sub">Beginning Again · Refinement Without Punishment</p>
+    <p class="pull">"Discipline asks us to command ourselves. Discipleship asks us to become students of ourselves."</p>
+  </header>
+
+  <div class="meta">
+    <div><strong>Frequency</strong><span>Refinement</span></div>
+    <div><strong>Element</strong><span>Earth</span></div>
+    <div><strong>Operation</strong><span>Devotion through practice</span></div>
+    <div><strong>Shadow</strong><span>Perfectionism</span></div>
+  </div>
+
+  <div class="intro">
+    <p class="lead">This rite is not an instruction to become perfect. It is an invitation to become increasingly congruent with the life you know you are here to tend.</p>
+    <p>Five stations, worked in a single sitting or across five nights. It runs well on a New Moon in an earth sign, and just as well on the night you notice you have drifted from your own rhythm.</p>
+  </div>
+
+  <div class="howto">
+    <div><span>01 —</span> Work it in one sitting, or across five nights. Either is correct.</div>
+    <div><span>02 —</span> Write directly in the fields below. They save to this device as you go.</div>
+    <div><span>03 —</span> Name patterns, not problems. Patterns can be tended.</div>
+  </div>
+
+  <section class="station">
+    <div class="marker"><div class="dot">I</div><div class="spine"></div></div>
+    <div>
+      <p class="verb">Return</p>
+      <h2>Begin again.</h2>
+      <p class="kicker">Not from nothing. From knowing.</p>
+      <p class="copy">Starting over makes the past into evidence against you. Beginning again treats the past as information. You carry what you learned. You release what no longer serves. You return to something because it is still alive.</p>
+      <ul class="prompts">
+        <li>What am I willing to return to without demanding I return as the person I was?</li>
+        <li>What did the last attempt teach that I have not yet used?</li>
+      </ul>
+      <label for="return">I am returning to</label>
+      <textarea id="return" placeholder="The thing still alive in you."></textarea>
+    </div>
+  </section>
+
+  <section class="station">
+    <div class="marker"><div class="dot">II</div><div class="spine"></div></div>
+    <div>
+      <p class="verb">Study</p>
+      <h2>Become the student.</h2>
+      <p class="kicker">Observe yourself without prosecuting yourself.</p>
+      <p class="copy">The self is not a problem to solve. It is an ecosystem to understand. Study the conditions under which you become more capable, more honest, more alive — and the conditions under which you reliably don't.</p>
+      <ul class="prompts">
+        <li>What conditions make me flourish?</li>
+        <li>What reliably derails me?</li>
+        <li>What do I repeatedly avoid, and what do I repeatedly return to?</li>
+        <li>What does my behavior reveal that my aspirations conceal?</li>
+      </ul>
+      <label for="pattern">The pattern I am studying</label>
+      <textarea id="pattern" placeholder="One pattern. Not one problem."></textarea>
+      <label for="condition">The condition I need to change</label>
+      <textarea id="condition"></textarea>
+    </div>
+  </section>
+
+  <section class="station">
+    <div class="marker"><div class="dot">III</div><div class="spine"></div></div>
+    <div>
+      <p class="verb">Vow</p>
+      <h2>Choose the smallest faithful act.</h2>
+      <p class="kicker">Precision without punishment.</p>
+      <p class="copy">Do not make the vow your fantasy self would make. Make the vow your actual self can keep. A practice becomes powerful through repetition, not through theatrical difficulty.</p>
+      <ul class="prompts">
+        <li>What is the smallest faithful act I can perform often enough that my life reorganizes around it?</li>
+      </ul>
+      <label for="practice">My smallest faithful practice</label>
+      <textarea id="practice"></textarea>
+      <label for="frequency">I will practice it</label>
+      <input id="frequency" type="text" placeholder="Daily at dawn. Every Sunday. Twice a week.">
+    </div>
+  </section>
+
+  <section class="station">
+    <div class="marker"><div class="dot">IV</div><div class="spine"></div></div>
+    <div>
+      <p class="verb">Work</p>
+      <h2>Work the rite.</h2>
+      <p class="kicker">The sacred becomes credible through repetition.</p>
+      <p class="copy">Do the thing. Study what happened. Adjust. Return. Do it again. The work is not proving you are disciplined — it is generating evidence that you can trust yourself.</p>
+      <div class="cycle">
+        <div><b>Practice</b><small>Make the move.</small></div>
+        <div><b>Observe</b><small>Notice what happened.</small></div>
+        <div><b>Refine</b><small>Change the conditions.</small></div>
+        <div><b>Repeat</b><small>Return without punishment.</small></div>
+      </div>
+      <label for="return2">When I fall out of rhythm, I will</label>
+      <textarea id="return2" placeholder="Return without punishment."></textarea>
+    </div>
+  </section>
+
+  <section class="station">
+    <div class="marker"><div class="dot">V</div><div class="spine"></div></div>
+    <div>
+      <p class="verb">Embody</p>
+      <h2>Look for evidence.</h2>
+      <p class="kicker">The destination is not perfection. It is proximity.</p>
+      <p class="copy">Stop asking whether you have become your ideal self. Ask whether there is evidence you are becoming more yourself: more congruent, more capable, more trustworthy to your own values.</p>
+      <ul class="prompts">
+        <li>What evidence exists that I am becoming more myself?</li>
+      </ul>
+      <label for="evidence">Evidence I will look for</label>
+      <textarea id="evidence"></textarea>
+      <div class="vow">
+        <label for="vow">My vow</label>
+        <textarea id="vow" placeholder="Say it plainly. Keep it small enough to keep."></textarea>
+      </div>
+    </div>
+  </section>
+
+  <div class="return">
+    <p class="eyebrow" style="margin-bottom:20px;">Return</p>
+    <p>I do not begin from nothing. I begin from knowing.</p>
+    <p>I carry what I have learned. I release what no longer serves the life I am tending.</p>
+    <p>I do not demand perfection from the seed. I give it conditions, attention, repetition, time.</p>
+    <div class="litany">
+      A student of my own becoming.<br>
+      What I practice, I become.<br>
+      <em>Again. And again. And again.</em>
+    </div>
+    <p class="sigil">MOONtuner · Quantumelodics</p>
+  </div>
+
+  <div class="rite-clear">
+    <button type="button" id="clearRite">Clear this cycle's entries</button>
+  </div>
+</div>
+<script>
+  (function () {
+    var fields = ["return","pattern","condition","practice","frequency","evidence","return2","vow"];
+    var prefix = "moontuner-discipleship:";
+    fields.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.value = localStorage.getItem(prefix + id) || "";
+      el.addEventListener("input", function () { localStorage.setItem(prefix + id, el.value); });
+    });
+    var btn = document.getElementById("clearRite");
+    if (btn) btn.addEventListener("click", function () {
+      if (!window.confirm("Clear every entry in this rite on this device?")) return;
+      fields.forEach(function (id) {
+        localStorage.removeItem(prefix + id);
+        var el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+    });
+  })();
+</script>
+</body>
+</html>

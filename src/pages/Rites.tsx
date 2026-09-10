@@ -115,6 +115,14 @@ const workingRites: WorkingRite[] = [
     stations: 7,
     href: "/rites/series/the-threshold-rite.html",
   },
+  {
+    title: "The Discipleship Rite",
+    focus: "Beginning again, practice, and refinement",
+    description:
+      "Five stations on becoming a student of yourself: what you return to, the pattern you're studying, the smallest faithful act, and the evidence that you're becoming more yourself.",
+    stations: 5,
+    href: "/rites/series/the-discipleship-rite.html",
+  },
 ];
 
 const codexEntries = [
