@@ -369,7 +369,7 @@ export default function Rites() {
               Working Rites
             </h2>
             <p className="mt-4 max-w-2xl text-sm text-white/50 leading-relaxed">
-              Eight behavioral recalibrations. Each one opens on tonight's active
+              Nine behavioral recalibrations. Each one opens on tonight's active
               station, holds what you write to your own device, and can be run again
               on the next turn of the cycle. Take them in any order — or in the order
               your life is asking for.
