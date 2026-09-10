@@ -17,6 +17,7 @@
     { title: "The Seal Rite", label: "Working Rite", href: "/rites/series/the-seal-rite.html" },
     { title: "The Forge Rite", label: "Working Rite", href: "/rites/series/the-forge-rite.html" },
     { title: "The Threshold Rite", label: "Working Rite", href: "/rites/series/the-threshold-rite.html" },
+    { title: "The Discipleship Rite", label: "Working Rite", href: "/rites/series/the-discipleship-rite.html" },
     { title: "The Codex", label: "Capstone", href: "/rites/series/the-codex.html" },
     { title: "Codex Notation Reference", label: "Appendix", href: "/rites/series/the-codex-notation-reference.html" }
   ];
