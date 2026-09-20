@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <script src="./ds-base.js"></script>
+  <script src="./doc-page.js"></script>
+  <style>
+    doc-page:not(:defined) { visibility: hidden; }
+    html, body { margin: 0; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    doc-page { --pg:#efe7d3; --panel:#f4eedd; --ink:#1c1a17; --mute:#8a7f64; --rule:#dcd0b3; --accent:#1f7d88; --gold:#b6852a; }
+    doc-page .page { background:var(--pg); color:var(--ink); font-family:var(--font-ui); box-sizing:border-box; }
+    doc-page p { text-wrap: pretty; }
+  </style>
+</helmet>
+<doc-page size="letter">
+
+  <section class="page" data-screen-label="01 Cover" style="padding:78px 76px 62px; display:flex; flex-direction:column; justify-content:space-between;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+      <div style="font-family:var(--font-ui); font-size:11px; font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:var(--mute);">Moontuner</div>
+      <span style="color:var(--ink); line-height:0; display:inline-block; width:26px; height:26px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz26 }}" hint-size="26px,26px"></x-import></span>
+    </div>
+
+    <div style="padding-bottom:40px;">
+      <h1 style="font-family:var(--font-display); font-weight:200; font-size:78px; line-height:0.92; letter-spacing:-0.035em; margin:0 0 28px; color:var(--ink);">The Lunar<br>Chaperone</h1>
+      <div style="width:120px; height:1.5px; background:var(--ink); margin-bottom:26px;"></div>
+      <p style="font-family:var(--font-editorial); font-style:italic; font-size:34px; line-height:1.22; margin:0; color:var(--gold); max-width:9ch;">A companion, not a forecast.</p>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1.5px solid var(--ink); padding-top:16px;">
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--mute);">The Lunar Chaperone · MMXXVI</div>
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--mute);">Twenty-six half-cycles</div>
+    </div>
+  </section>
+
+  <section class="page" data-screen-label="02 What this is" style="padding:78px 76px 62px; display:flex; flex-direction:column;">
+    <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--mute); margin-bottom:54px;">The Lunar Chaperone · MMXXVI</div>
+
+    <p style="font-family:var(--font-display); font-weight:200; font-size:27px; line-height:1.42; letter-spacing:-0.02em; margin:0 0 30px; color:var(--ink);">The Lunar Chaperone is a year-long digital workbook by Moontuner. It follows the moon through twenty-six half-cycles — every New Moon to Full Moon, every Full Moon to New Moon — and gives you a spread for each one.</p>
+
+    <p style="font-family:var(--font-body, var(--font-ui)); font-size:16px; line-height:1.72; margin:0; color:var(--ink); max-width:56ch;">Each spread has three parts. An Intention to plant into the lunation. A fourteen-day Arc — a directive a day, in order, worked in your own hand. A Reflection to close it. Nothing here is a forecast; this is a book you write.</p>
+
+  </section>
+
+  <section class="page" data-screen-label="03 The parent house" style="padding:78px 76px 62px; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1.5px solid var(--ink); padding-bottom:16px; margin-bottom:60px;">
+      <span style="font-family:var(--font-display); font-weight:200; font-size:40px; letter-spacing:-0.03em; color:var(--ink);">Moontuner</span>
+      <span style="font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:0.24em; text-transform:uppercase; color:var(--mute);">The parent house</span>
+    </div>
+
+    <p style="font-family:var(--font-editorial); font-style:italic; font-size:30px; line-height:1.35; margin:0 0 44px; color:var(--gold);">A project by Moontuner.</p>
+
+    <p style="font-family:var(--font-body, var(--font-ui)); font-size:16px; line-height:1.78; margin:0 0 26px; color:var(--ink); max-width:54ch;">Moontuner is a small design house tuning secular tools to the rhythms of the sky. We make workbooks, calendars, and quiet software for people who want to keep time with something older than the clock.</p>
+
+    <p style="font-family:var(--font-body, var(--font-ui)); font-size:16px; line-height:1.78; margin:0; color:var(--ink); max-width:54ch;">The Lunar Chaperone is a workbook program that follows the framework of the Phasecraft curriculum which is core to the Moontuner Method</p>
+
+    <div style="margin-top:auto; display:flex; align-items:flex-end; justify-content:space-between; gap:40px; border-top:1px solid var(--rule); padding-top:22px;">
+      <div style="display:flex; gap:22px; align-items:center; color:var(--ink);">
+        <span style="line-height:0; display:inline-block; width:18px; height:18px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="new" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="first-quarter" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="full" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="last-quarter" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+      </div>
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); text-align:right;">moontuner.xyz · Astrology with agency</div>
+    </div>
+  </section>
+
+  <section class="page" data-screen-label="04 Contents I" style="padding:74px 76px 58px; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1.5px solid var(--ink); padding-bottom:16px;">
+      <span style="font-family:var(--font-display); font-weight:200; font-size:44px; letter-spacing:-0.03em; color:var(--ink);">Contents</span>
+      <span style="font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--mute);">Half-cycles I–XIII</span>
+    </div>
+
+    <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:12px 0 10px; font-family:var(--font-mono); font-size:9px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); border-bottom:1px solid var(--rule);">
+      <span>№</span><span></span><span>Dates</span><span>Sign arc</span><span>Marker</span>
+    </div>
+
+    <div style="display:flex; flex-direction:column;">
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">01</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Dec 19 → Jan 3</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Sagittarius → Cancer</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Wolf Moon</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">02</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Jan 3 → Jan 18</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Cancer → Capricorn</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);"></span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">03</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Jan 18 → Feb 1</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Capricorn → Leo</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Snow Moon</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">04</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Feb 1 → Feb 17</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Leo → Aquarius</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--accent);">Solar eclipse</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">05</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Feb 17 → Mar 3</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Aquarius → Virgo</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--accent);">Lunar eclipse</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">06</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Mar 3 → Mar 19</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Virgo → Pisces</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);"></span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">07</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Mar 19 → Apr 2</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Pisces → Libra</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Pink Moon</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">08</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Apr 2 → Apr 17</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Libra → Aries</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);"></span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">09</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Apr 17 → May 1</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Aries → Scorpio</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Flower Moon</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">10</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">May 1 → May 16</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Scorpio → Taurus</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);"></span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">11</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">May 16 → May 31</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Taurus → Sagittarius</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Blue Moon</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">12</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">May 31 → Jun 15</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Sagittarius → Gemini</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);"></span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">13</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Jun 15 → Jun 29</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Gemini → Capricorn</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Strawberry Moon</span>
+      </div>
+    </div>
+
+    <div style="margin-top:auto; padding-top:20px; font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute);">Dates are UTC · The arc begins the evening the phase exacts</div>
+  </section>
+
+  <section class="page" data-screen-label="05 Contents II" style="padding:74px 76px 58px; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1.5px solid var(--ink); padding-bottom:16px;">
+      <span style="font-family:var(--font-display); font-weight:200; font-size:44px; letter-spacing:-0.03em; color:var(--ink);">Contents</span>
+      <span style="font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--mute);">Half-cycles XIV–XXVI</span>
+    </div>
+
+    <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:12px 0 10px; font-family:var(--font-mono); font-size:9px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); border-bottom:1px solid var(--rule);">
+      <span>№</span><span></span><span>Dates</span><span>Sign arc</span><span>Marker</span>
+    </div>
+
+    <div style="display:flex; flex-direction:column;">
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">14</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Jun 29 → Jul 14</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Capricorn → Cancer</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);"></span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">15</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Jul 14 → Jul 29</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Cancer → Aquarius</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Buck Moon</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">16</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Jul 29 → Aug 12</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Aquarius → Leo</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--accent);">Solar eclipse</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">17</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Aug 12 → Aug 28</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Leo → Pisces</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Sturgeon Moon</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">18</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Aug 28 → Sep 11</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Pisces → Virgo</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);"></span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">19</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Sep 11 → Sep 26</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Virgo → Aries</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Harvest Moon</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">20</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Sep 26 → Oct 10</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Aries → Libra</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);"></span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">21</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Oct 10 → Oct 26</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Libra → Taurus</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Hunter's Moon</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">22</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Oct 26 → Nov 9</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Taurus → Scorpio</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);"></span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">23</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Nov 9 → Nov 24</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Scorpio → Gemini</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Beaver Moon · Supermoon</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">24</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Nov 24 → Dec 9</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Gemini → Sagittarius</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);"></span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">25</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Dec 9 → Dec 24</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Sagittarius → Cancer</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Cold Moon · Supermoon</span>
+      </div>
+      <div style="display:grid; grid-template-columns:32px 22px 128px 1fr auto; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--rule);">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--mute);">26</span>
+        <span style="line-height:0; display:inline-block; width:18px; height:18px; color:var(--ink);"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz18 }}" hint-size="18px,18px"></x-import></span>
+        <span style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; color:var(--ink);">Dec 24 → Jan 7</span>
+        <span style="font-family:var(--font-display); font-weight:300; font-size:17px; letter-spacing:-0.01em; color:var(--ink);">Cancer → Capricorn</span>
+        <span style="font-family:var(--font-editorial); font-style:italic; font-size:16px; color:var(--gold);">Closes the year</span>
+      </div>
+    </div>
+
+    <div style="margin-top:auto; padding-top:20px; display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute);">
+      <span>Twenty-six spreads · Intention · Arc · Reflection</span>
+      <span>Moontuner</span>
+    </div>
+  </section>
+
+</doc-page>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:816,&quot;height&quot;:1056}}">
+class Component extends DCLogic {
+  renderVals() {
+    return { sz26: 26, sz18: 18, sz16: 16 };
+  }
+}
+</script>
+</body>
+</html>

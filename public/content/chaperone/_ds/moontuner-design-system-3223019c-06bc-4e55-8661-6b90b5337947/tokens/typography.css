@@ -1,0 +1,61 @@
+/* ============================================================
+   MOONTUNER — Typography
+   ------------------------------------------------------------
+   Six families, each with a job:
+     Inter (200/300)     — display + hero, extralight, negative tracking
+     Playfair Display    — serif section headlines + italic accents
+     Instrument Serif    — editorial pull-quotes, ritual numerals
+     DM Sans             — default body copy
+     Work Sans           — UI text, buttons, eyebrows, labels
+     IBM Plex Mono       — data, coordinates, system readouts
+   ============================================================ */
+
+:root {
+  /* ---- Families ---- */
+  --font-display:   "Inter", system-ui, sans-serif;  /* @kind font */
+  --font-serif:     "Playfair Display", Georgia, serif;  /* @kind font */
+  --font-editorial: "Instrument Serif", "Playfair Display", Georgia, serif;  /* @kind font */
+  --font-sans:      "DM Sans", system-ui, sans-serif;  /* @kind font */
+  --font-ui:        "Work Sans", system-ui, -apple-system, sans-serif;  /* @kind font */
+  --font-mono:      "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;  /* @kind font */
+
+  /* ---- Weights ---- */
+  --fw-thin:       100;  /* @kind other */
+  --fw-extralight: 200;  /* @kind other */
+  --fw-light:      300;  /* @kind other */
+  --fw-regular:    400;  /* @kind other */
+  --fw-medium:     500;  /* @kind other */
+  --fw-semibold:   600;  /* @kind other */
+  --fw-bold:       700;  /* @kind other */
+
+  /* ---- Type scale ---- */
+  --fs-eyebrow: 0.6875rem;  /* 11px — eyebrow labels */
+  --fs-xs:      0.75rem;    /* 12px — captions, meta */
+  --fs-sm:      0.875rem;   /* 14px — small body */
+  --fs-base:    1rem;       /* 16px — body */
+  --fs-md:      1.0625rem;  /* 17px — comfortable body */
+  --fs-lg:      1.125rem;   /* 18px — lead text */
+  --fs-xl:      1.25rem;    /* 20px */
+  --fs-2xl:     1.5rem;     /* 24px */
+  --fs-3xl:     1.875rem;   /* 30px */
+  --fs-4xl:     2.25rem;    /* 36px */
+  --fs-display: clamp(2.6rem, 5vw, 4rem);  /* @kind other */ /* section headline */
+  --fs-hero:    clamp(3rem, 6.5vw, 5.6rem);  /* @kind other */ /* hero headline */
+
+  /* ---- Line heights ---- */
+  --lh-tight:   1.05;  /* @kind other */
+  --lh-snug:    1.25;  /* @kind other */
+  --lh-normal:  1.5;  /* @kind other */
+  --lh-relaxed: 1.7;  /* @kind other */
+  --lh-loose:   1.9;  /* @kind other */
+
+  /* ---- Letter spacing ---- */
+  --ls-tight:  -0.03em;  /* display / hero */
+  --ls-snug:   -0.015em; /* serif headings */
+  --ls-normal: 0;  /* @kind other */
+  --ls-ui:     0.01em;  /* @kind other */
+  --ls-button: 0.06em;  /* @kind other */
+  --ls-wide:   0.2em;    /* eyebrow */
+  --ls-wider:  0.28em;   /* meta / status labels */
+  --ls-widest: 0.32em;   /* uppercase system labels */
+}

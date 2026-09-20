@@ -27,6 +27,40 @@ export const contentAssets: ContentAsset[] = [
     category: "workbooks",
   },
   {
+    slug: "lunar-chaperone-book",
+    title: "Moontuner's Lunar Chaperone",
+    type: "html",
+    href: "/content/chaperone/lunar-chaperone-book.html",
+    description:
+      "The five-page Chaperone edition: a companion, not a forecast — twenty-six half-cycles.",
+    category: "chaperone",
+  },
+  {
+    slug: "lunar-chaperone-book-pdf",
+    title: "Moontuner's Lunar Chaperone (PDF)",
+    type: "pdf",
+    href: "/content/chaperone/lunar-chaperone-book.pdf",
+    description: "Print-ready PDF of the Lunar Chaperone edition.",
+    category: "chaperone",
+  },
+  {
+    slug: "lunar-calendar-2026",
+    title: "2026 Lunar Calendar",
+    type: "html",
+    href: "/content/chaperone/lunar-calendar-2026.html",
+    description:
+      "Monthly calendar with real 2026 moon-phase data and key lunations.",
+    category: "workbooks",
+  },
+  {
+    slug: "lunar-calendar-2026-print",
+    title: "2026 Lunar Calendar (Print Edition)",
+    type: "html",
+    href: "/content/chaperone/lunar-calendar-2026-print.html",
+    description: "Print-optimised layout of the 2026 Lunar Calendar.",
+    category: "workbooks",
+  },
+  {
     slug: "lunar-chaperone-archive",
     title: "Lunar Chaperone Archive",
     type: "html",
