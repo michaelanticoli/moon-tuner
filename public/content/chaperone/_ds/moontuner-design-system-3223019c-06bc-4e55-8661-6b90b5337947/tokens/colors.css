@@ -1,0 +1,176 @@
+/* ============================================================
+   MOONTUNER — Color System
+   ------------------------------------------------------------
+   Raw palette values are stored as bare HSL triplets ("H S% L%")
+   so they can be wrapped in hsl(var(--x) / alpha) like the source
+   app. Resolved --mt-* aliases are provided for direct use in
+   inline styles and specimen cards.
+
+   Default :root = MOONTUNER CORE — the "silent observatory at 2am"
+   dark OS theme (night black, lunar ivory, teal signal, soft gold).
+   Three additional environments are opt-in via a class:
+     .theme-core        — explicit Core (same as :root)
+     .theme-smudging    — Digital Smudging (warm charcoal / amber ember)
+     .theme-spacetime   — Spacetime Printer (paper white / ink / signal blue)
+   ============================================================ */
+
+:root {
+  /* ---- Core palette (bare HSL triplets) ---- */
+  --lunar-ivory:        40 20% 92%;  /* @kind color */ /* primary warm white */
+  --night-slate:        0 0% 4%;  /* @kind color */ /* near-black background */
+  --night-slate-light:  0 0% 10%;  /* @kind color */ /* raised surface */
+  --soft-gold:          42 50% 58%;  /* @kind color */ /* secondary accent */
+  --soft-gold-light:    42 45% 72%;  /* @kind color */
+  --teal:               168 75% 45%;  /* @kind color */ /* signal / status accent */
+  --teal-light:         168 70% 60%;  /* @kind color */
+  --clay:               30 20% 70%;  /* @kind color */ /* warm neutral */
+  --taupe:              25 15% 55%;  /* @kind color */ /* muted neutral */
+
+  /* ---- Semantic (shadcn-compatible) — Core dark default ---- */
+  --background:          0 0% 4%;  /* @kind color */
+  --foreground:          40 20% 92%;  /* @kind color */
+  --card:                0 0% 7%;  /* @kind color */
+  --card-foreground:     40 20% 92%;  /* @kind color */
+  --popover:             0 0% 7%;  /* @kind color */
+  --popover-foreground:  40 20% 92%;  /* @kind color */
+  --primary:             40 20% 92%;  /* @kind color */
+  --primary-foreground:  0 0% 4%;  /* @kind color */
+  --secondary:           0 0% 10%;  /* @kind color */
+  --secondary-foreground:40 20% 92%;  /* @kind color */
+  --muted:               0 0% 14%;  /* @kind color */
+  --muted-foreground:    40 10% 55%;  /* @kind color */
+  --accent:              168 75% 45%;  /* @kind color */
+  --accent-foreground:   0 0% 4%;  /* @kind color */
+  --gold:                42 50% 58%;  /* @kind color */
+  --gold-foreground:     0 0% 4%;  /* @kind color */
+  --destructive:         0 84% 60%;  /* @kind color */
+  --destructive-foreground: 40 25% 96%;  /* @kind color */
+  --border:              0 0% 15%;  /* @kind color */
+  --input:               0 0% 12%;  /* @kind color */
+  --ring:                168 75% 45%;  /* @kind color */
+
+  /* ---- Resolved convenience aliases (use these in inline styles) ---- */
+  --mt-ivory:        hsl(40 20% 92%);  /* @kind color */
+  --mt-night:        hsl(0 0% 4%);  /* @kind color */
+  --mt-night-2:      hsl(0 0% 7%);  /* @kind color */
+  --mt-night-3:      hsl(0 0% 10%);  /* @kind color */
+  --mt-teal:         hsl(168 75% 45%);  /* @kind color */
+  --mt-teal-light:   hsl(168 70% 60%);  /* @kind color */
+  --mt-gold:         hsl(42 50% 58%);  /* @kind color */
+  --mt-gold-light:   hsl(42 45% 72%);  /* @kind color */
+  --mt-clay:         hsl(30 20% 70%);  /* @kind color */
+  --mt-taupe:        hsl(25 15% 55%);  /* @kind color */
+  --mt-border:       hsl(0 0% 15%);  /* @kind color */
+  --mt-muted-fg:     hsl(40 10% 55%);  /* @kind color */
+
+  /* ---- Riso brand accents (marketing / editorial illustration palette) ----
+     Sampled from the printed lunar-phase + ritual artwork. Use for
+     editorial surfaces, phase color-coding, and paper-field layouts. */
+  --riso-paper:      #efe7d3;  /* @kind color */ /* cream printmaking stock */
+  --riso-ink:        #1c1a17;  /* @kind color */ /* soot black line */
+  --riso-red:        #e5432c;  /* @kind color */ /* new-moon red */
+  --riso-orange:     #e8792b;  /* @kind color */ /* waxing-crescent orange */
+  --riso-gold:       #f2b02e;  /* @kind color */ /* first-quarter gold */
+  --riso-teal:       #1f9aa6;  /* @kind color */ /* waxing-gibbous teal */
+  --riso-blue:       #2b4c8c;  /* @kind color */ /* full-moon blue */
+  --riso-navy:       #14213d;  /* @kind color */ /* deep field navy */
+  --riso-magenta:    #c0397f;  /* @kind color */ /* waning-gibbous magenta */
+  --riso-violet:     #7a4ea3;  /* @kind color */ /* waning-crescent violet */
+  --riso-olive:      #8a8a3a;  /* @kind color */ /* grounding olive */
+
+  /* ---- Gradients ---- */
+  --gradient-night:  linear-gradient(180deg, hsl(0 0% 4%) 0%, hsl(0 0% 2%) 100%);  /* @kind other */
+  --gradient-ivory:  linear-gradient(180deg, hsl(40 20% 92%) 0%, hsl(40 15% 85%) 100%);  /* @kind other */
+  --gradient-teal:   linear-gradient(135deg, hsl(168 75% 45%) 0%, hsl(175 70% 35%) 100%);  /* @kind other */
+  --gradient-gold:   linear-gradient(135deg, hsl(42 50% 58%) 0%, hsl(38 55% 48%) 100%);  /* @kind other */
+
+  /* ---- Dusk sub-tokens (cinematic homepage layer) ---- */
+  --dusk-black:  240 6% 4%;  /* @kind color */
+  --dusk-ivory:  38 33% 91%;  /* @kind color */
+  --dusk-silver: 40 5% 53%;  /* @kind color */
+  --dusk-gold:   38 47% 59%;  /* @kind color */
+  --dusk-line:   38 10% 16%;  /* @kind color */
+  --dusk-mute:   38 8% 38%;  /* @kind color */
+
+  /* ---- Sidebar ---- */
+  --sidebar-background: 0 0% 6%;  /* @kind color */
+  --sidebar-foreground: 40 20% 92%;  /* @kind color */
+  --sidebar-primary:    168 75% 45%;  /* @kind color */
+  --sidebar-primary-foreground: 0 0% 4%;  /* @kind color */
+  --sidebar-accent:     0 0% 12%;  /* @kind color */
+  --sidebar-accent-foreground: 40 20% 92%;  /* @kind color */
+  --sidebar-border:     0 0% 15%;  /* @kind color */
+  --sidebar-ring:       168 75% 45%;  /* @kind color */
+}
+
+/* Explicit Core theme class (mirrors :root) */
+.theme-core {
+  --background: 0 0% 4%;  /* @kind color */
+  --foreground: 40 20% 92%;  /* @kind color */
+  --accent: 168 75% 45%;  /* @kind color */
+  --accent-foreground: 0 0% 4%;  /* @kind color */
+}
+
+/* ------------------------------------------------------------
+   DIGITAL SMUDGING — warm charcoal, amber ember, sage release.
+   Candlelight, ritual clearing, held breath exhaled.
+   ------------------------------------------------------------ */
+:root {
+  --smudge-dusk:       22 12% 8%;  /* @kind color */
+  --smudge-ember:      25 65% 55%;  /* @kind color */
+  --smudge-ash:        22 8% 38%;  /* @kind color */
+  --smudge-sage:       140 20% 55%;  /* @kind color */
+  --smudge-sage-light: 140 18% 70%;  /* @kind color */
+  --smudge-warm:       38 25% 88%;  /* @kind color */
+}
+
+.theme-smudging {
+  --background:         22 12% 8%;  /* @kind color */
+  --foreground:         38 25% 88%;  /* @kind color */
+  --card:               22 10% 12%;  /* @kind color */
+  --card-foreground:    38 25% 88%;  /* @kind color */
+  --popover:            22 10% 12%;  /* @kind color */
+  --popover-foreground: 38 25% 88%;  /* @kind color */
+  --border:             22 12% 18%;  /* @kind color */
+  --input:              22 12% 16%;  /* @kind color */
+  --muted:              22 10% 16%;  /* @kind color */
+  --muted-foreground:   22 8% 38%;  /* @kind color */
+  --accent:             25 65% 55%;  /* @kind color */
+  --accent-foreground:  22 12% 8%;  /* @kind color */
+  --primary:            38 25% 88%;  /* @kind color */
+  --primary-foreground: 22 12% 8%;  /* @kind color */
+  --gold:               38 47% 59%;  /* @kind color */
+  --ring:               25 65% 55%;  /* @kind color */
+}
+
+/* ------------------------------------------------------------
+   SPACETIME PRINTER — paper white, ink precision, grid signal.
+   A printed ephemeris. Data as poetry.
+   ------------------------------------------------------------ */
+:root {
+  --space-paper:  40 20% 97%;  /* @kind color */
+  --space-ink:    220 25% 12%;  /* @kind color */
+  --space-rule:   220 12% 78%;  /* @kind color */
+  --space-grid:   210 15% 92%;  /* @kind color */
+  --space-signal: 210 90% 50%;  /* @kind color */
+  --space-mid:    220 15% 45%;  /* @kind color */
+}
+
+.theme-spacetime {
+  --background:         40 20% 97%;  /* @kind color */
+  --foreground:         220 25% 12%;  /* @kind color */
+  --card:               220 15% 99%;  /* @kind color */
+  --card-foreground:    220 25% 12%;  /* @kind color */
+  --popover:            220 15% 99%;  /* @kind color */
+  --popover-foreground: 220 25% 12%;  /* @kind color */
+  --border:             220 12% 85%;  /* @kind color */
+  --input:              220 12% 90%;  /* @kind color */
+  --muted:              220 12% 94%;  /* @kind color */
+  --muted-foreground:   220 15% 45%;  /* @kind color */
+  --accent:             210 90% 50%;  /* @kind color */
+  --accent-foreground:  220 15% 99%;  /* @kind color */
+  --primary:            220 25% 12%;  /* @kind color */
+  --primary-foreground: 40 20% 97%;  /* @kind color */
+  --gold:               42 50% 50%;  /* @kind color */
+  --ring:               210 90% 50%;  /* @kind color */
+}

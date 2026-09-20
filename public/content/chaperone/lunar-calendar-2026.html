@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="2026 Lunar Calendar" description="Printable monthly lunar calendar with real 2026 moon-phase data, key lunations, and a riso/paper or Core-dark theme" -->
+<helmet>
+  <script src="./ds-base.js"></script>
+  <style>
+    @page { margin: 0; }
+    html, body { margin: 0; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .cal-root { --pg:#efe7d3; --panel:#f4eedd; --ink:#1c1a17; --mute:#8a7f64; --rule:#dcd0b3; --accent:#1f7d88; --gold:#b6852a; }
+    .cal-root.cal-dark { --pg:hsl(0 0% 4%); --panel:hsl(0 0% 7%); --ink:hsl(40 20% 92%); --mute:hsl(40 10% 55%); --rule:hsl(0 0% 16%); --accent:hsl(168 75% 45%); --gold:hsl(42 50% 62%); }
+    .cal-cell { color:var(--ink); background:transparent; }
+    .cal-cell--out { opacity:0.4; }
+    .cal-root .cal-cell--new { background:#c9391f1c; color:#c9391f; }
+    .cal-root .cal-cell--first-quarter { background:#c8912f1c; color:#c8912f; }
+    .cal-root .cal-cell--full { background:#2b4c8c1c; color:#2b4c8c; }
+    .cal-root .cal-cell--last-quarter { background:#7d7d331c; color:#7d7d33; }
+    .cal-root.cal-dark .cal-cell--new { background:#f0705a22; color:#f0705a; }
+    .cal-root.cal-dark .cal-cell--first-quarter { background:#f2b83a22; color:#f2b83a; }
+    .cal-root.cal-dark .cal-cell--full { background:#6a92e022; color:#6a92e0; }
+    .cal-root.cal-dark .cal-cell--last-quarter { background:#bcbc5e22; color:#bcbc5e; }
+  </style>
+</helmet>
+<div class="cal-root {{ themeClass }}" style="background:var(--pg); color:var(--ink); font-family:var(--font-ui); width:940px; min-height:1180px; box-sizing:border-box; padding:52px 56px 44px; margin:0 auto;">
+
+  <!-- Masthead -->
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1.5px solid var(--ink); padding-bottom:18px;">
+    <div>
+      <div style="font-family:var(--font-ui); font-size:11px; font-weight:600; letter-spacing:0.28em; text-transform:uppercase; color:var(--mute); margin-bottom:14px;">Moontuner · Lunar Calendar</div>
+      <div style="display:flex; align-items:baseline; gap:16px;">
+        <span style="font-family:var(--font-display); font-weight:200; font-size:64px; line-height:0.9; letter-spacing:-0.03em; color:var(--ink);">{{ monthName }}</span>
+        <span style="font-family:var(--font-serif); font-style:italic; font-weight:400; font-size:40px; line-height:0.9; color:var(--gold);">{{ year }}</span>
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+        <span style="color:var(--ink); line-height:0; display:inline-block; width:22px; height:22px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="{{ mastheadPhase }}" size="{{ sz22 }}" hint-size="22px,22px"></x-import></span>
+        <span style="font-family:var(--font-ui); font-weight:600; font-size:14px; letter-spacing:0.22em; text-transform:uppercase; color:var(--ink);">Moontuner</span>
+      </div>
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute); margin-top:8px;">Print your position in time</div>
+    </div>
+  </div>
+
+  <!-- Key lunations band -->
+  <sc-if value="{{ showLunations }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex; flex-wrap:wrap; gap:14px; margin:22px 0 4px;">
+    <div style="flex:1 1 260px; border:1px solid var(--rule); border-radius:8px; padding:16px 18px; display:flex; gap:15px; align-items:center; background:var(--panel);">
+      <span style="color:var(--ink); line-height:0; display:inline-block; width:36px; height:36px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="new" size="{{ sz36 }}" hint-size="36px,36px"></x-import></span>
+      <div>
+        <div style="font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); margin-bottom:5px;">New Moon · set the intention</div>
+        <div style="font-family:var(--font-display); font-weight:300; font-size:21px; letter-spacing:-0.02em; color:var(--ink);">{{ newMoonDate }} <span style="font-family:var(--font-serif); font-style:italic; font-weight:400; color:var(--gold);">{{ newMoonSign }}</span></div>
+        <div style="font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-top:5px;">{{ newMoonNote }}</div>
+      </div>
+    </div>
+    <sc-for list="{{ fullMoonList }}" as="fm" hint-placeholder-count="1">
+    <div style="flex:1 1 260px; border:1px solid var(--rule); border-radius:8px; padding:16px 18px; display:flex; gap:15px; align-items:center; background:var(--panel);">
+      <span style="color:var(--ink); line-height:0; display:inline-block; width:36px; height:36px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="full" size="{{ sz36 }}" hint-size="36px,36px"></x-import></span>
+      <div>
+        <div style="font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); margin-bottom:5px;">{{ fm.name }} · bring it to fruition</div>
+        <div style="font-family:var(--font-display); font-weight:300; font-size:21px; letter-spacing:-0.02em; color:var(--ink);">{{ fm.date }} <span style="font-family:var(--font-serif); font-style:italic; font-weight:400; color:var(--gold);">{{ fm.sign }}</span></div>
+        <div style="font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-top:5px;">{{ fm.note }}</div>
+      </div>
+    </div>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- Weekday header -->
+  <div style="display:grid; grid-template-columns:repeat(7,1fr); margin-top:22px; border:1px solid var(--rule); border-bottom:none;">
+    <div style="padding:9px 10px; font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); border-right:1px solid var(--rule);">Sun</div>
+    <div style="padding:9px 10px; font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); border-right:1px solid var(--rule);">Mon</div>
+    <div style="padding:9px 10px; font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); border-right:1px solid var(--rule);">Tue</div>
+    <div style="padding:9px 10px; font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); border-right:1px solid var(--rule);">Wed</div>
+    <div style="padding:9px 10px; font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); border-right:1px solid var(--rule);">Thu</div>
+    <div style="padding:9px 10px; font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); border-right:1px solid var(--rule);">Fri</div>
+    <div style="padding:9px 10px; font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute);">Sat</div>
+  </div>
+
+  <!-- Calendar grid -->
+  <div style="border-left:1px solid var(--rule); border-top:1px solid var(--rule);">
+    <sc-for list="{{ weeks }}" as="week" hint-placeholder-count="6">
+    <div style="display:grid; grid-template-columns:repeat(7,1fr);">
+      <sc-for list="{{ week }}" as="cell" hint-placeholder-count="7">
+      <div class="cal-cell {{ cell.cls }}" style="position:relative; min-height:92px; padding:9px 11px; box-sizing:border-box; border-right:1px solid var(--rule); border-bottom:1px solid var(--rule); display:flex; flex-direction:column; justify-content:space-between;">
+        <span style="font-family:var(--font-mono); font-size:13px; font-weight:500; letter-spacing:0.02em; color:var(--ink);">{{ cell.day }}</span>
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:6px;">
+          <span style="font-family:var(--font-mono); font-size:8px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; line-height:1.25; max-width:56px; color:currentColor;">{{ cell.principal }}</span>
+          <span style="line-height:0; display:inline-block; width:20px; height:20px; color:currentColor;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="{{ cell.phase }}" size="{{ sz20 }}" hint-size="20px,20px"></x-import></span>
+        </div>
+      </div>
+      </sc-for>
+    </div>
+    </sc-for>
+  </div>
+
+  <!-- Legend + directive -->
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:28px; margin-top:22px; padding-top:18px; border-top:1.5px solid var(--ink);">
+    <div style="flex:1 1 auto;">
+      <div style="font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--mute); margin-bottom:12px;">The eight phases</div>
+      <div style="display:flex; gap:16px; flex-wrap:wrap;">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px; width:52px;"><span style="color:var(--ink); line-height:0; display:inline-block; width:22px; height:22px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="new" size="{{ sz22 }}" hint-size="22px,22px"></x-import></span><span style="font-family:var(--font-mono); font-size:8px; letter-spacing:0.06em; text-transform:uppercase; color:var(--mute); text-align:center; line-height:1.3;">New</span></div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px; width:52px;"><span style="color:var(--ink); line-height:0; display:inline-block; width:22px; height:22px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-crescent" size="{{ sz22 }}" hint-size="22px,22px"></x-import></span><span style="font-family:var(--font-mono); font-size:8px; letter-spacing:0.06em; text-transform:uppercase; color:var(--mute); text-align:center; line-height:1.3;">Wax Cres</span></div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px; width:52px;"><span style="color:var(--ink); line-height:0; display:inline-block; width:22px; height:22px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="first-quarter" size="{{ sz22 }}" hint-size="22px,22px"></x-import></span><span style="font-family:var(--font-mono); font-size:8px; letter-spacing:0.06em; text-transform:uppercase; color:var(--mute); text-align:center; line-height:1.3;">First Qtr</span></div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px; width:52px;"><span style="color:var(--ink); line-height:0; display:inline-block; width:22px; height:22px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waxing-gibbous" size="{{ sz22 }}" hint-size="22px,22px"></x-import></span><span style="font-family:var(--font-mono); font-size:8px; letter-spacing:0.06em; text-transform:uppercase; color:var(--mute); text-align:center; line-height:1.3;">Wax Gib</span></div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px; width:52px;"><span style="color:var(--ink); line-height:0; display:inline-block; width:22px; height:22px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="full" size="{{ sz22 }}" hint-size="22px,22px"></x-import></span><span style="font-family:var(--font-mono); font-size:8px; letter-spacing:0.06em; text-transform:uppercase; color:var(--mute); text-align:center; line-height:1.3;">Full</span></div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px; width:52px;"><span style="color:var(--ink); line-height:0; display:inline-block; width:22px; height:22px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-gibbous" size="{{ sz22 }}" hint-size="22px,22px"></x-import></span><span style="font-family:var(--font-mono); font-size:8px; letter-spacing:0.06em; text-transform:uppercase; color:var(--mute); text-align:center; line-height:1.3;">Wan Gib</span></div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px; width:52px;"><span style="color:var(--ink); line-height:0; display:inline-block; width:22px; height:22px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="last-quarter" size="{{ sz22 }}" hint-size="22px,22px"></x-import></span><span style="font-family:var(--font-mono); font-size:8px; letter-spacing:0.06em; text-transform:uppercase; color:var(--mute); text-align:center; line-height:1.3;">Last Qtr</span></div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px; width:52px;"><span style="color:var(--ink); line-height:0; display:inline-block; width:22px; height:22px;"><x-import component-from-global-scope="MoontunerDesignSystem_322301.MoonPhaseGlyph" phase="waning-crescent" size="{{ sz22 }}" hint-size="22px,22px"></x-import></span><span style="font-family:var(--font-mono); font-size:8px; letter-spacing:0.06em; text-transform:uppercase; color:var(--mute); text-align:center; line-height:1.3;">Wan Cres</span></div>
+      </div>
+    </div>
+    <div style="flex:0 1 320px; text-align:right;">
+      <p style="font-family:var(--font-editorial); font-style:italic; font-size:19px; line-height:1.4; color:var(--ink); margin:0;">{{ directive }}</p>
+      <div style="font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute); margin-top:12px;">moontuner.xyz · Don't blame the moon</div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:1180},&quot;month&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;July&quot;,&quot;options&quot;:[&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;,&quot;July&quot;,&quot;August&quot;,&quot;September&quot;,&quot;October&quot;,&quot;November&quot;,&quot;December&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;year&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:2026,&quot;min&quot;:2024,&quot;max&quot;:2030,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Date&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;riso-paper&quot;,&quot;options&quot;:[&quot;riso-paper&quot;,&quot;core-dark&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;accentCoding&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;showLunations&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props || {};
+    const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const ABBR = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const PH = ["new","waxing-crescent","first-quarter","waxing-gibbous","full","waning-gibbous","last-quarter","waning-crescent"];
+
+    const year = parseInt(p.year, 10) || 2026;
+    let month = MONTHS.indexOf(p.month || "July");
+    if (month < 0) month = 6;
+    const theme = p.theme || "riso-paper";
+    const coding = p.accentCoding !== false && p.accentCoding !== "false";
+    const showLunations = p.showLunations !== false && p.showLunations !== "false";
+
+    // ---- Real 2026 lunation data ----
+    const NEW_2026 = {0:{d:18,sign:"Capricorn"},1:{d:17,sign:"Aquarius",note:"Solar eclipse"},2:{d:18,sign:"Pisces"},3:{d:17,sign:"Aries"},4:{d:16,sign:"Taurus"},5:{d:14,sign:"Gemini"},6:{d:14,sign:"Cancer"},7:{d:12,sign:"Leo",note:"Solar eclipse"},8:{d:11,sign:"Virgo"},9:{d:10,sign:"Libra"},10:{d:9,sign:"Scorpio"},11:{d:9,sign:"Sagittarius"}};
+    const FULL_2026 = {0:[{d:3,name:"Wolf Moon",sign:"Cancer"}],1:[{d:1,name:"Snow Moon",sign:"Leo"}],2:[{d:3,name:"Worm Moon",sign:"Virgo",note:"Lunar eclipse"}],3:[{d:1,name:"Pink Moon",sign:"Libra"}],4:[{d:1,name:"Flower Moon",sign:"Scorpio"},{d:31,name:"Blue Moon",sign:"Sagittarius"}],5:[{d:29,name:"Strawberry Moon",sign:"Capricorn"}],6:[{d:29,name:"Buck Moon",sign:"Aquarius"}],7:[{d:28,name:"Sturgeon Moon",sign:"Pisces"}],8:[{d:26,name:"Harvest Moon",sign:"Aries"}],9:[{d:26,name:"Hunter's Moon",sign:"Taurus"}],10:[{d:24,name:"Beaver Moon",sign:"Gemini",note:"Supermoon"}],11:[{d:23,name:"Cold Moon",sign:"Cancer",note:"Supermoon"}]};
+    const is2026 = year === 2026;
+    const newMoon = is2026 ? NEW_2026[month] : null;
+    const fulls = is2026 ? (FULL_2026[month] || []) : [];
+
+    // ---- Astronomical engine (mean synodic, anchored to 18 Jan 2026 new moon) ----
+    const SYN = 29.530588853, REF = Date.UTC(2026,0,18,19,52);
+    const fracAt = (dt) => { let f = (((dt.getTime()-REF)/86400000)%SYN)/SYN; return ((f%1)+1)%1; };
+    const glyphOf = (f) => PH[Math.floor((((f+0.0625)%1)+1)%1*8)%8];
+
+    const isDark = theme === "core-dark";
+    const themeClass = isDark ? "cal-dark" : "";
+
+    // ---- Build 6-week grid, Sunday start ----
+    const first = new Date(year, month, 1);
+    const startDow = first.getDay();
+    const dim = new Date(year, month+1, 0).getDate();
+    const prevDim = new Date(year, month, 0).getDate();
+    const raw = [];
+    for (let i = startDow-1; i >= 0; i--) raw.push({day:prevDim-i, inMonth:false, date:new Date(year, month-1, prevDim-i)});
+    for (let d = 1; d <= dim; d++) raw.push({day:d, inMonth:true, date:new Date(year, month, d)});
+    let nx = 1;
+    while (raw.length % 7 !== 0 || raw.length < 42) { raw.push({day:nx, inMonth:false, date:new Date(year, month+1, nx)}); nx++; if (raw.length >= 42 && raw.length % 7 === 0) break; }
+
+    const fullDays = fulls.map(f => f.d);
+    const cells = raw.map(c => {
+      const noon = new Date(c.date.getFullYear(), c.date.getMonth(), c.date.getDate(), 12, 0);
+      const f0 = fracAt(noon);
+      const f1 = fracAt(new Date(noon.getTime()+86400000));
+      let principalKey = null;
+      if (c.inMonth) {
+        if (newMoon && c.day === newMoon.d) principalKey = "new";
+        else if (fullDays.indexOf(c.day) >= 0) principalKey = "full";
+        else if (f0 < 0.25 && f1 >= 0.25) principalKey = "first-quarter";
+        else if (f0 < 0.75 && f1 >= 0.75) principalKey = "last-quarter";
+      }
+      const phase = principalKey || glyphOf(f0);
+      const labelMap = {"new":"New Moon","first-quarter":"First Quarter","full":"Full Moon","last-quarter":"Last Quarter"};
+      let cls = "";
+      if (!c.inMonth) cls = "cal-cell--out";
+      else if (coding && principalKey) cls = "cal-cell--" + principalKey;
+      return {
+        day: c.day, phase,
+        cls: cls,
+        principal: principalKey ? labelMap[principalKey] : ""
+      };
+    });
+    const weeks = [];
+    for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i+7));
+
+    // ---- Band data ----
+    const fmt = (m, d) => ABBR[m] + " " + d;
+    const newMoonDate = newMoon ? fmt(month, newMoon.d) : "—";
+    const newMoonSign = newMoon ? newMoon.sign : "";
+    const newMoonNote = newMoon ? (newMoon.note || "Dark-moon reset") : "";
+    const fullMoonList = fulls.map(f => ({
+      name: f.name, sign: f.sign, date: fmt(month, f.d), note: f.note || "Culmination point"
+    }));
+
+    // ---- Directive ----
+    let directive = "";
+    if (newMoon && fulls.length) {
+      directive = "Seed in the dark of " + newMoonSign + ". Harvest under the " + fulls[0].name + ".";
+    } else if (fulls.length) {
+      directive = "This month peaks at the " + fulls[0].name + " — release what has ripened.";
+    } else if (newMoon) {
+      directive = "A fresh cycle opens in " + newMoonSign + " — set the frequency.";
+    } else {
+      directive = "Tune to the cycle. Align your frequency, not your fate.";
+    }
+
+    return {
+      themeClass, monthName: MONTHS[month], year, weeks, showLunations,
+      mastheadPhase: fulls.length ? "full" : (newMoon ? "new" : "waxing-gibbous"),
+      newMoonDate, newMoonSign, newMoonNote, fullMoonList, directive,
+      sz22: 22, sz36: 36, sz20: 20
+    };
+  }
+}
+</script>
+</body>
+</html>
