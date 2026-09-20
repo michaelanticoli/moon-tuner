@@ -184,6 +184,15 @@ export default function Chaperone() {
           <Button size="lg" variant="ghost" asChild>
             <Link to="/workbooks">Browse the Workbooks</Link>
           </Button>
+          <Button size="lg" variant="ghost" asChild>
+            <a
+              href="/content/chaperone/lunar-chaperone-book.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read the Edition
+            </a>
+          </Button>
         </div>
       </section>
 
