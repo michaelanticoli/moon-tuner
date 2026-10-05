@@ -5,4 +5,4 @@
 - [x] Persist one signed-in user's birth profile across every birth-dependent tool
 - [x] Make Total Tuner expose the complete report toolkit and existing report outputs
 - [x] Verify OAuth initiation, account guards, subscriber validation, and key report pages in the browser
-- [ ] Lead the homepage with the Astro-Harmonic Symphony and ElevenLabs attribution
+- [x] Lead the homepage with the Astro-Harmonic Symphony and ElevenLabs attribution
