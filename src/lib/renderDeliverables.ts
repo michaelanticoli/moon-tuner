@@ -36,6 +36,7 @@ export interface ChartInterpretation {
   harmonicAlignment: string;
   resolutionGuidance: string;
   closing: string;
+  narrationScript?: string;
 }
 
 export async function renderReportPdfBase64(

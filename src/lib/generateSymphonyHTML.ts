@@ -133,6 +133,7 @@ interface ChartInterpretation {
   harmonicAlignment: string;
   resolutionGuidance: string;
   closing: string;
+  narrationScript?: string;
 }
 
 export function buildSymphonyHTML(

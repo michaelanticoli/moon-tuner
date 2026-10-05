@@ -64,6 +64,7 @@ ABSOLUTE RULES:
 - Voice: poetic but substantive, intimate, intelligent. NO mystical clichés ("the universe wants you to..."), NO horoscope tropes, NO determinism. Emphasize agency.
 - Style: short paragraphs, flowing prose. No bullet lists.
 - Each section 2–4 paragraphs of real, named, layered observation.
+- narrationScript is a SEPARATE piece of writing for the spoken voice narration (ElevenLabs), not a copy or rearrangement of the other sections — draw on different specific placements where possible so a listener who has also read the written report still hears something new.
 
 Return JSON only, matching the provided tool schema.`;
 
@@ -119,7 +120,7 @@ const TOOL_SCHEMA = {
   type: "function" as const,
   function: {
     name: "deliver_interpretation",
-    description: "Return the chart interpretation in five named sections.",
+    description: "Return the chart interpretation in six named sections.",
     parameters: {
       type: "object",
       additionalProperties: false,
@@ -129,8 +130,13 @@ const TOOL_SCHEMA = {
         harmonicAlignment: { type: "string", description: "2–3 paragraphs interpreting the consonance/tension/complexity metrics in light of the SPECIFIC aspects present. Name the actual aspects driving each metric." },
         resolutionGuidance: { type: "string", description: "2–3 paragraphs of grounded, agency-centered guidance: given THIS chart's specific tensions and elemental balance, what one or two concrete recalibrations matter most. No generic advice." },
         closing: { type: "string", description: "1 short paragraph: a closing reflection that re-anchors the listener in their own authorship of the score." },
+        narrationScript: {
+          type: "string",
+          description:
+            "3–5 paragraphs written to be SPOKEN ALOUD, not read on a page — this is a distinct piece of writing from opening/coreSignature/harmonicAlignment/resolutionGuidance/closing, not a concatenation of them. Write in second person, direct address, sentences shaped for a human voice (varied rhythm, natural pauses, no sub-headings or lists). It must name, specifically: (1) the lead voice / most-aspected planet and the chart ruler, (2) the lunar phase at birth and its musical metaphor, (3) the elemental balance in plain terms (which element dominates and what that feels like), and (4) at least two to three specific planet or aspect placements drawn from the PLANETS and ASPECTS data (not just Sun/Moon/Rising). End on the same agency-centered, non-deterministic note as the rest of the reading. This script is what gets voiced by ElevenLabs, so it should stand alone as a complete, varied, personal reading — never reuse stock phrasing between charts.",
+        },
       },
-      required: ["opening", "coreSignature", "harmonicAlignment", "resolutionGuidance", "closing"],
+      required: ["opening", "coreSignature", "harmonicAlignment", "resolutionGuidance", "closing", "narrationScript"],
     },
   },
 };

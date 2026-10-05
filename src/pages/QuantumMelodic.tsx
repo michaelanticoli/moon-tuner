@@ -115,6 +115,7 @@ const QuantumMelodic = () => {
     harmonicAlignment: string;
     resolutionGuidance: string;
     closing: string;
+    narrationScript?: string;
   }
   const [interpretation, setInterpretation] = useState<ChartInterpretation | null>(null);
   const [interpretationLoading, setInterpretationLoading] = useState(false);
@@ -1065,10 +1066,17 @@ const QuantumMelodic = () => {
                     <NarrationUpsell
                       reportType="natal"
                       reportLabel={`${reading.birthData.name || "Natal"} Astro-Harmonic Report`}
-                      sourceText={[
-                        interpretation.opening,
-                        interpretation.closing,
-                      ].filter(Boolean).join("\n\n")}
+                      sourceText={
+                        interpretation.narrationScript?.trim()
+                          ? interpretation.narrationScript
+                          : [
+                              interpretation.opening,
+                              interpretation.coreSignature,
+                              interpretation.harmonicAlignment,
+                              interpretation.resolutionGuidance,
+                              interpretation.closing,
+                            ].filter(Boolean).join("\n\n")
+                      }
                       returnPath="/quantumelodic"
                     />
                   )}
