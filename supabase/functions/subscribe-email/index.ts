@@ -59,7 +59,7 @@ serve(async (req) => {
     const mailchimpApiKey = Deno.env.get("MAILCHIMP_API_KEY")?.trim();
     const mailchimpListId = Deno.env.get("MAILCHIMP_LIST_ID")?.trim();
 
-    let mailchimpData: { id?: string | number } = {};
+    let mailchimpData: { id?: string | number; title?: string } = {};
 
     if (mailchimpApiKey && mailchimpListId) {
       try {
