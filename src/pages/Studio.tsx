@@ -45,7 +45,7 @@ const BIRTH_TILES: Tile[] = [
   {
     to: "/quantumelodic",
     title: "Astro-Harmonic Symphony",
-    desc: "Natal chart → generative musical score, ElevenLabs voiceover, PDF.",
+    desc: "Natal chart → ElevenLabs composition and voiceover, plus PDF.",
     icon: <Music2 className="w-5 h-5" />,
     tag: "Symphony",
     needsBirth: true,

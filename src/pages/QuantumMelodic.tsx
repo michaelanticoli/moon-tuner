@@ -423,7 +423,7 @@ const QuantumMelodic = () => {
                 <div className="mb-8 max-w-md rounded-xl border border-accent/30 bg-accent/5 p-5">
                   <p className="text-xs system-label mb-2 text-accent">One Simple Price</p>
                   <p className="text-sm text-foreground leading-relaxed">
-                    <span className="font-semibold">$25</span> for the complete Astro-Harmonic Report — your composition, your written interpretation, and the voice narration, all generated from your exact birth chart.
+                    <span className="font-semibold">$25</span> for the complete Astro-Harmonic Report — your composition and voice narration, both rendered by ElevenLabs, plus your written interpretation, all generated from your exact birth chart.
                   </p>
                 </div>
 

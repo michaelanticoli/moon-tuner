@@ -211,12 +211,13 @@ const SpiralLanding = () => {
   return (
     <PageTransition>
       <SEOHead
-        title="Moontuner — Your Birth Chart, Composed Into Music & Voiced by ElevenLabs"
-        description="Moontuner turns your natal chart into an original composition and a spoken reading in a cloned voice, powered by ElevenLabs — plus a free daily lunar-timing system for the rest of your life."
+        title="Moontuner — Your Birth Chart, Composed & Voiced by ElevenLabs"
+        description="Moontuner turns your natal chart into an original composition rendered by ElevenLabs Music and a spoken reading in a cloned ElevenLabs voice — plus a free daily lunar-timing system for the rest of your life."
         canonical="/"
         keywords={[
           "astrology music generator",
           "natal chart to music",
+          "ElevenLabs music generation",
           "ElevenLabs voice narration",
           "lunar alignment system",
           "moon phase today",
@@ -236,7 +237,7 @@ const SpiralLanding = () => {
                 <div>
                   <p className="dusk-eyebrow mb-6 dusk-rise">
                     <span className="inline-block w-6 h-px align-middle mr-3 bg-[hsl(var(--dusk-gold))]" />
-                    Lunar Alignment System · Reports Voiced by ElevenLabs
+                    Lunar Alignment System · Composed & Voiced by ElevenLabs
                   </p>
                   <h1
                     className="dusk-serif text-[clamp(2.2rem,5.2vw,4.2rem)] dusk-ivory leading-[1.08] mb-6 dusk-rise"
@@ -250,9 +251,9 @@ const SpiralLanding = () => {
                     style={{ animationDelay: "0.24s", color: "hsl(var(--dusk-ivory) / 0.72)" }}
                   >
                     Enter your birth date, time, and place. Moontuner calculates your natal
-                    chart, composes an original piece from your exact placements, and
-                    narrates the reading in a cloned voice — rendered with ElevenLabs. Plus
-                    a daily lunar-timing system for the rest of your life.
+                    chart, then ElevenLabs renders an original composition from your exact
+                    placements and narrates the reading in a cloned voice. Plus a daily
+                    lunar-timing system for the rest of your life.
                   </p>
                   <p
                     className="text-[0.85rem] leading-[1.6] max-w-[500px] mb-9 dusk-rise"
@@ -314,7 +315,7 @@ const SpiralLanding = () => {
                       className="text-[0.92rem] leading-[1.6] max-w-[590px]"
                       style={{ color: "hsl(var(--dusk-gold) / 0.9)" }}
                     >
-                      $25, one-time · composition, written report, and ElevenLabs voice narration — all included.
+                      $25, one-time · ElevenLabs composition and voice narration, plus the written report — all included.
                     </p>
                     <div className="mt-8 flex flex-wrap gap-3">
                       <Link to="/quantumelodic" className="dusk-btn dusk-btn-primary">

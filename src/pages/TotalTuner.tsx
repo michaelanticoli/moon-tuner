@@ -167,9 +167,10 @@ export default function TotalTuner() {
               navigate={navigate}
             >
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Your natal chart translated into a generative musical score with
-                ElevenLabs voiceover. The Symphony page renders the full audio,
-                interactive natal wheel, and downloadable PDF.
+                Your natal chart translated into an original composition and
+                spoken interpretation, both rendered by ElevenLabs. The Symphony
+                page renders the full audio, interactive natal wheel, and
+                downloadable PDF.
               </p>
             </Section>
 
