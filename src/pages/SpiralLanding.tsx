@@ -211,15 +211,17 @@ const SpiralLanding = () => {
   return (
     <PageTransition>
       <SEOHead
-        title="Moontuner — You're Not Behind. You're On a Spiral."
-        description="Time isn't a line you fall behind on — it's a spiral you can move around. Moontuner helps you hear what time it is in your life and tune toward the one you're reaching for."
+        title="Moontuner — Your Birth Chart, Composed Into Music & Voiced by ElevenLabs"
+        description="Moontuner turns your natal chart into an original composition and a spoken reading in a cloned voice, powered by ElevenLabs — plus a free daily lunar-timing system for the rest of your life."
         canonical="/"
         keywords={[
+          "astrology music generator",
+          "natal chart to music",
+          "ElevenLabs voice narration",
           "lunar alignment system",
           "moon phase today",
           "intentional living",
           "cyclical productivity",
-          "what phase am I in",
           "lunar timing",
         ]}
         jsonLd={websiteSchema()}
@@ -234,45 +236,44 @@ const SpiralLanding = () => {
                 <div>
                   <p className="dusk-eyebrow mb-6 dusk-rise">
                     <span className="inline-block w-6 h-px align-middle mr-3 bg-[hsl(var(--dusk-gold))]" />
-                    A Phase-Based Living System · Voiced by ElevenLabs
+                    Lunar Alignment System · Reports Voiced by ElevenLabs
                   </p>
                   <h1
-                    className="dusk-serif text-[clamp(2.3rem,5.6vw,4.6rem)] dusk-ivory leading-[1.04] mb-6 dusk-rise"
+                    className="dusk-serif text-[clamp(2.2rem,5.2vw,4.2rem)] dusk-ivory leading-[1.08] mb-6 dusk-rise"
                     style={{ animationDelay: "0.12s" }}
                   >
-                    You're not behind.{" "}
-                    <em className="italic dusk-gold">You're on a spiral.</em>
+                    Your birth chart, turned into music{" "}
+                    <em className="italic dusk-gold">— and spoken back to you.</em>
                   </h1>
                   <p
                     className="text-[1.0625rem] lg:text-[1.125rem] leading-[1.7] max-w-[540px] mb-5 dusk-rise"
                     style={{ animationDelay: "0.24s", color: "hsl(var(--dusk-ivory) / 0.72)" }}
                   >
-                    There's a speed limit to life — one day at a time. But yesterday and
-                    tomorrow are on the curve with you, and you can move between them.
-                    Moontuner helps you hear what time it actually is{" "}
-                    <em className="italic dusk-ivory">inside</em> you, then tune toward the
-                    life you're reaching for.
+                    Enter your birth date, time, and place. Moontuner calculates your natal
+                    chart, composes an original piece from your exact placements, and
+                    narrates the reading in a cloned voice — rendered with ElevenLabs. Plus
+                    a daily lunar-timing system for the rest of your life.
                   </p>
                   <p
-                    className="text-[0.92rem] leading-[1.6] max-w-[500px] mb-9 dusk-rise"
-                    style={{ animationDelay: "0.3s", color: "hsl(var(--dusk-gold) / 0.9)" }}
+                    className="text-[0.85rem] leading-[1.6] max-w-[500px] mb-9 dusk-rise"
+                    style={{ animationDelay: "0.3s", color: "hsl(var(--dusk-ivory) / 0.5)" }}
                   >
-                    Your natal chart, composed into an original piece of music and spoken back to you in a cloned voice — rendered with ElevenLabs.
+                    "You're not behind. You're on a spiral" — time as a cycle you can move around, not a line you fall behind on.
                   </p>
                   <div
                     className="flex flex-col sm:flex-row gap-3 sm:gap-4 dusk-rise"
                     style={{ animationDelay: "0.36s" }}
                   >
                     <a href="#astro-harmonic-symphony" className="dusk-btn dusk-btn-primary">
-                      Hear Your Chart
+                      Hear Your Chart — $25
                     </a>
                     <a href="#whattime" className="dusk-btn dusk-btn-ghost">
-                      Find Your Position
+                      Explore the Free Tools
                     </a>
                   </div>
                 </div>
 
-                <div className="dusk-rise max-w-[300px] mx-auto lg:mx-0 lg:ml-auto" style={{ animationDelay: "0.3s" }}>
+                <div className="dusk-rise max-w-[260px] mx-auto lg:mx-0 lg:ml-auto" style={{ animationDelay: "0.3s" }}>
                   <SpiralField />
                   <p className="mt-5 text-center text-[0.62rem] tracking-[0.2em] uppercase dusk-silver">
                     Your position on the spiral — not the calendar's
@@ -304,14 +305,20 @@ const SpiralLanding = () => {
                       Hear your chart. <em className="italic dusk-gold">Know yourself.</em>
                     </h2>
                     <p
-                      className="text-[1.0625rem] leading-[1.75] max-w-[590px]"
+                      className="text-[1.0625rem] leading-[1.75] max-w-[590px] mb-5"
                       style={{ color: "hsl(var(--dusk-ivory) / 0.7)" }}
                     >
                       Your natal chart becomes musical structure: a composed signature piece and a spoken interpretation, made from the same exact placements.
                     </p>
+                    <p
+                      className="text-[0.92rem] leading-[1.6] max-w-[590px]"
+                      style={{ color: "hsl(var(--dusk-gold) / 0.9)" }}
+                    >
+                      $25, one-time · composition, written report, and ElevenLabs voice narration — all included.
+                    </p>
                     <div className="mt-8 flex flex-wrap gap-3">
                       <Link to="/quantumelodic" className="dusk-btn dusk-btn-primary">
-                        Create Your Symphony
+                        Create Your Symphony — $25
                       </Link>
                       <a href="#symphony-sample" className="dusk-btn dusk-btn-ghost">
                         Hear a Sample

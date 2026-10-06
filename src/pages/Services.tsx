@@ -212,7 +212,7 @@ export default function Services() {
               </article>
             </ScrollReveal>
 
-            {/* 2 — Astro-Harmonic Natal Analysis ($47) */}
+            {/* 2 — Astro-Harmonic Natal Analysis ($25) */}
             <ScrollReveal delay={0.05}>
               <article className="bg-card border border-border rounded-sm overflow-hidden group hover:border-[#6B4FBB]/35 transition-colors duration-400 mb-0.5">
                 <div className="h-0.5 w-full bg-gradient-to-r from-[#6B4FBB] via-accent to-transparent" />
@@ -229,7 +229,7 @@ export default function Services() {
                       </h2>
                     </div>
                     <div className="sm:text-right flex-shrink-0">
-                      <span className="font-serif text-[28px] font-normal text-accent leading-none block">$47</span>
+                      <span className="font-serif text-[28px] font-normal text-accent leading-none block">$25</span>
                       <span className="text-[10px] text-muted-foreground tracking-[0.1em] block mt-1">Instant delivery</span>
                     </div>
                   </div>

@@ -272,7 +272,7 @@ export default function Sessions() {
                 <div className="flex flex-col bg-card border border-border/40 rounded-xl p-6 hover:border-accent/40 transition-all duration-300 backdrop-blur-sm">
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <h3 className="font-display text-lg font-light text-foreground">Chart Overview</h3>
-                    <span className="shrink-0 font-sans text-base font-medium text-accent">$47</span>
+                    <span className="shrink-0 font-sans text-base font-medium text-accent">$25</span>
                   </div>
                   <p className="font-sans text-xs text-muted-foreground mb-4">Immediate Generation</p>
                   <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
@@ -301,7 +301,7 @@ export default function Sessions() {
                       </>
                     ) : (
                       <>
-                        Generate Your Report & Song · $47 <ExternalLink className="w-3 h-3" />
+                        Generate Your Report & Song · $25 <ExternalLink className="w-3 h-3" />
                       </>
                     )}
                   </Button>
