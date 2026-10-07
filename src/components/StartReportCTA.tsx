@@ -22,7 +22,7 @@ export function StartReportCTA() {
         <div className="flex flex-col lg:flex-row gap-12 items-start">
           {/* Left: copy */}
           <div className="flex-1">
-            <span className="system-label block mb-6">Personal Lunar Map · $17</span>
+            <span className="system-label block mb-6">Personal Lunar Map · $25</span>
             <h2 className="font-serif text-4xl lg:text-5xl font-light text-foreground mb-6 leading-tight">
               Your birth chart<br />
               <span className="italic">decoded by the Moon.</span>
@@ -69,7 +69,7 @@ export function StartReportCTA() {
                 disabled={checkoutLoading}
                 className="w-full h-12 bg-foreground text-background hover:bg-accent hover:text-accent-foreground font-bold text-[11px] uppercase tracking-[0.3em] rounded-full transition-all duration-300"
               >
-                {checkoutLoading ? "Starting Checkout…" : "Get My Report · $17"}
+                {checkoutLoading ? "Starting Checkout…" : "Get My Report · $25"}
               </Button>
               <p className="text-[10px] text-muted-foreground text-center">
                 Secure checkout via Stripe. After payment you are routed directly to the generator.

@@ -58,7 +58,7 @@ export function StartHeroSection() {
         <div className="opacity-0 animate-fade-in-up delay-400 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
           <a href="#report" className="inline-flex items-center gap-2 text-sm font-medium tracking-wider text-accent hover:text-foreground transition-colors duration-300">
             <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-            Get Your Lunar Map · $17
+            Get Your Lunar Map · $25
           </a>
           <a href="#session" className="inline-flex items-center gap-2 text-sm font-medium tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300">
             <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground" />

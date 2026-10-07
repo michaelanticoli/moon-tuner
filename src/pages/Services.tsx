@@ -169,7 +169,7 @@ export default function Services() {
             {/* ═══════ DIGITAL REPORTS ═══════ */}
             <SectionDivider label="Digital Reports · Instant Delivery" />
 
-            {/* 1 — Lunar Arc Report ($17) */}
+            {/* 1 — Lunar Arc Report ($25) */}
             <ScrollReveal>
               <article className="bg-card border border-border rounded-sm overflow-hidden group hover:border-accent/30 transition-colors duration-400 mb-0.5">
                 <div className="h-0.5 w-full bg-gradient-to-r from-accent to-transparent" />
@@ -186,7 +186,7 @@ export default function Services() {
                       </h2>
                     </div>
                     <div className="sm:text-right flex-shrink-0">
-                      <span className="font-serif text-[28px] font-normal text-accent leading-none block">$17</span>
+                      <span className="font-serif text-[28px] font-normal text-accent leading-none block">$25</span>
                       <span className="text-[10px] text-muted-foreground tracking-[0.1em] block mt-1">Instant delivery</span>
                     </div>
                   </div>
