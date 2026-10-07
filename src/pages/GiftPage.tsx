@@ -47,7 +47,7 @@ const GIFT_OPTIONS: GiftOption[] = [
     id: 'report',
     label: 'A Lunar Arc Report',
     description: 'A personalized report built from the recipient\'s natal chart and current lunar cycle.',
-    price: '$17',
+    price: '$25',
   },
 ];
 
