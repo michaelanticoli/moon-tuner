@@ -13,9 +13,9 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     ViteSitemap({
-      hostname: "https://www.moontuner.xyz",
+      hostname: "https://moontuner.xyz",
       dynamicRoutes: [
-        "/",
+        // "/" is added by the plugin automatically
         "/classic",
         "/v3",
         "/today",
