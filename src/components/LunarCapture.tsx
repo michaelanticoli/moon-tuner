@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { loadSupabase } from "@/integrations/supabase/lazy";
 import { Check, Loader2 } from "lucide-react";
 
 interface LunarCaptureProps {
@@ -41,6 +41,7 @@ export function LunarCapture({
     setMessage("");
 
     try {
+      const { supabase } = await loadSupabase();
       const { data, error } = await supabase.functions.invoke(
         "subscribe-email",
         { body: { email: email.trim(), source } }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { primarySupabase as supabase } from "@/integrations/supabase/client";
+import { hasStoredSession, loadSupabase } from "@/integrations/supabase/lazy";
 
 export interface SharedBirth {
   name: string;
@@ -46,7 +46,9 @@ export function writeSharedBirth(birth: Partial<SharedBirth>) {
   sessionStorage.setItem(KEY, JSON.stringify(next));
   window.dispatchEvent(new CustomEvent("mt-birth-updated", { detail: next }));
 
-  void supabase.auth.getUser().then(({ data }) => {
+  if (!hasStoredSession()) return; // signed out: nothing to sync
+  void loadSupabase().then(async ({ primarySupabase: supabase }) => {
+    const { data } = await supabase.auth.getUser();
     const user = data.user;
     if (!user || user.is_anonymous) return;
     return supabase.from("profiles").upsert({
@@ -72,6 +74,7 @@ export async function captureBirthEmail(birth: SharedBirth, source = "birth-inta
   const email = (birth.email || "").trim().toLowerCase();
   if (!EMAIL_RE.test(email)) return { ok: false as const, reason: "invalid-email" };
   try {
+    const { primarySupabase: supabase } = await loadSupabase();
     const { data, error } = await supabase.functions.invoke("subscribe-email", {
       body: { email, source },
     });
@@ -91,7 +94,9 @@ export function useSharedBirth() {
       if (detail) setBirth(detail);
     };
     window.addEventListener("mt-birth-updated", onUpdate);
-    void supabase.auth.getUser().then(async ({ data }) => {
+    // Only a signed-in visitor has a saved profile to hydrate from.
+    if (hasStoredSession()) void loadSupabase().then(async ({ primarySupabase: supabase }) => {
+      const { data } = await supabase.auth.getUser();
       const user = data.user;
       if (!user || user.is_anonymous) return;
       const { data: profile } = await supabase

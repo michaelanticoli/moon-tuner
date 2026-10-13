@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { User, Session, AuthError } from '@supabase/supabase-js';
-import {
-  primarySupabase as supabase,
-} from "@/integrations/supabase/client";
+import type { User, Session, AuthError } from '@supabase/supabase-js';
+import { afterPageSettles, hasStoredSession, loadSupabase } from "@/integrations/supabase/lazy";
 import { buildAuthCallbackUrl } from '@/lib/authRedirect';
 
 interface AuthContextType {
@@ -25,9 +23,13 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/** The auth (primary) Supabase client, fetched on first use — see lazy.ts. */
+const getAuthClient = async () => (await loadSupabase()).primarySupabase;
+
 const ensureUserProfile = async (currentSession: Session | null) => {
   if (!currentSession?.user || currentSession.user.is_anonymous) return;
 
+  const supabase = await getAuthClient();
   const { error } = await supabase
     .from('profiles')
     .upsert(
@@ -51,28 +53,59 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const isAnonymous = user?.is_anonymous ?? false;
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      void ensureUserProfile(session);
-      setLoading(false);
-    });
+    let cancelled = false;
+    let unsubscribe: (() => void) | undefined;
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        void ensureUserProfile(session);
-        setLoading(false);
-      }
-    );
+    const boot = () => getAuthClient()
+      .then((supabase) => {
+        if (cancelled) return;
+
+        supabase.auth.getSession().then(({ data: { session } }) => {
+          if (cancelled) return;
+          setSession(session);
+          setUser(session?.user ?? null);
+          void ensureUserProfile(session);
+          setLoading(false);
+        });
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+          async (_event, session) => {
+            if (cancelled) return;
+            setSession(session);
+            setUser(session?.user ?? null);
+            void ensureUserProfile(session);
+            setLoading(false);
+          }
+        );
+        unsubscribe = () => subscription.unsubscribe();
+      })
+      .catch((err) => {
+        // Don't leave protected routes spinning forever. Rethrow so the
+        // stale-chunk recovery in main.tsx can reload after a new deploy.
+        if (!cancelled) setLoading(false);
+        throw err;
+      });
+
+    // Signed-in visitors and auth redirects (magic link, OAuth, recovery)
+    // need the client right away. A signed-out visitor has no session to
+    // restore, so loading supabase-js waits until the page has loaded and gone
+    // idle, staying out of the way of the first render.
+    const { pathname, search, hash } = window.location;
+    const urgent =
+      hasStoredSession() ||
+      pathname.startsWith("/auth") ||
+      /[?#&](code|access_token|refresh_token|error|error_description|token_hash)=/.test(search + hash);
+    const cancelIdle = urgent ? (void boot(), undefined) : afterPageSettles(() => void boot());
 
     return () => {
-      subscription.unsubscribe();
+      cancelled = true;
+      cancelIdle?.();
+      unsubscribe?.();
     };
   }, []);
 
   const signUp = async (email: string, password: string, redirectPath?: string) => {
+    const supabase = await getAuthClient();
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -89,6 +122,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const resendSignupVerification = async (email: string, redirectPath?: string) => {
+    const supabase = await getAuthClient();
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email,
@@ -100,6 +134,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signIn = async (email: string, password: string) => {
+    const supabase = await getAuthClient();
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -109,6 +144,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signInWithMagicLink = async (email: string, redirectPath?: string) => {
+    const supabase = await getAuthClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
@@ -120,15 +156,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signInAnonymously = async () => {
+    const supabase = await getAuthClient();
     const { error } = await supabase.auth.signInAnonymously();
     return { error };
   };
 
   const signOut = async () => {
+    const supabase = await getAuthClient();
     await supabase.auth.signOut();
   };
 
   const resetPassword = async (email: string) => {
+    const supabase = await getAuthClient();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: buildAuthCallbackUrl('/auth/reset-password'),
     });

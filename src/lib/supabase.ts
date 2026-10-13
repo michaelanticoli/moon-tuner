@@ -43,7 +43,8 @@ export type DataVisibility = {
 
 // ─── Membership / Payments ────────────────────────────────────────────────────
 
-export type MembershipTier = 'free' | 'reflective' | 'insight' | 'practitioner';
+export type { MembershipTier } from './membershipTiers';
+import type { MembershipTier } from './membershipTiers';
 
 export type SubscriptionStatus =
   | 'active'
@@ -122,18 +123,8 @@ export type GiftRow = {
   created_at: string;
 };
 
-// Tier hierarchy — higher index = more access
-export const TIER_RANK: Record<MembershipTier, number> = {
-  free: 0,
-  reflective: 1,
-  insight: 2,
-  practitioner: 3,
-};
-
-/** Returns true if the user's tier meets or exceeds the required tier */
-export function hasAccess(userTier: MembershipTier, requiredTier: MembershipTier): boolean {
-  return TIER_RANK[userTier] >= TIER_RANK[requiredTier];
-}
+// Tier helpers live in a Supabase-free module so startup code can use them.
+export { TIER_RANK, hasAccess } from './membershipTiers';
 
 export type Database = {
   public: {

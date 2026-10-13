@@ -6,10 +6,10 @@
  * entitlements without re-fetching the server on every call.
  */
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/lib/supabase';
+import { loadLegacySupabase } from '@/integrations/supabase/lazy';
 import { useAuth } from '@/contexts/AuthContext';
-import type { MembershipTier, SubscriptionRow } from '@/lib/supabase';
-import { hasAccess } from '@/lib/supabase';
+import type { SubscriptionRow } from '@/lib/supabase';
+import { hasAccess, type MembershipTier } from '@/lib/membershipTiers';
 import { openStripeCheckout, type StripeProductKey } from '@/lib/stripeLinks';
 import { toast } from 'sonner';
 
@@ -48,6 +48,7 @@ export function useSubscription(): UseSubscriptionReturn {
       return;
     }
 
+    const supabase = await loadLegacySupabase();
     const { data, error } = await supabase
       .from('subscriptions')
       .select('*')
@@ -107,6 +108,7 @@ export function useSubscription(): UseSubscriptionReturn {
       if (!user) return;
       setRedirecting(true);
       try {
+        const supabase = await loadLegacySupabase();
         const { data, error } = await supabase.functions.invoke('customer-portal', {
           body: { userId: user.id, returnPath },
         });
