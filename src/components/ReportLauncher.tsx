@@ -15,7 +15,7 @@ const TILES = [
   { to: "/lunar-cipher", title: "Lunar Cipher", desc: "2026 calendar (overlaid on your chart when birth data is set).", icon: <Calendar className="w-4 h-4" /> },
 ];
 
-const HIDE_ON = ["/auth", "/studio", "/total-tuner"];
+const HIDE_ON = ["/auth", "/studio", "/total-tuner", "/links"];
 
 export function ReportLauncher() {
   const [open, setOpen] = useState(false);

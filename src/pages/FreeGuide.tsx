@@ -20,8 +20,8 @@ const FreeGuide = () => {
               Timing with the Moon
             </h1>
             <p className="text-muted-foreground text-lg lg:text-xl leading-relaxed mb-12">
-              A complete introduction to lunar phases, void-of-course timing, and zodiac transits.
-              Delivered straight to your inbox as a PDF + EPUB.
+              A ten-page field guide to lunar phases, void-of-course timing, and the Moon through
+              the signs. Download it the moment you sign up; a copy follows by email.
             </p>
 
             <div className="node-card text-left mb-10">
@@ -48,15 +48,20 @@ const FreeGuide = () => {
                 </div>
                 <div>
                   <span className="system-label block">Enter your email</span>
-                  <span className="text-foreground font-serif">PDF arrives in your inbox</span>
+                  <span className="text-foreground font-serif">Instant PDF download</span>
                 </div>
               </div>
 
-              <EmailSubscribeForm source="free-guide" buttonText="Send Me the Guide" />
+              <EmailSubscribeForm
+                source="free-guide"
+                buttonText="Send Me the Guide"
+                successMessage="You're in. Your guide is ready."
+                download={{ href: "/downloads/timing-with-the-moon.pdf", label: "Download the guide (PDF)" }}
+              />
             </div>
 
             <p className="text-xs text-muted-foreground/60">
-              No spam. Unsubscribe anytime. Your email joins the Lunar Dispatch.
+              No spam. Unsubscribe anytime. Your email joins MOONtuner Letters, a short weekly note on the Moon's timing.
             </p>
           </div>
         </main>

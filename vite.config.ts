@@ -27,6 +27,8 @@ export default defineConfig(({ mode }) => ({
         "/lunar-chaperone",
         "/lunar-cipher",
         "/lunar-reports",
+        "/free-guide",
+        "/links",
         "/offerings",
         "/journal",
         "/studio",

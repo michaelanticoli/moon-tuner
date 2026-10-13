@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { loadSupabase } from "@/integrations/supabase/lazy";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Check } from "lucide-react";
+import { Loader2, Check, Download } from "lucide-react";
 
 interface EmailSubscribeFormProps {
   source?: string;
   placeholder?: string;
   buttonText?: string;
   className?: string;
+  /** Shown after a successful signup. */
+  successMessage?: string;
+  /** Optional instant download offered after a successful signup (e.g. a lead magnet PDF). */
+  download?: { href: string; label: string };
 }
 
 export function EmailSubscribeForm({
@@ -16,6 +20,8 @@ export function EmailSubscribeForm({
   placeholder = "your@email.com",
   buttonText = "Subscribe",
   className = "",
+  successMessage = "You're in. Watch for the first transmission.",
+  download,
 }: EmailSubscribeFormProps) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -29,6 +35,7 @@ export function EmailSubscribeForm({
     setMessage("");
 
     try {
+      const { supabase } = await loadSupabase();
       const { data, error } = await supabase.functions.invoke("subscribe-email", {
         body: { email: email.trim(), source },
       });
@@ -37,7 +44,7 @@ export function EmailSubscribeForm({
 
       if (data?.success) {
         setStatus("success");
-        setMessage("You're in. Watch for the first transmission.");
+        setMessage(successMessage);
         setEmail("");
       } else {
         setStatus("error");
@@ -51,11 +58,23 @@ export function EmailSubscribeForm({
 
   if (status === "success") {
     return (
-      <div className={`flex items-center gap-3 justify-center py-3 ${className}`}>
-        <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center">
-          <Check className="w-4 h-4 text-accent" />
+      <div className={`flex flex-col items-center gap-4 py-3 ${className}`} role="status">
+        <div className="flex items-center gap-3 justify-center">
+          <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center">
+            <Check className="w-4 h-4 text-accent" />
+          </div>
+          <span className="text-accent text-sm">{message}</span>
         </div>
-        <span className="text-accent text-sm">{message}</span>
+        {download && (
+          <a
+            href={download.href}
+            download
+            className="inline-flex items-center gap-2 h-11 px-6 rounded-md bg-accent text-background text-sm font-medium hover:opacity-90 transition-opacity"
+          >
+            <Download className="w-4 h-4" />
+            {download.label}
+          </a>
+        )}
       </div>
     );
   }

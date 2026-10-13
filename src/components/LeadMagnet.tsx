@@ -63,11 +63,16 @@ export const LeadMagnet = () => {
                 </div>
                 <div>
                   <span className="system-label block">Subscribe for Access</span>
-                  <span className="text-foreground font-serif">PDF + EPUB Formats</span>
+                  <span className="text-foreground font-serif">Instant PDF download</span>
                 </div>
               </div>
 
-              <EmailSubscribeForm source="lead-magnet" buttonText="Get Free Guide" />
+              <EmailSubscribeForm
+                source="lead-magnet"
+                buttonText="Get Free Guide"
+                successMessage="You're in. Your guide is ready."
+                download={{ href: "/downloads/timing-with-the-moon.pdf", label: "Download the guide (PDF)" }}
+              />
 
               <div className="mt-8 pt-6 border-t border-border/30">
                 <p className="text-xs text-muted-foreground/60 mb-3">

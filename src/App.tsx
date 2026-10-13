@@ -42,6 +42,7 @@ const Services = lazy(() => import("./pages/Services"));
 const MoonPhaseToday = lazy(() => import("./pages/MoonPhaseToday"));
 const Studio = lazy(() => import("./pages/Studio"));
 const FreeGuide = lazy(() => import("./pages/FreeGuide"));
+const Links = lazy(() => import("./pages/Links"));
 const TotalTuner = lazy(() => import("./pages/TotalTuner"));
 const CazimiPunchcard = lazy(() => import("./pages/CazimiPunchcard"));
 const SpacetimePrinter = lazy(() => import("./pages/SpacetimePrinter"));
@@ -121,6 +122,7 @@ function AnimatedRoutes() {
       <Route path="/current-moon-phase" element={<MoonPhaseToday />} />
       <Route path="/moon-cycle-today" element={<MoonPhaseToday />} />
       <Route path="/free-guide" element={<FreeGuide />} />
+      <Route path="/links" element={<Links />} />
           <Route path="/analytics" element={<AnalyticsDashboard />} />
 
           {/* ── Auth routes — always live (needed for email verification) ── */}
