@@ -1,7 +1,6 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { initNative } from "./lib/native";
 
 // Recover from stale chunk references after a new deploy.
 // When the bundle hashes change, cached HTML/JS may try to preload
@@ -25,7 +24,11 @@ window.addEventListener("unhandledrejection", (e) => {
 
 createRoot(document.getElementById("root")!).render(<App />);
 
-initNative();
+// Capacitor's native shell injects window.Capacitor before the app loads, so
+// the plugin code is only fetched inside the iOS/Android app, never on the web.
+if (typeof (window as { Capacitor?: unknown }).Capacitor !== "undefined") {
+  void import("./lib/native").then((m) => m.initNative());
+}
 
 // Register the service worker after the page is loaded so it never competes
 // with the critical render path. Only runs in production builds.

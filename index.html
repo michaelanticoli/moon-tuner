@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Google Tag Manager — deferred to idle to keep critical path light -->
+    <!-- Consent (Cookiebot) + Google Tag Manager — deferred to idle to keep critical path light -->
     <script data-cookieconsent="ignore">
       (function(){
         window.dataLayer = window.dataLayer || [];
@@ -26,18 +26,42 @@
           gtag('js', new Date());
           gtag('config', 'G-979NQVQL5Z');
         }
-        function loadAnalytics(){ loadGTM(); loadGtag(); }
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(loadAnalytics, { timeout: 4000 });
-        } else {
-          window.addEventListener('load', function(){ setTimeout(loadAnalytics, 2000); });
+        // Cookiebot consent banner loads with analytics (at idle or first
+        // interaction) instead of at parse time, and always before GTM/gtag:
+        // the tags are injected only once Cookiebot has loaded (or failed).
+        function loadCookiebot(done){
+          if (window.__cookiebotLoaded) { done(); return; } window.__cookiebotLoaded = true;
+          var c = document.createElement('script');
+          c.id = 'Cookiebot';
+          c.src = 'https://consent.cookiebot.com/uc.js';
+          c.setAttribute('data-cbid','2b53c2c0-9429-44cd-9a07-1f1b05cf165f');
+          c.setAttribute('data-blockingmode','manual');
+          c.type = 'text/javascript';
+          c.async = true;
+          var fired = false;
+          function next(){ if (fired) return; fired = true; done(); }
+          c.onload = next; c.onerror = next;
+          setTimeout(next, 5000);
+          document.head.appendChild(c);
         }
+        function loadAnalytics(){
+          if (window.__analyticsStarted) return; window.__analyticsStarted = true;
+          loadCookiebot(function(){ loadGTM(); loadGtag(); });
+        }
+        // requestIdleCallback alone fires while the app bundle is still
+        // downloading (the main thread is idle then), so wait for the load
+        // event first; any interaction still starts analytics immediately.
+        window.addEventListener('load', function(){
+          setTimeout(function(){
+            if ('requestIdleCallback' in window) requestIdleCallback(loadAnalytics, { timeout: 3000 });
+            else loadAnalytics();
+          }, 1500);
+        });
         ['scroll','keydown','mousemove','touchstart'].forEach(function(ev){
           window.addEventListener(ev, loadAnalytics, { once: true, passive: true });
         });
       })();
     </script>
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="2b53c2c0-9429-44cd-9a07-1f1b05cf165f" data-blockingmode="manual" type="text/javascript" async></script>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any">
@@ -89,21 +113,5 @@
     <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx" data-cookieconsent="ignore"></script>
-    <script>
-      (function(){
-        function loadStripe(){
-          if (window.__stripeBtnLoaded) return; window.__stripeBtnLoaded = true;
-          var s = document.createElement('script');
-          s.async = true;
-          s.src = 'https://js.stripe.com/v3/buy-button.js';
-          document.body.appendChild(s);
-        }
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(loadStripe, { timeout: 5000 });
-        } else {
-          window.addEventListener('load', function(){ setTimeout(loadStripe, 2500); });
-        }
-      })();
-    </script>
   </body>
 </html>

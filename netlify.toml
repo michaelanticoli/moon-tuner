@@ -2,6 +2,15 @@
   command = "npm run build"
   publish = "dist"
 
+# Media uploaded through Lovable (src/assets/*.asset.json) lives on Lovable's
+# asset host under /__l5e/. Proxy it so it plays on moontuner.xyz instead of
+# falling through to the SPA shell. Must stay above the catch-all below.
+[[redirects]]
+  from = "/__l5e/*"
+  to = "https://moon-tuner.lovable.app/__l5e/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

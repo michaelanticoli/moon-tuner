@@ -105,26 +105,17 @@ function SpiralField() {
     let rot = 0;
     let w = 0;
     let h = 0;
+    let last = 0;
+    let running = false;
+    let ready = false; // flips once the page has settled (see kick below)
+    let inView = true;
     const turns = 4.6;
     const density = 260;
+    const FRAME_MS = 1000 / 30; // 30fps is plenty for a slow ambient drift
+    const BASE_FRAME_MS = 1000 / 60; // rotation speed was tuned per 60fps frame
 
-    const resize = () => {
-      const r = cvs.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      cvs.width = Math.max(1, Math.round(r.width * dpr));
-      cvs.height = Math.max(1, Math.round(r.height * dpr));
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      w = r.width;
-      h = r.height;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const draw = () => {
-      if (!w || !h) {
-        raf = requestAnimationFrame(draw);
-        return;
-      }
+    const paint = () => {
+      if (!w || !h) return;
       ctx.clearRect(0, 0, w, h);
       const cx = w * 0.5;
       const cy = h * 0.5;
@@ -179,16 +170,70 @@ function SpiralField() {
       ctx.shadowBlur = 16;
       ctx.fill();
       ctx.shadowBlur = 0;
-
-      if (!prefersReduced) {
-        rot += 0.0015;
-        raf = requestAnimationFrame(draw);
-      }
     };
-    draw();
+
+    const resize = () => {
+      const r = cvs.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      cvs.width = Math.max(1, Math.round(r.width * dpr));
+      cvs.height = Math.max(1, Math.round(r.height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      w = r.width;
+      h = r.height;
+      paint();
+    };
+
+    const loop = (now: number) => {
+      raf = requestAnimationFrame(loop);
+      if (!last) last = now;
+      const dt = now - last;
+      if (dt < FRAME_MS - 2) return;
+      last = now;
+      rot += 0.0015 * Math.min(dt / BASE_FRAME_MS, 4);
+      paint();
+    };
+    const start = () => {
+      if (running || prefersReduced || !ready || !inView || document.hidden) return;
+      running = true;
+      last = 0;
+      raf = requestAnimationFrame(loop);
+    };
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(raf);
+    };
+
+    // First frame paints immediately, so the hero looks the same from the
+    // start; the ambient drift only begins once the page is idle, and pauses
+    // while the spiral is off-screen or the tab is hidden.
+    resize();
+    const kick = () => {
+      ready = true;
+      start();
+    };
+    const idleId =
+      "requestIdleCallback" in window ? window.requestIdleCallback(kick, { timeout: 2500 }) : 0;
+    const timer = idleId ? 0 : window.setTimeout(kick, 1200);
+
+    const io =
+      typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver(([entry]) => {
+            inView = entry.isIntersecting;
+            if (inView) start();
+            else stop();
+          })
+        : null;
+    io?.observe(cvs);
+    const onVisibility = () => (document.hidden ? stop() : start());
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("resize", resize);
 
     return () => {
-      cancelAnimationFrame(raf);
+      stop();
+      io?.disconnect();
+      if (idleId) window.cancelIdleCallback(idleId);
+      if (timer) window.clearTimeout(timer);
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", resize);
     };
   }, [prefersReduced]);
@@ -287,7 +332,7 @@ const SpiralLanding = () => {
           {/* ── Flagship: Astro-Harmonic Symphony / ElevenLabs ──────────── */}
           <section
             id="astro-harmonic-symphony"
-            className="relative py-20 lg:py-28 overflow-hidden border-t"
+            className="cv-auto relative py-20 lg:py-28 overflow-hidden border-t"
             style={{ borderColor: "hsl(var(--dusk-ivory) / 0.08)" }}
             aria-labelledby="symphony-heading"
           >
@@ -348,7 +393,7 @@ const SpiralLanding = () => {
                     <audio
                       className="w-full h-12"
                       controls
-                      preload="metadata"
+                      preload="none"
                       src={sampleChartAudio.url}
                       aria-label="Sample Astro-Harmonic Symphony audio"
                     >
@@ -406,7 +451,7 @@ const SpiralLanding = () => {
 
           {/* ── LIVE SIGNAL (real lunar data via useMoonPhase) ────────── */}
           <section
-            className="relative py-16 lg:py-20 border-t"
+            className="cv-auto relative py-16 lg:py-20 border-t"
             style={{ borderColor: "hsl(var(--dusk-ivory) / 0.08)" }}
             aria-label="Live lunar status"
           >
@@ -429,7 +474,7 @@ const SpiralLanding = () => {
           </section>
 
           {/* ── PREMISE ───────────────────────────────────────────────── */}
-          <section className="relative py-20 lg:py-24" aria-label="The premise">
+          <section className="cv-auto relative py-20 lg:py-24" aria-label="The premise">
             <div className="mx-auto max-w-[1100px] px-6 lg:px-12">
               <div className="dusk-hairline mb-14" />
               <div className="grid lg:grid-cols-[0.9fr,1.1fr] gap-10 lg:gap-16 items-start">
@@ -480,7 +525,7 @@ const SpiralLanding = () => {
           {/* ── WHAT TIME IS IT (interactive) ─────────────────────────── */}
           <section
             id="whattime"
-            className="relative py-20 lg:py-24 border-t border-b"
+            className="cv-auto relative py-20 lg:py-24 border-t border-b"
             style={{ borderColor: "hsl(var(--dusk-ivory) / 0.08)", background: "hsl(var(--dusk-black) / 0.5)" }}
             aria-label="What time is it in your life"
           >
@@ -563,7 +608,7 @@ const SpiralLanding = () => {
           </section>
 
           {/* ── THE WORK (pillars) ────────────────────────────────────── */}
-          <section className="relative py-20 lg:py-24" aria-label="What Moontuner does">
+          <section className="cv-auto relative py-20 lg:py-24" aria-label="What Moontuner does">
             <div className="mx-auto max-w-[1100px] px-6 lg:px-12">
               <ScrollReveal>
                 <div className="max-w-[640px] mb-12">
@@ -605,7 +650,7 @@ const SpiralLanding = () => {
 
           {/* ── THE SYSTEM ────────────────────────────────────────────── */}
           <section
-            className="relative py-20 lg:py-24 border-t"
+            className="cv-auto relative py-20 lg:py-24 border-t"
             style={{ borderColor: "hsl(var(--dusk-ivory) / 0.08)" }}
             aria-label="The framework"
           >
@@ -643,13 +688,15 @@ const SpiralLanding = () => {
               </ScrollReveal>
 
               <div className="grid grid-cols-3 gap-3 mt-6">
-                {[["8", "Lunar phases"], ["12", "Zodiac signs"], ["96", "Configurations"]].map(([v, l], i) => (
+                {/* "Configu\u00ADrations" carries a soft hyphen so the label can break
+                    cleanly inside a ~100px card on phones; invisible on wider screens. */}
+                {[["8", "Lunar phases"], ["12", "Zodiac signs"], ["96", "Configu\u00ADrations"]].map(([v, l], i) => (
                   <ScrollReveal key={l} delay={i * 0.08}>
-                    <div className="dusk-surface p-6 text-center">
+                    <div className="dusk-surface px-2 py-5 sm:p-6 text-center h-full">
                       <div className="dusk-serif text-[clamp(2rem,5vw,3rem)]" style={{ color: i === 2 ? "hsl(var(--dusk-gold))" : "hsl(var(--dusk-ivory))", fontWeight: 200 }}>
                         {v}
                       </div>
-                      <div className="dusk-eyebrow mt-2">{l}</div>
+                      <div className="dusk-eyebrow mt-2 max-sm:text-[0.625rem] max-sm:tracking-[0.2em]">{l}</div>
                     </div>
                   </ScrollReveal>
                 ))}
@@ -658,7 +705,7 @@ const SpiralLanding = () => {
           </section>
 
           {/* ── MANIFESTO ─────────────────────────────────────────────── */}
-          <section className="relative py-20 lg:py-24" aria-label="Manifesto">
+          <section className="cv-auto relative py-20 lg:py-24" aria-label="Manifesto">
             <div className="mx-auto max-w-[900px] px-6 lg:px-12 text-center">
               <ScrollReveal>
                 <p className="dusk-eyebrow mb-6" style={{ color: "hsl(var(--dusk-gold))" }}>
@@ -676,7 +723,7 @@ const SpiralLanding = () => {
           </section>
 
           {/* ── EMAIL CAPTURE ─────────────────────────────────────────── */}
-          <section className="relative py-16 lg:py-20 border-t" style={{ borderColor: "hsl(var(--dusk-ivory) / 0.08)" }} aria-label="Email subscription">
+          <section className="cv-auto relative py-16 lg:py-20 border-t" style={{ borderColor: "hsl(var(--dusk-ivory) / 0.08)" }} aria-label="Email subscription">
             <div className="mx-auto max-w-[760px] px-6 lg:px-12">
               <LunarCapture
                 source="spiral-landing"

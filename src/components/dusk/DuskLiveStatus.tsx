@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Activity, MapPin, Zap, Clock, Sparkles, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useMoonPhase } from "@/hooks/useMoonPhase";
@@ -50,11 +49,7 @@ export function DuskLiveStatus() {
   const hoursRemaining = moonPhase.astronomical.hoursInSign;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="relative"
-    >
+    <div className="relative fade-up-20">
       <div
         className="dusk-surface relative rounded-[1.25rem] p-7 lg:p-10 overflow-hidden"
         style={{ borderLeft: `2px solid ${tint}` }}
@@ -214,7 +209,7 @@ export function DuskLiveStatus() {
           </Link>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

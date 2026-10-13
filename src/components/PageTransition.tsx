@@ -1,20 +1,17 @@
-import { motion } from "framer-motion";
 import { ReactNode } from "react";
-import { pageEnter } from "@/design-system/motion";
 
 interface PageTransitionProps {
   children: ReactNode;
 }
 
+/**
+ * Page-enter fade (opacity 0 → 1, 0.6s, ease [0.4, 0, 0.2, 1]).
+ *
+ * Pure CSS (see `.page-enter` in index.css) so the ~120 KB framer-motion
+ * bundle stays off the critical path of every page that uses this wrapper.
+ * Visual parity with the previous `pageEnter` variant; there was no
+ * AnimatePresence around the routes, so the exit variant never ran.
+ */
 export function PageTransition({ children }: PageTransitionProps) {
-  return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      variants={pageEnter}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className="page-enter">{children}</div>;
 }
