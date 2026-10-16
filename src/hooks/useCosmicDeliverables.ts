@@ -29,6 +29,21 @@ const initial: DeliverableState = {
   chartStatus: "idle",
 };
 
+// supabase-js hides the server's reason behind "Edge Function returned a non-2xx
+// status code". The real JSON body is on error.context; pull the message out of it.
+async function readInvokeError(error: unknown, fallback: string): Promise<string> {
+  const ctx = (error as { context?: Response })?.context;
+  if (ctx && typeof ctx.json === "function") {
+    try {
+      const body = await ctx.clone().json();
+      if (body?.error) return String(body.error);
+    } catch {
+      /* body was not JSON */
+    }
+  }
+  return (error as Error)?.message || fallback;
+}
+
 export function useCosmicDeliverables() {
   const [state, setState] = useState<DeliverableState>(initial);
 
@@ -67,7 +82,11 @@ export function useCosmicDeliverables() {
         },
       );
       if (createErr || !createData?.reportId) {
-        setState((s) => ({ ...s, error: "Could not create report record", audioStatus: "failed", pdfStatus: "failed", chartStatus: "failed" }));
+        const reason = createErr
+          ? await readInvokeError(createErr, "unknown error")
+          : "no report id returned";
+        console.error("create-natal-report failed:", reason);
+        setState((s) => ({ ...s, error: `Could not create report record: ${reason}`, audioStatus: "failed", pdfStatus: "failed", chartStatus: "failed" }));
         return;
       }
       const reportId: string = createData.reportId;
@@ -81,14 +100,18 @@ export function useCosmicDeliverables() {
         .invoke("generate-cosmic-symphony", {
           body: { reportId, prompt, durationMs: COSMIC_TRACK_DURATION_MS },
         })
-        .then(({ data, error }) => {
+        .then(async ({ data, error }) => {
           if (error || !data?.audioUrl) {
-            setState((s) => ({ ...s, audioStatus: "failed" }));
+            const reason = error
+              ? await readInvokeError(error, "unknown error")
+              : "no audio URL returned";
+            console.error("generate-cosmic-symphony failed:", reason);
+            setState((s) => ({ ...s, audioStatus: "failed", error: `Music generation failed: ${reason}` }));
             return;
           }
           setState((s) => ({ ...s, audioUrl: data.audioUrl, audioStatus: "ready" }));
         })
-        .catch(() => setState((s) => ({ ...s, audioStatus: "failed" })));
+        .catch((err) => setState((s) => ({ ...s, audioStatus: "failed", error: `Music generation failed: ${String(err)}` })));
 
       // 2b: chart PNG (rendered client-side, uploaded)
       const chartJob = (async () => {

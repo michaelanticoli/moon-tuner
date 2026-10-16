@@ -57,7 +57,21 @@ async function call<T>(action: string, body?: unknown): Promise<T> {
   const { data, error } = await supabase.functions.invoke(`${FN}/${action}`, {
     body,
   });
-  if (error) throw new Error(error.message);
+  if (error) {
+    // supabase-js reports only "non-2xx status code"; the server's reason is in the body.
+    const ctx = (error as { context?: Response }).context;
+    let reason = error.message;
+    if (ctx && typeof ctx.json === "function") {
+      try {
+        const body = await ctx.clone().json();
+        if (body?.error) reason = String(body.error);
+      } catch {
+        /* not JSON */
+      }
+    }
+    console.error(`quantum-api/${action} failed:`, reason);
+    throw new Error(reason);
+  }
   if (data && typeof data === "object" && "success" in data && data.success === false) {
     throw new Error((data as { error?: string }).error ?? "Quantum API error");
   }
