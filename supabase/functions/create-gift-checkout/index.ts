@@ -38,7 +38,7 @@ const GIFT_CATALOG: Record<
   membership_1month: { label: "1-Month Reflective Membership Gift", amountCents: 1200 },
   membership_3month: { label: "3-Month Reflective Membership Gift", amountCents: 3000 },
   membership_6month: { label: "6-Month Reflective Membership Gift", amountCents: 5400 },
-  report: { label: "Report Gift", amountCents: 1700 },
+  report: { label: "Report Gift", amountCents: 1000 },
   digital_good: { label: "Digital Good Gift", amountCents: 1500 },
 };
 
