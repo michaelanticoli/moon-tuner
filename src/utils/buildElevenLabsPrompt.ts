@@ -1,18 +1,14 @@
 // Canonical style for every generated Astro-Harmonic (cosmic) track.
 //
-// The aesthetic is fixed. Only the chart-specific colour (key, tempo,
-// sign textures, aspect-driven harmony) varies between readings, so every
-// track sounds like the same family:
+// Purpose: the track is a musical translation of the listener's natal
+// chart. Each planetary placement is a distinct voice, each sign colours
+// that voice, each aspect is a harmonic relationship between two voices,
+// and the chart is heard as one piece.
 //
-//   cosmic and sparse, piano-focused. Organic acoustic prepared piano at
-//   the centre, realistic and intimate, with avant-garde preparations and
-//   effects. Analog warmth in the room: tape hiss, dust, wow and flutter,
-//   worn recording texture. No synthpop and no electronic dance elements.
-//   Built as an instrumental bed to sit beneath spoken words.
-//
-// Each track is an instrumental bed for narration: it must leave room
-// for the voice, never compete with it, and never contain vocals or
-// spoken word of its own.
+// Aesthetic: sparse, cosmic and piano-focused. Organic acoustic prepared
+// piano at the centre, realistic and intimate, with avant-garde
+// preparations and effects. Analog warmth: tape, dust, wow and flutter.
+// No synthesizers or electronic dance elements.
 import type { ChartData } from "@/types/astrology";
 import type { QuantumMelodicReading } from "@/types/quantumMelodic";
 
@@ -21,38 +17,10 @@ export const COSMIC_TRACK_DURATION_MS = 140_000;
 
 /** Canonical style brief, stated once and shared by every track. */
 export const COSMIC_STYLE_BRIEF =
-  "A 120 to 150 second instrumental piece: cosmic and sparse, and piano-focused. Organic acoustic prepared piano at the centre, realistic and intimate, with avant-garde preparations and effects. Analog warmth throughout: tape, dust, gentle wow and flutter, and a worn, lived-in recording texture. Minimal and gentle, with a faint otherworldly, science-fiction sense created by the preparations and effects rather than by synthesizers. Built as an instrumental bed to sit beneath spoken words, with an inspirational and motivating lilt.";
+  "A 120 to 150 second instrumental piece that is a musical translation of a natal chart. Each planet is a distinct voice, each sign colours that voice, each aspect is a harmonic relationship between two voices, and the whole chart is heard as one piece. Sparse, cosmic and piano-focused: organic acoustic prepared piano at the centre, realistic and intimate, with avant-garde preparations and effects. Analog warmth throughout: tape, dust, gentle wow and flutter, and a worn, lived-in recording texture. No synthesizers or electronic dance elements.";
 
-// Sign colour: a prepared-piano or acoustic colour per sign, with analog
-// tape and room character. No synthesizer pads, electronic pulses, or
-// drum machines.
-const SIGN_TEXTURE: Record<string, string> = {
-  Aries:       "a muted piano string struck with a small wooden mallet, and a dry, close tape thump on the off-beats",
-  Taurus:      "a warm, low felt-muted piano bass and a slow, resonant wooden box drone beneath it",
-  Gemini:      "two hands of prepared piano trading short, bright figures, with a tiny music-box plink in between",
-  Cancer:      "a soft, distant wordless hum from an unseen room, with heavy tape hiss and a faint dust crackle",
-  Leo:         "a single warm, sustained piano chord answering the melody, with a gentle, heartbeat-like thump on the piano lid",
-  Virgo:       "fine, precise prepared-piano filigree and small metal bells, ticking with restraint",
-  Libra:       "two piano voices in quiet counterpoint, one touched with a paper strip and one left clean",
-  Scorpio:     "a deep, resonant low-string piano drone, with the sustain pedal half-down and a soft tape wobble",
-  Sagittarius: "a loose, unhurried acoustic guitar figure with a long, open piano phrase above it",
-  Capricorn:   "a patient, austere piano ostinato with spaced, mechanical clicks from the instrument's action",
-  Aquarius:    "glassy, bell-like prepared-piano harmonics and a far-off, cool metallic shimmer",
-  Pisces:      "a soft, dissolving piano wash through wide reverb, with a distant tape-warped breath of woodwind",
-};
-
-const ELEMENT_FEEL: Record<string, string> = {
-  Fire:  "bright and forward-leaning, with small, sudden rhythmic gestures that settle back to stillness",
-  Earth: "grounded and patient, built from a repeated piano figure that changes very slowly",
-  Air:   "weightless and curious, with light, quick figures and open air between them",
-  Water: "flowing in long, soft tides, with generous silence and wide reverb between phrases",
-};
-
-const MODALITY_STRUCTURE: Record<string, string> = {
-  Cardinal: "opening with a clear, simple piano motif that returns in each new section",
-  Fixed:    "anchored by a sustained, hypnotic piano drone while the harmony shifts gently above it",
-  Mutable:  "with gentle modulation, the tonal centre drifting and returning like weather",
-};
+const MAX_PLANET_VOICES = 10;
+const MAX_ASPECTS = 6;
 
 // Deterministic-but-chart-specific signature.
 function chartSignature(chart: ChartData): number {
@@ -62,74 +30,83 @@ function chartSignature(chart: ChartData): number {
   return Math.abs(h);
 }
 
+/** One line per placement: who it is, where it sits, and how it sounds. */
+function describePlanetVoices(chart: ChartData, qm: QuantumMelodicReading | null): string[] {
+  if (qm && qm.planets.length > 0) {
+    return qm.planets.slice(0, MAX_PLANET_VOICES).map(({ position, qmData, signData, houseNumber }) => {
+      const retro = position.isRetrograde ? ", retrograde (a turned, inward inflection)" : "";
+      const voice = qmData
+        ? `voiced by ${qmData.instrument} (${qmData.timbre}) on ${qmData.note}${qmData.octave}`
+        : "a distinct, clear voice";
+      const colour = signData?.texture ? `, coloured by ${signData.texture}` : "";
+      return `${position.name} in ${position.sign}${retro}, house ${houseNumber}: ${voice}${colour}.`;
+    });
+  }
+  return chart.planets.slice(0, MAX_PLANET_VOICES).map(p =>
+    `${p.name} in ${p.sign}${p.isRetrograde ? ", retrograde" : ""}: a distinct, clear voice.`,
+  );
+}
+
+/** Tightest aspects first, since they carry the strongest harmonic relationships. */
+function describeAspects(qm: QuantumMelodicReading | null): string[] {
+  const aspects = [...(qm?.aspects ?? [])].sort((a, b) => a.orb - b.orb).slice(0, MAX_ASPECTS);
+  return aspects.map(a =>
+    `${a.planet1} ${a.aspectType.name.toLowerCase()} ${a.planet2}, a ${a.aspectType.harmonic_interval} ${a.aspectType.consonance === "consonant" ? "consonance" : "tension"} between their two voices.`,
+  );
+}
+
 export function buildElevenLabsPrompt(
   chart: ChartData,
   qm: QuantumMelodicReading | null,
 ): string {
-  const sun = chart.sunSign;
-  const moon = chart.moonSign;
-  const rising = chart.ascendant;
-
-  const sunTex    = SIGN_TEXTURE[sun]    ?? "a soft, resonant piano figure";
-  const moonTex   = SIGN_TEXTURE[moon]   ?? "a gentle, dusty tape-warmed piano line";
-  const risingTex = SIGN_TEXTURE[rising] ?? "a sparse prepared-piano pulse";
-
   const key      = qm?.overallKey       ?? "D minor";
   const tempo    = qm?.overallTempo     ?? 84;
   const element  = qm?.dominantElement  ?? "Water";
   const modality = qm?.dominantModality ?? "Mutable";
+  const sigDigit = chartSignature(chart) % 3;
 
-  const elementFeel       = ELEMENT_FEEL[element]        ?? "gently resonant";
-  const modalityStructure = MODALITY_STRUCTURE[modality] ?? "with slowly evolving harmonic motion";
+  const elementFeel = ({
+    Fire:  "bright and forward-leaning, with small, sudden gestures that settle back to stillness",
+    Earth: "grounded and patient, built from a repeated figure that changes very slowly",
+    Air:   "weightless and curious, with light, quick figures and open air between them",
+    Water: "flowing in long, soft tides, with generous silence between phrases",
+  } as Record<string, string>)[element] ?? "gently resonant";
 
-  // Aspect-driven harmony, kept gentle: tension softens into colour,
-  // consonance stays open and spacious.
-  const aspects   = qm?.aspects ?? [];
-  const tensions  = aspects.filter(a => ["Square", "Opposition"].includes(a.aspectType.name)).length;
-  const harmonies = aspects.filter(a => ["Trine", "Sextile", "Conjunction"].includes(a.aspectType.name)).length;
-  const sigDigit  = chartSignature(chart) % 3;
-
-  const harmonicCharacter =
-    tensions > harmonies
-      ? "Let a little tension colour the harmony: a suspended piano chord that resolves softly and late, never harsh."
-      : harmonies > tensions
-      ? "Keep the harmony open and luminous: airy piano voicings that ring and sustain."
-      : "Move gently between light tension and rest, so the harmony breathes without ever feeling anxious.";
+  const modalityStructure = ({
+    Cardinal: "opening with a clear, simple motif that returns in each new section",
+    Fixed:    "anchored by a sustained, hypnotic drone while the harmony shifts gently above it",
+    Mutable:  "with gentle modulation, the tonal centre drifting and returning like weather",
+  } as Record<string, string>)[modality] ?? "with slowly evolving harmonic motion";
 
   const harmonicMotion = [
-    "Use slow, sparse chord changes built on modal colour, with simple, singable melodic movement in the right hand.",
+    "Use slow, sparse chord changes built on modal colour, with simple, singable melodic movement.",
     "Use gentle suspensions and soft pivots to a neighbouring key centre, returning home with ease.",
-    "Hold long pedal tones under slowly shifting piano voicings, with one clear, sustained lift at the midpoint.",
+    "Hold long pedal tones under slowly shifting voicings, with one clear, sustained lift at the midpoint.",
   ][sigDigit];
 
-  // Tempo-aware pulse: almost always rubato and unhurried. No beat machines.
   const pulseDirective =
     tempo < 80
-      ? "The piano breathes freely in rubato, with no steady pulse at all, only long open silences."
+      ? "The piano breathes freely in rubato, with no steady pulse, only long open silences."
       : tempo > 100
-      ? "A light, human pulse is marked by the piano's own soft strikes and a faint wooden tap, never a drum machine or synth sequence."
-      : "A subtle, intermittent pulse comes from the piano and a faint tape-warped thump, more atmosphere than beat, sometimes vanishing for long stretches.";
+      ? "A light, human pulse is marked by the piano's own soft strikes and a faint wooden tap, never a drum machine."
+      : "A subtle, intermittent pulse comes from the piano and a faint tape-warped thump, more atmosphere than beat.";
 
-  const structureDirective =
-    "Structure is sparse and through-composed: a quiet opening with one simple piano motif; a widening middle where prepared-piano textures and resonances open up; a gentle, warm lift in the final third, rising with weight rather than force; then a calm, dusty dissolution into silence.";
-
-  const voiceSpaceDirective =
-    "Keep the mid-range and upper-mid range clear and uncluttered, with fewer notes at any one moment so a spoken voice can sit on top without masking. Keep dynamics steady and soft: no sudden swells, no sharp accents that would fight the narration.";
+  const planetVoices = describePlanetVoices(chart, qm);
+  const aspects = describeAspects(qm);
 
   return [
-    `${COSMIC_STYLE_BRIEF}`,
+    COSMIC_STYLE_BRIEF,
     `Instrumental, in ${key} at approximately ${tempo} BPM, between 120 and 150 seconds long.`,
-    "Piano-focused throughout: an organic, acoustic piano with a realistic, intimate sound, its hammers, pedals and strings audible. Avant-garde preparations and effects are used with restraint, such as objects on the strings, muted or damped resonance, and reversed or looped piano tails. Analog character: tape hiss, dust, subtle wow and flutter, and a gentle room tone.",
-    `Sun voice (${sun}) adds: ${sunTex}.`,
-    `Moon voice (${moon}) adds: ${moonTex}.`,
-    `Rising voice (${rising}) adds: ${risingTex}.`,
+    "Piano-focused throughout, its hammers, pedals and strings audible. Avant-garde preparations and effects are used with restraint, such as objects on the strings, damped resonance, and reversed or looped tails.",
     `Overall feel is ${elementFeel}, ${modalityStructure}.`,
-    `${aspects.length} planetary aspects shape the harmony. ${harmonicCharacter}`,
+    "The planetary voices, in order of importance, each clearly audible and distinct:",
+    ...planetVoices,
+    aspects.length > 0 ? "The aspects, which set how the voices meet:" : "",
+    ...aspects,
     harmonicMotion,
     pulseDirective,
-    structureDirective,
-    voiceSpaceDirective,
-    "High fidelity and natural, with the warmth of old tape. Purely instrumental: no singing, no vocals, no spoken word, no choir lyrics.",
-    "AVOID: synthesizers, synthpop, electronic pulses, drum machines, electronic dance elements, sequenced basslines, digital pads, cinematic trailer booms, orchestral swells, heroic brass fanfares, cymbal crashes, EDM drops, dubstep, trance, loud builds, and any dark or menacing tone.",
-  ].join(" ");
+    "Structure is sparse and through-composed: a quiet opening where the Sun's voice speaks first; the other voices enter one by one; a warm lift in the final third where the voices meet; then a calm, dusty dissolution into silence.",
+    "Purely instrumental: no singing, no vocals, no spoken word, no choir lyrics.",
+    "AVOID: synthesizers, synthpop, electronic pulses, drum machines, electronic dance elements, sequenced basslines, digital pads, cinematic trailer booms, orchestral swells, heroic brass fanfares, cymbal crashes, EDM drops, loud builds, and any dark or menacing tone.",
+  ].filter(Boolean).join(" ");
 }
