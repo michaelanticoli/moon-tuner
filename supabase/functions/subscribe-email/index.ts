@@ -41,18 +41,21 @@ serve(async (req) => {
   }
 
   try {
-    const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-    if (isRateLimited(clientIP)) {
-      logStep("Rate limited", { ip: clientIP });
-      return new Response(
-        JSON.stringify({ success: false, error: "Too many requests. Please try again later." }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 429 }
-      );
-    }
-
     const body = await req.json();
     const email = validateEmail(body.email);
     const source = typeof body.source === "string" && body.source.length < 50 ? body.source : "website";
+
+    // Rate-limit per client IP. If no IP is forwarded, fall back to the email
+    // so unrelated visitors never share one bucket.
+    const forwardedIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+    const clientKey = forwardedIP ? `ip:${forwardedIP}` : `email:${email}`;
+    if (isRateLimited(clientKey)) {
+      logStep("Rate limited", { key: clientKey });
+      return new Response(
+        JSON.stringify({ success: false, error: "Too many attempts. Please wait a few minutes and try again." }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 429 }
+      );
+    }
 
     logStep("Processing subscription", { source });
 
@@ -104,28 +107,34 @@ serve(async (req) => {
       });
     }
 
-    // Also save to database for backup
-    const supabaseClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
-      { auth: { persistSession: false } }
-    );
-
-    const { error: dbError } = await supabaseClient
-      .from("newsletter_subscribers")
-      .upsert(
-        {
-          email,
-          source,
-          convertkit_subscriber_id: mailchimpData.id?.toString() || null,
-        },
-        { onConflict: "email" }
+    // Also save to database for backup. Failures here are logged, never fatal.
+    try {
+      const supabaseClient = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+        { auth: { persistSession: false } }
       );
 
-    if (dbError) {
-      logStep("Database save error (non-fatal)", { error: dbError.message });
-    } else {
-      logStep("Saved to database");
+      const { error: dbError } = await supabaseClient
+        .from("newsletter_subscribers")
+        .upsert(
+          {
+            email,
+            source,
+            convertkit_subscriber_id: mailchimpData.id?.toString() || null,
+          },
+          { onConflict: "email" }
+        );
+
+      if (dbError) {
+        logStep("Database save error (non-fatal)", { error: dbError.message });
+      } else {
+        logStep("Saved to database");
+      }
+    } catch (dbErr) {
+      logStep("Database call failed (non-fatal)", {
+        error: dbErr instanceof Error ? dbErr.message : String(dbErr),
+      });
     }
 
     return new Response(

@@ -40,7 +40,19 @@ export function EmailSubscribeForm({
         body: { email: email.trim(), source },
       });
 
-      if (error) throw error;
+      if (error) {
+        // Non-2xx responses carry the function's own message in the body.
+        let serverMessage: string | undefined;
+        try {
+          const payload = await (error as { context?: Response }).context?.json();
+          serverMessage = payload?.error;
+        } catch {
+          serverMessage = undefined;
+        }
+        setStatus("error");
+        setMessage(serverMessage || "Unable to subscribe. Please try again.");
+        return;
+      }
 
       if (data?.success) {
         setStatus("success");
@@ -52,7 +64,7 @@ export function EmailSubscribeForm({
       }
     } catch {
       setStatus("error");
-      setMessage("Unable to subscribe. Please try again.");
+      setMessage("Unable to subscribe. Please check your connection and try again.");
     }
   };
 
