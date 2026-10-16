@@ -23,7 +23,7 @@ type BioLink = {
 const LINKS: BioLink[] = [
   {
     label: "Hear your birth chart as music",
-    note: "An original composition and spoken reading from your exact chart · $25",
+    note: "An original composition and spoken reading from your exact chart · $19",
     href: "/quantumelodic",
     featured: true,
   },

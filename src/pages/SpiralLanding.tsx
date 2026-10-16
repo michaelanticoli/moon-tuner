@@ -310,7 +310,7 @@ const SpiralLanding = () => {
                     style={{ animationDelay: "0.36s" }}
                   >
                     <a href="#astro-harmonic-symphony" className="dusk-btn dusk-btn-primary">
-                      Hear Your Chart — $25
+                      Hear Your Chart — $19
                     </a>
                     <a href="#whattime" className="dusk-btn dusk-btn-ghost">
                       Explore the Free Tools
@@ -359,11 +359,11 @@ const SpiralLanding = () => {
                       className="text-[0.92rem] leading-[1.6] max-w-[590px]"
                       style={{ color: "hsl(var(--dusk-gold) / 0.9)" }}
                     >
-                      $25, one-time · ElevenLabs composition and voice narration, plus the written report — all included.
+                      $19, one-time · ElevenLabs composition and voice narration, plus the written report — all included.
                     </p>
                     <div className="mt-8 flex flex-wrap gap-3">
                       <Link to="/quantumelodic" className="dusk-btn dusk-btn-primary">
-                        Create Your Symphony — $25
+                        Create Your Symphony — $19
                       </Link>
                       <a href="#symphony-sample" className="dusk-btn dusk-btn-ghost">
                         Hear a Sample

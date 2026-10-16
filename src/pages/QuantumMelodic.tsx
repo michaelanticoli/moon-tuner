@@ -423,13 +423,13 @@ const QuantumMelodic = () => {
                 <div className="mb-8 max-w-md rounded-xl border border-accent/30 bg-accent/5 p-5">
                   <p className="text-xs system-label mb-2 text-accent">One Simple Price</p>
                   <p className="text-sm text-foreground leading-relaxed">
-                    <span className="font-semibold">$25</span> for the complete Astro-Harmonic Report — your composition and voice narration, both rendered by ElevenLabs, plus your written interpretation, all generated from your exact birth chart.
+                    <span className="font-semibold">$19</span> for the complete Astro-Harmonic Report — your composition and voice narration, both rendered by ElevenLabs, plus your written interpretation, all generated from your exact birth chart.
                   </p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
-                    {checkoutLoading ? "Starting Checkout…" : "Generate Your Report — $25"}
+                    {checkoutLoading ? "Starting Checkout…" : "Generate Your Report — $19"}
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground/80 mt-3 max-w-md leading-relaxed">
@@ -464,7 +464,7 @@ const QuantumMelodic = () => {
                   generated from your exact birth chart.
                 </p>
                 <Button onClick={beginCheckout} disabled={checkoutLoading} size="lg" className="system-button">
-                  {checkoutLoading ? "Starting Checkout…" : "Generate Your Report — $25"}
+                  {checkoutLoading ? "Starting Checkout…" : "Generate Your Report — $19"}
                 </Button>
                 <p className="text-xs text-muted-foreground/80 mt-4 max-w-md mx-auto leading-relaxed">
                   If the composition doesn't feel like yours, email me within 7 days. I'll refund you in full — and you keep the report. This work is meant to resonate. If it doesn't, you owe me nothing.

@@ -18,8 +18,8 @@ export const STRIPE_LINKS = {
   // ── One-time digital products · MOONTUNER INC. ────────────────────────────
   // Lunar Arc Report $25 → moontuner.xyz/lunar-reports?paid=true
   "lunar-arc":         "https://buy.stripe.com/6oU3cubaW8n2cGD32pe7m0j",
-  // Astro-Harmonic Natal Analysis $25 → moontuner.xyz/quantumelodic?paid=true
-  "astro-harmonic":    "https://buy.stripe.com/6oU3cua6S5aQayv5axe7m0d",
+  // Astro-Harmonic Natal Analysis $19 → moontuner.xyz/quantumelodic?paid=true
+  "astro-harmonic":    "https://buy.stripe.com/3cI5kC5QCdHmgWT32pe7m0l",
   // Lunar Cipher Calendar, pay what you can ($20 suggested) → moontuner.xyz/lunar-cipher
   "cipher-calendar":   "https://buy.stripe.com/6oU3cugvg9r6bCzauRe7m06",
   // Academy of Phasecraft $17/mo → moontuner.xyz/school/portal
