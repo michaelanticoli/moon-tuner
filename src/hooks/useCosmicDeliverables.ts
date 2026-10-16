@@ -36,7 +36,7 @@ async function readInvokeError(error: unknown, fallback: string): Promise<string
   if (ctx && typeof ctx.json === "function") {
     try {
       const body = await ctx.clone().json();
-      if (body?.error) return String(body.error);
+      if (body?.error ?? body?.detail) return String(body.error ?? body.detail);
     } catch {
       /* body was not JSON */
     }

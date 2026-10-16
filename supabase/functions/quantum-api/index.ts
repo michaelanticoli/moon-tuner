@@ -160,13 +160,52 @@ serve(async (req) => {
       }
     }
 
-    const upstream = await fetch(`${QM_BASE}/${action}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(upstreamBody),
-    });
+    // The Render-hosted chart server sleeps when idle and can take a while to
+    // wake, so retry transient failures before reporting the server as down.
+    const RETRYABLE = new Set([502, 503, 504]);
+    let upstream: Response | null = null;
+    let lastReason = "no response";
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        const r = await fetch(`${QM_BASE}/${action}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(upstreamBody),
+          signal: AbortSignal.timeout(60_000),
+        });
+        if (r.ok || !RETRYABLE.has(r.status)) {
+          upstream = r;
+          break;
+        }
+        lastReason = `status ${r.status}`;
+      } catch (err) {
+        lastReason = err instanceof Error ? err.message : "network error";
+      }
+      if (attempt < 3) await new Promise((res) => setTimeout(res, 8000));
+    }
+
+    if (!upstream) {
+      console.error("quantum-api upstream unavailable:", lastReason);
+      return bad(
+        "The chart server is waking up or unavailable. Please wait a minute and try again.",
+        503,
+      );
+    }
 
     const text = await upstream.text();
+    if (!upstream.ok) {
+      // Pass the chart server's own reason through in the same shape the app reads.
+      let message = `Chart server error (${upstream.status})`;
+      try {
+        const parsed = JSON.parse(text);
+        message = String(parsed?.error ?? parsed?.detail ?? message);
+      } catch {
+        /* not JSON */
+      }
+      console.error("quantum-api upstream error:", upstream.status, text.slice(0, 300));
+      return bad(message, upstream.status);
+    }
+
     return new Response(text, {
       status: upstream.status,
       headers: {
