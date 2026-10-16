@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { ChartData, BirthData } from "@/types/astrology";
 import type { QuantumMelodicReading } from "@/types/quantumMelodic";
-import { buildElevenLabsPrompt } from "@/utils/buildElevenLabsPrompt";
+import { buildElevenLabsPrompt, COSMIC_TRACK_DURATION_MS } from "@/utils/buildElevenLabsPrompt";
 
 export interface DeliverableUrls {
   audio?: string;
@@ -79,7 +79,7 @@ export function useCosmicDeliverables() {
       // 2a: ElevenLabs music (long-running, ~30-90s)
       const audioJob = supabase.functions
         .invoke("generate-cosmic-symphony", {
-          body: { reportId, prompt, durationMs: 140000 },
+          body: { reportId, prompt, durationMs: COSMIC_TRACK_DURATION_MS },
         })
         .then(({ data, error }) => {
           if (error || !data?.audioUrl) {
