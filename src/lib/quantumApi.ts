@@ -64,7 +64,7 @@ async function call<T>(action: string, body?: unknown): Promise<T> {
     if (ctx && typeof ctx.json === "function") {
       try {
         const body = await ctx.clone().json();
-        if (body?.error) reason = String(body.error);
+        if (body?.error ?? body?.detail) reason = String(body.error ?? body.detail);
       } catch {
         /* not JSON */
       }
