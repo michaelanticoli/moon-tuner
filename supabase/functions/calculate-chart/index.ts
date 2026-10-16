@@ -51,18 +51,59 @@ function approximateChiron(jd: number): number {
   return ((lon % 360) + 360) % 360;
 }
 
+/**
+ * Geocode a birth place. Nominatim (OpenStreetMap) often rate-limits or refuses
+ * requests from shared cloud servers, so retry once and then fall back to Photon
+ * (also OpenStreetMap-based, no key needed) before giving up.
+ */
 async function geocodeLocation(location: string) {
   const sanitized = location.replace(/[<>"'&;]/g, "").trim().substring(0, 200);
-  const response = await fetch(
-    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(sanitized)}&limit=1`,
-    { headers: { "User-Agent": "MOONtuner/1.0 (lunar alignment system)" } }
-  );
-  if (!response.ok) throw new Error("Unable to process location");
-  const results = await response.json();
-  if (results.length === 0) throw new Error(`Location not found: "${sanitized}"`);
-  const latitude = parseFloat(results[0].lat);
-  const longitude = parseFloat(results[0].lon);
-  return { latitude, longitude };
+  const q = encodeURIComponent(sanitized);
+
+  const fromNominatim = async () => {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`,
+      { headers: { "User-Agent": "MOONtuner/1.0 (lunar alignment system)" }, signal: AbortSignal.timeout(8000) },
+    );
+    if (!response.ok) throw new Error(`nominatim status ${response.status}`);
+    const results = await response.json();
+    if (!Array.isArray(results) || results.length === 0) return null;
+    return { latitude: parseFloat(results[0].lat), longitude: parseFloat(results[0].lon) };
+  };
+
+  const fromPhoton = async () => {
+    const response = await fetch(`https://photon.komoot.io/api/?q=${q}&limit=1`, {
+      headers: { "User-Agent": "MOONtuner/1.0 (lunar alignment system)" },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!response.ok) throw new Error(`photon status ${response.status}`);
+    const json = await response.json();
+    const coords = json?.features?.[0]?.geometry?.coordinates;
+    if (!Array.isArray(coords)) return null;
+    return { latitude: Number(coords[1]), longitude: Number(coords[0]) };
+  };
+
+  const reasons: string[] = [];
+  for (const [name, lookup] of [
+    ["nominatim", fromNominatim],
+    ["nominatim", fromNominatim],
+    ["photon", fromPhoton],
+  ] as const) {
+    try {
+      const hit = await lookup();
+      if (hit && Number.isFinite(hit.latitude) && Number.isFinite(hit.longitude)) return hit;
+      reasons.push(`${name}: no match`);
+    } catch (err) {
+      reasons.push(`${name}: ${err instanceof Error ? err.message : "failed"}`);
+    }
+    await new Promise((r) => setTimeout(r, 600));
+  }
+
+  console.error("geocode failed for", sanitized, reasons);
+  if (reasons.every((r) => r.endsWith("no match"))) {
+    throw new Error(`Location not found: "${sanitized}". Try adding a state or country.`);
+  }
+  throw new Error(`Could not look up the birth location right now (${reasons.join("; ")}). Please try again in a minute.`);
 }
 
 /**
@@ -255,8 +296,12 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error("Chart calculation error:", error);
+    // Geocoding messages are written to be shown to the user; pass them through.
+    const message = error instanceof Error && /birth location|Location not found/.test(error.message)
+      ? error.message
+      : "Unable to calculate birth chart. Please check your input.";
     return new Response(
-      JSON.stringify({ error: "Unable to calculate birth chart. Please check your input." }),
+      JSON.stringify({ error: message }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

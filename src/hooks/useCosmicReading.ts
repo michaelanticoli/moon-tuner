@@ -83,7 +83,21 @@ export function useCosmicReading() {
             location: birthData.location,
           },
         });
-        if (fnError) throw new Error(fnError.message || 'Chart service unavailable');
+        if (fnError) {
+          // supabase-js hides the server's reason behind "non-2xx status code";
+          // read the function's own JSON error from the response body.
+          const ctx = (fnError as { context?: Response }).context;
+          let reason = fnError.message || 'Chart service unavailable';
+          if (ctx && typeof ctx.json === 'function') {
+            try {
+              const body = await ctx.clone().json();
+              if (body?.error) reason = String(body.error);
+            } catch {
+              /* body was not JSON */
+            }
+          }
+          throw new Error(reason);
+        }
         if (!data || (data as { error?: string }).error) {
           throw new Error((data as { error?: string })?.error || 'Empty chart response');
         }
