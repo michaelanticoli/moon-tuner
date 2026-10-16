@@ -8,7 +8,6 @@ import { SEOHead, websiteSchema } from "@/components/SEOHead";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { DuskLiveStatus } from "@/components/dusk/DuskLiveStatus";
-import sampleChartAudio from "@/assets/sample-chart.mp3.asset.json";
 
 /**
  * Moontuner — "Spiral" landing page.
@@ -394,7 +393,7 @@ const SpiralLanding = () => {
                       className="w-full h-12"
                       controls
                       preload="none"
-                      src={sampleChartAudio.url}
+                      src="/audio/moontuner-sample.mp3"
                       aria-label="Sample Astro-Harmonic Symphony audio"
                     >
                       Your browser does not support audio playback.
