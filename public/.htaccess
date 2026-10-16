@@ -1,0 +1,12 @@
+# Single-page app routing for Apache hosts (e.g. Hostinger).
+# Serve real files and folders as-is; send every other path to index.html
+# so direct links like /quantumelodic or /lunar-reports load the app.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteRule . /index.html [L]
+</IfModule>
