@@ -7,7 +7,7 @@ Three print-ready HTML report templates:
 | File | Product | Price |
 |---|---|---|
 | `phasecraft-pocket-guide.html` | Free lead generator | $0 |
-| `lunar-arc-report.html` | Lunar Arc Report | $25 |
+| `lunar-arc-report.html` | Lunar Arc Report | $10 |
 | `natal-harmonic-analysis.html` | Astro-Harmonic Natal Analysis | $47 |
 
 ---
@@ -269,7 +269,7 @@ moon-tuner/
   src/
     components/
       reports/
-        LunarArcReport.tsx           ← $25 report component
+        LunarArcReport.tsx           ← $10 report component
         NatalHarmonicAnalysis.tsx    ← $47 report component
         PhasecraftGuide.tsx          ← Free (optional — may not need this)
         index.ts                     ← export { LunarArcReport, NatalHarmonicAnalysis }
@@ -299,7 +299,7 @@ When working in Lovable, the cleanest approach is:
 1. Open Lovable
 2. Paste the full JSX component code in the chat with this prompt:
 
-> "Add this as a new file at `src/components/reports/LunarArcReport.tsx`. Do not modify the layout or CSS. The component should accept a `LunarArcReportProps` interface. Wire it to the existing purchase success page so it renders when a user completes a $25 Stripe payment and a 'Download Report' button triggers `window.print()`."
+> "Add this as a new file at `src/components/reports/LunarArcReport.tsx`. Do not modify the layout or CSS. The component should accept a `LunarArcReportProps` interface. Wire it to the existing purchase success page so it renders when a user completes a $10 Stripe payment and a 'Download Report' button triggers `window.print()`."
 
 Lovable handles "add this component" instructions well when given complete code. Avoid asking it to design the report from scratch — provide the full component and ask it only to wire it up.
 
