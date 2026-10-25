@@ -2,6 +2,7 @@
 // All three run in parallel after a natal_reports row is created.
 import { useCallback, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { readInvokeError } from "@/lib/invokeError";
 import type { ChartData, BirthData } from "@/types/astrology";
 import type { QuantumMelodicReading } from "@/types/quantumMelodic";
 import { buildElevenLabsPrompt, COSMIC_TRACK_DURATION_MS } from "@/utils/buildElevenLabsPrompt";
@@ -31,19 +32,6 @@ const initial: DeliverableState = {
 
 // supabase-js hides the server's reason behind "Edge Function returned a non-2xx
 // status code". The real JSON body is on error.context; pull the message out of it.
-async function readInvokeError(error: unknown, fallback: string): Promise<string> {
-  const ctx = (error as { context?: Response })?.context;
-  if (ctx && typeof ctx.json === "function") {
-    try {
-      const body = await ctx.clone().json();
-      if (body?.error ?? body?.detail) return String(body.error ?? body.detail);
-    } catch {
-      /* body was not JSON */
-    }
-  }
-  return (error as Error)?.message || fallback;
-}
-
 export function useCosmicDeliverables() {
   const [state, setState] = useState<DeliverableState>(initial);
 
