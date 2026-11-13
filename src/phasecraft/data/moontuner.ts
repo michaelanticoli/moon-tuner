@@ -97,11 +97,11 @@ export const MOON_PHASES: MoonPhaseData[] = [
     mood: 'generous',
   },
   {
-    name: 'Third Quarter',
+    name: 'Last Quarter',
     energy: 'Release · Completion · Forgiveness',
     keywords: ['Release', 'Forgiveness', 'Completion'],
     description:
-      'The Third Quarter Moon calls for conscious release and letting go. This is a time to forgive, break old patterns, recalibrate, and clear space for the next cycle.',
+      'The Last Quarter Moon calls for conscious release and letting go. This is a time to forgive, break old patterns, recalibrate, and clear space for the next cycle.',
     bestFor:
       'Clearing clutter, ending patterns, breaking habits, forgiving, recalibration',
     personality: 'She\'s clearing out the closet. Not sad about it — relieved. Every bag she drops at Goodwill is a pound off her back. She forgave you before you asked.',

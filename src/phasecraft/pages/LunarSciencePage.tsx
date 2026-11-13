@@ -8,9 +8,10 @@ export default function LunarSciencePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-lg font-semibold tracking-tight">Lunar Science</h1>
-        <p className="text-xs text-muted-foreground mt-1">
-          Astronomical datapoints grounding the Phasecraft methodology
+        <h2 className="font-serif text-2xl text-foreground">The Sky We Can Stand On</h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          The measured facts under the practice. As the book puts it: when a number is measured, it is a measurement;
+          the rest is offered as practice.
         </p>
       </div>
 

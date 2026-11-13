@@ -57,9 +57,10 @@ export function NatalSignaturePanel({ report }: { report: LunarReport }) {
         <div className="p-6 bg-card border border-border rounded-2xl">
           <div className="flex items-center gap-3 mb-3">
             <Zap className="w-4 h-4 text-gold" />
-            <span className="text-[9px] uppercase tracking-[0.5em] text-muted-foreground font-bold">Solfeggio</span>
+            <span className="text-[9px] uppercase tracking-[0.5em] text-muted-foreground font-bold">Solfeggio tone</span>
           </div>
           <p className="text-foreground text-sm">{natal.solfeggio} — {natal.solfeggioMeaning}</p>
+          <p className="mt-2 text-[11px] text-muted-foreground">A traditional association, used as a symbol, not a measured effect.</p>
         </div>
         <div className="p-6 bg-card border border-border rounded-2xl">
           <div className="flex items-center gap-3 mb-3">

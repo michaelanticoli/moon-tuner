@@ -13,7 +13,9 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
       <Input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Search themes, prompts, archetypes..."
+        placeholder="Search the ninety-six…"
+        aria-label="Search the ninety-six signatures"
+        type="search"
         className="pl-10 min-h-[44px]"
       />
     </div>

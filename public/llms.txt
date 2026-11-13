@@ -8,7 +8,7 @@ Moontuner is a framework for energetic accountability and self-sovereignty built
 
 - [Start Here](/start): The four ways into Moontuner — Phasecraft, the Lunar Chaperone, the Astro-Harmonic Symphony, and the Lunar Map & Cazimi reports.
 - [For readers of PHASECRAFT](/book): The live companion to the book PHASECRAFT: The Moontuner Method.
-- [Phasecraft](/phasecraft): Tonight's phase-and-sign signature, the 96 matrix, calendar, and lunar science companion.
+- [Phasecraft](/phasecraft): Tonight's phase-and-sign signature, the 96 matrix, a lunar calendar, and lunar science. Each of the ninety-six has its own page at /phasecraft/signature/{sign}-{phase}, e.g. /phasecraft/signature/10-2 (Waxing Crescent in Capricorn), with the text of Appendix A of the book.
 - [Phasecraft School](/school): Learn the method in six modules; lessons and progress at /school/portal.
 - [Lunar Chaperone](/lunar-chaperone): Twenty-four half-moon workbooks in one continuous loop, opening on the half-cycle overhead now.
 - [Astro-Harmonic Symphony](/quantumelodic): A birth chart composed as music, with narrated reading and PDF.

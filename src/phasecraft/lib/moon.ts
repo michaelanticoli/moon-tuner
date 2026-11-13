@@ -3,7 +3,7 @@ import * as Astronomy from 'astronomy-engine';
 export interface MoonState {
   /** Moon phase 1-8 matching matrix columns (1=New, 5=Full) */
   phase: number;
-  /** Phase angle 0-360 (0=new, 90=first quarter, 180=full, 270=third quarter) */
+  /** Phase angle 0-360 (0=new, 90=first quarter, 180=full, 270=last quarter) */
   phaseAngle: number;
   /** Illuminated fraction 0-1 */
   illumination: number;
@@ -17,24 +17,30 @@ export interface MoonState {
   decan: number;
   /** Whether moon is waxing (illumination growing) */
   waxing: boolean;
-  /** Days until next phase boundary */
+  /** Days until the next phase begins */
   nextPhaseInDays: number;
-  /** Name of next major phase boundary */
+  /** Name of the phase that begins next */
   nextPhaseName: string;
 }
 
 const PHASE_NAMES = [
   'New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous',
-  'Full Moon', 'Waning Gibbous', 'Third Quarter', 'Waning Crescent',
+  'Full Moon', 'Waning Gibbous', 'Last Quarter', 'Waning Crescent',
 ];
 
 /**
- * Map a phase angle (0-360) to one of 8 matrix columns.
- * Each phase occupies a 45° band centered on its canonical angle.
+ * Map a phase angle (0-360, the Moon's angle ahead of the Sun) to one of the
+ * 8 matrix columns.
+ *
+ * PHASECRAFT (Chapter 1, "The Geometry of the Month") follows Dane Rudhyar:
+ * each phase begins at its exact angle and lasts until the next 45° mark.
+ * New Moon 0°–45°, Waxing Crescent 45°–90°, First Quarter 90°–135°, …,
+ * Waning Crescent 315°–360°. So "First Quarter" means the three to four days
+ * that begin at the exact First Quarter, not the days around it.
  */
-function phaseAngleToColumn(angle: number): number {
-  const shifted = (angle + 22.5) % 360;
-  return Math.floor(shifted / 45) + 1; // 1-8
+export function phaseAngleToColumn(angle: number): number {
+  const a = ((angle % 360) + 360) % 360;
+  return Math.min(8, Math.floor(a / 45) + 1); // 1-8
 }
 
 export function getMoonState(date: Date = new Date()): MoonState {
@@ -53,22 +59,18 @@ export function getMoonState(date: Date = new Date()): MoonState {
   const phase = phaseAngleToColumn(phaseAngle);
   const waxing = phaseAngle < 180;
 
-  // Next major quarter (0, 90, 180, 270)
-  const quarters = [0, 90, 180, 270];
-  let nextQuarter = quarters.find((q) => q > phaseAngle);
-  if (nextQuarter === undefined) nextQuarter = 360; // back to new
-  const quarterNames: Record<number, string> = {
-    0: 'New Moon', 90: 'First Quarter', 180: 'Full Moon', 270: 'Third Quarter', 360: 'New Moon',
-  };
+  // Next phase boundary: the next 45° mark, where the next phase begins.
+  const nextBoundary = (Math.floor(phaseAngle / 45) + 1) * 45; // 45..360
   let nextPhaseInDays = 0;
   try {
-    const search = Astronomy.SearchMoonPhase(nextQuarter % 360, date, 30);
+    const search = Astronomy.SearchMoonPhase(nextBoundary % 360, date, 30);
     if (search) {
       nextPhaseInDays = (search.date.getTime() - date.getTime()) / 86400000;
     }
   } catch {
     nextPhaseInDays = 0;
   }
+  const nextPhaseName = PHASE_NAMES[(nextBoundary / 45) % 8];
 
   return {
     phase,
@@ -80,7 +82,7 @@ export function getMoonState(date: Date = new Date()): MoonState {
     decan,
     waxing,
     nextPhaseInDays,
-    nextPhaseName: quarterNames[nextQuarter] ?? 'New Moon',
+    nextPhaseName,
   };
 }
 
@@ -100,4 +102,42 @@ export function formatDegree(deg: number): string {
   const d = Math.floor(deg);
   const m = Math.floor((deg - d) * 60);
   return `${d}°${m.toString().padStart(2, '0')}'`;
+}
+
+/** The phase column and sign row at a moment, without the next-phase search (cheap; for calendars). */
+export function signatureAt(date: Date): { phase: number; sign: number; day: number } {
+  const phase = phaseAngleToColumn(Astronomy.MoonPhase(date));
+  const lon = ((Astronomy.EclipticGeoMoon(date).lon % 360) + 360) % 360;
+  const sign = Math.floor(lon / 30) + 1;
+  return { phase, sign, day: (sign - 1) * 8 + phase };
+}
+
+export interface PhaseStart {
+  /** Phase column 1–8 that begins at this moment. */
+  phase: number;
+  name: string;
+  date: Date;
+}
+
+/** Every moment a phase begins (each 45° mark) between `from` and `to`. */
+export function phaseStartsBetween(from: Date, to: Date): PhaseStart[] {
+  const out: PhaseStart[] = [];
+  const spanDays = (to.getTime() - from.getTime()) / 86400000;
+  for (let k = 0; k < 8; k++) {
+    let cursor = from;
+    for (let guard = 0; guard < 3; guard++) {
+      const remaining = (to.getTime() - cursor.getTime()) / 86400000;
+      if (remaining <= 0) break;
+      let found: Astronomy.AstroTime | null = null;
+      try {
+        found = Astronomy.SearchMoonPhase(k * 45, cursor, Math.min(remaining, spanDays + 1));
+      } catch {
+        found = null;
+      }
+      if (!found || found.date.getTime() >= to.getTime()) break;
+      out.push({ phase: k + 1, name: PHASE_NAMES[k], date: found.date });
+      cursor = new Date(found.date.getTime() + 86400000);
+    }
+  }
+  return out.sort((a, b) => a.date.getTime() - b.date.getTime());
 }

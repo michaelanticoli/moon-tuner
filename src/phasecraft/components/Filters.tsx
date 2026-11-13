@@ -8,6 +8,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ZODIAC_NAMES } from './icons/ZodiacIcon';
+import { MOON_PHASE_NAMES } from './icons/MoonPhaseIcon';
 
 interface FiltersProps {
   row: string;
@@ -29,27 +31,27 @@ export function Filters({
   return (
     <div className="flex flex-wrap gap-2">
       <Select value={row} onValueChange={onRowChange}>
-        <SelectTrigger className="w-[100px] min-h-[44px]">
-          <SelectValue placeholder="Row" />
+        <SelectTrigger className="w-[150px] min-h-[44px]" aria-label="Filter by sign">
+          <SelectValue placeholder="Sign" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All rows</SelectItem>
-          {Array.from({ length: 12 }, (_, i) => (
-            <SelectItem key={i} value={String(i + 1)}>
-              Row {i + 1}
+          <SelectItem value="all">All signs</SelectItem>
+          {ZODIAC_NAMES.map((name, i) => (
+            <SelectItem key={name} value={String(i + 1)}>
+              {name}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
       <Select value={column} onValueChange={onColumnChange}>
-        <SelectTrigger className="w-[110px] min-h-[44px]">
-          <SelectValue placeholder="Column" />
+        <SelectTrigger className="w-[170px] min-h-[44px]" aria-label="Filter by phase">
+          <SelectValue placeholder="Phase" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All columns</SelectItem>
-          {Array.from({ length: 8 }, (_, i) => (
-            <SelectItem key={i} value={String(i + 1)}>
-              Col {i + 1}
+          <SelectItem value="all">All phases</SelectItem>
+          {MOON_PHASE_NAMES.map((name, i) => (
+            <SelectItem key={name} value={String(i + 1)}>
+              {name}
             </SelectItem>
           ))}
         </SelectContent>

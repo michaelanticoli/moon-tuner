@@ -1,43 +1,36 @@
-import { PhaseEntry } from '@/phasecraft/data/phases';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { MoonPhaseIcon } from './icons/MoonPhaseIcon';
 import { ZodiacIcon } from './icons/ZodiacIcon';
-import { getPhaseData, getSignData } from '@/phasecraft/data/moontuner';
+import { signaturePath, type Signature } from '@/phasecraft/data/signatures';
 
 interface ResultListProps {
-  results: PhaseEntry[];
-  query: string;
+  results: Signature[];
+  filtered: boolean;
 }
 
-export function ResultList({ results, query }: ResultListProps) {
-  const navigate = useNavigate();
-
-  if (query && results.length === 0) {
-    return (
-      <p className="text-sm text-muted-foreground py-8 text-center">No results found</p>
-    );
+export function ResultList({ results, filtered }: ResultListProps) {
+  if (filtered && results.length === 0) {
+    return <p className="py-8 text-center text-sm text-muted-foreground">No signatures match. Try another word.</p>;
   }
 
   return (
-    <div className="space-y-1">
-      {results.map((entry) => {
-        const phase = getPhaseData(entry.column);
-        const sign = getSignData(entry.row);
-        return (
-          <button
-            key={entry.day}
-            onClick={() => navigate(`/day/${entry.day}`)}
-            className="w-full flex items-center gap-3 rounded-md border px-3 py-3 text-left transition-colors hover:bg-secondary min-h-[44px]"
+    <ul className="space-y-1">
+      {results.map((sig) => (
+        <li key={sig.code}>
+          <Link
+            to={signaturePath(sig)}
+            className="flex min-h-[44px] w-full items-center gap-3 rounded-md border px-3 py-3 text-left transition-colors hover:border-accent/40 hover:bg-secondary"
           >
-            <ZodiacIcon sign={entry.row} size={16} className="text-muted-foreground shrink-0" />
-            <MoonPhaseIcon phase={entry.column} size={16} className="text-muted-foreground shrink-0" />
-            <div className="min-w-0">
-              <p className="text-sm font-medium truncate">{phase.name} in {sign.name}</p>
-              <p className="text-xs text-muted-foreground truncate">{entry.theme}</p>
-            </div>
-          </button>
-        );
-      })}
-    </div>
+            <span className="w-10 shrink-0 text-xs font-medium tabular-nums text-accent">{sig.code}</span>
+            <ZodiacIcon sign={sig.row} size={16} className="shrink-0 text-muted-foreground" />
+            <MoonPhaseIcon phase={sig.column} size={16} className="shrink-0 text-muted-foreground" />
+            <span className="min-w-0">
+              <span className="block truncate text-sm font-medium">{sig.name}</span>
+              <span className="block truncate text-xs italic text-muted-foreground">{sig.anchor}</span>
+            </span>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

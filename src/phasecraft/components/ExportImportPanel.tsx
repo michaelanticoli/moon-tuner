@@ -1,29 +1,21 @@
 import { useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { useAppStore } from '@/phasecraft/store/useAppStore';
-import { exportNotesCSV, parsePhaseCSV, downloadFile } from '@/phasecraft/lib/csv';
-import { validatePhases } from '@/phasecraft/data/validate';
 import { Download, Upload } from 'lucide-react';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { useAppStore } from '@/phasecraft/store/useAppStore';
+import { exportRecordCSV, downloadFile } from '@/phasecraft/lib/csv';
+import { SIGNATURES } from '@/phasecraft/data/signatures';
 
+/** Back up and restore the reader's record, which lives only on this device. */
 export function ExportImportPanel() {
   const store = useAppStore();
   const jsonInputRef = useRef<HTMLInputElement>(null);
-  const csvInputRef = useRef<HTMLInputElement>(null);
+  const stamp = new Date().toISOString().slice(0, 10);
 
   const handleExportJSON = () => {
-    const data = JSON.stringify(
-      {
-        startDate: store.startDate,
-        favorites: store.favorites,
-        notes: store.notes,
-        themeMode: store.themeMode,
-      },
-      null,
-      2
-    );
-    downloadFile(data, 'phasecraft-backup.json', 'application/json');
-    toast('JSON exported');
+    const data = JSON.stringify({ favorites: store.favorites, notes: store.notes }, null, 2);
+    downloadFile(data, `phasecraft-record-${stamp}.json`, 'application/json');
+    toast('Backup saved');
   };
 
   const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,10 +25,13 @@ export function ExportImportPanel() {
     reader.onload = () => {
       try {
         const data = JSON.parse(reader.result as string);
+        if (!data || (typeof data.notes !== 'object' && typeof data.favorites !== 'object')) {
+          throw new Error('not a Phasecraft backup');
+        }
         store.importState(data);
-        toast('State restored from JSON');
+        toast('Record restored');
       } catch {
-        toast.error('Invalid JSON file');
+        toast.error('That file is not a Phasecraft backup');
       }
     };
     reader.readAsText(file);
@@ -44,79 +39,36 @@ export function ExportImportPanel() {
   };
 
   const handleExportCSV = () => {
-    const phases = store.getPhases();
-    const csv = exportNotesCSV(phases, store.favorites, store.notes);
-    downloadFile(csv, 'phasecraft-notes.csv', 'text/csv');
-    toast('CSV exported');
-  };
-
-  const handleImportCSV = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const phases = parsePhaseCSV(reader.result as string);
-        const errors = validatePhases(phases);
-        if (errors.length > 0) {
-          toast.error(`Validation errors: ${errors.slice(0, 3).join('; ')}`);
-          return;
-        }
-        store.setCustomPhases(phases);
-        toast('Dataset imported successfully');
-      } catch (err: unknown) {
-        toast.error(err instanceof Error ? err.message : 'Failed to parse CSV');
-      }
-    };
-    reader.readAsText(file);
-    e.target.value = '';
+    downloadFile(exportRecordCSV(SIGNATURES, store.favorites, store.notes), `phasecraft-record-${stamp}.csv`, 'text/csv');
+    toast('Spreadsheet saved');
   };
 
   return (
-    <div className="space-y-3">
-      <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-        Data
-      </h3>
-      <div className="grid grid-cols-2 gap-2">
+    <section className="space-y-3" aria-labelledby="backup-heading">
+      <div>
+        <h3 id="backup-heading" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          Back up your record
+        </h3>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Your favorites and acts are saved in this browser only. Save a backup to keep them or move them to another
+          device.
+        </p>
+      </div>
+      <div className="grid gap-2 sm:grid-cols-3">
         <Button variant="outline" onClick={handleExportJSON} className="min-h-[44px]">
-          <Download className="h-4 w-4 mr-2" />
-          Export JSON
+          <Download className="mr-2 h-4 w-4" />
+          Save backup
         </Button>
-        <Button
-          variant="outline"
-          onClick={() => jsonInputRef.current?.click()}
-          className="min-h-[44px]"
-        >
-          <Upload className="h-4 w-4 mr-2" />
-          Import JSON
+        <Button variant="outline" onClick={() => jsonInputRef.current?.click()} className="min-h-[44px]">
+          <Upload className="mr-2 h-4 w-4" />
+          Restore backup
         </Button>
         <Button variant="outline" onClick={handleExportCSV} className="min-h-[44px]">
-          <Download className="h-4 w-4 mr-2" />
-          Export CSV
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => csvInputRef.current?.click()}
-          className="min-h-[44px]"
-        >
-          <Upload className="h-4 w-4 mr-2" />
-          Import CSV
+          <Download className="mr-2 h-4 w-4" />
+          Spreadsheet (CSV)
         </Button>
       </div>
-      <input
-        ref={jsonInputRef}
-        type="file"
-        accept=".json"
-        onChange={handleImportJSON}
-        className="hidden"
-      />
-      <input
-        ref={csvInputRef}
-        type="file"
-        accept=".csv"
-        onChange={handleImportCSV}
-        className="hidden"
-      />
-    </div>
+      <input ref={jsonInputRef} type="file" accept=".json,application/json" onChange={handleImportJSON} className="hidden" />
+    </section>
   );
 }

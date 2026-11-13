@@ -50,3 +50,17 @@ no second menu to keep in sync: `DuskNav` now just renders the main
    main destination).
 3. Add it to `public/sitemap.xml` and, if it's a main destination,
    `public/llms.txt`.
+
+## Phasecraft: where the signature text lives
+
+- `src/phasecraft/data/signatures.ts` builds the ninety-six from the book:
+  tones, palettes, the "Through the Signs" line for each phase, the journal
+  prompts, and the decan cards. Each signature has a page at
+  `/phasecraft/signature/{sign}-{phase}` (e.g. `/phasecraft/signature/10-2`).
+- The sensory signatures and poetic effects are in
+  `src/phasecraft/data/moontuner.ts` (`FLAVOR_FUSIONS`, `FLAVOR_PROFILES`).
+  They were checked word-for-word against Appendix A of the printed book
+  (Nov 2026): 96 of 96 match. If the book text changes, change it there.
+- Phases follow the book (Chapter 1): each phase begins at its exact angle
+  from the Sun and lasts 45°. Live Moon data everywhere on the site is
+  computed with astronomy-engine, so it keeps working in 2027 and beyond.

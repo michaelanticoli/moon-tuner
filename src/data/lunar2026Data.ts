@@ -1,3 +1,5 @@
+import * as Astronomy from "astronomy-engine";
+
  // 2026 Lunar Ephemeris Data - Astronomically Accurate
  // Moon sign ingress times (when Moon enters each zodiac sign)
  // All times are in local timezone (PST/PDT as applicable)
@@ -195,70 +197,66 @@
    { date: new Date("2026-12-30T02:26:00Z"), sign: "Libra" },
  ];
  
- // 2026 Primary Phases (New Moon, First Quarter, Full Moon, Last Quarter)
- // Times from user-provided data in PST/PDT, converted to UTC
+ // Primary Phases (New Moon, First Quarter, Full Moon, Last Quarter), late
+ // December 2025 to early January 2027, in UTC. Regenerated from the
+ // astronomy-engine ephemeris (Nov 2026) after the hand-entered times were
+ // found to be off by up to 23 hours for the Last Quarters. Live phase data no
+ // longer reads this table (see computeMoonPhase below); it is kept for
+ // anything that wants a quick list of the year's exact phases.
  export const PRIMARY_PHASES_2026: PrimaryPhase[] = [
-   // January 2026
+   { date: new Date("2025-12-20T01:44:00Z"), phase: "New Moon" },
+   { date: new Date("2025-12-27T19:10:00Z"), phase: "First Quarter" },
    { date: new Date("2026-01-03T10:03:00Z"), phase: "Full Moon" },
-   { date: new Date("2026-01-10T18:48:00Z"), phase: "Last Quarter" },
-   { date: new Date("2026-01-18T19:52:00Z"), phase: "New Moon" },
-   { date: new Date("2026-01-26T04:47:00Z"), phase: "First Quarter" },
-   // February 2026
-   { date: new Date("2026-02-01T22:09:00Z"), phase: "Full Moon" },
-   { date: new Date("2026-02-09T08:43:00Z"), phase: "Last Quarter" },
-   { date: new Date("2026-02-17T12:01:00Z"), phase: "New Moon" },
-   { date: new Date("2026-02-24T12:27:00Z"), phase: "First Quarter" },
-   // March 2026
-   { date: new Date("2026-03-03T11:38:00Z"), phase: "Full Moon" },
-   { date: new Date("2026-03-11T01:38:00Z"), phase: "Last Quarter" },
-   { date: new Date("2026-03-19T01:23:00Z"), phase: "New Moon" }, // PDT
+   { date: new Date("2026-01-10T15:49:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-01-18T19:53:00Z"), phase: "New Moon" },
+   { date: new Date("2026-01-26T04:48:00Z"), phase: "First Quarter" },
+   { date: new Date("2026-02-01T22:10:00Z"), phase: "Full Moon" },
+   { date: new Date("2026-02-09T12:44:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-02-17T12:02:00Z"), phase: "New Moon" },
+   { date: new Date("2026-02-24T12:28:00Z"), phase: "First Quarter" },
+   { date: new Date("2026-03-03T11:39:00Z"), phase: "Full Moon" },
+   { date: new Date("2026-03-11T09:39:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-03-19T01:24:00Z"), phase: "New Moon" },
    { date: new Date("2026-03-25T19:18:00Z"), phase: "First Quarter" },
-   // April 2026
-   { date: new Date("2026-04-02T02:12:00Z"), phase: "Full Moon" },
-   { date: new Date("2026-04-09T14:51:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-04-02T02:13:00Z"), phase: "Full Moon" },
+   { date: new Date("2026-04-10T04:52:00Z"), phase: "Last Quarter" },
    { date: new Date("2026-04-17T11:52:00Z"), phase: "New Moon" },
    { date: new Date("2026-04-24T02:32:00Z"), phase: "First Quarter" },
-   // May 2026
-   { date: new Date("2026-05-01T17:23:00Z"), phase: "Full Moon" },
-   { date: new Date("2026-05-09T01:10:00Z"), phase: "Last Quarter" },
-   { date: new Date("2026-05-16T20:01:00Z"), phase: "New Moon" },
+   { date: new Date("2026-05-01T17:24:00Z"), phase: "Full Moon" },
+   { date: new Date("2026-05-09T21:11:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-05-16T20:02:00Z"), phase: "New Moon" },
    { date: new Date("2026-05-23T11:11:00Z"), phase: "First Quarter" },
-   { date: new Date("2026-05-31T08:45:00Z"), phase: "Full Moon" },
-   // June 2026
-   { date: new Date("2026-06-07T11:01:00Z"), phase: "Last Quarter" },
-   { date: new Date("2026-06-15T02:54:00Z"), phase: "New Moon" },
-   { date: new Date("2026-06-21T21:55:00Z"), phase: "First Quarter" },
-   { date: new Date("2026-06-29T23:56:00Z"), phase: "Full Moon" },
-   // July 2026
-   { date: new Date("2026-07-07T02:28:00Z"), phase: "Last Quarter" },
-   { date: new Date("2026-07-14T09:43:00Z"), phase: "New Moon" },
-   { date: new Date("2026-07-21T11:05:00Z"), phase: "First Quarter" },
+   { date: new Date("2026-05-31T08:46:00Z"), phase: "Full Moon" },
+   { date: new Date("2026-06-08T10:01:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-06-15T02:55:00Z"), phase: "New Moon" },
+   { date: new Date("2026-06-21T21:56:00Z"), phase: "First Quarter" },
+   { date: new Date("2026-06-29T23:57:00Z"), phase: "Full Moon" },
+   { date: new Date("2026-07-07T19:29:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-07-14T09:44:00Z"), phase: "New Moon" },
+   { date: new Date("2026-07-21T11:06:00Z"), phase: "First Quarter" },
    { date: new Date("2026-07-29T14:36:00Z"), phase: "Full Moon" },
-   // August 2026
-   { date: new Date("2026-08-05T14:21:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-08-06T02:22:00Z"), phase: "Last Quarter" },
    { date: new Date("2026-08-12T17:37:00Z"), phase: "New Moon" },
-   { date: new Date("2026-08-20T02:46:00Z"), phase: "First Quarter" },
-   { date: new Date("2026-08-28T04:18:00Z"), phase: "Full Moon" },
-   // September 2026
-   { date: new Date("2026-09-04T01:52:00Z"), phase: "Last Quarter" },
-   { date: new Date("2026-09-10T15:50:00Z"), phase: "New Moon" },
+   { date: new Date("2026-08-20T02:47:00Z"), phase: "First Quarter" },
+   { date: new Date("2026-08-28T04:19:00Z"), phase: "Full Moon" },
+   { date: new Date("2026-09-04T07:52:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-09-11T03:27:00Z"), phase: "New Moon" },
    { date: new Date("2026-09-18T20:44:00Z"), phase: "First Quarter" },
-   { date: new Date("2026-09-26T16:49:00Z"), phase: "Full Moon" },
-   // October 2026
-   { date: new Date("2026-10-03T14:25:00Z"), phase: "Last Quarter" },
-   { date: new Date("2026-10-10T15:50:00Z"), phase: "New Moon" },
-   { date: new Date("2026-10-18T16:12:00Z"), phase: "First Quarter" },
+   { date: new Date("2026-09-26T16:50:00Z"), phase: "Full Moon" },
+   { date: new Date("2026-10-03T13:26:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-10-10T15:51:00Z"), phase: "New Moon" },
+   { date: new Date("2026-10-18T16:13:00Z"), phase: "First Quarter" },
    { date: new Date("2026-10-26T04:12:00Z"), phase: "Full Moon" },
-   // November 2026 (PST)
-   { date: new Date("2026-11-02T05:28:00Z"), phase: "Last Quarter" },
-   { date: new Date("2026-11-09T07:02:00Z"), phase: "New Moon" },
+   { date: new Date("2026-11-01T20:29:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-11-09T07:03:00Z"), phase: "New Moon" },
    { date: new Date("2026-11-17T11:48:00Z"), phase: "First Quarter" },
-   { date: new Date("2026-11-24T14:53:00Z"), phase: "Full Moon" },
-   // December 2026
-   { date: new Date("2026-12-02T01:21:00Z"), phase: "Last Quarter" },
-   { date: new Date("2026-12-09T00:52:00Z"), phase: "New Moon" },
-   { date: new Date("2026-12-17T05:42:00Z"), phase: "First Quarter" },
-   { date: new Date("2026-12-24T01:28:00Z"), phase: "Full Moon" },
+   { date: new Date("2026-11-24T14:54:00Z"), phase: "Full Moon" },
+   { date: new Date("2026-12-01T06:09:00Z"), phase: "Last Quarter" },
+   { date: new Date("2026-12-09T00:53:00Z"), phase: "New Moon" },
+   { date: new Date("2026-12-17T05:43:00Z"), phase: "First Quarter" },
+   { date: new Date("2026-12-24T01:29:00Z"), phase: "Full Moon" },
+   { date: new Date("2026-12-30T19:00:00Z"), phase: "Last Quarter" },
+   { date: new Date("2027-01-07T20:25:00Z"), phase: "New Moon" },
  ];
  
  // Get current moon sign from 2026 data
@@ -279,14 +277,10 @@
      }
    }
    
-   // Fallback for dates outside 2026 data range
-   if (!currentIngress) {
-     // If before 2026 data, use first entry as approximation
-     return {
-       sign: MOON_INGRESSES_2026[0].sign,
-       enteredAt: MOON_INGRESSES_2026[0].date,
-       nextIngress: MOON_INGRESSES_2026[1]?.date || null,
-     };
+   // Outside the 2026 table (before the first ingress, or after the last one
+   // with no next ingress listed), compute from the ephemeris instead.
+   if (!currentIngress || !nextIngress) {
+     return computeMoonSign(date);
    }
    
    return {
@@ -297,6 +291,12 @@
  }
  
  // Get the 8-phase name from primary phases
+ /**
+  * Phase for any moment. Computed from the astronomy-engine ephemeris, so it is
+  * exact to the minute and works in every year. The eight phase names follow
+  * PHASECRAFT (Chapter 1): each phase begins at its exact angle from the Sun
+  * and lasts until the next 45° mark.
+  */
  export function getMoonPhase2026(date: Date = new Date()): {
    phaseName: string;
    exactPhase: PrimaryPhase | null;
@@ -304,93 +304,7 @@
    isWaxing: boolean;
    dayInPhase: number;
  } {
-   const now = date.getTime();
-   
-   // Find surrounding primary phases
-   let prevPhase: PrimaryPhase | null = null;
-   let nextPhase: PrimaryPhase | null = null;
-   
-   for (let i = 0; i < PRIMARY_PHASES_2026.length; i++) {
-     const phase = PRIMARY_PHASES_2026[i];
-     if (phase.date.getTime() <= now) {
-       prevPhase = phase;
-       nextPhase = PRIMARY_PHASES_2026[i + 1] || null;
-     } else {
-       if (!prevPhase) {
-         // Before first phase in data
-         prevPhase = PRIMARY_PHASES_2026[PRIMARY_PHASES_2026.length - 1]; // Wrap to last
-       }
-       nextPhase = phase;
-       break;
-     }
-   }
-   
-   if (!prevPhase || !nextPhase) {
-     // Fallback
-     return {
-       phaseName: "Full Moon",
-       exactPhase: null,
-       illumination: 1,
-       isWaxing: false,
-       dayInPhase: 0,
-     };
-   }
-   
-   // Calculate position between phases
-   const phaseLength = nextPhase.date.getTime() - prevPhase.date.getTime();
-   const elapsed = now - prevPhase.date.getTime();
-   const progress = elapsed / phaseLength;
-   const daysSincePrevPhase = elapsed / (1000 * 60 * 60 * 24);
-   
-   // Determine 8-phase name based on previous primary phase and progress
-   const phaseName = get8PhaseName(prevPhase.phase, progress);
-   
-   // Calculate illumination
-   const illumination = calculateIllumination(prevPhase.phase, progress);
-   
-   // Determine if waxing
-   const isWaxing = prevPhase.phase === "New Moon" || prevPhase.phase === "First Quarter" ||
-     (prevPhase.phase === "Full Moon" && progress < 0.1);
-   
-   return {
-     phaseName,
-     exactPhase: prevPhase,
-     illumination,
-     isWaxing,
-     dayInPhase: Math.floor(daysSincePrevPhase),
-   };
- }
- 
- function get8PhaseName(lastPrimaryPhase: string, progress: number): string {
-   // Map primary phases to 8-phase system based on progress
-   switch (lastPrimaryPhase) {
-     case "New Moon":
-       return progress < 0.5 ? "New Moon" : "Waxing Crescent";
-     case "First Quarter":
-       return progress < 0.5 ? "First Quarter" : "Waxing Gibbous";
-     case "Full Moon":
-       return progress < 0.5 ? "Full Moon" : "Waning Gibbous";
-     case "Last Quarter":
-       return progress < 0.5 ? "Last Quarter" : "Waning Crescent";
-     default:
-       return "New Moon";
-   }
- }
- 
- function calculateIllumination(lastPrimaryPhase: string, progress: number): number {
-   // Calculate illumination based on phase cycle
-   switch (lastPrimaryPhase) {
-     case "New Moon":
-       return progress * 0.5; // 0% to 50%
-     case "First Quarter":
-       return 0.5 + progress * 0.5; // 50% to 100%
-     case "Full Moon":
-       return 1 - progress * 0.5; // 100% to 50%
-     case "Last Quarter":
-       return 0.5 - progress * 0.5; // 50% to 0%
-     default:
-       return 0.5;
-   }
+   return computeMoonPhase(date);
  }
  
  // Get hours remaining in current sign
@@ -401,3 +315,87 @@
    const msRemaining = signData.nextIngress.getTime() - date.getTime();
    return Math.max(0, Math.floor(msRemaining / (1000 * 60 * 60)));
  }
+
+// ─── Ephemeris fallback (any date outside the 2026 tables) ────────────────
+// The tables above cover 2026 only. Past their last entry (late December
+// 2026) these functions would otherwise freeze on one sign and report a Full
+// Moon forever, so they fall back to astronomy-engine, which is accurate for
+// any year. Phase names follow PHASECRAFT (Chapter 1): each phase begins at
+// its exact angle from the Sun and lasts 45°.
+
+const SIGN_ORDER: ZodiacSign[] = [
+  "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
+  "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces",
+];
+const EIGHT_PHASES = [
+  "New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous",
+  "Full Moon", "Waning Gibbous", "Last Quarter", "Waning Crescent",
+];
+const QUARTER_NAMES: PrimaryPhase["phase"][] = ["New Moon", "First Quarter", "Full Moon", "Last Quarter"];
+
+function moonSignIndex(date: Date): number {
+  const lon = ((Astronomy.EclipticGeoMoon(date).lon % 360) + 360) % 360;
+  return Math.floor(lon / 30);
+}
+
+/** Find when the Moon's sign changes, searching forward (+1) or backward (-1) from `date`. */
+function findIngress(date: Date, direction: 1 | -1): Date {
+  const start = moonSignIndex(date);
+  const stepMs = 60 * 60 * 1000; // the Moon moves about half a degree an hour
+  let inside = date.getTime();
+  let outside = inside;
+  for (let i = 1; i <= 80; i++) {
+    const t = date.getTime() + direction * i * stepMs;
+    if (moonSignIndex(new Date(t)) !== start) {
+      outside = t;
+      break;
+    }
+    inside = t;
+  }
+  // Bisect to within a minute.
+  for (let i = 0; i < 20 && Math.abs(outside - inside) > 60_000; i++) {
+    const mid = (inside + outside) / 2;
+    if (moonSignIndex(new Date(mid)) === start) inside = mid;
+    else outside = mid;
+  }
+  return new Date(direction === 1 ? outside : inside);
+}
+
+function computeMoonSign(date: Date): { sign: ZodiacSign; enteredAt: Date; nextIngress: Date | null } {
+  return {
+    sign: SIGN_ORDER[moonSignIndex(date)],
+    enteredAt: findIngress(date, -1),
+    nextIngress: findIngress(date, 1),
+  };
+}
+
+function computeMoonPhase(date: Date): {
+  phaseName: string;
+  exactPhase: PrimaryPhase | null;
+  illumination: number;
+  isWaxing: boolean;
+  dayInPhase: number;
+} {
+  const angle = ((Astronomy.MoonPhase(date) % 360) + 360) % 360;
+  const illumination = Astronomy.Illumination(Astronomy.Body.Moon, date).phase_fraction;
+
+  // Most recent exact New / First Quarter / Full / Last Quarter.
+  let exactPhase: PrimaryPhase | null = null;
+  try {
+    let q = Astronomy.SearchMoonQuarter(new Date(date.getTime() - 9 * 86400000));
+    for (let i = 0; i < 6 && q.time.date.getTime() <= date.getTime(); i++) {
+      exactPhase = { date: q.time.date, phase: QUARTER_NAMES[q.quarter], sign: SIGN_ORDER[moonSignIndex(q.time.date)] };
+      q = Astronomy.NextMoonQuarter(q);
+    }
+  } catch {
+    exactPhase = null;
+  }
+
+  return {
+    phaseName: EIGHT_PHASES[Math.min(7, Math.floor(angle / 45))],
+    exactPhase,
+    illumination,
+    isWaxing: angle < 180,
+    dayInPhase: exactPhase ? Math.floor((date.getTime() - exactPhase.date.getTime()) / 86400000) : 0,
+  };
+}

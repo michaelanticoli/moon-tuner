@@ -1,69 +1,62 @@
-import { PhaseEntry } from '@/phasecraft/data/phases';
 import { cn } from '@/lib/utils';
 import { MoonPhaseIcon, MOON_PHASE_NAMES } from './icons/MoonPhaseIcon';
 import { ZodiacIcon, ZODIAC_NAMES } from './icons/ZodiacIcon';
+import { SIGNATURES, type Signature } from '@/phasecraft/data/signatures';
 
 interface MatrixGridProps {
-  phases: PhaseEntry[];
+  /** Internal index of the live signature, highlighted in the grid. */
   currentDay: number;
-  onCellClick: (entry: PhaseEntry) => void;
+  onCellClick: (sig: Signature) => void;
 }
 
-export function MatrixGrid({ phases, currentDay, onCellClick }: MatrixGridProps) {
-  const grid: (PhaseEntry | undefined)[][] = Array.from({ length: 12 }, () =>
-    Array(8).fill(undefined)
-  );
-  phases.forEach((e) => {
-    grid[e.row - 1][e.column - 1] = e;
-  });
-
+/** The 12 × 8 matrix: signs down the rows, phases across the columns (Chapter 19). */
+export function MatrixGrid({ currentDay, onCellClick }: MatrixGridProps) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-center">
+    <div className="mx-auto max-w-2xl overflow-x-auto">
+      <table className="w-full min-w-[340px] table-fixed border-collapse text-center">
+        <caption className="sr-only">The ninety-six signatures: signs by row, phases by column</caption>
         <thead>
           <tr>
-            <th className="p-1 w-16 md:w-24" />
+            <th className="w-9 p-1 md:w-24" scope="col">
+              <span className="sr-only">Sign</span>
+            </th>
             {MOON_PHASE_NAMES.map((name, i) => (
-              <th key={i} className="p-1">
+              <th key={name} className="p-1" scope="col">
                 <div className="flex flex-col items-center gap-0.5">
                   <MoonPhaseIcon phase={i + 1} size={20} className="text-foreground" />
-                  <span className="text-[7px] md:text-[9px] font-medium text-muted-foreground leading-tight">
-                    {name}
-                  </span>
+                  <span className="hidden min-h-[2.2em] text-[9px] font-medium leading-tight text-muted-foreground md:block">{name}</span>
                 </div>
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {grid.map((row, ri) => (
-            <tr key={ri}>
-              <td className="p-1 text-right pr-2">
+          {ZODIAC_NAMES.map((signName, ri) => (
+            <tr key={signName}>
+              <th scope="row" className="p-1 pr-2 text-right">
                 <div className="flex items-center justify-end gap-1">
-                  <span className="text-[8px] md:text-[10px] font-medium text-muted-foreground hidden md:inline">
-                    {ZODIAC_NAMES[ri]}
-                  </span>
+                  <span className="hidden text-[10px] font-medium text-muted-foreground md:inline">{signName}</span>
                   <ZodiacIcon sign={ri + 1} size={18} className="text-foreground" />
                 </div>
-              </td>
-              {row.map((entry, ci) => (
-                <td key={ci} className="p-0.5">
-                  {entry ? (
+              </th>
+              {SIGNATURES.slice(ri * 8, ri * 8 + 8).map((sig) => {
+                const live = sig.day === currentDay;
+                return (
+                  <td key={sig.code} className="p-0.5">
                     <button
-                      onClick={() => onCellClick(entry)}
+                      type="button"
+                      onClick={() => onCellClick(sig)}
+                      aria-label={`${sig.code}, ${sig.name}${live ? ' — the Moon is here now' : ''}`}
                       className={cn(
-                        'w-full aspect-square rounded-md border text-xs font-medium transition-colors min-h-[36px] md:min-h-[44px] hover:bg-secondary',
-                        entry.day === currentDay &&
-                          'ring-2 ring-highlight bg-highlight/10 border-highlight/30 font-bold'
+                        'aspect-square w-full min-h-[36px] rounded-md border text-[10px] font-medium tabular-nums transition-colors hover:border-accent/50 hover:bg-secondary md:min-h-[44px] md:text-xs',
+                        live && 'border-accent/60 bg-accent/15 font-bold text-accent ring-2 ring-accent/60'
                       )}
                     >
-                      {entry.day}
+                      {sig.code}
                     </button>
-                  ) : (
-                    <div className="w-full aspect-square rounded-md bg-muted/30" />
-                  )}
-                </td>
-              ))}
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>

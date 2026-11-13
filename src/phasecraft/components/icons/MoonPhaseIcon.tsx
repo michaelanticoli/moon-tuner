@@ -7,10 +7,11 @@ interface MoonPhaseIconProps {
 }
 
 /**
- * Custom SVG moon phase icons. Phase 1–8:
+ * Custom SVG moon phase icons, as seen from the Northern Hemisphere. The
+ * filled area is always the lit part of the Moon. Phase 1–8:
  * 1: New Moon, 2: Waxing Crescent, 3: First Quarter,
  * 4: Waxing Gibbous, 5: Full Moon, 6: Waning Gibbous,
- * 7: Third Quarter, 8: Waning Crescent
+ * 7: Last Quarter, 8: Waning Crescent
  */
 export function MoonPhaseIcon({ phase, className, size = 24 }: MoonPhaseIconProps) {
   return (
@@ -30,8 +31,8 @@ export function MoonPhaseIcon({ phase, className, size = 24 }: MoonPhaseIconProp
 
 function getMoonPath(phase: number) {
   switch (phase) {
-    case 1: // New Moon — fully dark
-      return <circle cx="16" cy="16" r="13" fill="currentColor" opacity="0.85" />;
+    case 1: // New Moon — no lit part; a faint disc so it reads as dark, not empty
+      return <circle cx="16" cy="16" r="13" fill="currentColor" opacity="0.12" />;
     case 2: // Waxing Crescent — small right lit
       return (
         <path
@@ -56,8 +57,8 @@ function getMoonPath(phase: number) {
           opacity="0.85"
         />
       );
-    case 5: // Full Moon — empty circle (outline only, no fill)
-      return null;
+    case 5: // Full Moon — fully lit
+      return <circle cx="16" cy="16" r="14" fill="currentColor" opacity="0.85" />;
     case 6: // Waning Gibbous — mostly lit, right shadow crescent
       return (
         <path
@@ -66,7 +67,7 @@ function getMoonPath(phase: number) {
           opacity="0.85"
         />
       );
-    case 7: // Third Quarter — left half lit
+    case 7: // Last Quarter — left half lit
       return (
         <path
           d="M16 2 A14 14 0 0 0 16 30 L16 2Z"
@@ -94,6 +95,6 @@ export const MOON_PHASE_NAMES = [
   'Waxing Gibbous',
   'Full Moon',
   'Waning Gibbous',
-  'Third Quarter',
+  'Last Quarter',
   'Waning Crescent',
 ];

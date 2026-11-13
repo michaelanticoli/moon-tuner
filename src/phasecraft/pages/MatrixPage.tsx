@@ -1,114 +1,54 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { MatrixGrid } from '@/phasecraft/components/MatrixGrid';
-import { useAppStore } from '@/phasecraft/store/useAppStore';
-import { getCurrentDay } from '@/phasecraft/lib/date';
-import { PhaseEntry } from '@/phasecraft/data/phases';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { getMoonState, effectFromMoonState } from '@/phasecraft/lib/moon';
+import { signaturePath, type Signature } from '@/phasecraft/data/signatures';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { MoonPhaseIcon } from '@/phasecraft/components/icons/MoonPhaseIcon';
 import { ZodiacIcon } from '@/phasecraft/components/icons/ZodiacIcon';
-import { getPhaseData, getSignData, getCombinationInsight, getFlavorTagline } from '@/phasecraft/data/moontuner';
 
 export default function MatrixPage() {
-  const { startDate, getPhases } = useAppStore();
-  const currentDay = getCurrentDay(startDate);
-  const phases = getPhases();
-  const navigate = useNavigate();
-  const [selected, setSelected] = useState<PhaseEntry | null>(null);
-
-  const selPhase = selected ? getPhaseData(selected.column) : null;
-  const selSign = selected ? getSignData(selected.row) : null;
-  const selFlavor = selected ? getCombinationInsight(selected.row, selected.column) : '';
-  const selTagline = selected ? getFlavorTagline(selected.row, selected.column) : '';
+  const currentDay = effectFromMoonState(getMoonState());
+  const [selected, setSelected] = useState<Signature | null>(null);
 
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-lg font-semibold tracking-tight">Lunar Phase Matrix</h1>
-        <p className="text-xs text-muted-foreground mt-1">Moon phases across the zodiac wheel</p>
+        <h2 className="font-serif text-2xl text-foreground">The Matrix</h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Signs run down the rows and phases across the columns. Each number is written sign first, phase second: 10-2
+          is the Waxing Crescent in Capricorn. The highlighted cell is where the Moon is now.
+        </p>
       </div>
-      <MatrixGrid phases={phases} currentDay={currentDay} onCellClick={setSelected} />
+      <MatrixGrid currentDay={currentDay} onCellClick={setSelected} />
 
-      <Sheet open={!!selected} onOpenChange={() => setSelected(null)}>
-        <SheetContent side="bottom" className="max-h-[70vh] overflow-y-auto">
-          {selected && selPhase && selSign && (
+      <Sheet open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
+        <SheetContent side="bottom" className="max-h-[75vh] overflow-y-auto">
+          {selected && (
             <>
               <SheetHeader>
-                <SheetTitle className="flex items-center gap-2">
+                <SheetTitle className="flex items-center gap-2 text-left">
                   <ZodiacIcon sign={selected.row} size={22} />
                   <MoonPhaseIcon phase={selected.column} size={22} />
-                  <span>{selPhase.name} in {selSign.name}</span>
+                  <span>{selected.name}</span>
                 </SheetTitle>
-                <SheetDescription className="text-left">
-                  {selected.row}·{selected.column} — Effect {selected.day} of 96
-                </SheetDescription>
+                <SheetDescription className="text-left">Signature {selected.code}</SheetDescription>
               </SheetHeader>
               <div className="space-y-4 py-4">
-                {/* Flavor tagline */}
-                <p className="text-xs italic tracking-wide text-muted-foreground">{selTagline}</p>
-
-                {/* THE FLAVOR — character sketch */}
-                {selFlavor && (
-                  <div className="rounded-lg border bg-muted/30 p-3">
-                    <p className="text-sm leading-relaxed">{selFlavor}</p>
-                  </div>
-                )}
-
-
-                {/* Contextual details tucked in collapsible */}
-                <details className="group">
-                  <summary className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground cursor-pointer select-none">
-                    Cosmological Context
-                  </summary>
-                  <div className="mt-2 space-y-2 text-sm">
-                    <div className="flex flex-wrap gap-2">
-                      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                        {selSign.element}
-                      </span>
-                      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                        {selSign.modality}
-                      </span>
-                      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                        {selSign.ruler}
-                      </span>
-                    </div>
-                    <div>
-                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Lunar Energy</p>
-                      <p>{selPhase.energy}</p>
-                    </div>
-                    <div>
-                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Optimal Applications</p>
-                      <p>{selPhase.bestFor}</p>
-                    </div>
-                  </div>
-                </details>
-
-                {/* Theme from CSV */}
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Theme</p>
-                  <p className="text-sm">{selected.theme}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Core Theme</p>
-                  <p className="text-sm">{selected.coreTheme}</p>
+                <p className="font-serif text-base italic leading-relaxed">
+                  <span className="text-accent">{selected.palette}</span> — {selected.tone} — {selected.anchor}
+                </p>
+                <div className="rounded-lg border bg-muted/30 p-3">
+                  <p className="text-sm leading-relaxed">{selected.figure}</p>
                 </div>
               </div>
-              <Button
-                onClick={() => {
-                  setSelected(null);
-                  navigate(`/day/${selected.day}`);
-                }}
-                className="w-full min-h-[44px]"
+              <Link
+                to={signaturePath(selected)}
+                onClick={() => setSelected(null)}
+                className="flex min-h-[44px] w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
-                View Full Effect
-              </Button>
+                Read the full signature
+              </Link>
             </>
           )}
         </SheetContent>

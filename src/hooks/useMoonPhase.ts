@@ -25,12 +25,6 @@ export interface MoonPhaseData {
   };
 }
 
-// Synodic month length in days (average lunar cycle)
-const SYNODIC_MONTH = 29.530588853;
-
-// Reference new moon: January 11, 2024 at 11:57 UTC (verified astronomical data)
-const REFERENCE_NEW_MOON = new Date("2024-01-11T11:57:00Z");
-
  // Phase name to index mapping for astrological data lookup
  const PHASE_INDEX_MAP: Record<string, number> = {
    "New Moon": 0,
@@ -111,32 +105,13 @@ const ASTROLOGICAL_DATA = [
   },
 ];
 
- import { PRIMARY_PHASES_2026 } from "@/data/lunar2026Data";
+ import * as Astronomy from "astronomy-engine";
  
- // Get next primary phase from 2026 data
+ // Next exact New or Full Moon, from the ephemeris (accurate in any year).
  function getNextPhaseDate(phaseType: "New Moon" | "Full Moon", date: Date): Date {
-   const now = date.getTime();
-   const nextPhase = PRIMARY_PHASES_2026.find(
-     p => p.phase === phaseType && p.date.getTime() > now
-   );
-   
-   // Fallback to algorithmic calculation if outside 2026 data
-   if (!nextPhase) {
-     const daysSinceReference = (now - REFERENCE_NEW_MOON.getTime()) / (1000 * 60 * 60 * 24);
-     const currentAge = ((daysSinceReference % SYNODIC_MONTH) + SYNODIC_MONTH) % SYNODIC_MONTH;
-     
-     if (phaseType === "New Moon") {
-       return new Date(now + (SYNODIC_MONTH - currentAge) * 24 * 60 * 60 * 1000);
-     } else {
-       const fullMoonAge = SYNODIC_MONTH / 2;
-       const daysUntilFull = currentAge < fullMoonAge 
-         ? fullMoonAge - currentAge 
-         : SYNODIC_MONTH - currentAge + fullMoonAge;
-       return new Date(now + daysUntilFull * 24 * 60 * 60 * 1000);
-     }
-   }
-   
-   return nextPhase.date;
+   const target = phaseType === "New Moon" ? 0 : 180;
+   const found = Astronomy.SearchMoonPhase(target, new Date(date.getTime() + 60_000), 35);
+   return found ? found.date : new Date(date.getTime() + 29.53 * 86400000);
  }
 
 export function useMoonPhase(date?: Date): MoonPhaseData {
