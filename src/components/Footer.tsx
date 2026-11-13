@@ -1,31 +1,26 @@
 import { Link } from "react-router-dom";
+import { FOOTER_COLUMNS, type NavItem } from "@/data/siteNav";
 
-const footerLinks = {
-  explore: [
-    { label: "Chaperone", href: "/lunar-chaperone" },
-    { label: "Phasecraft", href: "/method" },
-    { label: "Reports", href: "/lunar-reports" },
-    { label: "Cipher", href: "/lunar-cipher" },
-  ],
-  resources: [
-    { label: "Journal", href: "/journal" },
-    { label: "Manifesto", href: "/manifesto" },
-    { label: "Free Guide", href: "/free-guide" },
-  ],
-  connect: [
-    { label: "About", href: "/about" },
-    { label: "Contact", href: "/about" },
-    { label: "Newsletter", href: "/free-guide" },
-  ],
-};
+function FooterLink({ link }: { link: NavItem }) {
+  const cls = "text-sm text-muted-foreground hover:text-foreground transition-colors";
+  return link.external ? (
+    <a href={link.href} target="_blank" rel="noopener noreferrer" className={cls}>
+      {link.label}
+    </a>
+  ) : (
+    <Link to={link.href} className={cls}>
+      {link.label}
+    </Link>
+  );
+}
 
 export function Footer() {
   return (
     <footer className="py-16 lg:py-24 border-t border-border/30">
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-5 gap-12 lg:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 lg:gap-8">
           {/* Brand Column */}
-          <div className="lg:col-span-2">
+          <div className="col-span-2 md:col-span-4 lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
               <picture>
                 <source srcSet="/moonkey-logo.webp" type="image/webp" />
@@ -49,62 +44,18 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Spectral Channels */}
-          <div>
-            <h4 className="system-label mb-6">
-              Spectral Channels
-            </h4>
-            <ul className="space-y-4">
-              {footerLinks.explore.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h4 className="system-label mb-6">
-              Resources
-            </h4>
-            <ul className="space-y-4">
-              {footerLinks.resources.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Connect */}
-          <div>
-            <h4 className="system-label mb-6">
-              Connect
-            </h4>
-            <ul className="space-y-4">
-              {footerLinks.connect.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {FOOTER_COLUMNS.map((col) => (
+            <nav key={col.title} aria-label={col.title}>
+              <h4 className="system-label mb-6">{col.title}</h4>
+              <ul className="space-y-4">
+                {col.links.map((link) => (
+                  <li key={link.href}>
+                    <FooterLink link={link} />
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
 
         {/* Partners */}

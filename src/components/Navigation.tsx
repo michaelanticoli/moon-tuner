@@ -1,76 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { NAV_GROUPS, currentGroupKey, activeHref, type NavGroup, type NavItem } from '@/data/siteNav';
 import './Navigation.css';
 
-// ─── Nav data ──────────────────────────────────────────────────────────────
-
-interface NavItem {
-  label: string;
-  href: string;
-  desc: string;
-  external?: boolean;
-}
-
-interface NavGroupData {
-  label: string;
-  items: NavItem[];
-}
-
-const NAV_GROUPS: NavGroupData[] = [
-  {
-    label: 'The Method',
-    items: [
-      { label: 'Lunar System', href: '/lunar-system', desc: 'The full framework' },
-      { label: 'The Method', href: '/method', desc: 'How the system works' },
-      { label: 'Philosophy', href: '/philosophy', desc: 'The thinking behind it' },
-      { label: 'The Moon', href: '/the-moon', desc: 'Lunar fundamentals' },
-    ],
-  },
-  {
-    label: 'Learn',
-    items: [
-      { label: 'Explore', href: '/explore', desc: 'Guides & emotional intelligence' },
-      { label: 'School', href: '/school', desc: 'Structured learning' },
-      { label: 'Curriculum', href: '/school/curriculum', desc: 'The 6-module course map' },
-      { label: 'Student Portal', href: '/school/portal', desc: 'Your lessons & progress' },
-      { label: 'Quantumelodic', href: '/quantumelodic', desc: 'Sound + lunar theory' },
-      { label: 'Blog', href: 'https://moontuner.ghost.io', desc: 'Articles & essays', external: true },
-    ],
-  },
-  {
-    label: 'Tools',
-    items: [
-      { label: 'Moon Phase Today', href: '/moon-phase-today', desc: 'Live lunar tracker' },
-      { label: 'Lunar Cipher', href: '/lunar-cipher', desc: 'Decode your chart' },
-      { label: 'Digital Smudging', href: '/digital-smudging', desc: 'Intentional digital clearing' },
-      { label: 'Spacetime Printer', href: '/spacetime-printer', desc: 'Submit a proposal' },
-      { label: 'The Rites', href: '/rites', desc: 'Standalone working documents' },
-      { label: 'Journal', href: '/journal', desc: 'Reflections & directives' },
-      { label: 'App', href: '/app', desc: 'Full lunar toolkit' },
-    ],
-  },
-  {
-    label: 'Products',
-    items: [
-      { label: 'Workbook Program', href: '/program', desc: 'All 24 half-cycles' },
-      { label: 'Persona Edition', href: '/program/persona', desc: 'The cycle in your signature' },
-      { label: 'Program Portal', href: '/program/portal', desc: 'Your place in the arc' },
-      { label: 'Workbooks', href: '/workbooks', desc: 'Guided practice' },
-      { label: 'Resources', href: '/resources', desc: 'Downloads & reference materials' },
-      { label: 'Offerings', href: '/offerings', desc: 'Reports & insight tools' },
-      { label: 'Lunar Reports', href: '/lunar-reports', desc: 'Personal readings' },
-      { label: 'Lunar Chaperone', href: '/lunar-chaperone', desc: 'Monthly guidance' },
-    ],
-  },
-  {
-    label: 'Work with Me',
-    items: [
-      { label: 'Services', href: '/services', desc: 'What I offer' },
-      { label: 'Sessions', href: '/sessions', desc: '1:1 consultations' },
-    ],
-  },
-];
+/**
+ * Site-wide navigation. Every page renders this (DuskNav is a thin alias),
+ * so the four doors — Phasecraft, Lunar Chaperone, Symphony, Reports — sit in
+ * the same place everywhere. Menu contents live in src/data/siteNav.ts.
+ *
+ * Desktop: hover opens a group for mouse users; click/tap/Enter toggles it for
+ * touch and keyboard users. Mobile: full-screen accordion.
+ */
 
 function Chevron({ className }: { className?: string }) {
   return (
@@ -80,51 +21,103 @@ function Chevron({ className }: { className?: string }) {
   );
 }
 
+function ItemLink({
+  item,
+  className,
+  active,
+  onNavigate,
+  children,
+}: {
+  item: NavItem;
+  className: string;
+  active: boolean;
+  onNavigate?: () => void;
+  children: React.ReactNode;
+}) {
+  if (item.external) {
+    return (
+      <a href={item.href} target="_blank" rel="noopener noreferrer" className={className} onClick={onNavigate}>
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link
+      to={item.href}
+      className={`${className}${active ? ' is-active' : ''}`}
+      aria-current={active ? 'page' : undefined}
+      onClick={onNavigate}
+    >
+      {children}
+    </Link>
+  );
+}
+
 // ─── NavGroup (desktop) ────────────────────────────────────────────────────
 
-function NavGroup({
+function DesktopGroup({
   group,
   isOpen,
-  onEnter,
-  onLeave,
+  isCurrent,
+  pathname,
+  onOpen,
+  onClose,
+  onToggle,
 }: {
-  group: NavGroupData;
+  group: NavGroup;
   isOpen: boolean;
-  onEnter: () => void;
-  onLeave: () => void;
+  isCurrent: boolean;
+  pathname: string;
+  onOpen: () => void;
+  onClose: () => void;
+  onToggle: () => void;
 }) {
+  const lastPointer = useRef<string>('');
+  const dropId = `mn-drop-${group.key}`;
+  const current = activeHref(group.items, pathname);
+
   return (
     <div
-      className={`mn-group${isOpen ? ' is-open' : ''}`}
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
+      className={`mn-group${isOpen ? ' is-open' : ''}${isCurrent ? ' is-current' : ''}`}
+      onPointerEnter={(e) => {
+        if (e.pointerType === 'mouse') onOpen();
+      }}
+      onPointerLeave={(e) => {
+        if (e.pointerType === 'mouse') onClose();
+      }}
+      onBlur={(e) => {
+        // Close when keyboard focus leaves the group entirely.
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) onClose();
+      }}
     >
-      <button className="mn-trigger" aria-expanded={isOpen} aria-haspopup="menu">
+      <button
+        type="button"
+        className="mn-trigger"
+        aria-expanded={isOpen}
+        aria-controls={dropId}
+        onPointerDown={(e) => {
+          lastPointer.current = e.pointerType;
+        }}
+        onClick={(e) => {
+          // A mouse already opened this on hover; a click shouldn't slam it shut.
+          if (e.detail > 0 && lastPointer.current === 'mouse') {
+            onOpen();
+            return;
+          }
+          onToggle();
+        }}
+      >
         {group.label}
         <Chevron className="mn-chevron" />
       </button>
 
-      <div className="mn-drop" role="menu">
-        {group.items.map((item) =>
-          item.external ? (
-            <a
-              key={item.href}
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mn-drop-link"
-              role="menuitem"
-            >
-              <span className="mn-drop-label">{item.label}</span>
-              <span className="mn-drop-desc">{item.desc}</span>
-            </a>
-          ) : (
-            <Link key={item.href} to={item.href} className="mn-drop-link" role="menuitem">
-              <span className="mn-drop-label">{item.label}</span>
-              <span className="mn-drop-desc">{item.desc}</span>
-            </Link>
-          )
-        )}
+      <div className="mn-drop" id={dropId}>
+        {group.items.map((item) => (
+          <ItemLink key={item.href} item={item} className="mn-drop-link" active={item.href === current} onNavigate={onClose}>
+            <span className="mn-drop-label">{item.label}</span>
+            <span className="mn-drop-desc">{item.desc}</span>
+          </ItemLink>
+        ))}
       </div>
     </div>
   );
@@ -135,42 +128,40 @@ function NavGroup({
 function MobileGroup({
   group,
   isOpen,
+  isCurrent,
+  pathname,
   onToggle,
   onNavigate,
 }: {
-  group: NavGroupData;
+  group: NavGroup;
   isOpen: boolean;
+  isCurrent: boolean;
+  pathname: string;
   onToggle: () => void;
   onNavigate: () => void;
 }) {
+  const panelId = `mn-mob-${group.key}`;
+  const current = activeHref(group.items, pathname);
   return (
-    <div className={`mn-mob-group${isOpen ? ' is-open' : ''}`}>
-      <button className="mn-mob-header" onClick={onToggle}>
+    <div className={`mn-mob-group${isOpen ? ' is-open' : ''}${isCurrent ? ' is-current' : ''}`}>
+      <button
+        type="button"
+        className="mn-mob-header"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+      >
         {group.label}
         <Chevron className="mn-mob-chevron" />
       </button>
 
-      <div className="mn-mob-items">
-        {group.items.map((item) =>
-          item.external ? (
-            <a
-              key={item.href}
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mn-mob-link"
-              onClick={onNavigate}
-            >
-              <span className="mn-mob-link-label">{item.label}</span>
-              <span className="mn-mob-link-desc">{item.desc}</span>
-            </a>
-          ) : (
-            <Link key={item.href} to={item.href} className="mn-mob-link" onClick={onNavigate}>
-              <span className="mn-mob-link-label">{item.label}</span>
-              <span className="mn-mob-link-desc">{item.desc}</span>
-            </Link>
-          )
-        )}
+      <div className="mn-mob-items" id={panelId} hidden={!isOpen}>
+        {group.items.map((item) => (
+          <ItemLink key={item.href} item={item} className="mn-mob-link" active={item.href === current} onNavigate={onNavigate}>
+            <span className="mn-mob-link-label">{item.label}</span>
+            <span className="mn-mob-link-desc">{item.desc}</span>
+          </ItemLink>
+        ))}
       </div>
     </div>
   );
@@ -182,7 +173,9 @@ export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openMobGroup, setOpenMobGroup] = useState<string | null>(null);
+  const { pathname } = useLocation();
+  const current = currentGroupKey(pathname);
+  const [openMobGroup, setOpenMobGroup] = useState<string | null>(current);
   const { user, loading } = useAuth();
   const navRef = useRef<HTMLElement>(null);
 
@@ -194,15 +187,22 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Click-outside to close desktop dropdowns
+  // Close everything on route change.
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
+    setOpenGroup(null);
+    setMobileOpen(false);
+    setOpenMobGroup(currentGroupKey(pathname));
+  }, [pathname]);
+
+  // Click/tap outside closes desktop dropdowns
+  useEffect(() => {
+    const handler = (e: PointerEvent) => {
       if (navRef.current && !navRef.current.contains(e.target as Node)) {
         setOpenGroup(null);
       }
     };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    document.addEventListener('pointerdown', handler);
+    return () => document.removeEventListener('pointerdown', handler);
   }, []);
 
   // Lock body scroll when mobile menu is open
@@ -225,49 +225,59 @@ export function Navigation() {
 
   const closeMobile = () => {
     setMobileOpen(false);
-    setOpenMobGroup(null);
   };
 
-  const ctaLabel = !loading && user ? 'Dashboard' : 'Get Started';
-  const ctaHref = !loading && user ? '/dashboard' : '/auth';
+  const signedIn = !loading && !!user;
+  const ctaLabel = signedIn ? 'Dashboard' : 'Start Here';
+  const ctaHref = signedIn ? '/dashboard' : '/start';
 
   return (
     <>
-      <header ref={navRef} role="banner">
-        <nav className={`mn-nav${scrolled ? ' is-scrolled' : ''}`} aria-label="Main navigation">
+      <header ref={navRef}>
+        <nav className={`mn-nav${scrolled || mobileOpen ? ' is-scrolled' : ''}`} aria-label="Main navigation">
           {/* Logo */}
           <Link to="/" className="mn-logo" aria-label="Moontuner home">
             <picture>
               <source srcSet="/moonkey-logo.webp" type="image/webp" />
-              <img src="/moonkey-logo.png" alt="Moontuner logo" className="mn-logo-mark" width="42" height="42" />
+              <img src="/moonkey-logo.png" alt="" className="mn-logo-mark" width="42" height="42" />
             </picture>
+            <span className="mn-wordmark">Moontuner</span>
           </Link>
 
           {/* Desktop groups */}
-          <div className="mn-items" role="menubar">
+          <div className="mn-items">
             {NAV_GROUPS.map((group) => (
-              <NavGroup
-                key={group.label}
+              <DesktopGroup
+                key={group.key}
                 group={group}
-                isOpen={openGroup === group.label}
-                onEnter={() => setOpenGroup(group.label)}
-                onLeave={() => setOpenGroup(null)}
+                isOpen={openGroup === group.key}
+                isCurrent={current === group.key}
+                pathname={pathname}
+                onOpen={() => setOpenGroup(group.key)}
+                onClose={() => setOpenGroup((v) => (v === group.key ? null : v))}
+                onToggle={() => setOpenGroup((v) => (v === group.key ? null : group.key))}
               />
             ))}
           </div>
 
-          {/* Persistent CTA */}
+          {/* Account + persistent CTA */}
+          {!signedIn && (
+            <Link to="/auth" className="mn-signin">
+              Sign in
+            </Link>
+          )}
           <Link to={ctaHref} className="mn-cta">
-            {ctaLabel} ↗
+            {ctaLabel}
           </Link>
 
           {/* Hamburger */}
           <button
+            type="button"
             className={`mn-burger${mobileOpen ? ' is-open' : ''}`}
             onClick={() => setMobileOpen((v) => !v)}
             aria-expanded={mobileOpen}
             aria-controls="mn-mobile-menu"
-            aria-label="Toggle navigation menu"
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           >
             <span className="mn-burger-line" />
             <span className="mn-burger-line" />
@@ -282,23 +292,28 @@ export function Navigation() {
         className={`mn-mobile${mobileOpen ? ' is-open' : ''}`}
         aria-hidden={!mobileOpen}
         role="dialog"
-        aria-label="Mobile navigation"
+        aria-label="Site menu"
       >
         {NAV_GROUPS.map((group) => (
           <MobileGroup
-            key={group.label}
+            key={group.key}
             group={group}
-            isOpen={openMobGroup === group.label}
-            onToggle={() =>
-              setOpenMobGroup((v) => (v === group.label ? null : group.label))
-            }
+            isOpen={openMobGroup === group.key}
+            isCurrent={current === group.key}
+            pathname={pathname}
+            onToggle={() => setOpenMobGroup((v) => (v === group.key ? null : group.key))}
             onNavigate={closeMobile}
           />
         ))}
 
         <Link to={ctaHref} className="mn-mob-cta" onClick={closeMobile}>
-          {ctaLabel} ↗
+          {ctaLabel}
         </Link>
+        {!signedIn && (
+          <Link to="/auth" className="mn-mob-signin" onClick={closeMobile}>
+            Sign in
+          </Link>
+        )}
       </div>
     </>
   );

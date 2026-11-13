@@ -149,6 +149,8 @@
 
   html {
     scroll-behavior: smooth;
+    /* Keep in-page anchors (#begin, #astro-harmonic-symphony…) clear of the fixed nav. */
+    scroll-padding-top: 76px;
   }
 
   body {

@@ -53,6 +53,17 @@
   margin-right: 12px;
 }
 
+.mn-wordmark {
+  margin-left: 12px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--nav-text);
+  white-space: nowrap;
+}
+
 .mn-logo-mark {
   width: 42px;
   height: 42px;
@@ -101,6 +112,39 @@
   background: rgba(255, 255, 255, 0.04);
 }
 
+.mn-group.is-current .mn-trigger {
+  color: var(--nav-text);
+}
+
+.mn-group.is-current .mn-trigger::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 4px;
+  height: 4px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: var(--nav-accent);
+}
+
+.mn-trigger {
+  position: relative;
+}
+
+.mn-trigger:focus-visible,
+.mn-drop-link:focus-visible,
+.mn-cta:focus-visible,
+.mn-signin:focus-visible,
+.mn-logo:focus-visible,
+.mn-burger:focus-visible,
+.mn-mob-header:focus-visible,
+.mn-mob-link:focus-visible,
+.mn-mob-cta:focus-visible {
+  outline: 1px solid var(--nav-accent);
+  outline-offset: 2px;
+}
+
 .mn-chevron {
   width: 10px;
   height: 10px;
@@ -145,6 +189,11 @@
   height: 10px;
 }
 
+.mn-group:last-child .mn-drop {
+  left: auto;
+  right: 0;
+}
+
 .mn-group.is-open .mn-drop {
   opacity: 1;
   transform: translateY(0) scale(1);
@@ -176,6 +225,10 @@
   transition: color var(--nav-transition);
 }
 
+.mn-drop-link.is-active .mn-drop-label {
+  color: var(--nav-accent);
+}
+
 .mn-drop-desc {
   display: block;
   font-size: 11px;
@@ -183,7 +236,28 @@
   line-height: 1.4;
 }
 
-/* ─── CTA button ─── */
+/* ─── Sign in + CTA ─── */
+.mn-signin {
+  margin-left: auto;
+  margin-right: 14px;
+  flex-shrink: 0;
+  font-family: var(--nav-font-body);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--nav-text-dim);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--nav-transition);
+}
+
+.mn-signin:hover {
+  color: var(--nav-text);
+}
+
+.mn-signin + .mn-cta {
+  margin-left: 0;
+}
+
 .mn-cta {
   margin-left: auto;
   flex-shrink: 0;
@@ -255,15 +329,18 @@
   overflow-y: auto;
   padding: 16px 24px 48px;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   transform: translateY(-6px);
-  transition: opacity 0.22s ease, transform 0.22s ease;
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s linear 0.22s;
 }
 
 .mn-mobile.is-open {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s;
 }
 
 .mn-mob-group {
@@ -300,20 +377,25 @@
 }
 
 .mn-mob-items {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.28s ease;
+  padding-bottom: 6px;
 }
 
-.mn-mob-group.is-open .mn-mob-items {
-  max-height: 360px;
+.mn-mob-items[hidden] {
+  display: none;
+}
+
+.mn-mob-group.is-current .mn-mob-header {
+  color: var(--nav-accent);
+}
+
+.mn-mob-link.is-active .mn-mob-link-label {
+  color: var(--nav-accent);
 }
 
 .mn-mob-link {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
+  flex-direction: column;
+  gap: 2px;
   padding: 11px 0;
   text-decoration: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
@@ -325,8 +407,8 @@
 }
 
 .mn-mob-link-label {
-  font-size: 14px;
-  color: var(--nav-text-dim);
+  font-size: 15px;
+  color: var(--nav-text);
   transition: color var(--nav-transition);
 }
 
@@ -335,9 +417,9 @@
 }
 
 .mn-mob-link-desc {
-  font-size: 11px;
-  color: rgba(220, 216, 207, 0.25);
-  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(220, 216, 207, 0.38);
 }
 
 .mn-mob-cta {
@@ -362,15 +444,39 @@
   border-color: rgba(201, 174, 114, 0.5);
 }
 
-/* ─── Responsive breakpoint ─── */
-@media (max-width: 860px) {
+.mn-mob-signin {
+  display: block;
+  margin-top: 14px;
+  padding: 10px;
+  text-align: center;
+  font-family: var(--nav-font-body);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--nav-text-dim);
+  text-decoration: none;
+}
+
+/* ─── Responsive breakpoints ─── */
+@media (max-width: 1080px) {
+  .mn-wordmark {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
   .mn-logo-mark {
     width: 36px;
     height: 36px;
   }
 
+  .mn-wordmark {
+    display: inline;
+    font-size: 12px;
+  }
+
   .mn-items,
-  .mn-cta {
+  .mn-cta,
+  .mn-signin {
     display: none;
   }
   .mn-burger {

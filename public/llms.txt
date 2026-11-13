@@ -4,6 +4,17 @@
 
 Moontuner is a framework for energetic accountability and self-sovereignty built around the 8 lunar phases and 12 zodiac signs (96 configurations). It pairs an astronomical engine (live phase, sign, void-of-course, aspects) with reflective tooling: daily directives, a 14-day Phasecraft arc, the Chaperone workbook series, and the Lunar Cipher.
 
+## Start here
+
+- [Start Here](/start): The four ways into Moontuner — Phasecraft, the Lunar Chaperone, the Astro-Harmonic Symphony, and the Lunar Map & Cazimi reports.
+- [For readers of PHASECRAFT](/book): The live companion to the book PHASECRAFT: The Moontuner Method.
+- [Phasecraft](/phasecraft): Tonight's phase-and-sign signature, the 96 matrix, calendar, and lunar science companion.
+- [Phasecraft School](/school): Learn the method in six modules; lessons and progress at /school/portal.
+- [Lunar Chaperone](/lunar-chaperone): Twenty-four half-moon workbooks in one continuous loop, opening on the half-cycle overhead now.
+- [Astro-Harmonic Symphony](/quantumelodic): A birth chart composed as music, with narrated reading and PDF.
+- [Personal Lunar Map](/lunar-reports): 12-month lunar arc, power days, and natal signature.
+- [Cazimi Punchcard](/cazimi): Each year's exact solar returns to every natal placement — brief windows of renewal.
+
 ## Pages
 
 - [Home](/): Today's Directive, Harmonic Profile, and the lunar framework overview.
@@ -27,8 +38,6 @@ Moontuner is a framework for energetic accountability and self-sovereignty built
 - [Lunar Workbook Program](/program): The twenty-four half-cycle workbook canon, live to the current phase.
 - [Persona Edition](/program/persona): The same canon read against your own birth moment.
 - [School Curriculum](/school/curriculum): The six-module Lunar Phasecraft Mastery course map with outcomes and topics.
-- [Moontuner School](/school): The Cosmic Cycles knowledge base and assessment.
-- [Lunar Chaperone](/lunar-chaperone): 26-workbook continuous companionship system.
 - [Workbooks](/workbooks): The Chaperone workbook catalog.
 - [Sessions](/sessions): Live 1:1 tarot, astro-harmonic, and piano-etude sessions.
 - [Services](/services): Service tiers and booking.

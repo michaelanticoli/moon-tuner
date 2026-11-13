@@ -9,7 +9,29 @@ import { ZodiacGlyph } from "@/components/ZodiacGlyph";
 import { ArrowRight, ArrowUpRight, BookOpen, Brain, Layers, Target, Sparkles, Clock, Compass } from "lucide-react";
 import { SchoolCycles } from "@/components/school/SchoolCycles";
 
-const SCHOOL_URL = import.meta.env.VITE_SCHOOL_URL ?? "https://moontuner-school.lovable.dev";
+// The School runs on this site: lessons and progress live at /school/portal
+// (free account, so progress is saved). VITE_SCHOOL_URL can still point the
+// button at an external school app if one is ever stood up.
+const SCHOOL_ENTRY: string = (import.meta.env.VITE_SCHOOL_URL as string | undefined) || "/school/portal";
+
+function EnterSchoolButton() {
+  const external = /^https?:\/\//.test(SCHOOL_ENTRY);
+  return (
+    <Button asChild size="lg" className="group">
+      {external ? (
+        <a href={SCHOOL_ENTRY} target="_blank" rel="noopener noreferrer">
+          Enter the School
+          <ArrowUpRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </a>
+      ) : (
+        <Link to={SCHOOL_ENTRY}>
+          Enter the School
+          <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5" />
+        </Link>
+      )}
+    </Button>
+  );
+}
 
 const curriculum = [
   { icon: BookOpen, title: "Foundations", desc: "Master the 8 phases and 12 signs individually" },
@@ -42,10 +64,10 @@ export default function MoontunerSchool() {
           <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent" />
           <div className="container mx-auto px-6 lg:px-12 relative">
             <span className="inline-block text-xs uppercase tracking-[0.3em] text-accent font-medium mb-6">
-              The Education System
+              The Moontuner School
             </span>
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-7xl font-light text-foreground mb-6 tracking-tight leading-[1.1]">
-              Moontuner School
+              Phasecraft School
             </h1>
             <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl leading-relaxed mb-4">
               A systematic approach to temporal navigation through 96 unique lunar-zodiac combinations. 
@@ -55,12 +77,19 @@ export default function MoontunerSchool() {
               8 Moon Phases × 12 Zodiac Signs = 96 Unique Signatures. Each combination represents 
               a distinct energetic configuration. This is where you learn them all.
             </p>
-            <a href={SCHOOL_URL} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="group">
-                Enter the School
-                <ArrowUpRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <div className="flex flex-col sm:flex-row gap-3">
+              <EnterSchoolButton />
+              <Button asChild size="lg" variant="gold-outline">
+                <Link to="/school/curriculum">See the Curriculum</Link>
               </Button>
-            </a>
+            </div>
+            <p className="mt-4 text-xs text-muted-foreground">
+              A free account saves your progress lesson by lesson.{" "}
+              <Link to="/phasecraft" className="text-accent underline underline-offset-4">
+                Or start with tonight's signature
+              </Link>
+              .
+            </p>
           </div>
         </header>
 
@@ -207,7 +236,7 @@ export default function MoontunerSchool() {
                 <h3 className="font-serif text-2xl text-foreground mb-4">From Theory to Practice</h3>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
                   The School teaches the foundational 96-combination system. The <strong className="text-foreground">Lunar Chaperone</strong> is 
-                  where this knowledge becomes lived practice — a 26-workbook series designed for continuous lunar companionship.
+                  where this knowledge becomes lived practice — twenty-four half-moon workbooks in one continuous loop.
                 </p>
                 <div className="grid grid-cols-3 gap-4 text-sm mb-8">
                   <div className="bg-background/50 p-4 border border-border">
@@ -219,12 +248,12 @@ export default function MoontunerSchool() {
                     <p className="text-muted-foreground mt-1">Full → New Moon</p>
                   </div>
                   <div className="bg-background/50 p-4 border border-border">
-                    <span className="text-2xl font-serif text-foreground">2</span>
-                    <p className="text-muted-foreground mt-1">Eclipse Portals</p>
+                    <span className="text-2xl font-serif text-foreground">∞</span>
+                    <p className="text-muted-foreground mt-1">One continuous loop</p>
                   </div>
                 </div>
-                <Button variant="gold-outline" onClick={() => window.location.href = "/workbooks"}>
-                  Explore the Chaperone
+                <Button asChild variant="gold-outline">
+                  <Link to="/lunar-chaperone">Open the Lunar Chaperone</Link>
                 </Button>
               </div>
             </div>
@@ -241,12 +270,7 @@ export default function MoontunerSchool() {
               <p className="text-muted-foreground mb-10 max-w-lg mx-auto">
                 96 combinations. One complete system. Your fluency begins here.
               </p>
-              <a href={SCHOOL_URL} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="group">
-                  Enter the School
-                  <ArrowUpRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </Button>
-              </a>
+              <EnterSchoolButton />
             </div>
           </section>
         </ScrollReveal>

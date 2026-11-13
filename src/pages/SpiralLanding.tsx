@@ -8,6 +8,7 @@ import { SEOHead, websiteSchema } from "@/components/SEOHead";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { MoonPhaseGlyph } from "@/components/MoonPhaseGlyph";
 import { DuskLiveStatus } from "@/components/dusk/DuskLiveStatus";
+import { PathwayDoors } from "@/components/PathwayDoors";
 
 /**
  * Moontuner — "Spiral" landing page.
@@ -312,8 +313,8 @@ const SpiralLanding = () => {
                     <a href="#astro-harmonic-symphony" className="dusk-btn dusk-btn-primary">
                       Hear Your Chart — $19
                     </a>
-                    <a href="#whattime" className="dusk-btn dusk-btn-ghost">
-                      Explore the Free Tools
+                    <a href="#begin" className="dusk-btn dusk-btn-ghost">
+                      See All Four Ways In
                     </a>
                   </div>
                 </div>
@@ -325,6 +326,32 @@ const SpiralLanding = () => {
                   </p>
                 </div>
               </div>
+            </div>
+          </section>
+
+          {/* ── Four doors: Phasecraft · Chaperone · Symphony · Reports ── */}
+          <section
+            id="begin"
+            className="relative py-16 lg:py-20 border-t"
+            style={{ borderColor: "hsl(var(--dusk-ivory) / 0.08)" }}
+            aria-label="Four ways in"
+          >
+            <div className="mx-auto max-w-[1200px] px-6 lg:px-12">
+              <PathwayDoors
+                eyebrow="Four ways in"
+                heading={
+                  <>
+                    Learn it, practice it, <em className="italic dusk-gold">hear it, time it.</em>
+                  </>
+                }
+              />
+              <p className="mt-8 text-[0.85rem] dusk-silver">
+                Reading <span className="italic">PHASECRAFT</span>?{" "}
+                <Link to="/book" className="dusk-ivory underline underline-offset-4 hover:text-[hsl(var(--dusk-gold))] transition-colors">
+                  Start with the reader's page
+                </Link>
+                .
+              </p>
             </div>
           </section>
 

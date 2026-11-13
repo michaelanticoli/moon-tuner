@@ -4,6 +4,8 @@ import { Navigate, NavLink, Route, Routes } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { SEOHead } from "@/components/SEOHead";
 import { PageTransition } from "@/components/PageTransition";
+import { Footer } from "@/components/Footer";
+import { PathwayDoors } from "@/components/PathwayDoors";
 import { defaultPhases } from "@/phasecraft/data/phases";
 import { validatePhases } from "@/phasecraft/data/validate";
 import TodayPage from "@/phasecraft/pages/TodayPage";
@@ -66,11 +68,32 @@ function PhasecraftFrame({ children }: { children: ReactNode }) {
                     {tab.label}
                   </NavLink>
                 ))}
+                <NavLink
+                  to="/school"
+                  className="min-h-[40px] shrink-0 rounded-md border border-accent/40 px-3 py-2 text-xs font-medium uppercase tracking-wider text-accent transition-colors hover:bg-accent/10 sm:ml-auto"
+                >
+                  School →
+                </NavLink>
               </nav>
             </header>
             {children}
+            <PathwayDoors
+              variant="strip"
+              exclude="phasecraft"
+              className="pt-12 mt-12 border-t border-border/40"
+              eyebrow="Go deeper"
+              heading="Take tonight's signature further."
+            />
+            <p className="text-sm text-muted-foreground">
+              Ready to learn the whole method?{" "}
+              <NavLink to="/school" className="text-accent underline underline-offset-4">
+                Enter the Phasecraft School
+              </NavLink>
+              .
+            </p>
           </div>
         </main>
+        <Footer />
       </div>
     </PageTransition>
   );

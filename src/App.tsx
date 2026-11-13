@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { MembershipProvider } from "@/contexts/MembershipContext";
 import { AnalyticsProvider } from "@/contexts/AnalyticsContext";
@@ -78,6 +78,7 @@ const ProgramWorkbook = lazy(() => import("./pages/ProgramWorkbook"));
 const ProgramPersona = lazy(() => import("./pages/ProgramPersona"));
 const ProgramPortal = lazy(() => import("./pages/ProgramPortal"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const StartHere = lazy(() => import("./pages/StartHere"));
 // PhasecraftRoutes is a named export, so .then() is required by React.lazy
 const PhasecraftRoutes = lazy(() => import("@/phasecraft/PhasecraftRoutes").then(m => ({ default: m.PhasecraftRoutes })));
 
@@ -115,6 +116,11 @@ function AnimatedRoutes() {
           <Route path="/the-moon" element={<Moon />} />
           <Route path="/method" element={<Method />} />
           <Route path="/phasecraft/*" element={<PhasecraftRoutes />} />
+          {/* Front doors: /start for new visitors, /book for PHASECRAFT readers (printed in the book) */}
+          <Route path="/start" element={<StartHere />} />
+          <Route path="/book" element={<StartHere />} />
+          <Route path="/reader" element={<Navigate to="/book" replace />} />
+          <Route path="/readers" element={<Navigate to="/book" replace />} />
           <Route path="/philosophy" element={<Philosophy />} />
           <Route path="/lunar-system" element={<LunarSystem />} />
           <Route path="/persona" element={<Persona />} />
