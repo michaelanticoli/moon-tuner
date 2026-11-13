@@ -14,6 +14,19 @@ import { Moon, Mail, Lock, ArrowRight, Loader2, Sparkles } from "lucide-react";
 
 type AuthMode = "enter" | "begin" | "reset" | "magic";
 
+/**
+ * "Continue with Google" runs through Lovable's managed OAuth broker, which
+ * lives at /~oauth/initiate on Lovable-served domains only. On another host
+ * (moontuner.xyz is served by Hostinger) that path does not exist and the
+ * button lands on a 403 page, so it is shown only where the broker exists.
+ * Set VITE_ENABLE_GOOGLE_SIGNIN=true if the domain is later served by Lovable
+ * or switched to Supabase-native Google sign-in.
+ */
+const GOOGLE_SIGNIN_AVAILABLE =
+  import.meta.env.VITE_ENABLE_GOOGLE_SIGNIN === "true" ||
+  (typeof window !== "undefined" &&
+    /(^|\.)(lovable\.app|lovableproject\.com)$|^(localhost|127\.0\.0\.1)$/.test(window.location.hostname));
+
 const maskEmail = (value: string) => {
   const [localPart = "", domain = ""] = value.trim().split("@");
   if (!localPart || !domain) return "";
@@ -324,7 +337,8 @@ const Auth = () => {
                   </motion.form>
                 </AnimatePresence>
 
-                {/* Google sign-in */}
+                {/* Google sign-in (only where Lovable's OAuth broker is served) */}
+                {GOOGLE_SIGNIN_AVAILABLE && (
                 <div className="mt-6">
                   <Button
                     type="button"
@@ -355,6 +369,7 @@ const Auth = () => {
                     Continue with Google
                   </Button>
                 </div>
+                )}
 
                 {/* Secondary actions */}
                 <div className="mt-7 pt-6 border-t border-border/30 space-y-3">

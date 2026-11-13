@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "./types";
 
 const primaryUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -41,23 +41,30 @@ export const primarySupabase = createClient(
 /**
  * Secondary project:
  * Existing MoonTuner and Quantumelodic database/function services.
+ *
+ * Only a genuinely separate project gets its own (session-less) client.
+ * When no second project is configured — the normal case — this reuses the
+ * signed-in primary client. A second session-less client pointed at the same
+ * project would query as an anonymous visitor, so row-level-security tables
+ * (school_progress, program_entitlements, program_members, profiles,
+ * subscriptions) would read back empty and silently refuse writes.
  */
-export const secondarySupabase = createClient<Database>(
-  secondaryUrl,
-  secondaryKey,
-  {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-      detectSessionInUrl: false,
-    },
-  }
-);
+const hasSeparateSecondaryProject = secondaryUrl !== primaryUrl;
+
+export const secondarySupabase: SupabaseClient<Database> = hasSeparateSecondaryProject
+  ? createClient<Database>(secondaryUrl, secondaryKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+    })
+  : (primarySupabase as unknown as SupabaseClient<Database>);
 
 /**
  * Backward-compatibility alias.
  *
- * Existing imports of `supabase` continue using the old secondary
- * project without requiring a site-wide rewrite.
+ * Existing imports of `supabase` keep working without a site-wide rewrite;
+ * they carry the visitor's session unless a separate project is configured.
  */
 export const supabase = secondarySupabase;
