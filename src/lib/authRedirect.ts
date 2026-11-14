@@ -54,4 +54,17 @@ export const buildAuthCallbackUrl = (
   return callbackUrl.toString();
 };
 
+/**
+ * Callback on the domain the visitor is on right now. Used for Google
+ * sign-in, which only runs on Lovable-served domains: the OAuth broker there
+ * must send the visitor back to the same domain it was started from.
+ */
+export const buildSameOriginCallbackUrl = (
+  redirectPath = DEFAULT_AUTH_REDIRECT_PATH
+) => {
+  const callbackUrl = new URL("/auth/callback", window.location.origin);
+  callbackUrl.searchParams.set("next", sanitizeRedirectPath(redirectPath));
+  return callbackUrl.toString();
+};
+
 export { DEFAULT_AUTH_REDIRECT_PATH };

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { buildAuthCallbackUrl, getRedirectPathFromLocationState, sanitizeRedirectPath } from "@/lib/authRedirect";
+import { buildSameOriginCallbackUrl, getRedirectPathFromLocationState, sanitizeRedirectPath } from "@/lib/authRedirect";
 import { lovable } from "@/integrations/lovable/index";
 import { Moon, Mail, Lock, ArrowRight, Loader2, Sparkles } from "lucide-react";
 
@@ -351,7 +351,7 @@ const Auth = () => {
                       try {
                         sessionStorage.setItem("mt_auth_redirect", redirectPath);
                         const result = await lovable.auth.signInWithOAuth("google", {
-                          redirect_uri: buildAuthCallbackUrl(redirectPath),
+                          redirect_uri: buildSameOriginCallbackUrl(redirectPath),
                         });
                         if (result.redirected) return;
                         if (result.error) {
