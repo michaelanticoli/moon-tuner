@@ -1,19 +1,19 @@
 /*
- * Moontuner Press — scoped editorial styles.
- * Everything is namespaced under .press so the rest of the app is untouched.
+ * Moontuner editorial — scoped styles.
+ * Everything is namespaced under .ed so the rest of the app is untouched.
  */
 @import "@fontsource/inter/300.css";
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
 @import "@fontsource/inter/600.css";
 
-.press {
-  --press-ink: #000;
-  --press-paper: #fff;
-  --press-nav-h: 56px;
+.ed {
+  --ed-ink: #000;
+  --ed-paper: #fff;
+  --ed-nav-h: 56px;
 
-  background: var(--press-paper);
-  color: var(--press-ink);
+  background: var(--ed-paper);
+  color: var(--ed-ink);
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
@@ -22,18 +22,18 @@
 }
 
 /* The app's base layer gives headings a serif display face and tracking;
-   the press is a single sans-serif system, so reset that inside .press. */
-.press :where(h1, h2, h3, h4, h5, h6, p, dl, dt, dd, li, a, button, span) {
+   the page is a single sans-serif system, so reset that inside .ed. */
+.ed :where(h1, h2, h3, h4, h5, h6, p, dl, dt, dd, li, a, button, span) {
   font-family: inherit;
 }
 
-.press ::selection {
-  background: var(--press-ink);
-  color: var(--press-paper);
+.ed ::selection {
+  background: var(--ed-ink);
+  color: var(--ed-paper);
 }
 
 /* Small uppercase metadata — navigation, labels, numbering. */
-:where(.press-label) {
+:where(.ed-label) {
   font-size: 0.6875rem; /* 11px */
   line-height: 1.4;
   font-weight: 500;
@@ -42,50 +42,50 @@
 }
 
 /* Large light editorial display type. */
-:where(.press-display) {
+:where(.ed-display) {
   font-weight: 300;
   letter-spacing: -0.02em;
   line-height: 1.12;
 }
 
 /* Visible, monochrome focus ring that works on white and black grounds. */
-.press a:focus-visible,
-.press button:focus-visible {
+.ed a:focus-visible,
+.ed button:focus-visible {
   outline: 1px solid currentColor;
   outline-offset: 4px;
 }
 
 /* Anchor targets clear the fixed navigation bar. */
-.press [id] {
-  scroll-margin-top: calc(var(--press-nav-h) + 24px);
+.ed [id] {
+  scroll-margin-top: calc(var(--ed-nav-h) + 24px);
 }
 /* The Index section opens with its own generous padding; land it just below the bar. */
-.press #index {
+.ed #index {
   scroll-margin-top: 0;
 }
 
-/* The app sets a global scroll-padding for its own nav; the press manages
-   offsets per target above, so clear it while the press is mounted. */
-html:has(.press) {
+/* The app sets a global scroll-padding for its own nav; the page manages
+   offsets per target above, so clear it while the page is mounted. */
+html:has(.ed) {
   scroll-padding-top: 0;
   scroll-behavior: auto;
 }
 @media (prefers-reduced-motion: no-preference) {
-  html:has(.press) {
+  html:has(.ed) {
     scroll-behavior: smooth;
   }
 }
 
 /* The supplied logo files sit on white grounds; multiply lets the hero
    geometry show through the white without altering the artwork itself. */
-.press-logo {
+.ed-logo {
   mix-blend-mode: multiply;
   user-select: none;
   -webkit-user-drag: none;
 }
 
 /* Underline that draws in on hover — used for quiet text links. */
-.press-link {
+.ed-link {
   background-image: linear-gradient(currentColor, currentColor);
   background-size: 0% 1px;
   background-repeat: no-repeat;
@@ -93,15 +93,15 @@ html:has(.press) {
   transition: background-size 0.35s ease;
   padding-bottom: 2px;
 }
-.press-link:hover,
-.press-link:focus-visible {
+.ed-link:hover,
+.ed-link:focus-visible {
   background-size: 100% 1px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .press *,
-  .press *::before,
-  .press *::after {
+  .ed *,
+  .ed *::before,
+  .ed *::after {
     transition-duration: 0.01ms !important;
   }
 }

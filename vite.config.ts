@@ -54,7 +54,7 @@ export default defineConfig(({ mode }) => ({
         // "/" is added by the plugin automatically
         "/classic",
         "/v3",
-        "/press",
+        "/editorial",
         "/today",
         "/about",
         "/philosophy",

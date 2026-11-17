@@ -16,7 +16,7 @@ import { PHASE_2_ENABLED, PHASE_3_ENABLED } from "@/lib/featureFlags";
 const Index = lazy(() => import("./pages/Index"));
 const SpiralLanding = lazy(() => import("./pages/SpiralLanding"));
 const V3Landing = lazy(() => import("./pages/V3Landing"));
-const Press = lazy(() => import("./pages/Press"));
+const Editorial = lazy(() => import("./pages/Editorial"));
 const Method = lazy(() => import("./pages/Method"));
 const Manifesto = lazy(() => import("./pages/Manifesto"));
 const Philosophy = lazy(() => import("./pages/Philosophy"));
@@ -106,8 +106,9 @@ function AnimatedRoutes() {
           <Route path="/" element={<SpiralLanding />} />
           <Route path="/classic" element={<Index />} />
           <Route path="/v3" element={<V3Landing />} />
-          {/* Moontuner Press — monochrome editorial site (draft; candidate for "/") */}
-          <Route path="/press" element={<Press />} />
+          {/* Monochrome editorial edition of the site (draft; candidate for "/") */}
+          <Route path="/editorial" element={<Editorial />} />
+          <Route path="/press" element={<Navigate to="/editorial" replace />} />
           <Route path="/today" element={<Today />} />
           <Route path="/harmonic-profile" element={<HarmonicProfile />} />
           <Route path="/journal" element={<Journal />} />
